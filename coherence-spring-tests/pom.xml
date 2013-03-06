@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-integration</artifactId>
+        <version>12.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>coherence-spring-tests</artifactId>
+
+    <name>Coherence Spring Integration Tests</name>
+
+    <description>
+        Integration Tests for the Coherence Spring Module
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle.coherence.spring</groupId>
+            <artifactId>coherence-spring</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
+</project>

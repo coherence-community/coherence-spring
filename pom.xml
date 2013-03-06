@@ -1,0 +1,231 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.java</groupId>
+        <artifactId>jvnet-parent</artifactId>
+        <version>3</version>
+    </parent>
+
+    <artifactId>coherence-spring-integration</artifactId>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <version>12.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Coherence Spring Integration Project</name>
+
+    <description>
+        The Oracle Coherence Spring Integration provides mechanism to bridge and
+        support the use of Spring with Coherence and vice-versa.
+    </description>
+
+    <url>http://java.net/projects/cohspr</url>
+
+    <licenses>
+        <license>
+            <name>Common Development and Distribution License 1.0 ("CDDL")</name>
+            <url>http://opensource.org/licenses/CDDL-1.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Brian Oliver</name>
+            <organization>Oracle Corporation</organization>
+        </developer>
+        
+        <developer>
+            <name>Patrick Peralta</name>
+            <organization>Oracle Corporation</organization>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/coherence-community/coherence-spring-integration.git</connection>
+        <developerConnection>scm:git:https://github.com/coherence-community/coherence-spring-integration.git</developerConnection>
+        <url>https://github.com/coherence-community/coherence-spring-integration.git</url>
+    </scm>
+
+    <modules>
+        <module>coherence-spring</module>
+
+        <!--
+            The following is commented out as the tests depend on Coherence
+            Test Infrastructure.  We need to refactor this to use Junit.
+          -->
+
+        <!-- <module>coherence-spring-tests</module> -->
+    </modules>
+
+    <properties>
+        <!-- project options -->
+        <skip-sign-artifacts>true</skip-sign-artifacts>
+
+        <!-- source code repository information -->
+        <source.owner>coherence-community</source.owner>
+        <source.repository>coherence-spring-integration</source.repository>
+        <source.branch>master</source.branch>
+
+        <!-- source encoding definition -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- plugin dependency versions (alphabetically) -->
+        <doxia.module.markdown.version>1.0</doxia.module.markdown.version>
+
+        <github.site.maven.plugin.version>0.7</github.site.maven.plugin.version>
+
+        <maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+        <maven.dependency.plugin.version>2.6</maven.dependency.plugin.version>
+        <maven.deploy.plugin.version>2.7</maven.deploy.plugin.version>
+        <maven.enforcer.plugin.version>1.0.1</maven.enforcer.plugin.version>
+        <maven.gpg.plugin.version>1.4</maven.gpg.plugin.version>
+        <maven.install.plugin.version>2.4</maven.install.plugin.version>
+        <maven.jar.plugin.version>2.4</maven.jar.plugin.version>
+        <maven.javadoc.plugin.version>2.9</maven.javadoc.plugin.version>
+        <maven.release.plugin.version>2.2.1</maven.release.plugin.version>
+        <maven.shade.plugin.version>1.7</maven.shade.plugin.version>
+        <maven.site.plugin.version>3.2</maven.site.plugin.version>
+        <maven.source.plugin.version>2.2.1</maven.source.plugin.version>
+        <maven.surefire.plugin.version>2.13</maven.surefire.plugin.version>
+
+        <!-- dependency versions (alphabetically) -->
+        <oracle.coherence.version>12.1.2.0b40177</oracle.coherence.version>
+        <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-plugin-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0.4</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>1.6.0</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <argLine>-Xms800m -Xmx800m -XX:MaxPermSize=500m</argLine>
+                    <includes>
+                        <include>**/*FunctionalTest.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+                <configuration>
+                    <failOnError>false</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven.install.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven.gpg.plugin.version}</version>
+                <configuration>
+                    <skip>${skip-sign-artifacts}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

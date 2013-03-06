@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+	File: coherence-spring-config.xsd
+
+ 	DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+	The contents of this file are subject to the terms and conditions of
+	the Common Development and Distribution License 1.0 (the "License").
+
+	You may not use this file except in compliance with the License.
+
+	You can obtain a copy of the License by consulting the LICENSE.txt file
+	distributed with this file, or by consulting https://oss.oracle.com/licenses/CDDL
+
+	See the License for the specific language governing permissions
+	and limitations under the License.
+
+	When distributing the software, include this License Header Notice in each
+	file and include the License file LICENSE.txt.
+
+	MODIFICATIONS:
+	If applicable, add the following below the License Header, with the fields
+	enclosed by brackets [] replaced by your own identifying information:
+	"Portions Copyright [year] [name of copyright owner]"
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="class://com.oracle.coherence.spring.SpringNamespaceHandler"
+            xmlns="class://com.oracle.coherence.spring.SpringNamespaceHandler"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            version="1.0">
+
+    <xsd:annotation>
+        <xsd:documentation>
+            Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+
+            Oracle is a registered trademarks of Oracle Corporation and/or its
+            affiliates.
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:annotation>
+        <xsd:documentation>
+            Oracle Coherence Spring Config Schema definitions.
+        </xsd:documentation>
+    </xsd:annotation>
+
+
+    <xsd:element name="bean-factory">
+        <xsd:annotation>
+            <xsd:documentation>
+              The bean-factory element defines a Spring bean
+              factory that will be used to provide named
+              beans to Coherence.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
+              <xsd:element ref="application-context-uri" minOccurs="1" maxOccurs="1" />
+            </xsd:sequence>
+            <xsd:anyAttribute namespace="##other" processContents="lax"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="bean">
+        <xsd:annotation>
+            <xsd:documentation>
+              The bean element is used to define a Spring bean
+              that will be provided to Coherence.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
+              <xsd:element ref="bean-name" minOccurs="1" maxOccurs="1" />
+              <xsd:element ref="property" minOccurs="0" />
+            </xsd:sequence>
+            <xsd:anyAttribute namespace="##other" processContents="lax"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="factory-name" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>
+              The factory-name element is used to name a Spring
+              bean factory. This name is used to refer to a
+              factory when defining a bean definition.
+
+              Used in: bean, bean-factory
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="application-context-uri" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>
+                The application-context-uri element defines a location for
+                a Spring application context XML file. If URL notation is
+                used, the file will be loaded as a URL (i.e. file://, http://);
+                otherwise the file will be loaded from the classpath.
+
+                Used in: bean-factory
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="bean-name" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>
+                The bean-name element is the name of a bean to be
+                retrieved from a Spring bean factory.
+
+                Used in: bean
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="property-type">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="xsd:normalizedString" use="optional" />
+                <xsd:anyAttribute namespace="##other" processContents="lax"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:element name="property" type="property-type">
+        <xsd:annotation>
+            <xsd:documentation>
+                The property element is used to inject
+                a property into a Spring bean.
+
+                Used in: bean
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+</xsd:schema>
