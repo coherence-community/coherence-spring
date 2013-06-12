@@ -1,0 +1,12 @@
+Oracle Coherence Spring Integration
+===================================
+![Incubator](images/incubator-logo-290x163.png)
+
+**Version: ${project.version} built on ${timestamp}**
+
+The Oracle Coherence Spring Integration project allows a Spring BeanFactory
+to provide objects to a Coherence class-scheme. A class-scheme in a
+Coherence configuration file is the means by which objects are made
+avaliable to a Coherence scheme. The most common use of class-scheme
+is to provide a Cache Store object for reading/writing to an external
+data store.
