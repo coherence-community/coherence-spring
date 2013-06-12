@@ -1,6 +1,5 @@
 Oracle Coherence Spring Integration
 ===================================
-![Incubator](images/incubator-logo-290x163.png)
 
 **Version: ${project.version} built on ${timestamp}**
 
@@ -10,3 +9,34 @@ Coherence configuration file is the means by which objects are made
 avaliable to a Coherence scheme. The most common use of class-scheme
 is to provide a Cache Store object for reading/writing to an external
 data store.
+
+Dependency Configuration
+------------------------
+
+To include this library as a Maven dependency, include the following
+in your ``pom.xml``:
+
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-integration</artifactId>
+        <version>12.0.0-SNAPSHOT</version>
+    </dependency>
+
+Usage
+-----
+
+Instructions on configuration can be found under the [usage](usage.html) section.
+
+Building the Source
+-------------------
+
+See the [source code](source-code.html) and [building](building.html) sections
+for instructions on obtaining and compiling the source.
+
+Contributions
+-------------
+
+ If you are interested in making contributions to the Oracle Coherence Incubator,·
+ including defect fixes, documentation, new classes/interfaces/methods/packages·
+ or tests, you should read the section on·
+ [Contributing to the Oracle Coherence Spring Integration](contributions.html).·

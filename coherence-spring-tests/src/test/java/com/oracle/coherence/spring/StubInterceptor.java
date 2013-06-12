@@ -1,26 +1,61 @@
+/*
+ * File: StubInterceptor.java
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms and conditions of 
+ * the Common Development and Distribution License 1.0 (the "License").
+ *
+ * You may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License by consulting the LICENSE.txt file
+ * distributed with this file, or by consulting https://oss.oracle.com/licenses/CDDL
+ *
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ *
+ * When distributing the software, include this License Header Notice in each
+ * file and include the License file LICENSE.txt.
+ *
+ * MODIFICATIONS:
+ * If applicable, add the following below the License Header, with the fields
+ * enclosed by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ */
+
 package com.oracle.coherence.spring;
 
 import com.tangosol.net.events.EventInterceptor;
+
 import com.tangosol.net.events.partition.cache.EntryEvent;
 
 /**
  * Stub Interceptor implementation for testing by {@link SpringNamespaceHandlerTests}.
  *
- * @author pp  2012.02.08
+ * @author Patrick Peralta
  */
-public class StubInterceptor
-        implements EventInterceptor<EntryEvent>
-    {
+public class StubInterceptor implements EventInterceptor<EntryEvent>
+{
+    private static volatile boolean m_fEventReceived = false;
+
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEvent(EntryEvent event)
-        {
+    {
         m_fEventReceived = true;
-        }
-
-    public static boolean eventReceived()
-        {
-        return m_fEventReceived;
-        }
-
-    private static volatile boolean m_fEventReceived = false;
     }
+
+
+    /**
+     * Return true if an event was received via {@link #onEvent}.
+     *
+     * @return true if an event was received.
+     */
+    public static boolean eventReceived()
+    {
+        return m_fEventReceived;
+    }
+}

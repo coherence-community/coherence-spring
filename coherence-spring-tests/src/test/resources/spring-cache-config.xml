@@ -2,9 +2,9 @@
 
 <cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
-              xmlns:spring="class://com.tangosol.coherence.spring.SpringNamespaceHandler"
+              xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd
-              class://com.tangosol.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
+              class://com.oracle.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
 
   <spring:bean-factory>
     <spring:application-context-uri>application-context.xml</spring:application-context-uri>

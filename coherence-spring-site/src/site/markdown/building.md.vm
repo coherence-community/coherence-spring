@@ -1,8 +1,8 @@
 Building
 --------
 
-To build the Oracle Coherence Incubator you need to have the following software
-installed:
+To build the Oracle Coherence Spring Integration project you need to have the
+following software installed:
 
 1.  Java SE Development Kit 6, 7 or 8.
 
@@ -19,8 +19,8 @@ executing the following shell command (from the root of the source directory):
 
     $ mvn clean install
 
-However the fact that the Oracle Coherence Incubator depends on a commercial product, 
-namely [Oracle Coherence](http://www.oracle.com/technology/products/coherence/index.html) 
+However the fact that the Oracle Coherence Spring Integration depends on a commercial
+product, namely [Oracle Coherence](http://www.oracle.com/technology/products/coherence/index.html)
 that of which is not available in a public Maven Repository, probably means that your
 first build is likely to fail because of a missing dependency on `coherence.jar`.
 
@@ -34,7 +34,7 @@ simply change to `$COHERENCE_HOME/lib` directory and run the following command:
     $ mvn install:install-file  \
           -DgroupId=com.oracle.coherence  \
           -DartifactId=coherence  \
-          -Dversion=3.7.1.7  \
+          -Dversion=12.1.2  \
           -Dfile=coherence.jar  \
           -Dpackaging=jar \
           -DgeneratePom=true
@@ -43,9 +43,9 @@ simply change to `$COHERENCE_HOME/lib` directory and run the following command:
 >   be as indicated above otherwise the Oracle Coherence Incubator won't build.
 
 
-Of course the above assumes that you are installing the Coherence 3.7.1.7 `jar`
+Of course the above assumes that you are installing the Coherence 12.1.2 `jar`
 file. If you want to install one of the more recent releases, change the version 
 number in the command above accordingly.
 
 Once the `coherence.jar` is properly installed into your Apache Maven repository,
-you should be able to build the Oracle Coherence Incubator.
+you should be able to build the Oracle Coherence Spring Integration project.

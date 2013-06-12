@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="mapCacheStore" class="spring.StubNamedCacheStore" lazy-init="true">
+  <bean id="mapCacheStore" class="com.oracle.coherence.spring.StubNamedCacheStore" lazy-init="true">
     <constructor-arg>
       <map>
         <entry key="key" value="value" />
@@ -13,9 +13,9 @@
     </constructor-arg>
   </bean>
 
-  <bean id="bml" class="spring.StubBackingMapListener" lazy-init="true"/>
+  <bean id="bml" class="com.oracle.coherence.spring.StubBackingMapListener" lazy-init="true"/>
 
-  <bean id="mapCacheStorePull" class="spring.StubNamedCacheStore" lazy-init="true">
+  <bean id="mapCacheStorePull" class="com.oracle.coherence.spring.StubNamedCacheStore" lazy-init="true">
     <constructor-arg>
       <map>
         <entry key="key" value="value" />
@@ -25,9 +25,9 @@
     <property name="spelValue" value="#{'Prosperity'.substring(0,7)}"/>
   </bean>
 
-  <bean id="bmlPull" class="spring.StubBackingMapListener" lazy-init="true">
+  <bean id="bmlPull" class="com.oracle.coherence.spring.StubBackingMapListener" lazy-init="true">
       <property name="backingMapManagerContext" value="#{manager-context}"/>
   </bean>
 
-  <bean id="interceptor" class="spring.StubInterceptor" lazy-init="true"/>
+  <bean id="interceptor" class="com.oracle.coherence.spring.StubInterceptor" lazy-init="true"/>
 </beans>

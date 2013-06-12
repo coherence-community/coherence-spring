@@ -197,14 +197,12 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                 XmlElement        element) throws ConfigurationException
             {
                 ResourceRegistry registry = context.getResourceRegistry();
-                SpringBeanFactoryBuilder bldr = context.inject(new SpringBeanFactoryBuilder(registry,
-                                                                                            context.getExpressionParser()),
-                                                               element);
+                SpringBeanFactoryBuilder bldr = context.inject(
+                        new SpringBeanFactoryBuilder(registry, context.getExpressionParser()), element);
 
                 registry.registerResource(SpringBeanFactoryBuilder.class,
                                           getFactoryNameAsString(bldr.getFactoryName(),
-                                                                 context.getDefaultParameterResolver()),
-                                          bldr);
+                                                                 context.getDefaultParameterResolver()), bldr);
 
                 return null;
             }

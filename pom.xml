@@ -34,7 +34,7 @@
             <name>Brian Oliver</name>
             <organization>Oracle Corporation</organization>
         </developer>
-        
+
         <developer>
             <name>Patrick Peralta</name>
             <organization>Oracle Corporation</organization>
@@ -55,7 +55,8 @@
             Test Infrastructure.  We need to refactor this to use Junit.
           -->
 
-        <!-- <module>coherence-spring-tests</module> -->
+        <module>coherence-spring-tests</module>
+        <module>coherence-spring-site</module>
     </modules>
 
     <properties>
@@ -90,7 +91,10 @@
         <maven.surefire.plugin.version>2.13</maven.surefire.plugin.version>
 
         <!-- dependency versions (alphabetically) -->
+        <junit.version>4.10</junit.version>
+        <mockito.version>1.9.0</mockito.version>
         <oracle.coherence.version>12.1.2.0b40177</oracle.coherence.version>
+        <oracle.tools.version>0.0.9-SNAPSHOT</oracle.tools.version>
         <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
     </properties>
 
