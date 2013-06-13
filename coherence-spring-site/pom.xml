@@ -66,7 +66,7 @@
                     <message>${project.version} Site</message>
                     <path>${project.version}</path>
                     <merge>true</merge>
-                    <repositoryName>coherence-spring</repositoryName>
+                    <repositoryName>coherence-spring-integration</repositoryName>
                     <repositoryOwner>coherence-community</repositoryOwner>
                 </configuration>
                 <executions>
