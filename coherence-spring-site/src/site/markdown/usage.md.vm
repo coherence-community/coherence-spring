@@ -20,12 +20,12 @@ configuration of data sources for plain Java objects.
 The Spring Namespace Handler
 ----------------------------
 
-The Coherence Spring namespace handler ``com.tangosol.coherence.spring.SpringNamespaceHandler``
+The Coherence Spring namespace handler ``com.oracle.coherence.spring.SpringNamespaceHandler``
 allows you to reference Spring beans in a cache configuration file. The
 references are made declaratively in XML files. The schema definitions
 for the Coherence Spring namespace handler configuration elements are
 described in the ``coherence-spring-config.xsd`` file. You can find this file
-in the ``coherence-spring.jar`` file. (TODO REVIEW)
+in the ``coherence-spring.jar`` file.
 
 **Coherence Spring Configuration Elements**
 
@@ -80,7 +80,7 @@ configuration file and then specify a factory for the Spring beans.
 Use the following Coherence Spring namespace handler declaration in the
 cache configuration file:
 
-    xmlns:spring="class://com.tangosol.coherence.spring.SpringNamespaceHandler"
+    xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
 
 To ensure proper configuration within the cache configuration file, the XSD file
 ``coherence-spring-config.xsd`` that corresponds with this namespace handler can
@@ -88,10 +88,10 @@ also be referenced, as illustrated below:
 
     <cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
-     xmlns:spring="class://com.tangosol.coherence.spring.SpringNamespaceHandler"
+     xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
      xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config
                          coherence-cache-config.xsd
-     class://com.tangosol.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
+     class://com.oracle.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
 
  If your cache configuration must specify an externally provided user class by using a
  ``class-scheme`` or ``instance`` element, then this namespace handler can provide a
@@ -129,10 +129,10 @@ application context XML file:
 
     <cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
-              xmlns:spring="class://com.tangosol.coherence.spring. SpringNamespaceHandler"
+              xmlns:spring="class://com.oracle.coherence.spring. SpringNamespaceHandler"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config
                                   coherence-cache-config.xsd
-              class://com.tangosol.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
+              class://com.oracle.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
     <spring:bean-factory>
       <spring:application-context-uri>application-context.xml</spring:application-context-uri>
     </spring:bean-factory>
