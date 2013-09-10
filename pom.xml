@@ -4,7 +4,7 @@
     <parent>
         <groupId>net.java</groupId>
         <artifactId>jvnet-parent</artifactId>
-        <version>3</version>
+        <version>4</version>
     </parent>
 
     <artifactId>coherence-spring-integration</artifactId>
@@ -20,6 +20,11 @@
     </description>
 
     <url>http://java.net/projects/cohspr</url>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://java.net/jira/browse/COHSPR</url>
+    </issueManagement>
 
     <licenses>
         <license>
@@ -49,12 +54,6 @@
 
     <modules>
         <module>coherence-spring</module>
-
-        <!--
-            The following is commented out as the tests depend on Coherence
-            Test Infrastructure.  We need to refactor this to use Junit.
-          -->
-
         <module>coherence-spring-tests</module>
         <module>coherence-spring-site</module>
     </modules>
@@ -94,7 +93,7 @@
         <junit.version>4.10</junit.version>
         <mockito.version>1.9.0</mockito.version>
         <oracle.coherence.version>12.1.2-0-0</oracle.coherence.version>
-        <oracle.tools.version>0.0.9-SNAPSHOT</oracle.tools.version>
+        <oracle.tools.version>1.0.0</oracle.tools.version>
         <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
     </properties>
 
