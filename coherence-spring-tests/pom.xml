@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.oracle.coherence.spring</groupId>
             <artifactId>coherence-spring</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.oracle.coherence</groupId>
