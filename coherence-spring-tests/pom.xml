@@ -5,7 +5,7 @@
         <groupId>com.oracle.coherence.spring</groupId>
         <artifactId>coherence-spring-integration</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>coherence-spring-tests</artifactId>
@@ -65,6 +65,5 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 </project>

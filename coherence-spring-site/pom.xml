@@ -4,8 +4,8 @@
     <parent>
         <artifactId>coherence-spring-integration</artifactId>
         <groupId>com.oracle.coherence.spring</groupId>
-        <relativePath>../pom.xml</relativePath>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>coherence-spring-site</artifactId>
