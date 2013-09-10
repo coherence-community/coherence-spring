@@ -1,16 +1,16 @@
 Building
 --------
 
-To build the Oracle Coherence Spring Integration project you need to have the
-following software installed:
+To build the ${site-project-title} project you need to have the following
+software installed:
 
 1.  Java SE Development Kit 6, 7 or 8.
 
-    Available from: [Oracle Java SE Downloads](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    Available from: [Oracle Java SE Downloads][JAVA]
 
-2.  [Apache Maven](http://maven.apache.org/) Version 3.0.4 (not 3.0.3)
+2.  Apache Maven Version 3.0.4 (not 3.0.3)
 
-    Available here: [Apache Maven Downloads](http://maven.apache.org/download.cgi)
+    Available here: [Apache Maven Downloads][MAVEN]
 
 3.  The [source code](source-code.html).
 
@@ -19,33 +19,41 @@ executing the following shell command (from the root of the source directory):
 
     $ mvn clean install
 
-However the fact that the Oracle Coherence Spring Integration depends on a commercial
-product, namely [Oracle Coherence](http://www.oracle.com/technology/products/coherence/index.html)
-that of which is not available in a public Maven Repository, probably means that your
-first build is likely to fail because of a missing dependency on `coherence.jar`.
+However the fact that the ${site-project-title} project depends on a commercial
+product, namely [Oracle Coherence][COH] that of which is not available in a
+public [Apache Maven][MAVEN] Repository, probably means that your first build is likely
+to fail because of a missing dependency on `coherence.jar`.
 
-Should this problem occur you will need to manually install a suitable 
+Should this problem occur you may need to manually install a suitable
 `coherence.jar` into your local repository or your organization's repository 
 manager.
 
-To install the standard `coherence.jar` into your local Apache Maven repository,
-simply change to `$COHERENCE_HOME/lib` directory and run the following command:
+If you haven't used or don't plan on using the Maven support provided with
+the Oracle Coherence installed, to manually install the standard `coherence.jar`
+into your local Apache Maven repository, simply change to `$COHERENCE_HOME/lib`
+directory and run the following command:
 
     $ mvn install:install-file  \
           -DgroupId=com.oracle.coherence  \
           -DartifactId=coherence  \
-          -Dversion=12.1.2  \
+          -Dversion=${site-coherence-version}  \
           -Dfile=coherence.jar  \
           -Dpackaging=jar \
           -DgeneratePom=true
 
 >   The `groupId`, `artifactId` and `version` are critically important.  They must
->   be as indicated above otherwise the Oracle Coherence Incubator won't build.
+>   be as indicated above otherwise the ${site-project-title} won't build.
 
+Of course the above assumes that you are installing the Coherence
+${site-coherence-version} `jar` file. If you want to install one of the more
+recent releases, change the version number in the command above accordingly.
 
-Of course the above assumes that you are installing the Coherence 12.1.2 `jar`
-file. If you want to install one of the more recent releases, change the version 
-number in the command above accordingly.
+Once the `coherence.jar` is properly installed into your [Apache Maven][MAVEN]
+repository, you should be able to build the ${site-project-title} project.
 
-Once the `coherence.jar` is properly installed into your Apache Maven repository,
-you should be able to build the Oracle Coherence Spring Integration project.
+[COH]:          http://www.oracle.com/technetwork/middleware/coherence/overview/index.html "Oracle Coherence"
+[COHSPR]:       https://java.net/projects/cohspr/ "Coherence Spring Integration"
+[JAVA]:         http://www.oracle.com/technetwork/java/javase/downloads/index.html "Oracle Java SE Downloads"
+[JAVANET]:      http://java.net "java.net"
+[MAVEN]:        http://maven.apache.org/ "Apache Maven"
+[SPRING]:       http://www.springsource.org/ "Spring Source"

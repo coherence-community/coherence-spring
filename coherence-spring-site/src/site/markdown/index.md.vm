@@ -1,42 +1,50 @@
-Oracle Coherence Spring Integration
-===================================
+<h1><img src="images/coherence-spring.png" alt="Coherence Spring Integration" height="42" width="42" align="top"/> ${site-project-title}</h1>
 
-**Version: ${project.version} built on ${timestamp}**
+**Version: ${project.version} built on ${site-timestamp}**
 
-The Oracle Coherence Spring Integration project allows a Spring BeanFactory
-to provide objects to a Coherence class-scheme. A class-scheme in a
-Coherence configuration file is the means by which objects are made
-avaliable to a Coherence scheme. The most common use of class-scheme
-is to provide a Cache Store object for reading/writing to an external
-data store.
+>   This release of the Coherence Spring Integration is designed specifically for use
+>   with **Oracle Coherence 12.1.2 and above**.
 
-Dependency Configuration
-------------------------
+<h4>Overview</h4>
+
+The ${site-project-title} project provides mechanisms for application developers
+to integrate [Oracle Coherence][COH] and [Spring][SPRING]-based applications.
+
+In this initial release, the ${site-project-title} project introduces a new
+Spring-based mechanism that Oracle Coherence may use to resolve configured
+objects.   Instead of Oracle Coherence instantiating developer provided classes
+itself, say for example when using the `<class-scheme>` and `<instance>` in cache
+configuration files, the integration allows developers to specify how to
+resolve objects using a standard Spring `BeanFactory`.
+
+For example, rather than instructing Oracle Coherence to instantiate a
+`CacheStore` implementation, developers may request that a `CacheStore` be
+resolved using a `BeanFactory`.
+
+    <cachestore-scheme>
+        <class-scheme>
+            <spring:bean>
+               <spring:bean-name>MySpringBasedCacheStore</spring:bean-name>
+            </spring:bean>
+        <class-scheme>
+    </cachestore-scheme>
+
+Further information about how to use the integration is provided in the
+[usage](usage.html) documentation.
+
+<h4>Dependency Configuration</h4>
 
 To include this library as a Maven dependency, include the following
-in your ``pom.xml``:
+in your application ``pom.xml``:
 
     <dependency>
         <groupId>com.oracle.coherence.spring</groupId>
         <artifactId>coherence-spring-integration</artifactId>
-        <version>12.0.0-SNAPSHOT</version>
+        <version>${project.version}</version>
     </dependency>
 
-Usage
------
-
-Instructions on configuration can be found under the [usage](usage.html) section.
-
-Building the Source
--------------------
-
-See the [source code](source-code.html) and [building](building.html) sections
-for instructions on obtaining and compiling the source.
-
-Contributions
--------------
-
- If you are interested in making contributions to the Oracle Coherence Incubator,·
- including defect fixes, documentation, new classes/interfaces/methods/packages·
- or tests, you should read the section on·
- [Contributing to the Oracle Coherence Spring Integration](contributions.html).·
+[COH]:          http://www.oracle.com/technetwork/middleware/coherence/overview/index.html "Oracle Coherence"
+[COHSPR]:       https://java.net/projects/cohspr/ "Coherence Spring Integration"
+[JAVANET]:      http://java.net "java.net"
+[MAVEN]:        http://maven.apache.org/ "Apache Maven"
+[SPRING]:       http://www.springsource.org/ "Spring Source"

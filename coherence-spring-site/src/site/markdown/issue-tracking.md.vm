@@ -1,15 +1,20 @@
 Issue Tracking
 --------------
 
-The [Issue Tracking](http://java.net/jira/browse/COHINC) system for the Oracle 
-Coherence Spring Integration project is hosted by [java.net](http://java.net).
-It can be found here: [http://java.net/jira/browse/COHSPR](http://java.net/jira/browse/COHSPR).
+The [Issue Tracking][ISSUES] system for the ${site-project-title} project is hosted
+by [java.net][JAVANET].  It can be found here:
+[http://java.net/jira/browse/COHSPR][ISSUES].
 
 Public read-only access to the system is available for project Observers.  To
-become an observer, simply **join** the [cohinc.java.net](http://cohinc.java.net/)
-project.  All you need is a **free** [java.net](http://java.net) account.  All
+become an observer, simply **join** the [cohspr.java.net](http://cohspr.java.net/)
+project.  All you need is a **free** [java.net][JAVANET] account.  All
 Observers automatically receive project and issue updates.
 
-To raise, update and close issues with the [Issue Tracking](http://java.net/jira/browse/COHSPR)
-system you will need to be a [Contributor](contributions.html) with a [java.net](http://java.net)
-account.
+To raise, update and close issues with the [Issue Tracking][ISSUES]
+system you will need to be a [Contributor](contributions.html) with a
+[java.net][JAVANET] account.
+
+[FORUMS]:       https://java.net/projects/cohspr/forums "Forums"
+[ISSUES]:       http://java.net/jira/browse/COHSPR "Issue Tracking"
+[JAVANET]:      http://java.net "java.net"
+[SOURCE]:       https://github.com/coherence-community/coherence-spring-integration "Source Code"

@@ -18,7 +18,13 @@
 
     <properties>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+
         <timestamp>${maven.build.timestamp}</timestamp>
+
+        <!-- content properties for site generation -->
+        <site-project-title>Coherence Spring Integration</site-project-title>
+        <site-timestamp>${maven.build.timestamp}</site-timestamp>
+        <site-coherence-version>${oracle.coherence.version}</site-coherence-version>
     </properties>
 
     <build>

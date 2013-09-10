@@ -1,0 +1,30 @@
+Change History
+--------------
+
+The following sections outline ${site-project-title} project changes in
+reverse chronological order.
+
+<h3>Version ${project.version}: ${timestamp} </h3>
+
+<h4>Acknowledgements</h4>
+
+Huge thanks to everyone that contributed feedback, suggestions, documentation
+and ideas for this initial release.
+
+<h4>Source and Documentation Contributors</h4>
+
+*   Brian Oliver and Patrick Peralta
+
+<h4>Global and Cross-Module Changes</h4>
+
+*   Initial Release
+
+<h4>The `coherence-spring` Module</h4>
+
+*   Initial Release.
+
+<h4>The `coherence-spring-tests` Module</h4>
+
+*   Initial Release.
+
+
