@@ -48,6 +48,7 @@ import com.tangosol.run.xml.QualifiedName;
 import com.tangosol.run.xml.XmlElement;
 
 import com.tangosol.util.Base;
+import com.tangosol.util.Builder;
 import com.tangosol.util.ClassHelper;
 import com.tangosol.util.RegistrationBehavior;
 import com.tangosol.util.ResourceRegistry;
@@ -197,12 +198,14 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                 XmlElement        element) throws ConfigurationException
             {
                 ResourceRegistry registry = context.getResourceRegistry();
-                SpringBeanFactoryBuilder bldr = context.inject(
-                        new SpringBeanFactoryBuilder(registry, context.getExpressionParser()), element);
+                SpringBeanFactoryBuilder bldr = context.inject(new SpringBeanFactoryBuilder(registry,
+                                                                                            context.getExpressionParser()),
+                                                               element);
 
                 registry.registerResource(SpringBeanFactoryBuilder.class,
                                           getFactoryNameAsString(bldr.getFactoryName(),
-                                                                 context.getDefaultParameterResolver()), bldr);
+                                                                 context.getDefaultParameterResolver()),
+                                          bldr);
 
                 return null;
             }
@@ -708,8 +711,8 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                                      "Ensure that parameter <application-context-uri> is supplied");
                 }
 
-                String sAppCtx = exprAppCtxUri.evaluate(resolver);
-                URL    url     = Resources.findFileOrResource(sAppCtx, loader);
+                String    sAppCtx = exprAppCtxUri.evaluate(resolver);
+                final URL url     = Resources.findFileOrResource(sAppCtx, loader);
 
                 if (url == null)
                 {
@@ -718,13 +721,15 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                                      "Ensure that <application-context-uri> contains a valid file location");
                 }
 
-                factory = new CoherenceApplicationContext(url.toExternalForm());
-
-                registry.registerResource(BeanFactory.class,
-                                          sFactoryName,
-                                          using(factory),
-                                          RegistrationBehavior.FAIL,
-                                          new ResourceRegistry.ResourceLifecycleObserver<BeanFactory>()
+                // attempt to create a factory and register it
+                registry.registerResource(BeanFactory.class, sFactoryName, new Builder<BeanFactory>()
+                {
+                    @Override
+                    public BeanFactory realize()
+                    {
+                        return new CoherenceApplicationContext(url.toExternalForm());
+                    }
+                }, RegistrationBehavior.IGNORE, new ResourceRegistry.ResourceLifecycleObserver<BeanFactory>()
                 {
                     @Override
                     public void onRelease(BeanFactory factory)
@@ -735,10 +740,14 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                         }
                     }
                 });
+
+                // lookup the factory we just registered
+                factory = registry.getResource(BeanFactory.class, sFactoryName);
             }
 
             return factory;
         }
+
 
         // ----- inner class: CoherenceApplicationContext -------------------
 
