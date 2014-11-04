@@ -8,6 +8,35 @@ reverse chronological order.
 
 <h4>Acknowledgements</h4>
 
+Huge thanks to everyone that provided feedback, isolated defects and contributed fixes.
+
+<h4>Source and Documentation Contributors</h4>
+
+*   Brian Oliver
+
+<h4>Global and Cross-Module Changes</h4>
+
+*   Upgraded Maven Plug-ins
+
+
+
+<h4>The `coherence-spring` Module</h4>
+
+*   [COHSPR-5](https://java.net/jira/browse/COHSPR-5): Resolved issue where
+    multiple CoherenceApplicationContexts were created during concurrent
+    initialization.
+
+<h4>The `coherence-spring-tests` Module</h4>
+
+*   (no changes)
+
+
+--------------------------------------------------------------------------------
+
+<h3>Version: 1.0.0 built on 2013-09-10 13:35</h3>
+
+<h4>Acknowledgements</h4>
+
 Huge thanks to everyone that contributed feedback, suggestions, documentation
 and ideas for this initial release.
 

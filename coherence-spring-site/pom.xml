@@ -49,6 +49,15 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven.install.plugin.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven.site.plugin.version}</version>
                 <configuration>
@@ -57,19 +66,27 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.kohsuke</groupId>
+                        <groupId>org.apache.maven.doxia</groupId>
                         <artifactId>doxia-module-markdown</artifactId>
-                        <version>${doxia.module.markdown.version}</version>
+                        <version>${maven.doxia.markdown.plugin.version}</version>
                     </dependency>
                 </dependencies>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>${github.site.maven.plugin.version}</version>
+                <version>${maven.github.site.plugin.version}</version>
                 <configuration>
-                    <message>${project.version} Site</message>
+                    <message>Creating site for ${project.version}</message>
                     <path>${project.version}</path>
                     <merge>true</merge>
                     <repositoryName>coherence-spring-integration</repositoryName>
@@ -77,13 +94,12 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>site</goal>
                         </goals>
-                        <phase>site-deploy</phase>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-    </build>
-</project>
+    </build></project>
