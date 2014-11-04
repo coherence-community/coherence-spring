@@ -71,7 +71,7 @@ in the `coherence-spring.jar` file.
   </tr>
   <tr>
     <td valign='top'><code>factory-name</code></td>
-    <td valign='top'><code>bean</code> <code>bean-factory</code></code></td>
+    <td valign='top'><code>bean</code> <code>bean-factory</code></td>
     <td>Identifies a Spring bean factory. This name is used to
         refer to a factory when defining a bean definition.</td>
   </tr>
