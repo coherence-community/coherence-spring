@@ -6,6 +6,20 @@ reverse chronological order.
 
 <h3>Version ${project.version}: ${timestamp} </h3>
 
+<h4>Source and Documentation Contributors</h4>
+
+*   Brian Oliver
+
+<h4>Global and Cross-Module Changes</h4>
+
+*   [COHSPR-8](https://java.net/jira/browse/COHSPR-8): Upgraded to use
+    Coherence 12.1.2-0-4 (and certified against Coherence 12.1.3-0-2)
+
+
+--------------------------------------------------------------------------------
+
+<h3>Version: 1.0.1 built on 2014-11-04 11:09</h3>
+
 <h4>Acknowledgements</h4>
 
 Huge thanks to everyone that provided feedback, isolated defects and contributed fixes.
@@ -18,18 +32,11 @@ Huge thanks to everyone that provided feedback, isolated defects and contributed
 
 *   Upgraded Maven Plug-ins
 
-*   [COHSPR-8](https://java.net/jira/browse/COHSPR-8): Upgraded to use
-    Coherence 12.1.2-0-4 (and certified against Coherence 12.1.3-0-2)
-
 <h4>The `coherence-spring` Module</h4>
 
 *   [COHSPR-5](https://java.net/jira/browse/COHSPR-5): Resolved issue where
     multiple CoherenceApplicationContexts were created during concurrent
     initialization.
-
-<h4>The `coherence-spring-tests` Module</h4>
-
-*   (no changes)
 
 
 --------------------------------------------------------------------------------
