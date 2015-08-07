@@ -93,7 +93,7 @@
         <mockito.version>1.9.5</mockito.version>
         <oracle.coherence.version>12.1.2-0-4</oracle.coherence.version>
         <oracle.tools.version>1.0.0</oracle.tools.version>
-        <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
+        <org.springframework.version>3.2.14.RELEASE</org.springframework.version>
     </properties>
 
     <build>

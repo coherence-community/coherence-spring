@@ -4,7 +4,25 @@ Change History
 The following sections outline ${site-project-title} project changes in
 reverse chronological order.
 
-<h3>Version ${project.version}: ${timestamp} </h3>
+
+<h3>Version ${project.version} built on ${timestamp} </h3>
+
+<h4>Source and Documentation Contributors</h4>
+
+*   Brian Oliver
+
+<h4>Global and Cross-Module Changes</h4>
+
+*   [COHSPR-11](https://java.net/jira/browse/COHSPR-11): Made Spring Framework
+    dependencies scope "provided"
+
+*   [COHSPR-12](https://java.net/jira/browse/COHSPR-12): Upgraded to use
+    Spring Framework 3.2.14
+
+
+--------------------------------------------------------------------------------
+
+<h3>Version 1.0.2 built on 2015-08-06 20:45</h3>
 
 <h4>Source and Documentation Contributors</h4>
 
