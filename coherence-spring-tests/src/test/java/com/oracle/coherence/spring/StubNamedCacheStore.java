@@ -27,12 +27,15 @@ package com.oracle.coherence.spring;
 
 import com.tangosol.net.cache.MapCacheStore;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Map;
 
 /**
  * Stub CacheStore implementation for testing by {@link SpringNamespaceHandlerTests}.
  *
  * @author Patrick Peralta
+ * @author Brian Oliver
  */
 public class StubNamedCacheStore extends MapCacheStore
 {
@@ -72,6 +75,7 @@ public class StubNamedCacheStore extends MapCacheStore
      *
      * @param sCacheName cache name
      */
+    @Value("#{cache-name}")
     public void setCacheName(String sCacheName)
     {
         m_sCacheName = sCacheName;
@@ -94,6 +98,7 @@ public class StubNamedCacheStore extends MapCacheStore
      *
      * @param sValue spel value
      */
+    @Value("#{'Prosperity'.substring(0,7)}")
     public void setSpelValue(String sValue)
     {
         m_sSpelValue = sValue;

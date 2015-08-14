@@ -30,6 +30,8 @@ import com.tangosol.net.BackingMapManagerContext;
 import com.tangosol.util.MapEvent;
 import com.tangosol.util.MultiplexingMapListener;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * Stub backing map listener implementation for testing by
  * {@link SpringNamespaceHandlerTests}.
@@ -68,6 +70,7 @@ public class StubBackingMapListener extends MultiplexingMapListener
      *
      * @param ctx the BackingMapManagerContext
      */
+    @Value("#{manager-context}")
     public void setBackingMapManagerContext(BackingMapManagerContext ctx)
     {
         m_ctx = ctx;

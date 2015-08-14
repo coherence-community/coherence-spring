@@ -44,10 +44,12 @@ in the `coherence-spring.jar` file.
   <tr>
     <td valign='top'><code>application-context-uri</code></td>
     <td valign='top'><code>bean-factory</code></td>
-    <td>Defines a location for a Spring application context XML file.
+    <td>(Optional) Defines a location for a Spring application context XML file.
         If URL notation is used, the file will be loaded as a URL
         (that is, file://, http://); otherwise the file will be
-        loaded from the classpath.</td>
+        loaded from the classpath.  When not provide Coherence will look up
+        an ApplicationContext (and BeanFactory) using the SpringBasedCoherenceSession
+        that loaded the Coherence Cache Configuration File.</td>
   </tr>
   <tr>
     <td valign='top'><code>bean</code></td>
@@ -119,10 +121,14 @@ configuration macros) into a bean, as illustrated below:
 
 <h4>Specifying a Factory for Spring Beans</h4>
 
-You can specify the bean factory that provides the Spring beans in either of the following ways:
+You can specify the bean factory that provides the Spring beans in one of the following ways:
 
 * Specify an Application Context in the cache configuration file
 * Specify a Bean Factory as a resource
+
+> If an Application Context or Bean Factory is not provided using these approaches
+> Coherence will attempt to use the SpringBasedCoherenceSession that loaded the
+> Cache Configuration File containing the <spring:bean> definitions.
 
 Use the `application-context-uri` element to specify the location of the Spring
 application context XML file. Like the cache configuration file, the application
@@ -151,14 +157,16 @@ using the `registerResource` method, as illustrated below. In the example,
 
     factory.getResourceRegistry().registerResource(
             BeanFactory.class,                            // type
-            SpringNamespaceHandler.DEFAULT_FACTORY_NAME,  // resource name
+            factoryName,                                  // resource name
             factory,                                      // factory reference
             null);                                        // optional
                                                           // ResourceLifecycleObserver
 
-If you specify a resource name other than `DEFAULT_FACTORY_NAME`, then reference
-that name in the bean element. Use the `factory-name` element for the name of
-the custom bean factory and `bean-name` for the name of the bean.
+If you specify a resource name other than the fully-qualified-name of the
+BeanFactory.class, then reference that name in the bean element.
+Use the `factory-name` element for the name of the custom bean factory and
+`bean-name` for the name of the bean.
+
 In the example below, the name of the bean factory is "custom-factory" and the
 bean name is "listener":
 
@@ -166,9 +174,3 @@ bean name is "listener":
         <spring:factory-name>custom-factory</spring:factory-name>
         <spring:bean-name>listener</spring:bean-name>
     </spring:bean>
-
-
-
-
-
-

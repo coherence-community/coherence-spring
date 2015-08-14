@@ -1,5 +1,5 @@
 /*
- * File: SpringNamespaceHandlerTests.java
+ * File: SpringApplicationTests.java
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -26,7 +26,6 @@
 package com.oracle.coherence.spring;
 
 import com.tangosol.net.CacheFactory;
-import com.tangosol.net.ConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 
 import com.tangosol.net.cache.AbstractCacheLoader;
@@ -40,61 +39,61 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.BeanFactory;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
+import javax.rmi.CORBA.Stub;
+
 /**
- * Tests for {@link com.oracle.coherence.spring.SpringNamespaceHandler}.
+ * Tests for {@link SpringNamespaceHandler}.
  *
- * @author Patrick Peralta
+ * @author Brian Oliver
  */
-public class SpringNamespaceHandlerTests
+public class SpringApplicationTests
 {
-    private static ConfigurableCacheFactory factory;
-
-
     /**
-     * Return the {@link ConfigurableCacheFactory} used for test execution.
-     * This is initialized before the tests execute.
-     *
-     * @return ConfigurableCacheFactory for test execution.
-     *
-     * @see #startCluster()
+     * The {@link ApplicationContext} we'll use for testing.
      */
-    public static ConfigurableCacheFactory getFactory()
-    {
-        return factory;
-    }
+    protected static ApplicationContext context;
+
+    /**
+     * The {@link SpringBasedCoherenceSession} we'll use for testing.
+     */
+    protected static SpringBasedCoherenceSession session;
 
 
     /**
-     * Start the cluster and initialize the ConfigurableCacheFactory
-     * for test execution.
-     *
-     * @see #getFactory()
+     * Create an {@link ApplicationContext} and {@link SpringBasedCoherenceSession}
+     * for our tests (we share these)
      */
     @BeforeClass
     public static void startCluster()
     {
-        factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory("spring-embedded-cache-config.xml",
-                                                                                    null);
+        context = new AnnotationConfigApplicationContext(SpringApplicationConfig.class);
+
+        session = context.getBean(SpringBasedCoherenceSession.class);
     }
 
 
     /**
-     * Stop the cluster after all tests have executed.
+     * Stop the cluster after each test have executed.
      */
     @AfterClass
     public static void stopCluster()
     {
-        factory = null;
         CacheFactory.shutdown();
     }
 
@@ -109,7 +108,7 @@ public class SpringNamespaceHandlerTests
 
         for (String sCacheName : asCacheNames)
         {
-            NamedCache cache = getFactory().ensureCache(sCacheName, null);
+            NamedCache cache = session.getCache(sCacheName);
 
             // the CacheStore provided by Spring is an instance of MapCacheStore
             // which has an internal map that contains the entry <"key", "value">
@@ -120,7 +119,7 @@ public class SpringNamespaceHandlerTests
             assertEquals(sCacheName, cache.get(StubNamedCacheStore.CACHE_NAME_KEY));
         }
 
-        BeanFactory         beanFactory = getFactory().getResourceRegistry().getResource(BeanFactory.class);
+        BeanFactory         beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
         StubNamedCacheStore cs          = beanFactory.getBean("mapCacheStorePull", StubNamedCacheStore.class);
 
         assertThat(cs.getSpelValue(), is("Prosper"));
@@ -139,8 +138,8 @@ public class SpringNamespaceHandlerTests
 
         for (int i = 0; i < asCacheNames.length; ++i)
         {
-            NamedCache             cache       = getFactory().ensureCache(asCacheNames[i], null);
-            BeanFactory            beanFactory = getFactory().getResourceRegistry().getResource(BeanFactory.class);
+            NamedCache             cache       = session.getCache(asCacheNames[i]);
+            BeanFactory            beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
             StubBackingMapListener bml         = beanFactory.getBean(asBeanNames[i], StubBackingMapListener.class);
 
             assertFalse(bml.isContextConfigured());
@@ -173,13 +172,11 @@ public class SpringNamespaceHandlerTests
 
         when(factory.getBean("localBackingMap")).thenReturn(localCache);
 
-        ConfigurableCacheFactory ccf = getFactory();
-
         // register the mock BeanFactory with the cache factory so that
         // it is used as the backing map (see the cache config file)
-        ccf.getResourceRegistry().registerResource(BeanFactory.class, "mock", factory);
+        session.getResourceRegistry().registerResource(BeanFactory.class, "mock", factory);
 
-        NamedCache namedCache = ccf.ensureCache("CacheCustomBackingMap", null);
+        NamedCache namedCache = session.getCache("CacheCustomBackingMap");
 
         // cache loader always returns the same value
         assertEquals("mock", namedCache.get("key"));
@@ -201,11 +198,10 @@ public class SpringNamespaceHandlerTests
     @Test
     public void testInterceptor()
     {
-        BeanFactory beanFactory = factory.getResourceRegistry().getResource(BeanFactory.class);
-        StubInterceptor interceptor = beanFactory.getBean(StubInterceptor.class);
+        StubInterceptor interceptor = context.getBean(StubInterceptor.class);
 
         assertFalse(interceptor.eventReceived());
-        getFactory().ensureCache("CacheInterceptor", null).put("key", "value");
+        session.getCache("CacheInterceptor").put("key", "value");
         assertTrue(interceptor.eventReceived());
     }
 }

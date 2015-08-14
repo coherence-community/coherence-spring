@@ -154,13 +154,13 @@ import java.util.List;
  *         getConfigurableCacheFactory(...);
  *
  * factory.getResourceRegistry().registerResource(BeanFactory.class,  // type
- *         SpringNamespaceHandler.DEFAULT_FACTORY_NAME,               // resource name
+ *         factoryName,                                               // resource name
  *         factory,                                                   // factory reference
  *         null);                                                     // optional ResourceLifecycleObserver
  * </pre>
  *
- * If a resource name other than {@link #DEFAULT_FACTORY_NAME} is specified,
- * that name can be referenced in the bean element:
+ * If a resource name other than the fully-qualified-class-name of the
+ * BeanFactory is specified, that name can be referenced in the bean element:
  *
  * <pre>
  * &lt;spring:bean&gt;
@@ -169,21 +169,14 @@ import java.util.List;
  * &lt;/spring:bean&gt;
  * </pre>
  * <p>
- * Copyright (c) 2013. All Rights Reserved. Oracle Corporation.<br>
+ * Copyright (c) 2013-2015. All Rights Reserved. Oracle Corporation.<br>
  * Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
  *
  * @author Patrick Peralta
+ * @author Brian Oliver
  */
 public class SpringNamespaceHandler extends AbstractNamespaceHandler
 {
-    // ----- constants ------------------------------------------------------
-
-    /**
-     * Default {@link BeanFactory} name.
-     */
-    public static final String DEFAULT_FACTORY_NAME = "default";
-
-
     // ----- constructors ---------------------------------------------------
 
     /**
@@ -203,7 +196,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                                                element);
 
                 registry.registerResource(SpringBeanFactoryBuilder.class,
-                                          getFactoryNameAsString(bldr.getFactoryName(),
+                                          getFactoryNameAsString(SpringBeanFactoryBuilder.class, bldr.getFactoryName(),
                                                                  context.getDefaultParameterResolver()),
                                           bldr);
 
@@ -247,18 +240,21 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 
     /**
      * Return the factory name produced by the provided expression, or
-     * {@link SpringNamespaceHandler#DEFAULT_FACTORY_NAME} if the expression is null.
+     * the name of the factory class if the expression is null.
      *
+     * @param factoryClass     the {@link Class} of the factory
+     *                         (this will be used if no factory name was specified)
      * @param exprFactoryName  the expression containing the {@link BeanFactory} name
      * @param resolver         the {@link ParameterResolver} to use for resolving
      *                         factory names
      *
      * @return factory name for the {@link BeanFactory}
      */
-    protected static String getFactoryNameAsString(Expression<String> exprFactoryName,
+    protected static String getFactoryNameAsString(Class<?>           factoryClass,
+                                                   Expression<String> exprFactoryName,
                                                    ParameterResolver  resolver)
     {
-        return exprFactoryName == null ? DEFAULT_FACTORY_NAME : exprFactoryName.evaluate(resolver);
+        return exprFactoryName == null ? factoryClass.getName() : exprFactoryName.evaluate(resolver);
     }
 
 
@@ -498,7 +494,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
             }
             else
             {
-                String        sFactory  = getFactoryNameAsString(getFactoryName(), resolver);
+                String        sFactory  = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
                 StringBuilder sbProblem = new StringBuilder();
 
                 sbProblem.append("Spring bean '").append(sBeanName).append("' could not be loaded from bean factory '")
@@ -529,11 +525,12 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                                 ClassLoader       loader)
         {
             ResourceRegistry registry     = m_registry;
-            String           sFactoryName = getFactoryNameAsString(getFactoryName(), resolver);
+            String           sFactoryName = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
             BeanFactory      factory      = registry.getResource(BeanFactory.class, sFactoryName);
 
             if (factory == null)
             {
+                sFactoryName = getFactoryNameAsString(SpringBeanFactoryBuilder.class, getFactoryName(), resolver);
                 SpringBeanFactoryBuilder bldr = registry.getResource(SpringBeanFactoryBuilder.class, sFactoryName);
 
                 if (bldr == null)
@@ -698,7 +695,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
                                    ParameterList     listParameters)
         {
             ResourceRegistry registry     = m_registry;
-            String           sFactoryName = getFactoryNameAsString(getFactoryName(), resolver);
+            String           sFactoryName = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
             BeanFactory      factory      = registry.getResource(BeanFactory.class, sFactoryName);
 
             if (factory == null)

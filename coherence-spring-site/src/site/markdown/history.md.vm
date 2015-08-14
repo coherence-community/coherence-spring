@@ -13,11 +13,16 @@ reverse chronological order.
 
 <h4>Global and Cross-Module Changes</h4>
 
+*   [COHSPR-9](https://java.net/jira/browse/COHSPR-9): Upgraded to use
+    Spring Framework 4.2.0
+
 *   [COHSPR-11](https://java.net/jira/browse/COHSPR-11): Made Spring Framework
     dependencies scope "provided"
 
-*   [COHSPR-12](https://java.net/jira/browse/COHSPR-12): Upgraded to use
-    Spring Framework 3.2.14
+*   [COHSPR-13](https://java.net/jira/browse/COHSPR-13): Introduced the
+    SpringBasedCoherenceSession to provide a mechanism to configure and acquire
+    Coherence-based resources (NamedCaches) from Coherence without using
+    static functions or methods.
 
 
 --------------------------------------------------------------------------------

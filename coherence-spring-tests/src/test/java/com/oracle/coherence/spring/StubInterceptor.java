@@ -36,7 +36,7 @@ import com.tangosol.net.events.partition.cache.EntryEvent;
  */
 public class StubInterceptor implements EventInterceptor<EntryEvent>
 {
-    private static volatile boolean m_fEventReceived = false;
+    private volatile boolean m_fEventReceived = false;
 
 
     /**
@@ -54,7 +54,7 @@ public class StubInterceptor implements EventInterceptor<EntryEvent>
      *
      * @return true if an event was received.
      */
-    public static boolean eventReceived()
+    public boolean eventReceived()
     {
         return m_fEventReceived;
     }
