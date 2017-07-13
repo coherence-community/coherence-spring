@@ -1,4 +1,4 @@
-<h1><img src="images/coherence-spring.png" alt="Coherence Spring Integration" height="42" width="42" align="top"/> ${site-project-title}</h1>
+<h1><img src="images/coherence-spring.png" alt="Coherence Spring Project" height="42" width="42" align="top"/> ${site-project-title}</h1>
 
 **Version: ${project.version} built on ${site-timestamp}**
 
@@ -44,7 +44,6 @@ in your application ``pom.xml``:
     </dependency>
 
 [COH]:          http://www.oracle.com/technetwork/middleware/coherence/overview/index.html "Oracle Coherence"
-[COHSPR]:       https://java.net/projects/cohspr/ "Coherence Spring Integration"
-[JAVANET]:      http://java.net "java.net"
+[COHSPR]:       https://github.com/coherence-community/coherence-spring "Coherence Spring Integration"
 [MAVEN]:        http://maven.apache.org/ "Apache Maven"
 [SPRING]:       http://www.springsource.org/ "Spring Source"

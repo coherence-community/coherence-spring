@@ -4,11 +4,11 @@ Building
 To build the ${site-project-title} project you need to have the following
 software installed:
 
-1.  Java SE Development Kit 6, 7 or 8.
+1.  Java SE Development Kit 7.
 
     Available from: [Oracle Java SE Downloads][JAVA]
 
-2.  Apache Maven Version 3.0.4 (not 3.0.3)
+2.  Apache Maven Version 3.3.9
 
     Available here: [Apache Maven Downloads][MAVEN]
 
@@ -52,8 +52,7 @@ Once the `coherence.jar` is properly installed into your [Apache Maven][MAVEN]
 repository, you should be able to build the ${site-project-title} project.
 
 [COH]:          http://www.oracle.com/technetwork/middleware/coherence/overview/index.html "Oracle Coherence"
-[COHSPR]:       https://java.net/projects/cohspr/ "Coherence Spring Integration"
+[COHSPR]:       https://github.com/coherence-community/coherence-spring "Coherence Spring Integration"
 [JAVA]:         http://www.oracle.com/technetwork/java/javase/downloads/index.html "Oracle Java SE Downloads"
-[JAVANET]:      http://java.net "java.net"
 [MAVEN]:        http://maven.apache.org/ "Apache Maven"
 [SPRING]:       http://www.springsource.org/ "Spring Source"

@@ -10,9 +10,7 @@ The Discussion Forums for the ${site-project-title} project are the best place
 to start asking questions - should you need to.   These forums are hosted by
 Oracle and are typically monitored by the community.
 
-They can be found here: [https://java.net/projects/cohspr/forums][FORUMS]
-
->   To participate in the discussion forums you will need a [java.net][JAVANET] account (these are free).
+They can be found here: [https://community.oracle.com/community/fusion_middleware/coherence/coherence_support][FORUMS]
 
 <h4>Source Code, Tests and Examples</h4>
 
@@ -28,9 +26,7 @@ If you find an issue with the ${site-project-title} or have an idea for a new fe
 the best place to start is with the Issue Tracking System.  All issues, both current and
 past are publicly viewable.
 
-The Issue Tracking System can be found here: [http://java.net/jira/browse/COHSPR][ISSUES]
-
->   To raise new issues you will need a [java.net][JAVANET] account (these are free).
+The Issue Tracking System can be found here: [https://github.com/coherence-community/coherence-spring/issues][ISSUES]
 
 <h4>Oracle Support</h4>
 
@@ -38,10 +34,9 @@ Alternatively Oracle Coherence customers can file Support Requests (SR) against 
 Coherence Product, clearly specifying that requests are for a Coherence Community
 project.
 
-[FORUMS]:       https://java.net/projects/cohspr/forums "Forums"
-[ISSUES]:       http://java.net/jira/browse/COHSPR "Issue Tracking"
-[JAVANET]:      http://java.net "java.net"
-[SOURCE]:       https://github.com/coherence-community/coherence-spring-integration "Source Code"
+[FORUMS]:       https://community.oracle.com/community/fusion_middleware/coherence/coherence_support "Forums"
+[ISSUES]:       https://github.com/coherence-community/coherence-spring/issues "Issue Tracking"
+[SOURCE]:       https://github.com/coherence-community/coherence-spring "Source Code"
 
 
 
