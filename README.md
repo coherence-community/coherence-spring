@@ -7,8 +7,8 @@ of Oracle Coherence and the Spring Framework.
 Detailed project documentation for the latest release (1.0.2) is available
 here: [http://coherence-community.github.io/coherence-spring/1.0.2/](http://coherence-community.github.io/coherence-spring/1.0.2/)
 
-Detailed project documentation for the latest snapshot (1.1.0-SNAPSHOT) is available
-here: [http://coherence-community.github.io/coherence-spring/1.1.0-SNAPSHOT/](http://coherence-community.github.io/coherence-spring/1.1.0-SNAPSHOT/)
+Detailed project documentation for the latest snapshot (2.0.0-SNAPSHOT) is available
+here: [http://coherence-community.github.io/coherence-spring/2.0.0-SNAPSHOT/](http://coherence-community.github.io/coherence-spring/2.0.0-SNAPSHOT/)
 
 > **NOTE**
 >
