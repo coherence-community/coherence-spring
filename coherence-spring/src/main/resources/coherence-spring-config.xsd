@@ -32,7 +32,7 @@
 
     <xsd:annotation>
         <xsd:documentation>
-            Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+            Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
 
             Oracle is a registered trademarks of Oracle Corporation and/or its
             affiliates.
@@ -45,19 +45,18 @@
         </xsd:documentation>
     </xsd:annotation>
 
-
     <xsd:element name="bean-factory">
         <xsd:annotation>
             <xsd:documentation>
-              The bean-factory element defines a Spring bean
-              factory that will be used to provide named
-              beans to Coherence.
+                The bean-factory element defines a Spring bean
+                factory that will be used to provide named
+                beans to Coherence.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence>
-              <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="application-context-uri" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="application-context-uri" minOccurs="1" maxOccurs="1" />
             </xsd:sequence>
             <xsd:anyAttribute namespace="##other" processContents="lax"/>
         </xsd:complexType>
@@ -66,15 +65,15 @@
     <xsd:element name="bean">
         <xsd:annotation>
             <xsd:documentation>
-              The bean element is used to define a Spring bean
-              that will be provided to Coherence.
+                The bean element is used to define a Spring bean
+                that will be provided to Coherence.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence>
-              <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
-              <xsd:element ref="bean-name" minOccurs="1" maxOccurs="1" />
-              <xsd:element ref="property" minOccurs="0" />
+                <xsd:element ref="factory-name" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="bean-name" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
             <xsd:anyAttribute namespace="##other" processContents="lax"/>
         </xsd:complexType>
@@ -83,11 +82,11 @@
     <xsd:element name="factory-name" type="xsd:string">
         <xsd:annotation>
             <xsd:documentation>
-              The factory-name element is used to name a Spring
-              bean factory. This name is used to refer to a
-              factory when defining a bean definition.
+                The factory-name element is used to name a Spring
+                bean factory. This name is used to refer to a
+                factory when defining a bean definition.
 
-              Used in: bean, bean-factory
+                Used in: bean, bean-factory
             </xsd:documentation>
         </xsd:annotation>
     </xsd:element>
@@ -135,5 +134,4 @@
             </xsd:documentation>
         </xsd:annotation>
     </xsd:element>
-
 </xsd:schema>
