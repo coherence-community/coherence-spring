@@ -35,6 +35,9 @@ reverse chronological order.
 *   [Issue #16](https://github.com/coherence-community/coherence-spring/issues/16): Resolved incorrect XSD
     declaration of spring:property
 
+*   [Issue #17](https://github.com/coherence-community/coherence-spring/issues/17): Migrated to use Maven Central
+    (from maven.java.net)
+
 
 --------------------------------------------------------------------------------
 

@@ -1,11 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>net.java</groupId>
-        <artifactId>jvnet-parent</artifactId>
-        <version>4</version>
-    </parent>
     
     <artifactId>coherence-spring-project</artifactId>
     <groupId>com.oracle.coherence.spring</groupId>
@@ -19,7 +13,7 @@
         support the use of Spring with Coherence and vice-versa.
     </description>
 
-    <url>http://java.net/projects/cohspr</url>
+    <url>https://github.com/coherence-community/coherence-spring</url>
 
     <issueManagement>
         <system>GitHub</system>
@@ -95,6 +89,17 @@
         <oracle.tools.version>1.0.0</oracle.tools.version>
         <org.springframework.version>4.3.9.RELEASE</org.springframework.version>
     </properties>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <pluginManagement>

@@ -10,10 +10,10 @@
 
     <artifactId>coherence-spring</artifactId>
 
-    <name>Coherence Spring Project</name>
+    <name>Coherence Spring</name>
 
     <description>
-        The Coherence Spring Project
+        Coherence Spring
     </description>
 
     <dependencies>
