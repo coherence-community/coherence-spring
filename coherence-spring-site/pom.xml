@@ -22,7 +22,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
 
         <!-- content properties for site generation -->
-        <site-project-title>Coherence Spring Integration</site-project-title>
+        <site-project-title>Coherence Spring</site-project-title>
         <site-timestamp>${maven.build.timestamp}</site-timestamp>
         <site-coherence-version>${oracle.coherence.version}</site-coherence-version>
     </properties>
@@ -80,7 +80,7 @@
                     <message>Creating site for ${project.version}</message>
                     <path>${project.version}</path>
                     <merge>true</merge>
-                    <repositoryName>coherence-spring-integration</repositoryName>
+                    <repositoryName>coherence-spring</repositoryName>
                     <repositoryOwner>coherence-community</repositoryOwner>
                 </configuration>
                 <executions>
