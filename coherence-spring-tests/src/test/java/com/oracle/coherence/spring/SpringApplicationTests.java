@@ -55,8 +55,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import javax.rmi.CORBA.Stub;
-
 /**
  * Tests for {@link SpringNamespaceHandler}.
  *

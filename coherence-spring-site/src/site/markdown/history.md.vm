@@ -29,6 +29,9 @@ reverse chronological order.
     Coherence-based resources (NamedCaches) from Coherence without using
     static functions or methods.
 
+*   [Issue #15](https://github.com/coherence-community/coherence-spring/issues/15): Provided access to
+    Coherence Services via the SpringBasedCoherenceSession
+
 *   [Issue #16](https://github.com/coherence-community/coherence-spring/issues/16): Resolved incorrect XSD
     declaration of spring:property
 

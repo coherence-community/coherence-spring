@@ -31,6 +31,7 @@ import com.tangosol.net.CacheFactory;
 import com.tangosol.net.ExtensibleConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 
+import com.tangosol.net.Service;
 import com.tangosol.util.ResourceRegistry;
 
 import org.springframework.beans.BeansException;
@@ -164,6 +165,19 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
     public NamedCache getCache(String name)
     {
         return configurableCacheFactory.ensureCache(name, null);
+    }
+
+
+    /**
+     * Acquire the specified {@link Service}.
+     *
+     * @param name  the name of the {@link Service}
+     *
+     * @return a {@link Service}
+     */
+    public Service getService(String name)
+    {
+        return configurableCacheFactory.ensureService(name);
     }
 
 
