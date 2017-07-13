@@ -3,17 +3,17 @@
 
     <parent>
         <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-integration</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <artifactId>coherence-spring-project</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>coherence-spring</artifactId>
 
-    <name>Coherence Spring Integration</name>
+    <name>Coherence Spring Project</name>
 
     <description>
-        The Coherence Spring Integration Module
+        The Coherence Spring Project
     </description>
 
     <dependencies>
