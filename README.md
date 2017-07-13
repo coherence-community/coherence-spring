@@ -12,5 +12,5 @@ here: [http://coherence-community.github.io/coherence-spring/1.1.0-SNAPSHOT/](ht
 
 > **NOTE**
 >
-> The [Apache Maven](http://maven.apache.org)-based snapshots and releases for this project are published to Maven Central.
+> The [Apache Maven](http://maven.apache.org)-based snapshots and releases for this project are published to [Maven Central](http://repo1.maven.org/maven2/com/oracle/coherence/spring/).
 >
