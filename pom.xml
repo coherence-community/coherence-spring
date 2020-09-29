@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>coherence-spring-project</artifactId>
     <groupId>com.oracle.coherence.spring</groupId>
     <version>2.0.1-SNAPSHOT</version>
@@ -87,7 +87,7 @@
         <mockito.version>1.9.5</mockito.version>
         <oracle.coherence.version>20.06.1</oracle.coherence.version>
         <oracle.tools.version>1.0.0</oracle.tools.version>
-        <org.springframework.version>4.3.9.RELEASE</org.springframework.version>
+        <org.springframework.version>5.2.9.RELEASE</org.springframework.version>
     </properties>
 
     <distributionManagement>
