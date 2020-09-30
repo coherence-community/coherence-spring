@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -33,22 +33,21 @@ import com.tangosol.net.cache.LocalCache;
 
 import com.tangosol.util.ExternalizableHelper;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.BeanFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,37 +58,27 @@ import java.util.Map;
  * Tests for {@link SpringNamespaceHandler}.
  *
  * @author Brian Oliver
+ * @author Gunnar Hillert
  */
+@SpringJUnitConfig(SpringApplicationConfig.class)
 public class SpringApplicationTests
 {
     /**
      * The {@link ApplicationContext} we'll use for testing.
      */
-    protected static ApplicationContext context;
+	@Autowired
+    protected ApplicationContext context;
 
     /**
      * The {@link SpringBasedCoherenceSession} we'll use for testing.
      */
-    protected static SpringBasedCoherenceSession session;
-
-
-    /**
-     * Create an {@link ApplicationContext} and {@link SpringBasedCoherenceSession}
-     * for our tests (we share these)
-     */
-    @BeforeClass
-    public static void startCluster()
-    {
-        context = new AnnotationConfigApplicationContext(SpringApplicationConfig.class);
-
-        session = context.getBean(SpringBasedCoherenceSession.class);
-    }
-
+	@Autowired
+    protected SpringBasedCoherenceSession session;
 
     /**
      * Stop the cluster after each test have executed.
      */
-    @AfterClass
+    @AfterAll
     public static void stopCluster()
     {
         CacheFactory.shutdown();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -34,17 +34,18 @@ import com.tangosol.net.cache.LocalCache;
 
 import com.tangosol.util.ExternalizableHelper;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.BeanFactory;
 
 import org.springframework.context.annotation.Bean;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
 
@@ -80,7 +81,7 @@ public class SpringNamespaceHandlerTests
      *
      * @see #getFactory()
      */
-    @BeforeClass
+    @BeforeAll
     public static void startCluster()
     {
         factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory("spring-embedded-cache-config.xml",
@@ -91,7 +92,7 @@ public class SpringNamespaceHandlerTests
     /**
      * Stop the cluster after all tests have executed.
      */
-    @AfterClass
+    @AfterAll
     public static void stopCluster()
     {
         factory = null;
