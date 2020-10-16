@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -25,9 +25,16 @@
 
 package com.oracle.coherence.spring;
 
+import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.AnnotationUtils;
+
+import com.tangosol.net.NamedCache;
 
 import java.util.HashMap;
 
@@ -47,7 +54,6 @@ public class SpringApplicationConfig
     {
         return new SpringBasedCoherenceSession("spring-application-cache-config.xml");
     }
-
 
     @Bean
     @Lazy

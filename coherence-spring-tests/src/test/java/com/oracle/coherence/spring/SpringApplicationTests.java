@@ -66,13 +66,13 @@ public class SpringApplicationTests
     /**
      * The {@link ApplicationContext} we'll use for testing.
      */
-	@Autowired
+    @Autowired
     protected ApplicationContext context;
 
     /**
      * The {@link SpringBasedCoherenceSession} we'll use for testing.
      */
-	@Autowired
+    @Autowired
     protected SpringBasedCoherenceSession session;
 
     /**

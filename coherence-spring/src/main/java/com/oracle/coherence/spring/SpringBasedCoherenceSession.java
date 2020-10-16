@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import com.tangosol.util.ResourceRegistry;
 import org.springframework.beans.BeansException;
 
 import org.springframework.beans.factory.BeanFactory;
-
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 
@@ -105,7 +105,8 @@ import static com.tangosol.net.ExtensibleConfigurableCacheFactory.DependenciesHe
  * @author Brian Oliver
  */
 public class SpringBasedCoherenceSession implements ApplicationContextAware,
-                                                    ApplicationListener<ApplicationContextEvent>
+                                                    ApplicationListener<ApplicationContextEvent>,
+                                                    DisposableBean
 {
     /**
      * The default URI constant when we need to auto-detect the cache configuration
@@ -247,13 +248,16 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
         {
             configurableCacheFactory.activate();
         }
-        else if (event instanceof ContextStoppedEvent)
-        {
-            configurableCacheFactory.dispose();
-
-            CacheFactory.getCacheFactoryBuilder().release(configurableCacheFactory);
-
-            configurableCacheFactory = null;
-        }
     }
+
+	public ExtensibleConfigurableCacheFactory getConfigurableCacheFactory() {
+		return configurableCacheFactory;
+	}
+
+	@Override
+	public void destroy() throws Exception {
+        configurableCacheFactory.dispose();
+        CacheFactory.getCacheFactoryBuilder().release(configurableCacheFactory);
+        configurableCacheFactory = null;
+	}
 }

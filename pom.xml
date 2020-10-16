@@ -53,6 +53,7 @@
 
     <modules>
         <module>coherence-spring</module>
+        <module>coherence-spring-boot-starter</module>
         <module>coherence-spring-tests</module>
         <module>coherence-spring-site</module>
     </modules>
