@@ -2,6 +2,11 @@ package com.oracle.coherence.spring;
 
 import com.tangosol.net.NamedCache;
 
+/**
+ *
+ * @author Gunnar Hillert
+ *
+ */
 public class CoherenceInstance {
 
 	private SpringBasedCoherenceSession springBasedCoherenceSession;
@@ -9,10 +14,6 @@ public class CoherenceInstance {
 	public CoherenceInstance(SpringBasedCoherenceSession springBasedCoherenceSession) {
 		super();
 		this.springBasedCoherenceSession = springBasedCoherenceSession;
-		System.out.println("Starting Coherence Instance.");
-
-
-		springBasedCoherenceSession.getCache("cc");
 	}
 
 	private <K, V> NamedCache<K, V> getCache(String cacheName) {

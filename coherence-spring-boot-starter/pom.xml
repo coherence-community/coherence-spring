@@ -6,7 +6,6 @@
 		<artifactId>coherence-spring-project</artifactId>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<version>3.0.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>coherence-spring-boot-starter</artifactId>

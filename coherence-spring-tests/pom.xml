@@ -5,7 +5,6 @@
         <groupId>com.oracle.coherence.spring</groupId>
         <artifactId>coherence-spring-project</artifactId>
         <version>3.0.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>coherence-spring-tests</artifactId>

@@ -1,7 +1,9 @@
 Welcome to the Oracle Coherence Spring Project
 ==============================================
 
-The Coherence Spring project provides a set of components to aid in the integration 
+[![Build Status](https://github.com/ghillert/coherence-spring/workflows/CI%20Coherence%20Spring/badge.svg)](https://github.com/coherence-community/coherence-spring/actions)
+
+The Coherence Spring project provides a set of components to aid in the integration
 of Oracle Coherence and the Spring Framework.
 
 Detailed project documentation for the latest release (2.0.0) is available
