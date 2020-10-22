@@ -1,5 +1,4 @@
 /*
- * File: CoherenceBeanExpressionResolver.java
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -26,13 +25,14 @@
 package com.oracle.coherence.spring.boot.autoconfigure;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.oracle.coherence.spring.CoherenceInstance;
 import com.oracle.coherence.spring.annotation.EnableCoherence;
 
 /**
+ * Activates Coherence Auto Configuration for Spring Boot, provided the respective
+ * {@link CoherenceInstance} is not defined.
  *
  * @author Gunnar Hillert
  *

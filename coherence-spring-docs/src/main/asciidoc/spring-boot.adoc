@@ -1,0 +1,11 @@
+[[spring-boot]]
+= Coherence Spring Boot
+include::attributes.adoc[]
+
+This section dives into the Coherence Spring Boot module. It explains how to use
+Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g. Autoconfiguration.
+
+[[spring-boot-introduction]]
+== Getting Started
+
+TBD

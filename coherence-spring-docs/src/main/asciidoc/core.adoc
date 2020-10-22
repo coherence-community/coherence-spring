@@ -1,0 +1,11 @@
+[[coherence-spring]]
+= Coherence Spring Core
+include::attributes.adoc[]
+
+This section dives into the Coherence Spring Core module. Coherence Spring Core
+provides the basic support support for the {spring-framework}[Spring Framework].
+
+[[coherence-spring-introduction]]
+== Getting Started
+
+TBD

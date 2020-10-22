@@ -1,0 +1,11 @@
+[[spring-cache]]
+= Coherence Spring Cache
+include::attributes.adoc[]
+
+This section dives into the Coherence Spring Cache module. It explains how to use
+Coherence's support for the Spring Framework's Cache Abstraction.
+
+[[spring-cache-introduction]]
+== Introduction
+
+TBD

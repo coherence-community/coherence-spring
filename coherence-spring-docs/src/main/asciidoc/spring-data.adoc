@@ -1,0 +1,11 @@
+[[spring-data]]
+= Coherence Spring Data
+include::attributes.adoc[]
+
+This section dives into the Coherence Spring Data module. It explains how to use
+Coherence's support for {spring-docs-session}[Spring Data] repositories.
+
+[[spring-data-introduction]]
+== Getting Started
+
+TBD

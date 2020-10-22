@@ -17,6 +17,9 @@
 		Coherence Spring Boot Starter + Autoconfiguration
 	</description>
 
+	<properties>
+		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -40,18 +43,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>${spring-boot.version}</version>
 		</dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<type>pom</type>
-				<version>2.3.4.RELEASE</version>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<!-- <dependencyManagement> <dependencyManagement> -->
+
 </project>

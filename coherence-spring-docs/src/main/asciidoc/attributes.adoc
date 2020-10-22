@@ -1,0 +1,29 @@
+:doctype: book
+:idprefix:
+:idseparator: -
+:toc: left
+:toclevels: 4
+:tabsize: 4
+:numbered:
+:sectanchors:
+:sectnums:
+:icons: font
+:hide-uri-scheme:
+:docinfo: shared,private
+
+:github-tag: master
+:coherence-spring-docs: https://github.com/coherence-community/coherence-spring
+:coherence-spring-current-docs: https://github.com/coherence-community/coherence-spring
+:coherence-spring-code: https://github.com/coherence-community/coherence-spring
+
+:github-repo: coherence-community/coherence-spring
+:github-raw: https://raw.githubusercontent.com/{github-repo}/{github-tag}
+:github-issues: https://github.com/{github-repo}/issues/
+:github-wiki: https://github.com/{github-repo}/wiki
+
+:spring-docs: https://docs.spring.io/spring-framework/docs/current/spring-framework-reference
+:spring-docs-caching: https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/integration.html#cache
+:spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
+:spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
+
+:spring-framework: https://spring.io/projects/spring-framework

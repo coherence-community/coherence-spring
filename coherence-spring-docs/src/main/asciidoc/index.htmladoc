@@ -1,0 +1,25 @@
+= Coherence Spring Reference Documentation
+:doc-root: https://docs.spring.io
+
+****
+_What's New_, _Upgrade Notes_, _Supported Versions_, and other topics,
+independent of release cadence, are maintained externally on the project's
+http://coherence-community.github.io/coherence-spring[*Website*].
+****
+
+[horizontal]
+<<legal.adoc#legal,Legal>> :: Legal information.
+<<overview.adoc#overview, Overview>> :: Introduction to the various Coherence Spring modules and getting started guide.
+<<core.adoc#spring-core, Coherence Spring Core>> :: Use Coherence with the Spring Framework
+<<spring-boot.adoc#spring-boot, Spring Boot>> :: Coherence for Spring Boot Users
+<<spring-cache.adoc#spring-cache, Spring Cache>> :: Coherence Spring Cache
+<<spring-session.adoc#spring-session, Spring Session>> :: Coherence Spring Session
+<<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data
+
+Gunnar Hillert
+
+Copyright © 2020 Oracle, Inc. All Rights Reserved.
+
+Copies of this document may be made for your own use and for distribution to others,
+provided that you do not charge any fee for such copies and further provided that each
+copy contains this Copyright Notice, whether distributed in print or electronically.

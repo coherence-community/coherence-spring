@@ -3,7 +3,7 @@
 
     <artifactId>coherence-spring-project</artifactId>
     <groupId>com.oracle.coherence.spring</groupId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Coherence Spring Project</name>
@@ -42,24 +42,31 @@
             <name>Patrick Peralta</name>
             <organization>Oracle Corporation</organization>
         </developer>
+
+        <developer>
+            <name>Gunnar Hillert</name>
+            <organization>Oracle Corporation</organization>
+        </developer>
     </developers>
 
     <scm>
         <connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
         <developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
         <url>https://github.com/coherence-community/coherence-spring.git</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <modules>
         <module>coherence-spring</module>
         <module>coherence-spring-boot-starter</module>
         <module>coherence-spring-tests</module>
         <module>coherence-spring-site</module>
+        <module>coherence-spring-docs</module>
     </modules>
 
     <properties>
         <!-- project options -->
+        <revision>3.0.0-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
         <skip-sign-artifacts>true</skip-sign-artifacts>
 
         <!-- source code repository information -->
@@ -94,6 +101,7 @@
         <oracle.coherence.version>20.06.1</oracle.coherence.version>
         <oracle.tools.version>1.0.0</oracle.tools.version>
         <org.springframework.version>5.2.9.RELEASE</org.springframework.version>
+
     </properties>
 
     <distributionManagement>
@@ -115,6 +123,23 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.deploy.plugin.version}</version>
                 </plugin>
+				<plugin>
+					<groupId>org.asciidoctor</groupId>
+					<artifactId>asciidoctor-maven-plugin</artifactId>
+					<version>1.6.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.asciidoctor</groupId>
+							<artifactId>asciidoctorj-pdf</artifactId>
+							<version>1.5.0-alpha.18</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>2.3.4.RELEASE</version>
+				</plugin>
             </plugins>
         </pluginManagement>
 
@@ -148,8 +173,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
@@ -189,6 +214,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.javadoc.plugin.version}</version>
                 <configuration>
+                    <source>${java.version}</source>
                     <failOnError>false</failOnError>
                 </configuration>
                 <executions>
@@ -197,6 +223,7 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <inherited>true</inherited>
                     </execution>
                 </executions>
             </plugin>
@@ -210,7 +237,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven.deploy.plugin.version}</version>
             </plugin>
 
             <plugin>
@@ -241,4 +267,14 @@
             </plugin>
         </plugins>
     </build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.oracle.coherence.spring</groupId>
+				<artifactId>coherence-spring-project</artifactId>
+				<version>3.0.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

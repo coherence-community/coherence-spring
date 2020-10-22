@@ -66,38 +66,40 @@ import static com.tangosol.net.ExtensibleConfigurableCacheFactory.DependenciesHe
  * ie: the class(es) annotated with @Configuration
  * <p>
  * For Example:
+ * <pre>
  * <code>
- * @Configuration
+ * {@literal @Configuration}
  * public class ApplicationConfiguration
  * {
- *     @Bean
+ *     {@literal @Bean}
  *     public SpringBasedCoherenceSession session()
  *     {
  *         return new SpringBasedCoherenceSession("cache-config-file.xml);
  *     }
  * }
- * </code>
+ * </code></pre>
  *
  * To acquire resources (like NamedCaches) from a session, they can be similarly
  * resolved (and injected).
  *
+ * <pre>
  * <code>
- * @Configuration
+ * {@literal @Configuration}
  * public class ApplicationConfiguration
  * {
- *     @Bean
+ *     {@literal @Bean}
  *     public SpringBasedCoherenceSession session()
  *     {
  *         return new SpringBasedCoherenceSession("cache-config-file.xml);
  *     }
  *
- *     @Bean
+ *     {@literal @Bean}
  *     public NamedCache accounts()
  *     {
  *         return session.getCache("accounts");
  *     }
  * }
- * </code>
+ * </code></pre>
  *
  * Copyright (c) 2015-2015. All Rights Reserved. Oracle Corporation.<br>
  * Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
