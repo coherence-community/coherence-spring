@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="author" content="Gunnar Hillert">
+<title>Coherence Spring Reference Documentation</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body id="coherence-spring-reference-documentation" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Reference Documentation</h1>
+<div class="details">
+<span id="author" class="author">Gunnar Hillert</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#legal">Legal</a></li>
+<li><a href="#coherence-spring-documentation">1. Coherence Spring Documentation</a>
+<ul class="sectlevel2">
+<li><a href="#about">1.1. About the Documentation</a></li>
+<li><a href="#getting-help">1.2. Getting Help</a></li>
+<li><a href="#news">1.3. What is new?</a></li>
+<li><a href="#boot-documentation-first-steps">1.4. First Steps</a></li>
+<li><a href="#working-with-coherence-spring">1.5. Working with Coherence Spring</a></li>
+<li><a href="#learning-about-spring-boot-features">1.6. Learning about Spring Boot Features</a></li>
+</ul>
+</li>
+<li><a href="#coherence-spring">2. Coherence Spring Core</a>
+<ul class="sectlevel2">
+<li><a href="#coherence-spring-introduction">2.1. Getting Started</a></li>
+</ul>
+</li>
+<li><a href="#spring-cache">3. Coherence Spring Cache</a>
+<ul class="sectlevel2">
+<li><a href="#spring-cache-introduction">3.1. Introduction</a></li>
+</ul>
+</li>
+<li><a href="#spring-session">4. Coherence Spring Session</a>
+<ul class="sectlevel2">
+<li><a href="#spring-session-introduction">4.1. Getting Started</a></li>
+</ul>
+</li>
+<li><a href="#spring-data">5. Coherence Spring Data</a>
+<ul class="sectlevel2">
+<li><a href="#spring-data-introduction">5.1. Getting Started</a></li>
+</ul>
+</li>
+<li><a href="#appendix">6. Appendices</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="legal"><a class="anchor" href="#legal"></a>Legal</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p></p>
+</div>
+<div class="paragraph">
+<p>Copyright &#169; 2020 Oracle, Inc. All Rights Reserved.</p>
+</div>
+<div class="paragraph">
+<p>Copies of this document may be made for your own use and for distribution to
+others, provided that you do not charge any fee for such copies and further
+provided that each copy contains this Copyright Notice, whether distributed in
+print or electronically.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-documentation"><a class="anchor" href="#coherence-spring-documentation"></a>1. Coherence Spring Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Welcome to the reference documentation of Coherence Spring, a collection of several
+libraries that will help you to integration Coherence with the wider Spring ecosystem.</p>
+</div>
+<div class="paragraph">
+<p>This section provides a brief overview of the Coherence Spring reference documentation.</p>
+</div>
+<div class="sect2">
+<h3 id="about"><a class="anchor" href="#about"></a>1.1. About the Documentation</h3>
+<div class="paragraph">
+<p>The Coherence Spring reference guide is available as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/coherence-community/coherence-spring/html">Multi-page HTML</a></p>
+</li>
+<li>
+<p><a href="https://github.com/coherence-community/coherence-spring/htmlsingle">Single page HTML</a></p>
+</li>
+<li>
+<p><a href="https://github.com/coherence-community/coherence-spring/pdf/coherence-spring-reference.pdf">PDF</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The latest copy is available at <a href="https://github.com/coherence-community/coherence-spring" class="bare">github.com/coherence-community/coherence-spring</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-help"><a class="anchor" href="#getting-help"></a>1.2. Getting Help</h3>
+<div class="paragraph">
+<p>If you have trouble with Spring Coherence, we would like to help.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Try the <a href="howto.html#howto">How-to documents</a>.
+They provide solutions to the most common questions.</p>
+</li>
+<li>
+<p>Learn the Coherence basics.
+All Spring Coherence module directly support Oracle Coherence.
+Check the <a href="https://coherence.community">Coherence CE</a> web-site for general Coherence
+targeted reference documentation.</p>
+</li>
+<li>
+<p>Learn the Spring basics.
+Spring Coherence builds on several other Spring projects.
+Check the <a href="https://spring.io">spring.io</a> web-site for general reference documentation.
+If you are starting out with Spring, try one of the <a href="https://spring.io/guides">guides</a>.</p>
+</li>
+<li>
+<p>Ask a question.
+Chat with us directly on <a href="https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw">Slack</a>.
+We also monitor <a href="https://stackoverflow.com">stackoverflow.com</a> for questions tagged with
+<a href="https://stackoverflow.com/tags/coherence"><code>coherence</code></a>.</p>
+</li>
+<li>
+<p>Report bugs with Spring Coherence via <a href="https://github.com/coherence-community/coherence-spring/issues/">GitHub Issues</a>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All of Coherence Spring is open source, including the documentation.
+If you find problems with the docs or if you want to improve them, please <a href="https://github.com/coherence-community/coherence-spring">get involved</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="news"><a class="anchor" href="#news"></a>1.3. What is new?</h3>
+<div class="paragraph">
+<p>Instructions for how to upgrade from earlier versions of Spring Boot are provided on the project <a href="https://github.com/coherence-community/coherence-spring/wiki">wiki</a>.
+Follow the links in the in the <a href="https://github.com/coherence-community/coherence-spring/wiki#release-notes">release notes</a> section to find the version that you want to upgrade to.</p>
+</div>
+<div class="paragraph">
+<p>Upgrading instructions are always the first item in the release notes.
+If you are more than one release behind, please make sure that you also review the release notes of the versions that you jumped.</p>
+</div>
+<div class="paragraph">
+<p>You should always ensure that you are running a <a href="https://github.com/coherence-community/coherence-spring/wiki/Supported-Versions">supported version</a> of Spring Boot.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-documentation-first-steps"><a class="anchor" href="#boot-documentation-first-steps"></a>1.4. First Steps</h3>
+<div class="paragraph">
+<p>If you are getting started with Spring Boot or 'Spring' in general, start with <a href="getting-started.html#getting-started">the following topics</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>From scratch:</strong> <a href="getting-started.html#getting-started-introducing-spring-boot">Overview</a> | <a href="getting-started.html#getting-started-system-requirements">Requirements</a> | <a href="getting-started.html#getting-started-installing-spring-boot">Installation</a></p>
+</li>
+<li>
+<p><strong>Tutorial:</strong> <a href="getting-started.html#getting-started-first-application">Part 1</a> | <a href="getting-started.html#getting-started-first-application-code">Part 2</a></p>
+</li>
+<li>
+<p><strong>Running your example:</strong> <a href="getting-started.html#getting-started-first-application-run">Part 1</a> | <a href="getting-started.html#getting-started-first-application-executable-jar">Part 2</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="working-with-coherence-spring"><a class="anchor" href="#working-with-coherence-spring"></a>1.5. Working with Coherence Spring</h3>
+<div class="paragraph">
+<p>Ready to actually start using Spring Boot? <a href="using-spring-boot.html#using-boot">We have you covered</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Build systems:</strong> <a href="using-spring-boot.html#using-boot-maven">Maven</a> | <a href="using-spring-boot.html#using-boot-gradle">Gradle</a> | <a href="using-spring-boot.html#using-boot-ant">Ant</a> | <a href="using-spring-boot.html#using-boot-starter">Starters</a></p>
+</li>
+<li>
+<p><strong>Best practices:</strong> <a href="using-spring-boot.html#using-boot-structuring-your-code">Code Structure</a> | <a href="using-spring-boot.html#using-boot-configuration-classes">@Configuration</a> | <a href="using-spring-boot.html#using-boot-auto-configuration">@EnableAutoConfiguration</a> | <a href="using-spring-boot.html#using-boot-spring-beans-and-dependency-injection">Beans and Dependency Injection</a></p>
+</li>
+<li>
+<p><strong>Running your code:</strong> <a href="using-spring-boot.html#using-boot-running-from-an-ide">IDE</a> | <a href="using-spring-boot.html#using-boot-running-as-a-packaged-application">Packaged</a> | <a href="using-spring-boot.html#using-boot-running-with-the-maven-plugin">Maven</a> | <a href="using-spring-boot.html#using-boot-running-with-the-gradle-plugin">Gradle</a></p>
+</li>
+<li>
+<p><strong>Packaging your app:</strong> <a href="using-spring-boot.html#using-boot-packaging-for-production">Production jars</a></p>
+</li>
+<li>
+<p><strong>Spring Boot CLI:</strong> <a href="spring-boot-cli.html#cli">Using the CLI</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="learning-about-spring-boot-features"><a class="anchor" href="#learning-about-spring-boot-features"></a>1.6. Learning about Spring Boot Features</h3>
+<div class="paragraph">
+<p>Need more details about Spring Boot&#8217;s core features?
+<a href="spring-boot-features.html#boot-features">The following content is for you</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Core Features:</strong> <a href="spring-boot-features.html#boot-features-spring-application">SpringApplication</a> | <a href="spring-boot-features.html#boot-features-external-config">External Configuration</a> | <a href="spring-boot-features.html#boot-features-profiles">Profiles</a> | <a href="spring-boot-features.html#boot-features-logging">Logging</a></p>
+</li>
+<li>
+<p><strong>Web Applications:</strong> <a href="spring-boot-features.html#boot-features-spring-mvc">MVC</a> | <a href="spring-boot-features.html#boot-features-embedded-container">Embedded Containers</a></p>
+</li>
+<li>
+<p><strong>Working with data:</strong> <a href="spring-boot-features.html#boot-features-sql">SQL</a> | <a href="spring-boot-features.html#boot-features-nosql">NO-SQL</a></p>
+</li>
+<li>
+<p><strong>Messaging:</strong> <a href="spring-boot-features.html#boot-features-messaging">Overview</a> | <a href="spring-boot-features.html#boot-features-jms">JMS</a></p>
+</li>
+<li>
+<p><strong>Testing:</strong> <a href="spring-boot-features.html#boot-features-testing">Overview</a> | <a href="spring-boot-features.html#boot-features-testing-spring-boot-applications">Boot Applications</a> | <a href="spring-boot-features.html#boot-features-test-utilities">Utils</a></p>
+</li>
+<li>
+<p><strong>Extending:</strong> <a href="spring-boot-features.html#boot-features-developing-auto-configuration">Auto-configuration</a> | <a href="spring-boot-features.html#boot-features-condition-annotations">@Conditions</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring"><a class="anchor" href="#coherence-spring"></a>2. Coherence Spring Core</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Core module. Coherence Spring Core
+provides the basic support support for the <a href="https://spring.io/projects/spring-framework">Spring Framework</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="coherence-spring-introduction"><a class="anchor" href="#coherence-spring-introduction"></a>2.1. Getting Started</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-cache"><a class="anchor" href="#spring-cache"></a>3. Coherence Spring Cache</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Cache module. It explains how to use
+Coherence&#8217;s support for the Spring Framework&#8217;s Cache Abstraction.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-cache-introduction"><a class="anchor" href="#spring-cache-introduction"></a>3.1. Introduction</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session"><a class="anchor" href="#spring-session"></a>4. Coherence Spring Session</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Session module. It explains how to use
+Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/docs/curent/reference/html5/">Spring Session</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-session-introduction"><a class="anchor" href="#spring-session-introduction"></a>4.1. Getting Started</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-data"><a class="anchor" href="#spring-data"></a>5. Coherence Spring Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Data module. It explains how to use
+Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/docs/curent/reference/html5/">Spring Data</a> repositories.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>5.1. Getting Started</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix"><a class="anchor" href="#appendix"></a>6. Appendices</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2020-10-25 09:36:29 -1000
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

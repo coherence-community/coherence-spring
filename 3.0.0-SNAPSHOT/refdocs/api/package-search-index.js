@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.oracle.coherence.spring"},{"l":"com.oracle.coherence.spring.annotation"},{"l":"com.oracle.coherence.spring.configuration"}]
