@@ -3,7 +3,7 @@
 
     <parent>
         <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-project</artifactId>
+        <artifactId>coherence-spring-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
 

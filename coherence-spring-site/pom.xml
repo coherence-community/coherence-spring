@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>coherence-spring-project</artifactId>
         <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
 
@@ -17,7 +17,6 @@
 
     <properties>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-
         <timestamp>${maven.build.timestamp}</timestamp>
 
         <!-- content properties for site generation -->
@@ -26,6 +25,15 @@
         <site-coherence-version>${oracle.coherence.version}</site-coherence-version>
     </properties>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-docs</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+			<type>zip</type>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
     <build>
         <plugins>
             <plugin>
@@ -56,9 +64,9 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
+                        <groupId>org.kohsuke</groupId>
                         <artifactId>doxia-module-markdown</artifactId>
-                        <version>${maven.doxia.markdown.plugin.version}</version>
+                        <version>${doxia.module.markdown.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -71,12 +79,34 @@
                 </executions>
             </plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-doc-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>deploy</phase>
+						<configuration>
+							<includeGroupIds>com.oracle.coherence.spring</includeGroupIds>
+							<includeArtifactIds>coherence-spring-docs</includeArtifactIds>
+							<includeTypes>zip</includeTypes>
+							<excludeTransitive>true</excludeTransitive>
+							<outputDirectory>${project.build.directory}/site/refdocs/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>${maven.github.site.plugin.version}</version>
+                <version>${github.site.maven.plugin.version}</version>
                 <configuration>
-                    <message>Creating site for ${project.version}</message>
+                    <server>github</server>
+                    <message>${project.version} Site</message>
                     <path>${project.version}</path>
                     <merge>true</merge>
                     <repositoryName>coherence-spring</repositoryName>
@@ -92,4 +122,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build></project>
+    </build>
+</project>
+

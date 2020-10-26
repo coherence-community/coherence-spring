@@ -4,8 +4,17 @@ Change History
 The following sections outline ${site-project-title} project changes in
 reverse chronological order.
 
-
 <h3>Version ${project.version} built on ${timestamp} </h3>
+
+<h4>Source and Documentation Contributors</h4>
+
+*   Gunnar Hillert
+
+<h4>Global and Cross-Module Changes</h4>
+
+* TBD
+
+<h3>Version 2.0.0-SNAPSHOT built on 2017-07-13 20:03</h3>
 
 <h4>Source and Documentation Contributors</h4>
 

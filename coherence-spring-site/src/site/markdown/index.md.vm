@@ -1,7 +1,5 @@
 <h1><img src="images/coherence-spring.png" alt="Coherence Spring Project" height="42" width="42" align="top"/> ${site-project-title}</h1>
 
-**Version: ${project.version} built on ${site-timestamp}**
-
 >   This release of the Coherence Spring Integration is designed specifically for use
 >   with **Oracle Coherence 12.1.2 and above**.
 
