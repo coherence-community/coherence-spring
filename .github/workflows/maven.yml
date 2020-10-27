@@ -16,12 +16,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '1.8'
-        server-id: github
-        server-password: MAVEN_GITHUB
-        server-username: ""
     - name: Build with Maven
-      run: mvn clean package -Pspring
-    - name: Update Website
-      run: mvn -pl coherence-spring-site deploy
+      run: mvn clean install -Pspring --settings settings.xml
+    - name: Deploy Website + Snapshots
+      run: mvn deploy --settings settings.xml -Pspring
       env:
-        MAVEN_GITHUB: ${{ secrets.MAVEN_GITHUB }}
+        MAVEN_GITHUB_TOKEN: "${{secrets.MAVEN_GITHUB}}"
+        MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
+        MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+

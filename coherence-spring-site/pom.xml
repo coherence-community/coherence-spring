@@ -93,7 +93,7 @@
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
-						<phase>deploy</phase>
+						<phase>package</phase>
 						<configuration>
 							<includeGroupIds>com.oracle.coherence.spring</includeGroupIds>
 							<includeArtifactIds>coherence-spring-docs</includeArtifactIds>
@@ -109,7 +109,7 @@
                 <artifactId>site-maven-plugin</artifactId>
                 <version>${github.site.maven.plugin.version}</version>
                 <configuration>
-                    <server>github</server>
+                    <server>github-pages</server>
                     <message>${project.version} Site</message>
                     <path>${project.version}</path>
                     <merge>true</merge>
