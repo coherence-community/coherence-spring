@@ -1,10 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <prerequisites>
-        <maven>3.6.0</maven>
-    </prerequisites>
-
     <groupId>com.oracle.coherence.spring</groupId>
     <artifactId>coherence-spring-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
@@ -52,11 +48,11 @@
     <scm>
         <connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
         <developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
-        <url>https://github.com/coherence-community/coherence-spring.git</url>
+        <url>https://github.com/coherence-community/coherence-spring</url>
     </scm>
 
     <modules>
-        <module>coherence-spring</module>
+        <module>coherence-spring-core</module>
         <module>coherence-spring-boot-starter</module>
         <module>coherence-spring-tests</module>
         <module>coherence-spring-site</module>
@@ -65,17 +61,15 @@
 
     <properties>
         <!-- project options -->
-        <revision>3.0.0-SNAPSHOT</revision>
         <java.version>1.8</java.version>
+        <maven.minimum.version>3.6.0</maven.minimum.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip-sign-artifacts>true</skip-sign-artifacts>
 
         <!-- source code repository information -->
         <source.owner>coherence-community</source.owner>
         <source.repository>coherence-spring</source.repository>
         <source.branch>master</source.branch>
-
-        <!-- source encoding definition -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- plugin dependency versions (alphabetically) -->
         <doxia.module.markdown.version>1.0</doxia.module.markdown.version>
@@ -86,22 +80,19 @@
         <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
-        <maven.jar.plugin.version>2.4</maven.jar.plugin.version>
+        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
         <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
         <maven.release.plugin.version>2.5</maven.release.plugin.version>
-        <maven.shade.plugin.version>2.3</maven.shade.plugin.version>
         <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
 
         <!-- dependency versions (alphabetically) -->
+        <coherence.version>20.06.1</coherence.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>5.7.0</junit.version>
         <mockito.version>1.9.5</mockito.version>
-        <oracle.coherence.version>20.06.1</oracle.coherence.version>
-        <oracle.tools.version>1.0.0</oracle.tools.version>
         <org.springframework.version>5.2.9.RELEASE</org.springframework.version>
-
     </properties>
 
     <distributionManagement>
@@ -114,6 +105,16 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.oracle.coherence.spring</groupId>
+				<artifactId>coherence-spring-project</artifactId>
+				<version>3.0.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
     <build>
         <pluginManagement>
@@ -157,10 +158,10 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.1.0</version>
+                                    <version>${maven.minimum.version}</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.8.0</version>
+                                    <version>${java.version}</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -267,14 +268,4 @@
             </plugin>
         </plugins>
     </build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.oracle.coherence.spring</groupId>
-				<artifactId>coherence-spring-project</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

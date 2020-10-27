@@ -23,14 +23,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
-			<artifactId>coherence-spring</artifactId>
+			<artifactId>coherence-spring-core</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
 
         <dependency>
             <groupId>com.oracle.coherence.ce</groupId>
             <artifactId>coherence</artifactId>
-            <version>${oracle.coherence.version}</version>
+            <version>${coherence.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -296,9 +296,9 @@
 						<configuration>
 							<target>
 								<zip
-									destfile="${project.build.directory}/${project.artifactId}-${revision}.zip">
+									destfile="${project.build.directory}/${project.artifactId}-${project.version}.zip">
 									<zipfileset
-										src="${project.build.directory}/${project.artifactId}-${revision}-javadoc.jar"
+										src="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"
 										prefix="api" />
 									<!-- <fileset dir="${project.build.directory}/contents" /> -->
 									<fileset dir="${project.build.directory}/generated-docs" />
@@ -317,7 +317,7 @@
 							<target>
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 								<taskdef name="stringutil" classname="ise.antelope.tasks.StringUtilTask" />
-								<var name="version-type" value="${revision}" />
+								<var name="version-type" value="${project.version}" />
 								<propertyregex property="version-type" override="true"
 									input="${version-type}" regexp=".*\.(.*)" replace="\1" />
 								<propertyregex property="version-type" override="true"
@@ -329,7 +329,7 @@
 								<stringutil string="${version-type}" property="spring-boot-artifactory-repo">
 									<lowercase />
 								</stringutil>
-								<var name="github-tag" value="v${revision}" />
+								<var name="github-tag" value="v${project.version}" />
 								<propertyregex property="github-tag" override="true"
 									input="${github-tag}" regexp=".*SNAPSHOT" replace="master" />
 							</target>

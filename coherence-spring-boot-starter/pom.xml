@@ -32,11 +32,11 @@
 		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>
 			<artifactId>coherence</artifactId>
-			<version>${oracle.coherence.version}</version>
+			<version>${coherence.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
-			<artifactId>coherence-spring</artifactId>
+			<artifactId>coherence-spring-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

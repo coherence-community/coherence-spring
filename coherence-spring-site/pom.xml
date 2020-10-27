@@ -22,7 +22,7 @@
         <!-- content properties for site generation -->
         <site-project-title>Coherence Spring</site-project-title>
         <site-timestamp>${maven.build.timestamp}</site-timestamp>
-        <site-coherence-version>${oracle.coherence.version}</site-coherence-version>
+        <site-coherence-version>${coherence.version}</site-coherence-version>
     </properties>
 
 	<dependencies>
@@ -44,7 +44,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -53,7 +52,14 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -71,14 +77,13 @@
                 </dependencies>
                 <executions>
                     <execution>
-                        <phase>deploy</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>site</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -99,7 +104,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
@@ -124,4 +128,3 @@
         </plugins>
     </build>
 </project>
-
