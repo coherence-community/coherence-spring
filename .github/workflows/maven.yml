@@ -17,7 +17,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean install -Pspring --settings settings.xml
     - name: Deploy Website + Snapshots
-      run: mvn deploy --settings settings.xml -Pspring
+      run: mvn deploy --settings .mvn/settings.xml -Pspring
       env:
         MAVEN_GITHUB_TOKEN: "${{secrets.MAVEN_GITHUB}}"
         MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
