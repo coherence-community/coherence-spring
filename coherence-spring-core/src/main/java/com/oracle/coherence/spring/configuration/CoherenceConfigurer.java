@@ -38,20 +38,17 @@ import com.tangosol.net.CoherenceConfiguration;
 public interface CoherenceConfigurer {
 
 	/**
-	 *
-	 * @return
+	 * @return Coherence instance
 	 */
 	Coherence getCoherence();
 
 	/**
-	 *
-	 * @return
+	 * @return The Coherence Server
 	 */
 	CoherenceServer getCoherenceServer();
 
 	/**
-	 *
-	 * @return
+	 * @return The configuration for a Coherence instance
 	 */
 	CoherenceConfiguration getCoherenceConfiguration();
 }

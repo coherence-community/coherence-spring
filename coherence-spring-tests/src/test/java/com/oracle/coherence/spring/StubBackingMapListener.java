@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -40,60 +40,60 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class StubBackingMapListener extends MultiplexingMapListener
 {
-    private volatile boolean         m_fCtxConfigured = false;
-    private BackingMapManagerContext m_ctx;
+	private volatile boolean         m_fCtxConfigured = false;
+	private BackingMapManagerContext m_ctx;
 
 
-    /**
-     * Construct a StubBackingMapListener.
-     *
-     */
-    public StubBackingMapListener()
-    {
-        super();
-    }
+	/**
+	 * Construct a StubBackingMapListener.
+	 *
+	 */
+	public StubBackingMapListener()
+	{
+		super();
+	}
 
 
-    /**
-     * Return the BackingMapManagerContext.
-     *
-     * @return the BackingMapManagerContext
-     */
-    public BackingMapManagerContext getBackingMapManagerContext()
-    {
-        return m_ctx;
-    }
+	/**
+	 * Return the BackingMapManagerContext.
+	 *
+	 * @return the BackingMapManagerContext
+	 */
+	public BackingMapManagerContext getBackingMapManagerContext()
+	{
+		return m_ctx;
+	}
 
 
-    /**
-     * Set the BackingMapManagerContext.
-     *
-     * @param ctx the BackingMapManagerContext
-     */
-    @Value("#{manager-context}")
-    public void setBackingMapManagerContext(BackingMapManagerContext ctx)
-    {
-        m_ctx = ctx;
-    }
+	/**
+	 * Set the BackingMapManagerContext.
+	 *
+	 * @param ctx the BackingMapManagerContext
+	 */
+	@Value("#{manager-context}")
+	public void setBackingMapManagerContext(BackingMapManagerContext ctx)
+	{
+		m_ctx = ctx;
+	}
 
 
-    /**
-     * Return true if the BackingMapManagerContext was set via {@link #setBackingMapManagerContext}.
-     *
-     * @return true if the BackingMapManagerContext was set
-     */
-    public boolean isContextConfigured()
-    {
-        return m_fCtxConfigured;
-    }
+	/**
+	 * Return true if the BackingMapManagerContext was set via {@link #setBackingMapManagerContext}.
+	 *
+	 * @return true if the BackingMapManagerContext was set
+	 */
+	public boolean isContextConfigured()
+	{
+		return m_fCtxConfigured;
+	}
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onMapEvent(MapEvent evt)
-    {
-        m_fCtxConfigured = m_ctx != null;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onMapEvent(MapEvent evt)
+	{
+		m_fCtxConfigured = m_ctx != null;
+	}
 }

@@ -1,123 +1,129 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.oracle.coherence.spring</groupId>
-    <artifactId>coherence-spring-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
 
-    <name>Coherence Spring Project</name>
+	<groupId>com.oracle.coherence.spring</groupId>
+	<artifactId>coherence-spring-parent</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <description>
-        The Oracle Coherence Spring Integration provides mechanism to bridge and
-        support the use of Spring with Coherence and vice-versa.
-    </description>
+	<name>Coherence Spring Project</name>
 
-    <url>https://github.com/coherence-community/coherence-spring</url>
+	<description>
+		The Oracle Coherence Spring project provides support for using Spring
+		with Coherence and vice-versa.
+	</description>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/coherence-community/coherence-spring/issues</url>
-    </issueManagement>
+	<url>https://github.com/coherence-community/coherence-spring</url>
 
-    <licenses>
-        <license>
-            <name>Common Development and Distribution License 1.0 ("CDDL")</name>
-            <url>http://opensource.org/licenses/CDDL-1.0</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/coherence-community/coherence-spring/issues</url>
+	</issueManagement>
 
-    <developers>
-        <developer>
-            <name>Brian Oliver</name>
-            <organization>Oracle Corporation</organization>
-        </developer>
+	<licenses>
+		<license>
+			<name>Common Development and Distribution License 1.0 ("CDDL")</name>
+			<url>http://opensource.org/licenses/CDDL-1.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-        <developer>
-            <name>Patrick Peralta</name>
-            <organization>Oracle Corporation</organization>
-        </developer>
+	<developers>
+		<developer>
+			<name>Brian Oliver</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
 
-        <developer>
-            <name>Gunnar Hillert</name>
-            <organization>Oracle Corporation</organization>
-        </developer>
-    </developers>
+		<developer>
+			<name>Patrick Peralta</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
 
-    <scm>
-        <connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
-        <developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
-        <url>https://github.com/coherence-community/coherence-spring</url>
-    </scm>
+		<developer>
+			<name>Gunnar Hillert</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
+	</developers>
 
-    <modules>
-        <module>coherence-spring-core</module>
-        <module>coherence-spring-boot-starter</module>
-        <module>coherence-spring-tests</module>
-        <module>coherence-spring-site</module>
-        <module>coherence-spring-docs</module>
-    </modules>
+	<scm>
+		<connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
+		<developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
+		<url>https://github.com/coherence-community/coherence-spring</url>
+	</scm>
 
-    <properties>
-        <!-- project options -->
-        <java.version>1.8</java.version>
-        <maven.minimum.version>3.6.0</maven.minimum.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skip-sign-artifacts>true</skip-sign-artifacts>
+	<modules>
+		<module>coherence-spring-core</module>
+		<module>coherence-spring-boot-starter</module>
+		<module>coherence-spring-tests</module>
+		<module>coherence-spring-site</module>
+		<module>coherence-spring-docs</module>
+	</modules>
 
-        <!-- source code repository information -->
-        <source.owner>coherence-community</source.owner>
-        <source.repository>coherence-spring</source.repository>
-        <source.branch>master</source.branch>
+	<properties>
+		<!-- project options -->
+		<java.version>1.8</java.version>
+		<maven.minimum.version>3.6.0</maven.minimum.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skip-sign-artifacts>true</skip-sign-artifacts>
 
-        <!-- plugin dependency versions (alphabetically) -->
-        <doxia.module.markdown.version>1.0</doxia.module.markdown.version>
-        <github.site.maven.plugin.version>0.12</github.site.maven.plugin.version>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.dependency.plugin.version>2.6</maven.dependency.plugin.version>
-        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
-        <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
-        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-        <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
-        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-        <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
-        <maven.release.plugin.version>2.5</maven.release.plugin.version>
-        <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
-        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+		<!-- source code repository information -->
+		<source.owner>coherence-community</source.owner>
+		<source.repository>coherence-spring</source.repository>
+		<source.branch>master</source.branch>
 
-        <!-- dependency versions (alphabetically) -->
-        <coherence.version>20.12-SNAPSHOT</coherence.version>
-        <hamcrest.version>2.2</hamcrest.version>
-        <junit.version>5.7.0</junit.version>
-        <mockito.version>1.9.5</mockito.version>
-        <org.springframework.version>5.2.9.RELEASE</org.springframework.version>
-    </properties>
+		<!-- plugin dependency versions (alphabetically) -->
+		<doxia.module.markdown.version>1.0</doxia.module.markdown.version>
+		<github.site.maven.plugin.version>0.12</github.site.maven.plugin.version>
+		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+		<maven.dependency.plugin.version>2.6</maven.dependency.plugin.version>
+		<maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+		<maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
+		<maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
+		<maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+		<maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
+		<maven.release.plugin.version>2.5</maven.release.plugin.version>
+		<maven.site.plugin.version>3.9.1</maven.site.plugin.version>
+		<maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+		<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+		<!-- dependency versions (alphabetically) -->
+		<coherence.version>20.12-SNAPSHOT</coherence.version>
+		<hamcrest.version>2.2</hamcrest.version>
+		<junit.version>5.7.0</junit.version>
+		<mockito.version>1.9.5</mockito.version>
+		<org.springframework.version>5.2.9.RELEASE</org.springframework.version>
+	</properties>
 
-<repositories>
-       <repository>
-         <id>snapshots-repo</id>
-         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-         <releases><enabled>false</enabled></releases>
-         <snapshots><enabled>true</enabled></snapshots>
-       </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-</repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>snapshots-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</repositories>
 
 	<dependencyManagement>
 		<dependencies>
@@ -129,14 +135,14 @@
 		</dependencies>
 	</dependencyManagement>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven.deploy.plugin.version}</version>
-                </plugin>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven.deploy.plugin.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>org.asciidoctor</groupId>
 					<artifactId>asciidoctor-maven-plugin</artifactId>
@@ -154,131 +160,131 @@
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>2.3.4.RELEASE</version>
 				</plugin>
-            </plugins>
-        </pluginManagement>
+			</plugins>
+		</pluginManagement>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${maven.enforcer.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>enforce-plugin-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>${maven.minimum.version}</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>${java.version}</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven.enforcer.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>enforce-plugin-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>${maven.minimum.version}</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>${java.version}</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
-                <configuration>
-                    <argLine>-Xms800m -Xmx800m -XX:MaxPermSize=500m</argLine>
-                    <includes>
-                        <include>**/*FunctionalTest.java</include>
-                        <include>**/*Test.java</include>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                    <useSystemClassLoader>true</useSystemClassLoader>
-                    <useManifestOnlyJar>false</useManifestOnlyJar>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<argLine>-Xms800m -Xmx800m -XX:MaxPermSize=500m</argLine>
+					<includes>
+						<include>**/*FunctionalTest.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+					<useSystemClassLoader>true</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven.source.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven.javadoc.plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <failOnError>false</failOnError>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <inherited>true</inherited>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<failOnError>false</failOnError>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven.install.plugin.version}</version>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven.install.plugin.version}</version>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven.release.plugin.version}</version>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven.gpg.plugin.version}</version>
-                <configuration>
-                    <skip>${skip-sign-artifacts}</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven.gpg.plugin.version}</version>
+				<configuration>
+					<skip>${skip-sign-artifacts}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

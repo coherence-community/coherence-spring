@@ -49,56 +49,56 @@ import java.util.HashMap;
 @Configuration
 public class SpringApplicationConfig
 {
-    @Bean
-    public SpringBasedCoherenceSession session()
-    {
-        return new SpringBasedCoherenceSession("spring-application-cache-config.xml");
-    }
+	@Bean
+	public SpringBasedCoherenceSession session()
+	{
+		return new SpringBasedCoherenceSession("spring-application-cache-config.xml");
+	}
 
-    @Bean
-    @Lazy
-    public StubNamedCacheStore mapCacheStore()
-    {
-        HashMap map = new HashMap();
+	@Bean
+	@Lazy
+	public StubNamedCacheStore mapCacheStore()
+	{
+		HashMap map = new HashMap();
 
-        map.put("key", "value");
+		map.put("key", "value");
 
-        return new StubNamedCacheStore(map);
-    }
-
-
-    @Bean
-    @Lazy
-    public StubBackingMapListener bml()
-    {
-        return new StubBackingMapListener();
-    }
+		return new StubNamedCacheStore(map);
+	}
 
 
-    @Bean
-    @Lazy
-    public StubBackingMapListener bmlPull()
-    {
-        return new StubBackingMapListener();
-    }
+	@Bean
+	@Lazy
+	public StubBackingMapListener bml()
+	{
+		return new StubBackingMapListener();
+	}
 
 
-    @Bean
-    @Lazy
-    public StubNamedCacheStore mapCacheStorePull()
-    {
-        HashMap map = new HashMap();
-
-        map.put("key", "value");
-
-        return new StubNamedCacheStore(map);
-    }
+	@Bean
+	@Lazy
+	public StubBackingMapListener bmlPull()
+	{
+		return new StubBackingMapListener();
+	}
 
 
-    @Bean
-    @Lazy
-    public StubInterceptor interceptor()
-    {
-        return new StubInterceptor();
-    }
+	@Bean
+	@Lazy
+	public StubNamedCacheStore mapCacheStorePull()
+	{
+		HashMap map = new HashMap();
+
+		map.put("key", "value");
+
+		return new StubNamedCacheStore(map);
+	}
+
+
+	@Bean
+	@Lazy
+	public StubInterceptor interceptor()
+	{
+		return new StubInterceptor();
+	}
 }

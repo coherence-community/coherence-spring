@@ -1,29 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
-    </parent>
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>coherence-spring-site</artifactId>
+	<parent>
+		<groupId>com.oracle.coherence.spring</groupId>
+		<artifactId>coherence-spring-parent</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
 
-    <name>Coherence Spring Site</name>
+	<artifactId>coherence-spring-site</artifactId>
 
-    <description>
-        The Coherence Spring Site.
-    </description>
+	<name>Coherence Spring Site</name>
+	<description>The Coherence Spring Site</description>
 
-    <properties>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-        <timestamp>${maven.build.timestamp}</timestamp>
+	<properties>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<timestamp>${maven.build.timestamp}</timestamp>
 
-        <!-- content properties for site generation -->
-        <site-project-title>Coherence Spring</site-project-title>
-        <site-timestamp>${maven.build.timestamp}</site-timestamp>
-        <site-coherence-version>${coherence.version}</site-coherence-version>
-    </properties>
+		<!-- content properties for site generation -->
+		<site-project-title>Coherence Spring</site-project-title>
+		<site-timestamp>${maven.build.timestamp}</site-timestamp>
+		<site-coherence-version>${coherence.version}</site-coherence-version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -34,56 +33,56 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven.install.plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven.deploy.plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven.jar.plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>${maven.site.plugin.version}</version>
-                <configuration>
-                    <skipDeploy>true</skipDeploy>
-                    <generateReports>false</generateReports>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.kohsuke</groupId>
-                        <artifactId>doxia-module-markdown</artifactId>
-                        <version>${doxia.module.markdown.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven.install.plugin.version}</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven.deploy.plugin.version}</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven.site.plugin.version}</version>
+				<configuration>
+					<skipDeploy>true</skipDeploy>
+					<generateReports>false</generateReports>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.kohsuke</groupId>
+						<artifactId>doxia-module-markdown</artifactId>
+						<version>${doxia.module.markdown.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -104,27 +103,27 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>${github.site.maven.plugin.version}</version>
-                <configuration>
-                    <server>github-pages</server>
-                    <message>${project.version} Site</message>
-                    <path>${project.version}</path>
-                    <merge>true</merge>
-                    <repositoryName>coherence-spring</repositoryName>
-                    <repositoryOwner>coherence-community</repositoryOwner>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>${github.site.maven.plugin.version}</version>
+				<configuration>
+					<server>github-pages</server>
+					<message>${project.version} Site</message>
+					<path>${project.version}</path>
+					<merge>true</merge>
+					<repositoryName>coherence-spring</repositoryName>
+					<repositoryOwner>coherence-community</repositoryOwner>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

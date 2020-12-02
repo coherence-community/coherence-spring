@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>com.oracle.coherence.spring</groupId>
+		<artifactId>coherence-spring-parent</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
 
 	<artifactId>coherence-spring-docs</artifactId>
+
 	<name>Coherence Spring Docs</name>
 	<description>Coherence Spring Reference Documentation</description>
 
@@ -27,40 +28,40 @@
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
 
-        <dependency>
-            <groupId>com.oracle.coherence.ce</groupId>
-            <artifactId>coherence</artifactId>
-            <version>${coherence.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence</artifactId>
+			<version>${coherence.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>io.spring.docresources</groupId>
@@ -107,25 +108,26 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-				<execution>
-					<id>unpack-doc-resources</id>
-					<goals>
-						<goal>unpack-dependencies</goal>
-					</goals>
-					<phase>generate-resources</phase>
-					<configuration>
-						<includeGroupIds>io.spring.docresources</includeGroupIds>
-						<includeArtifactIds>spring-doc-resources</includeArtifactIds>
-						<includeTypes>zip</includeTypes>
-						<excludeTransitive>true</excludeTransitive>
-						<outputDirectory>${project.build.directory}/refdocs/</outputDirectory>
-					</configuration>
-				</execution>
-			</executions>
+					<execution>
+						<id>unpack-doc-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<includeGroupIds>io.spring.docresources</includeGroupIds>
+							<includeArtifactIds>spring-doc-resources</includeArtifactIds>
+							<includeTypes>zip</includeTypes>
+							<excludeTransitive>true</excludeTransitive>
+							<outputDirectory>${project.build.directory}/refdocs/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>copy-asciidoc-resources</id>
@@ -306,7 +308,8 @@
 										src="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"
 										prefix="api" />
 									<!-- <fileset dir="${project.build.directory}/contents" /> -->
-									<fileset dir="${project.build.directory}/generated-docs" />
+									<fileset
+										dir="${project.build.directory}/generated-docs" />
 								</zip>
 							</target>
 						</configuration>
@@ -320,23 +323,31 @@
 						<configuration>
 							<exportAntProperties>true</exportAntProperties>
 							<target>
-								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-								<taskdef name="stringutil" classname="ise.antelope.tasks.StringUtilTask" />
+								<taskdef
+									resource="net/sf/antcontrib/antcontrib.properties" />
+								<taskdef name="stringutil"
+									classname="ise.antelope.tasks.StringUtilTask" />
 								<var name="version-type" value="${project.version}" />
-								<propertyregex property="version-type" override="true"
-									input="${version-type}" regexp=".*\.(.*)" replace="\1" />
-								<propertyregex property="version-type" override="true"
-									input="${version-type}" regexp="(M)\d+" replace="MILESTONE" />
-								<propertyregex property="version-type" override="true"
-									input="${version-type}" regexp="(RC)\d+" replace="MILESTONE" />
-								<propertyregex property="version-type" override="true"
-									input="${version-type}" regexp="BUILD-(.*)" replace="SNAPSHOT" />
-								<stringutil string="${version-type}" property="spring-boot-artifactory-repo">
+								<propertyregex property="version-type"
+									override="true" input="${version-type}" regexp=".*\.(.*)"
+									replace="\1" />
+								<propertyregex property="version-type"
+									override="true" input="${version-type}" regexp="(M)\d+"
+									replace="MILESTONE" />
+								<propertyregex property="version-type"
+									override="true" input="${version-type}" regexp="(RC)\d+"
+									replace="MILESTONE" />
+								<propertyregex property="version-type"
+									override="true" input="${version-type}" regexp="BUILD-(.*)"
+									replace="SNAPSHOT" />
+								<stringutil string="${version-type}"
+									property="spring-boot-artifactory-repo">
 									<lowercase />
 								</stringutil>
 								<var name="github-tag" value="v${project.version}" />
-								<propertyregex property="github-tag" override="true"
-									input="${github-tag}" regexp=".*SNAPSHOT" replace="master" />
+								<propertyregex property="github-tag"
+									override="true" input="${github-tag}" regexp=".*SNAPSHOT"
+									replace="master" />
 							</target>
 						</configuration>
 					</execution>
@@ -345,6 +356,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-zip</id>

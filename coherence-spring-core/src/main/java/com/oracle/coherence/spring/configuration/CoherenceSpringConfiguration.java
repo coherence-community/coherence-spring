@@ -87,7 +87,7 @@ public class CoherenceSpringConfiguration {
 	@Bean
 	@DependsOn("coherenceServer")
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	public Cluster getCluster(CoherenceServer coherenceServer) {
+	public Cluster getCluster() {
 		return CacheFactory.getCluster();
 	}
 

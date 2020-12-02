@@ -36,26 +36,26 @@ import com.tangosol.net.events.partition.cache.EntryEvent;
  */
 public class StubInterceptor implements EventInterceptor<EntryEvent<?, ?>>
 {
-    private volatile boolean m_fEventReceived = false;
+	private volatile boolean m_fEventReceived = false;
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onEvent(EntryEvent<?, ?> event)
-    {
-        m_fEventReceived = true;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onEvent(EntryEvent<?, ?> event)
+	{
+		m_fEventReceived = true;
+	}
 
 
-    /**
-     * Return true if an event was received via {@link #onEvent}.
-     *
-     * @return true if an event was received.
-     */
-    public boolean eventReceived()
-    {
-        return m_fEventReceived;
-    }
+	/**
+	 * Return true if an event was received via {@link #onEvent}.
+	 *
+	 * @return true if an event was received.
+	 */
+	public boolean eventReceived()
+	{
+		return m_fEventReceived;
+	}
 }

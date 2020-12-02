@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * The contents of this file are subject to the terms and conditions of 
+ * The contents of this file are subject to the terms and conditions of
  * the Common Development and Distribution License 1.0 (the "License").
  *
  * You may not use this file except in compliance with the License.
@@ -39,83 +39,83 @@ import java.util.Map;
  */
 public class StubNamedCacheStore extends MapCacheStore
 {
-    /**
-     * Cache name constant.
-     */
-    public static final String CACHE_NAME_KEY = "CACHE_NAME_KEY";
+	/**
+	 * Cache name constant.
+	 */
+	public static final String CACHE_NAME_KEY = "CACHE_NAME_KEY";
 
-    private String             m_sCacheName;
-    private String             m_sSpelValue;
-
-
-    /**
-     * Create a CacheStore that delegates to a Map.
-     *
-     * @param map the Map to use as the underlying store for this CacheStore
-     */
-    public StubNamedCacheStore(Map map)
-    {
-        super(map);
-    }
+	private String             m_sCacheName;
+	private String             m_sSpelValue;
 
 
-    /**
-     * Return the cache name for this cache store.
-     *
-     * @return cache name
-     */
-    public String getCacheName()
-    {
-        return m_sCacheName;
-    }
+	/**
+	 * Create a CacheStore that delegates to a Map.
+	 *
+	 * @param map the Map to use as the underlying store for this CacheStore
+	 */
+	public StubNamedCacheStore(Map map)
+	{
+		super(map);
+	}
 
 
-    /**
-     * Set the cache name for this cache store.
-     *
-     * @param sCacheName cache name
-     */
-    @Value("#{cache-name}")
-    public void setCacheName(String sCacheName)
-    {
-        m_sCacheName = sCacheName;
-    }
+	/**
+	 * Return the cache name for this cache store.
+	 *
+	 * @return cache name
+	 */
+	public String getCacheName()
+	{
+		return m_sCacheName;
+	}
 
 
-    /**
-     * Return the spel value for this cache store.
-     *
-     * @return spel value
-     */
-    public String getSpelValue()
-    {
-        return m_sSpelValue;
-    }
+	/**
+	 * Set the cache name for this cache store.
+	 *
+	 * @param sCacheName cache name
+	 */
+	@Value("#{cache-name}")
+	public void setCacheName(String sCacheName)
+	{
+		m_sCacheName = sCacheName;
+	}
 
 
-    /**
-     * Set the spel value for this cache store.
-     *
-     * @param sValue spel value
-     */
-    @Value("#{'Prosperity'.substring(0,7)}")
-    public void setSpelValue(String sValue)
-    {
-        m_sSpelValue = sValue;
-    }
+	/**
+	 * Return the spel value for this cache store.
+	 *
+	 * @return spel value
+	 */
+	public String getSpelValue()
+	{
+		return m_sSpelValue;
+	}
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object load(Object oKey)
-    {
-        if (CACHE_NAME_KEY.equals(oKey))
-        {
-            return getCacheName();
-        }
+	/**
+	 * Set the spel value for this cache store.
+	 *
+	 * @param sValue spel value
+	 */
+	@Value("#{'Prosperity'.substring(0,7)}")
+	public void setSpelValue(String sValue)
+	{
+		m_sSpelValue = sValue;
+	}
 
-        return super.load(oKey);
-    }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object load(Object oKey)
+	{
+		if (CACHE_NAME_KEY.equals(oKey))
+		{
+			return getCacheName();
+		}
+
+		return super.load(oKey);
+	}
 }

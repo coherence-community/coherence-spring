@@ -63,132 +63,132 @@ import java.util.Map;
 @SpringJUnitConfig(SpringApplicationConfig.class)
 public class SpringApplicationTests
 {
-    /**
-     * The {@link ApplicationContext} we'll use for testing.
-     */
-    @Autowired
-    protected ApplicationContext context;
+	/**
+	 * The {@link ApplicationContext} we'll use for testing.
+	 */
+	@Autowired
+	protected ApplicationContext context;
 
-    /**
-     * The {@link SpringBasedCoherenceSession} we'll use for testing.
-     */
-    @Autowired
-    protected SpringBasedCoherenceSession session;
+	/**
+	 * The {@link SpringBasedCoherenceSession} we'll use for testing.
+	 */
+	@Autowired
+	protected SpringBasedCoherenceSession session;
 
-    /**
-     * Stop the cluster after each test have executed.
-     */
-    @AfterAll
-    public static void stopCluster()
-    {
-        CacheFactory.shutdown();
-    }
-
-
-    /**
-     * Test the use of Spring to inject a CacheStore.
-     */
-    @Test
-    public void testCacheStore()
-    {
-        String[] asCacheNames = new String[] {"CacheStore", "CacheStorePull"};
-
-        for (String sCacheName : asCacheNames)
-        {
-            NamedCache cache = session.getCache(sCacheName);
-
-            // the CacheStore provided by Spring is an instance of MapCacheStore
-            // which has an internal map that contains the entry <"key", "value">
-            assertEquals("value", cache.get("key"));
-
-            // this asserts that the {cache-name} macro succeeded in injecting
-            // the cache name to the cache store (see StubNamedCacheStore)
-            assertEquals(sCacheName, cache.get(StubNamedCacheStore.CACHE_NAME_KEY));
-        }
-
-        BeanFactory         beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
-        StubNamedCacheStore cs          = beanFactory.getBean("mapCacheStorePull", StubNamedCacheStore.class);
-
-        assertThat(cs.getSpelValue(), is("Prosper"));
-    }
+	/**
+	 * Stop the cluster after each test have executed.
+	 */
+	@AfterAll
+	public static void stopCluster()
+	{
+		CacheFactory.shutdown();
+	}
 
 
-    /**
-     * Test the injection of a backing map manager context via
-     * the {manager-context} macro.
-     */
-    @Test
-    public void testBackingMapManagerContextInjection()
-    {
-        String[] asCacheNames = new String[] {"CacheBML", "CacheBMLPull"};
-        String[] asBeanNames  = new String[] {"bml", "bmlPull"};
+	/**
+	 * Test the use of Spring to inject a CacheStore.
+	 */
+	@Test
+	public void testCacheStore()
+	{
+		String[] asCacheNames = new String[] {"CacheStore", "CacheStorePull"};
 
-        for (int i = 0; i < asCacheNames.length; ++i)
-        {
-            NamedCache             cache       = session.getCache(asCacheNames[i]);
-            BeanFactory            beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
-            StubBackingMapListener bml         = beanFactory.getBean(asBeanNames[i], StubBackingMapListener.class);
+		for (String sCacheName : asCacheNames)
+		{
+			NamedCache cache = session.getCache(sCacheName);
 
-            assertFalse(bml.isContextConfigured());
-            cache.put("key", "value");
-            assertTrue(bml.isContextConfigured());
-        }
-    }
+			// the CacheStore provided by Spring is an instance of MapCacheStore
+			// which has an internal map that contains the entry <"key", "value">
+			assertEquals("value", cache.get("key"));
 
+			// this asserts that the {cache-name} macro succeeded in injecting
+			// the cache name to the cache store (see StubNamedCacheStore)
+			assertEquals(sCacheName, cache.get(StubNamedCacheStore.CACHE_NAME_KEY));
+		}
 
-    /**
-     * Test the registration of a bean factory and injection of a backing map.
-     */
-    @Test
-    public void testManualRegistration()
-    {
-        // this local cache will be used as a backing map
-        LocalCache localCache = new LocalCache(100, 0, new AbstractCacheLoader()
-        {
-            @Override
-            public Object load(Object oKey)
-            {
-                return ExternalizableHelper.toBinary("mock");
-            }
-        });
+		BeanFactory         beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
+		StubNamedCacheStore cs          = beanFactory.getBean("mapCacheStorePull", StubNamedCacheStore.class);
 
-        // instead of creating a Spring application context, create
-        // a simple mock BeanFactory that returns the local cache
-        // created above
-        BeanFactory factory = mock(BeanFactory.class);
-
-        when(factory.getBean("localBackingMap")).thenReturn(localCache);
-
-        // register the mock BeanFactory with the cache factory so that
-        // it is used as the backing map (see the cache config file)
-        session.getResourceRegistry().registerResource(BeanFactory.class, "mock", factory);
-
-        NamedCache namedCache = session.getCache("CacheCustomBackingMap");
-
-        // cache loader always returns the same value
-        assertEquals("mock", namedCache.get("key"));
-
-        // assert backing map properties
-        Map mapBacking =
-            namedCache.getCacheService().getBackingMapManager().getContext()
-                .getBackingMapContext("CacheCustomBackingMap").getBackingMap();
-
-        assertEquals(LocalCache.class, mapBacking.getClass());
-        assertEquals(100, ((LocalCache) mapBacking).getHighUnits());
-        assertEquals(localCache, mapBacking);
-    }
+		assertThat(cs.getSpelValue(), is("Prosper"));
+	}
 
 
-    /**
-     * Test interceptor configuration.
-     */
-    @Test
-    public void testInterceptor()
-    {
-        StubInterceptor interceptor = context.getBean(StubInterceptor.class);
+	/**
+	 * Test the injection of a backing map manager context via
+	 * the {manager-context} macro.
+	 */
+	@Test
+	public void testBackingMapManagerContextInjection()
+	{
+		String[] asCacheNames = new String[] {"CacheBML", "CacheBMLPull"};
+		String[] asBeanNames  = new String[] {"bml", "bmlPull"};
 
-        assertFalse(interceptor.eventReceived());
-        session.getCache("CacheInterceptor").put("key", "value");
-        assertTrue(interceptor.eventReceived());
-    }
+		for (int i = 0; i < asCacheNames.length; ++i)
+		{
+			NamedCache             cache       = session.getCache(asCacheNames[i]);
+			BeanFactory            beanFactory = session.getResourceRegistry().getResource(BeanFactory.class);
+			StubBackingMapListener bml         = beanFactory.getBean(asBeanNames[i], StubBackingMapListener.class);
+
+			assertFalse(bml.isContextConfigured());
+			cache.put("key", "value");
+			assertTrue(bml.isContextConfigured());
+		}
+	}
+
+
+	/**
+	 * Test the registration of a bean factory and injection of a backing map.
+	 */
+	@Test
+	public void testManualRegistration()
+	{
+		// this local cache will be used as a backing map
+		LocalCache localCache = new LocalCache(100, 0, new AbstractCacheLoader()
+		{
+			@Override
+			public Object load(Object oKey)
+			{
+				return ExternalizableHelper.toBinary("mock");
+			}
+		});
+
+		// instead of creating a Spring application context, create
+		// a simple mock BeanFactory that returns the local cache
+		// created above
+		BeanFactory factory = mock(BeanFactory.class);
+
+		when(factory.getBean("localBackingMap")).thenReturn(localCache);
+
+		// register the mock BeanFactory with the cache factory so that
+		// it is used as the backing map (see the cache config file)
+		session.getResourceRegistry().registerResource(BeanFactory.class, "mock", factory);
+
+		NamedCache namedCache = session.getCache("CacheCustomBackingMap");
+
+		// cache loader always returns the same value
+		assertEquals("mock", namedCache.get("key"));
+
+		// assert backing map properties
+		Map mapBacking =
+			namedCache.getCacheService().getBackingMapManager().getContext()
+				.getBackingMapContext("CacheCustomBackingMap").getBackingMap();
+
+		assertEquals(LocalCache.class, mapBacking.getClass());
+		assertEquals(100, ((LocalCache) mapBacking).getHighUnits());
+		assertEquals(localCache, mapBacking);
+	}
+
+
+	/**
+	 * Test interceptor configuration.
+	 */
+	@Test
+	public void testInterceptor()
+	{
+		StubInterceptor interceptor = context.getBean(StubInterceptor.class);
+
+		assertFalse(interceptor.eventReceived());
+		session.getCache("CacheInterceptor").put("key", "value");
+		assertTrue(interceptor.eventReceived());
+	}
 }
