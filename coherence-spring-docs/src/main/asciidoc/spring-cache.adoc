@@ -3,9 +3,82 @@
 include::attributes.adoc[]
 
 This section dives into the Coherence Spring Cache module. It explains how to use
-Coherence's support for the Spring Framework's Cache Abstraction.
+Coherence's support for the Spring Framework's https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
 
 [[spring-cache-introduction]]
 == Introduction
 
-TBD
+Spring provides its own cache abstraction, allowing you to add caching to
+Java methods. Coherence Spring provides an implementation of this abstraction for
+Oracle Coherence.
+
+NOTE: Spring's Cache abstraction also supports JSR-107 which is also supported by
+Oracle Coherence. As such you have another alternative for setting up caching.
+
+[[spring-cache-configuration]]
+== Configuring Coherence Cache for Spring
+
+As a start, please familiarize yourself with Spring's Cache Abstraction by reading the
+https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[relevant section]
+of Spring's reference documentation.
+
+
+[source,yaml,configblocks]
+----
+example:
+  property:
+    alpha: a
+----
+
+[source,yaml,indent=0,configblocks]
+----
+	spring:
+	  devtools:
+	    restart:
+	      exclude: "static/**,public/**"
+----
+
+
+.Creating a CoherenceInstance
+====
+.Java
+[source,java,role="primary"]
+----
+@Configuration
+@EnableCaching
+public class CacheConfiguration {
+
+	@Bean
+	public CoherenceInstance coherenceInstance() {
+	  return new CoherenceInstance();
+	}
+
+	@Bean
+	public CacheManager cacheManager(CoherenceInstance coherenceInstance) {
+	  return new CoherenceCacheManager(coherenceInstance);
+	}
+}
+----
+
+.XML
+[source,xml,role="secondary"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd">
+
+  <cache:annotation-driven/>
+
+  <bean id="coherenceInstance" class="com.oracle.coherence.spring.CoherenceInstance"/>
+
+  <bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager">
+    <constructor-arg ref="coherenceInstance"/>
+  </bean>
+</beans>
+----
+====
+

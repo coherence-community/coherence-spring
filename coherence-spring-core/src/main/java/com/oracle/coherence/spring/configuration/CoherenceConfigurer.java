@@ -1,5 +1,5 @@
 /*
- * File: CoherenceBeanExpressionResolver.java
+ * File: CoherenceConfigurer.java
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -22,30 +22,36 @@
  * enclosed by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  */
-
 package com.oracle.coherence.spring.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import com.oracle.coherence.spring.CoherenceInstance;
-import com.oracle.coherence.spring.SpringBasedCoherenceSession;
+import com.oracle.coherence.spring.CoherenceServer;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.CoherenceConfiguration;
 
 /**
+ * Provides a strategy interface in order to customize the Coherence configuration.
+ * Users should typically not directly use getter methods from a {@code CoherenceConfigurer}
+ * directly unless they are using it to supply the implementations for Spring Beans.
  *
  * @author Gunnar Hillert
- *
  */
-@Configuration
-public class CoherenceConfiguration {
+public interface CoherenceConfigurer {
 
-	@Bean
-	CoherenceInstance coherenceInstance(SpringBasedCoherenceSession springBasedCoherenceSession) {
-		return new CoherenceInstance(springBasedCoherenceSession);
-	}
+	/**
+	 *
+	 * @return
+	 */
+	Coherence getCoherence();
 
-	@Bean
-	SpringBasedCoherenceSession springBasedCoherenceSession() {
-		return new SpringBasedCoherenceSession();
-	}
+	/**
+	 *
+	 * @return
+	 */
+	CoherenceServer getCoherenceServer();
+
+	/**
+	 *
+	 * @return
+	 */
+	CoherenceConfiguration getCoherenceConfiguration();
 }

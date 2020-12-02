@@ -38,6 +38,7 @@ import org.springframework.beans.BeansException;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 
@@ -108,7 +109,8 @@ import static com.tangosol.net.ExtensibleConfigurableCacheFactory.DependenciesHe
  */
 public class SpringBasedCoherenceSession implements ApplicationContextAware,
                                                     ApplicationListener<ApplicationContextEvent>,
-                                                    DisposableBean
+                                                    DisposableBean,
+                                                    InitializingBean
 {
     /**
      * The default URI constant when we need to auto-detect the cache configuration
@@ -199,44 +201,7 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
     {
         this.applicationContext = applicationContext;
-
-        // override the bean expression resolver with one that can also
-        // resolve Coherence-based values eg: cache-name, manager-context etc.
-        AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
-
-        if (beanFactory instanceof ConfigurableBeanFactory)
-        {
-            ((ConfigurableBeanFactory) beanFactory)
-                .setBeanExpressionResolver(new CoherenceBeanExpressionResolver(ParameterMacroExpressionParser
-                    .INSTANCE));
-        }
-
-        // establish the configuration dependencies for the
-        // ConfigurableCacheFactory we're about to create
-        ExtensibleConfigurableCacheFactory.Dependencies dependencies = cacheConfigURI.equals(DEFAULT_CACHE_CONFIG_URI)
-                                                                       ? newInstance() : newInstance(cacheConfigURI);
-
-        // register this application context as a resource so that the
-        // ConfigurableCacheFactory can later use it
-        // (say for injecting into Coherence-based instances)
-        dependencies.getResourceRegistry().registerResource(ApplicationContext.class, applicationContext);
-
-        // also register this application context as the default BeanFactory
-        dependencies.getResourceRegistry().registerResource(BeanFactory.class, applicationContext);
-
-        // create the ConfigurableCacheFactory
-        this.configurableCacheFactory = new ExtensibleConfigurableCacheFactory(dependencies);
-
-        // register the ConfigurableCacheFactory with the CacheFactoryBuilder
-        // so that anyone attempting to use the static CacheFactory methods
-        // like "CacheFactory.getCache()" has a chance of using the same
-        // configuration and caches!
-        CacheFactory.getCacheFactoryBuilder().setConfigurableCacheFactory(configurableCacheFactory,
-                                                                          cacheConfigURI,
-                                                                          null,
-                                                                          false);
     }
-
 
     @Override
     public void onApplicationEvent(ApplicationContextEvent event)
@@ -261,5 +226,49 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
         configurableCacheFactory.dispose();
         CacheFactory.getCacheFactoryBuilder().release(configurableCacheFactory);
         configurableCacheFactory = null;
+	}
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+
+        // establish the configuration dependencies for the
+        // ConfigurableCacheFactory we're about to create
+        ExtensibleConfigurableCacheFactory.Dependencies dependencies = cacheConfigURI.equals(DEFAULT_CACHE_CONFIG_URI)
+                                                                       ? newInstance() : newInstance(cacheConfigURI);
+
+        if (this.applicationContext != null) {
+            // override the bean expression resolver with one that can also
+            // resolve Coherence-based values eg: cache-name, manager-context etc.
+            AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
+
+            if (beanFactory instanceof ConfigurableBeanFactory)
+            {
+                ((ConfigurableBeanFactory) beanFactory)
+                    .setBeanExpressionResolver(new CoherenceBeanExpressionResolver(ParameterMacroExpressionParser
+                        .INSTANCE));
+            }
+
+	        // register this application context as a resource so that the
+	        // ConfigurableCacheFactory can later use it
+	        // (say for injecting into Coherence-based instances)
+	        dependencies.getResourceRegistry().registerResource(ApplicationContext.class, applicationContext);
+	        // also register this application context as the default BeanFactory
+	        dependencies.getResourceRegistry().registerResource(BeanFactory.class, applicationContext);
+
+        }
+
+
+        // create the ConfigurableCacheFactory
+        this.configurableCacheFactory = new ExtensibleConfigurableCacheFactory(dependencies);
+
+        // register the ConfigurableCacheFactory with the CacheFactoryBuilder
+        // so that anyone attempting to use the static CacheFactory methods
+        // like "CacheFactory.getCache()" has a chance of using the same
+        // configuration and caches!
+        CacheFactory.getCacheFactoryBuilder().setConfigurableCacheFactory(configurableCacheFactory,
+                                                                          cacheConfigURI,
+                                                                          null,
+                                                                          false);
 	}
 }

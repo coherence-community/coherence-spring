@@ -18,3 +18,5 @@ target/
 .idea
 
 .DS_Store
+.factorypath
+.java-version
