@@ -33,6 +33,7 @@
 			<groupId>com.oracle.coherence.ce</groupId>
 			<artifactId>coherence</artifactId>
 			<version>${coherence.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
@@ -43,6 +44,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 			<version>${spring-boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<version>${spring-boot.version}</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

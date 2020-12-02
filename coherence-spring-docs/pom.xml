@@ -166,6 +166,11 @@
 				<dependencies>
 					<dependency>
 						<groupId>io.spring.asciidoctor</groupId>
+						<artifactId>spring-asciidoctor-extensions-block-switch</artifactId>
+						<version>${spring-asciidoctor-extensions.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>io.spring.asciidoctor</groupId>
 						<artifactId>spring-asciidoctor-extensions-spring-boot</artifactId>
 						<version>${spring-asciidoctor-extensions.version}</version>
 					</dependency>

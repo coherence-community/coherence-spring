@@ -88,7 +88,7 @@
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
 
         <!-- dependency versions (alphabetically) -->
-        <coherence.version>20.06.1</coherence.version>
+        <coherence.version>20.12-SNAPSHOT</coherence.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>5.7.0</junit.version>
         <mockito.version>1.9.5</mockito.version>
@@ -105,6 +105,19 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+<repositories>
+       <repository>
+         <id>snapshots-repo</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+         <releases><enabled>false</enabled></releases>
+         <snapshots><enabled>true</enabled></snapshots>
+       </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+</repositories>
 
 	<dependencyManagement>
 		<dependencies>

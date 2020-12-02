@@ -1,4 +1,5 @@
 /*
+ * File: EnableCoherence.java
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -21,26 +22,28 @@
  * enclosed by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  */
+package com.oracle.coherence.spring.configuration.annotation;
 
-package com.oracle.coherence.spring.boot.autoconfigure;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.oracle.coherence.spring.CoherenceServer;
-import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import org.springframework.context.annotation.Import;
+
+import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 
 /**
- * Activates Coherence Auto Configuration for Spring Boot, provided the respective
- * {@link CoherenceServer} is not defined.
  *
  * @author Gunnar Hillert
  *
  */
-@Configuration
-@ConditionalOnMissingBean(CoherenceServer.class)
-@EnableCoherence
-@EnableConfigurationProperties(CoherenceProperties.class)
-public class CoherenceAutoconfiguration {
+@Documented
+@Retention(RUNTIME)
+@Target(TYPE)
+@Import(CoherenceSpringConfiguration.class)
+public @interface EnableCoherence {
+
 }
