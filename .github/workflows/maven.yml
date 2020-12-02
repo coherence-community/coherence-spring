@@ -15,9 +15,9 @@ jobs:
       with:
         java-version: '1.8'
     - name: Build with Maven
-      run: mvn clean install -Pspring --settings settings.xml
+      run: mvn clean install -Pspring --settings .mvn/settings.xml
     - name: Deploy Website + Snapshots
-      run: mvn deploy --settings .mvn/settings.xml -Pspring
+      run: mvn deploy -Pspring --settings .mvn/settings.xml
       env:
         MAVEN_GITHUB_TOKEN: "${{secrets.MAVEN_GITHUB}}"
         MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
