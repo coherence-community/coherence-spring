@@ -1,8 +1,9 @@
 Welcome to the Oracle Coherence Spring Project
 ==============================================
 
-[![Build Status](https://github.com/ghillert/coherence-spring/workflows/CI%20Coherence%20Spring/badge.svg)](https://github.com/coherence-community/coherence-spring/actions)
+[![CI Coherence Spring](https://github.com/coherence-community/coherence-spring/workflows/CI%20Coherence%20Spring/badge.svg)](https://github.com/coherence-community/coherence-spring/actions)
 [![Chat with us on slack](https://img.shields.io/badge/Coherence-Join%20Slack-red)](https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw)
+[![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence)](https://stackoverflow.com/questions/tagged/oracle-coherence)
 [![Twitter Follow](https://img.shields.io/twitter/follow/OracleCoherence?style=social)](https://twitter.com/OracleCoherence)
 
 The Coherence Spring project provides a set of components to aid in the integration
