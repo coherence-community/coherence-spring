@@ -28,6 +28,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+
+import com.tangosol.coherence.config.Config;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,6 +50,11 @@ import com.tangosol.net.NamedCache;
 public class CoherenceServer implements InitializingBean, DisposableBean, Lifecycle, ApplicationContextAware {
 
 	/**
+	 * Start up default of 15 seconds.
+	 */
+	private static final long DEFAULT_STARTUP_TIMEOUT_MILLIS = 15000;
+
+	/**
 	 * The bean context.
 	 */
 	private ApplicationContext applicationContext;
@@ -57,7 +64,11 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 	 */
 	private final Coherence coherence;
 
-	private int startupTimeout = 5000;
+	/**
+	 * {@link Coherence} startup timeout in milliseconds.
+	 */
+	private final long startupTimeout = Config.getLong("coherence.spring.server.startup-timeout-millis",
+			DEFAULT_STARTUP_TIMEOUT_MILLIS);
 
 	/**
 	 * Create a {@link CoherenceServer}.
