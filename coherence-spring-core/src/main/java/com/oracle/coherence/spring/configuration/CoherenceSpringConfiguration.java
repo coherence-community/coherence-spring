@@ -35,6 +35,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
 import com.oracle.coherence.inject.Name;
@@ -51,6 +52,7 @@ import com.tangosol.net.Session;
  *
  */
 @Configuration
+@Import(NamedCacheConfiguration.class)
 public class CoherenceSpringConfiguration {
 
 	protected static final Log logger = LogFactory.getLog(CoherenceSpringConfiguration.class);
