@@ -21,3 +21,4 @@ target/
 .DS_Store
 .factorypath
 .java-version
+*.iml

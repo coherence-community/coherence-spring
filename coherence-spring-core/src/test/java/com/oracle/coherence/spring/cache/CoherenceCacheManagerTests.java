@@ -41,6 +41,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
@@ -54,6 +55,7 @@ import com.tangosol.net.NamedCache;
  */
 @SpringJUnitConfig(CoherenceCacheManagerTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext
 public class CoherenceCacheManagerTests {
 
 	@Configuration
