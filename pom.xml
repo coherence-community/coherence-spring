@@ -29,13 +29,13 @@
 		<url>https://github.com/coherence-community/coherence-spring/issues</url>
 	</issueManagement>
 
-	<licenses>
-		<license>
-			<name>Common Development and Distribution License 1.0 ("CDDL")</name>
-			<url>http://opensource.org/licenses/CDDL-1.0</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+  <licenses>
+      <license>
+          <name>The Universal Permissive License (UPL), Version 1.0</name>
+          <url>https://oss.oracle.com/licenses/upl</url>
+          <distribution>repo</distribution>
+      </license>
+  </licenses>
 
 	<developers>
 		<developer>
