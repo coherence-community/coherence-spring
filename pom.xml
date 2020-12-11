@@ -29,13 +29,13 @@
 		<url>https://github.com/coherence-community/coherence-spring/issues</url>
 	</issueManagement>
 
-  <licenses>
-      <license>
-          <name>The Universal Permissive License (UPL), Version 1.0</name>
-          <url>https://oss.oracle.com/licenses/upl</url>
-          <distribution>repo</distribution>
-      </license>
-  </licenses>
+	<licenses>
+		<license>
+			<name>The Universal Permissive License (UPL), Version 1.0</name>
+			<url>https://oss.oracle.com/licenses/upl</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<developers>
 		<developer>
@@ -69,6 +69,8 @@
 	</modules>
 
 	<properties>
+		<coherence.hibernate.root>${basedir}</coherence.hibernate.root>
+
 		<!-- project options -->
 		<java.version>1.8</java.version>
 		<maven.minimum.version>3.6.0</maven.minimum.version>
@@ -225,6 +227,34 @@
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-license</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${coherence.hibernate.root}</directory>
+									<targetPath>META-INF/</targetPath>
+									<filtering>true</filtering>
+									<includes>
+										<include>LICENSE.txt</include>
+										<include>THIRD_PARTY_LICENSES.txt</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

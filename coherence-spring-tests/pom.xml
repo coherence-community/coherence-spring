@@ -21,6 +21,10 @@
 	<name>Coherence Spring Integration Tests</name>
 	<description>Integration Tests for Coherence Spring</description>
 
+	<properties>
+		<coherence.hibernate.root>${basedir}/..</coherence.hibernate.root>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
