@@ -557,7 +557,8 @@ here}."
 
   You may add additional accurate notices of copyright ownership.
 
-LICENSE-notice.md includes the following:
+JUnit also includes the following license information:
+------------------------------------------------------
 Open Source Licenses
 ====================
 
@@ -566,6 +567,8 @@ copyright notices and license terms. Your use of the source code for
 these subcomponents is subject to the terms and conditions of the
 subcomponent's license, as noted in the LICENSE-<subcomponent>.md
 files.
+
+See https://github.com/junit-team/junit5/blob/r5.7.0/LICENSE-notice.md
 
 Additional licenses
 ====================
