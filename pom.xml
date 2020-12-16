@@ -72,6 +72,8 @@
 		<coherence.hibernate.root>${basedir}</coherence.hibernate.root>
 
 		<!-- project options -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<maven.minimum.version>3.6.0</maven.minimum.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -103,7 +105,7 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<junit.version>5.7.0</junit.version>
 		<mockito.version>1.9.5</mockito.version>
-		<org.springframework.version>5.2.9.RELEASE</org.springframework.version>
+		<org.springframework.version>5.3.2</org.springframework.version>
 	</properties>
 
 	<distributionManagement>
@@ -146,6 +148,23 @@
 				<groupId>com.oracle.coherence.spring</groupId>
 				<artifactId>coherence-spring-project</artifactId>
 				<version>3.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>5.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>5.7.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest</artifactId>
+				<version>2.2</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

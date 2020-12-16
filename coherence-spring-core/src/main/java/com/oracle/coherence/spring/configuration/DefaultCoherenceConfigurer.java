@@ -6,15 +6,20 @@
  */
 package com.oracle.coherence.spring.configuration;
 
+import java.util.Collection;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
+import com.tangosol.net.SessionConfiguration;
 
 /**
  * @author Gunnar Hillert
@@ -25,11 +30,17 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private static final Log logger = LogFactory.getLog(DefaultCoherenceConfigurer.class);
 
+	private Collection<SessionConfiguration> sessionConfigurations;
+
+	private Collection<Coherence.LifecycleListener> lifecycleListeners;
+
 	private CoherenceConfiguration coherenceConfiguration;
 
 	private Coherence coherence;
 
 	private CoherenceServer coherenceServer;
+
+	private ConfigurableApplicationContext context;
 
 	private boolean initialized = false;
 
@@ -54,6 +65,28 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			return;
 		}
 
+		if (this.context != null) {
+			final Collection<SessionConfiguration> sessionConfigurations =
+					context.getBeansOfType(SessionConfiguration.class).values();
+
+			if (!CollectionUtils.isEmpty(sessionConfigurations)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug(String.format("% sessionConfiguration(s) found.", sessionConfigurations.size()));
+				}
+				this.sessionConfigurations = sessionConfigurations;
+			}
+
+			final Collection<Coherence.LifecycleListener> lifecycleListeners =
+					context.getBeansOfType(Coherence.LifecycleListener.class).values();
+
+			if (!CollectionUtils.isEmpty(lifecycleListeners)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug(String.format("% lifecycleListener(s) found.", lifecycleListeners.size()));
+				}
+				this.lifecycleListeners = lifecycleListeners;
+			}
+		}
+
 		if(this.coherenceConfiguration == null) {
 			logger.warn("No Coherence configuration was provided...using default.");
 			this.coherenceConfiguration = this.createCoherenceConfiguration();
@@ -69,13 +102,22 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		this.initialized = true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	protected CoherenceConfiguration createCoherenceConfiguration() {
-		CoherenceConfiguration cfg = CoherenceConfiguration.builder()
-//				.withSessions(configurations)
-//				.withSessionProviders(configProvider)
-//				.withEventInterceptors(listenerProcessor.getInterceptors())
-				.build();
-		return cfg;
+		final CoherenceConfiguration.Builder builder = CoherenceConfiguration.builder();
+
+		if (!CollectionUtils.isEmpty(this.sessionConfigurations)) {
+			builder.withSessions(this.sessionConfigurations);
+		}
+
+		if (!CollectionUtils.isEmpty(this.lifecycleListeners)) {
+			builder.withEventInterceptors(lifecycleListeners);
+		}
+
+		return builder.build();
 	}
 
 	protected Coherence createCoherence() {

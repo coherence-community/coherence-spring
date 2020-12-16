@@ -26,7 +26,7 @@ import com.tangosol.net.NamedCache;
  * {@link com.tangosol.net.Coherence} instance.
  *
  * @author Gunnar Hillert
- * @since 1.0
+ *
  */
 public class CoherenceServer implements InitializingBean, DisposableBean, Lifecycle, ApplicationContextAware {
 

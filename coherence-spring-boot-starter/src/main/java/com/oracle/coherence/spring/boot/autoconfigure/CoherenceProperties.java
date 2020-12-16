@@ -6,17 +6,23 @@
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+
+import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
 
 /**
  * Configuration properties for the Coherence Spring integration.
  *
  * @author Gunnar Hillert
  */
-@ConfigurationProperties(prefix = "spring.coherence")
+@ConfigurationProperties(prefix = "coherence")
 public class CoherenceProperties {
+
+	private List<SessionConfigurationBean> sessions;
 
 	/**
 	 * The location of the configuration file to use to initialize Coherence.
@@ -44,6 +50,14 @@ public class CoherenceProperties {
 		Assert.isTrue(this.config.exists(),
 				() -> "Coherence configuration does not exist '" + this.config.getDescription() + "'");
 		return this.config;
+	}
+
+	public List<SessionConfigurationBean> getSessions() {
+		return sessions;
+	}
+
+	public void setSessions(List<SessionConfigurationBean> sessions) {
+		this.sessions = sessions;
 	}
 
 }

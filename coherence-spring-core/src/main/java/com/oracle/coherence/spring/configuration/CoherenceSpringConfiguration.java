@@ -13,15 +13,22 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import com.oracle.coherence.inject.Name;
 import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
@@ -29,6 +36,7 @@ import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.Session;
 
 /**
+ * Main configuration class to configure Coherence.
  *
  * @author Gunnar Hillert
  *
@@ -48,17 +56,23 @@ public class CoherenceSpringConfiguration {
 
 	private boolean initialized = false;
 
-	@Bean
+	public static final String COHERENCE_BEAN_NAME = "coherence";
+	public static final String COHERENCE_CONFIGURATION_BEAN_NAME = "coherenceConfiguration";
+	public static final String COHERENCE_SERVER_BEAN_NAME = "coherenceServer";
+	public static final String COHERENCE_CLUSTER_BEAN_NAME = "coherenceCluster";
+	public static final String COHERENCE_CONFIGURER_BEAN_NAME = "coherenceConfigurer";
+
+	@Bean(name = COHERENCE_BEAN_NAME)
 	public Coherence getCoherence() {
 		return coherence;
 	}
 
-	@Bean
+	@Bean(name = COHERENCE_CONFIGURATION_BEAN_NAME)
 	public CoherenceConfiguration getCoherenceConfiguration() {
 		return coherenceConfiguration;
 	}
 
-	@Bean
+	@Bean(name = COHERENCE_SERVER_BEAN_NAME)
 	public CoherenceServer getCoherenceServer() {
 		return coherenceServer;
 	}
@@ -68,16 +82,17 @@ public class CoherenceSpringConfiguration {
 	 *
 	 * @return the Coherence {@link Cluster} (which may or may not be running)
 	 */
-	@Bean
+	@Bean(name = COHERENCE_CLUSTER_BEAN_NAME)
 	@DependsOn("coherenceServer")
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	public Cluster getCluster() {
+	public Cluster getCoherenceCluster() {
 		return CacheFactory.getCluster();
 	}
 
 	/**
 	 * Create a {@link com.tangosol.net.Session} from the qualifiers on the specified
-	 * injection point.
+	 * injection point. If no {@code Name} annotation is provided, then the default
+	 * session is returned.
 	 *
 	 * @param injectionPoint the injection point that the {@link com.tangosol.net.Session}
 	 *                       will be injected into
@@ -114,14 +129,15 @@ public class CoherenceSpringConfiguration {
 
 		final CoherenceConfigurer coherenceConfigurer = getConfigurer();
 
-		logger.debug(String.format("Using %s CoherenceConfigurer", coherenceConfigurer.getClass().getName()));
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Using %s CoherenceConfigurer", coherenceConfigurer.getClass().getName()));
+		}
 
 		this.coherence = coherenceConfigurer.getCoherence();
 		this.coherenceConfiguration = coherenceConfigurer.getCoherenceConfiguration();
 		this.coherenceServer = coherenceConfigurer.getCoherenceServer();
 
 		this.initialized = true;
-
 	}
 
 	private CoherenceConfigurer getConfigurer() throws Exception {
@@ -130,7 +146,7 @@ public class CoherenceSpringConfiguration {
 		if (numberOfConfigurers < 1) {
 			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer();
 			coherenceConfigurer.initialize();
-			this.context.getBeanFactory().registerSingleton("coherenceConfigurer",
+			this.context.getBeanFactory().registerSingleton(COHERENCE_CONFIGURER_BEAN_NAME,
 					coherenceConfigurer);
 			return coherenceConfigurer;
 		}
@@ -143,5 +159,41 @@ public class CoherenceSpringConfiguration {
 						"Expected one CoherenceConfigurer but found " + numberOfConfigurers);
 			}
 		}
+	}
+
+	@Bean
+	public static BeanFactoryPostProcessor beanFactoryPostProcessor() {
+		return beanFactory -> {
+			final String[] beanNames = beanFactory.getBeanDefinitionNames();
+
+			boolean cachingEnabled = false;
+			boolean cacheManagerFound = false;
+
+			for (String beanName : beanNames) {
+				final Class<?> beanType = beanFactory.getType(beanName);
+				final EnableCaching enableCaching = AnnotationUtils.findAnnotation(beanType, EnableCaching.class);
+				if (enableCaching != null) {
+					cachingEnabled = true;
+				}
+				if (CacheManager.class.isAssignableFrom(beanType)) {
+					cacheManagerFound = true;
+				}
+			}
+
+			if (logger.isInfoEnabled()) {
+				logger.info(String.format("Caching is enabled: %s. Found existing CacheManager: %s", cachingEnabled, cacheManagerFound));
+			}
+
+			if (cachingEnabled && !cacheManagerFound) {
+				if (logger.isInfoEnabled()) {
+					logger.info("Creating default CacheManager.");
+				}
+
+				BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+
+				registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
+						.addConstructorArgReference(COHERENCE_BEAN_NAME).getBeanDefinition());
+			}
+		};
 	}
 }
