@@ -1,4 +1,6 @@
 #!/bin/sh
+# Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+#
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
