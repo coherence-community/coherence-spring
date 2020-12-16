@@ -1,13 +1,11 @@
 <productname>Coherence Spring</productname>
 <releaseinfo>{coherence-spring-version}</releaseinfo>
 <copyright>
-	<year>2020</year>
+	<year>2013, 2020</year>
 </copyright>
 <legalnotice>
 	<para>
-		Copies of this document may be made for your own use and for distribution to
-		others, provided that you do not charge any fee for such copies and further
-		provided that each copy contains this Copyright Notice, whether distributed in
-		print or electronically.
+		Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+		Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 	</para>
 </legalnotice>
