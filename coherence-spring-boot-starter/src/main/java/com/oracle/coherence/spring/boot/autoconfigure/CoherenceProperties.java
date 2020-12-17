@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -23,7 +24,7 @@ import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
 public class CoherenceProperties {
 
 	private List<SessionConfigurationBean> sessions;
-
+	private final List<SessionConfigurationBean> list = new ArrayList<>();
 	/**
 	 * The location of the configuration file to use to initialize Coherence.
 	 */
@@ -58,6 +59,10 @@ public class CoherenceProperties {
 
 	public void setSessions(List<SessionConfigurationBean> sessions) {
 		this.sessions = sessions;
+	}
+
+	public List<SessionConfigurationBean> getList() {
+		return list;
 	}
 
 }

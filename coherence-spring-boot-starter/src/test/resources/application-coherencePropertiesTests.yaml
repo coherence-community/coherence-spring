@@ -1,0 +1,12 @@
+coherence:
+  sessions:
+  - name: default
+    config: "coherence-cache-config.xml"
+    priority: 1
+    scope-name: fooscope
+  - name: test
+    config: "test-coherence-config.xml"
+    priority: 2
+    scope-name: barscope
+  - config: "test-coherence-config.xml"
+    scope-name: myscope

@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.oracle.coherence.inject.Name;
+import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.tangosol.net.CacheFactory;
@@ -83,7 +83,7 @@ public class CoherenceSpringConfiguration {
 	 * @return the Coherence {@link Cluster} (which may or may not be running)
 	 */
 	@Bean(name = COHERENCE_CLUSTER_BEAN_NAME)
-	@DependsOn("coherenceServer")
+	@DependsOn(COHERENCE_SERVER_BEAN_NAME)
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 	public Cluster getCoherenceCluster() {
 		return CacheFactory.getCluster();
@@ -100,7 +100,7 @@ public class CoherenceSpringConfiguration {
 	 */
 	@Bean
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	public Session getSession(InjectionPoint injectionPoint) {
+	public Session session(InjectionPoint injectionPoint) {
 		final Name nameAnnotation = injectionPoint.getAnnotation(Name.class);
 		final String sessionName;
 
@@ -111,8 +111,9 @@ public class CoherenceSpringConfiguration {
 			sessionName = nameAnnotation.value();
 		}
 
-		return Coherence.findSession(sessionName)
+		final Session session = Coherence.findSession(sessionName)
 				.orElseThrow(() -> new IllegalStateException("No Session has been configured with the name " + sessionName));
+		return session;
 	}
 
 	/**
@@ -144,7 +145,7 @@ public class CoherenceSpringConfiguration {
 		int numberOfConfigurers = this.context.getBeanNamesForType(CoherenceConfigurer.class).length;
 
 		if (numberOfConfigurers < 1) {
-			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer();
+			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer(this.context);
 			coherenceConfigurer.initialize();
 			this.context.getBeanFactory().registerSingleton(COHERENCE_CONFIGURER_BEAN_NAME,
 					coherenceConfigurer);

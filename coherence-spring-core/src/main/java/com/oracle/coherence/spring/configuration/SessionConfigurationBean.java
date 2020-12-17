@@ -25,7 +25,9 @@ import com.tangosol.net.SessionConfiguration;
  * @author Gunnar Hillert
  *
  */
-public class SessionConfigurationBean implements SessionConfiguration.Provider {
+public class SessionConfigurationBean {
+
+	private static final String DEFAULT_SESSION_NAME = "default";
 
 	/**
 	 * The name of the session.
@@ -59,11 +61,14 @@ public class SessionConfigurationBean implements SessionConfiguration.Provider {
 		setName(name);
 	}
 
-	@Override
+	public SessionConfigurationBean() {
+		super();
+	}
+
 	public SessionConfiguration getConfiguration() {
 		SessionConfiguration.Builder builder = SessionConfiguration
 				.builder()
-				.named(name)
+				.named(processSessionName(name))
 				.withPriority(priority);
 
 		if (scopeName != null) {
@@ -81,7 +86,7 @@ public class SessionConfigurationBean implements SessionConfiguration.Provider {
 	 * @param name the name of this configuration
 	 */
 	public void setName(String name) {
-		this.name = "default".equalsIgnoreCase(name) ? Coherence.DEFAULT_NAME : name;
+		this.name = name;
 	}
 
 	/**
@@ -131,5 +136,21 @@ public class SessionConfigurationBean implements SessionConfiguration.Provider {
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Replaces {
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getScopeName() {
+		return scopeName;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	private String processSessionName(String sessionName) {
+		return DEFAULT_SESSION_NAME.equalsIgnoreCase(sessionName) ? Coherence.DEFAULT_NAME : sessionName;
 	}
 }

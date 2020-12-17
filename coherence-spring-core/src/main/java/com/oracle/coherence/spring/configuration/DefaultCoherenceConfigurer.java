@@ -6,7 +6,9 @@
  */
 package com.oracle.coherence.spring.configuration;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -30,7 +32,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private static final Log logger = LogFactory.getLog(DefaultCoherenceConfigurer.class);
 
-	private Collection<SessionConfiguration> sessionConfigurations;
+	private Collection<SessionConfiguration> sessionConfigurations = new ArrayList<>(0);
 
 	private Collection<Coherence.LifecycleListener> lifecycleListeners;
 
@@ -43,6 +45,10 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	private ConfigurableApplicationContext context;
 
 	private boolean initialized = false;
+
+	public DefaultCoherenceConfigurer(ConfigurableApplicationContext context) {
+		this.context = context;
+	}
 
 	@Override
 	public Coherence getCoherence() {
@@ -66,14 +72,25 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		}
 
 		if (this.context != null) {
-			final Collection<SessionConfiguration> sessionConfigurations =
-					context.getBeansOfType(SessionConfiguration.class).values();
+			final Collection<SessionConfigurationBean> sessionConfigurationBeans =
+					context.getBeansOfType(SessionConfigurationBean.class).values();
 
 			if (!CollectionUtils.isEmpty(sessionConfigurations)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("% sessionConfiguration(s) found.", sessionConfigurations.size()));
+					logger.debug(String.format("%s sessionConfiguration(s) found.", sessionConfigurations.size()));
 				}
-				this.sessionConfigurations = sessionConfigurations;
+				this.sessionConfigurations.addAll(sessionConfigurations);
+			}
+
+			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug(String.format("%s sessionConfigurationBean(s) found.", sessionConfigurationBeans.size()));
+				}
+				this.sessionConfigurations.addAll(
+					sessionConfigurationBeans
+						.stream()
+						.map(sp -> sp.getConfiguration())
+						.collect(Collectors.toList()));
 			}
 
 			final Collection<Coherence.LifecycleListener> lifecycleListeners =

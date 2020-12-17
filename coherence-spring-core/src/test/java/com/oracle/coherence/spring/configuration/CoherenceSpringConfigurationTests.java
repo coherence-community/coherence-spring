@@ -12,12 +12,11 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.oracle.coherence.inject.Name;
+import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.Session;
