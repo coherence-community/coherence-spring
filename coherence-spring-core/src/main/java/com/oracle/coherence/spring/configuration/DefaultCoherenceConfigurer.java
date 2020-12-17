@@ -79,7 +79,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	}
 
 	protected Coherence createCoherence() {
-		return Coherence.create(this.getCoherenceConfiguration());
+		return Coherence.clusterMember(this.getCoherenceConfiguration());
 	}
 
 	protected CoherenceServer createCoherenceServer() {
