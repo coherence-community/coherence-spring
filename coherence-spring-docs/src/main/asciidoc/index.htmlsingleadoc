@@ -4,12 +4,16 @@ include::authors.adoc[]
 :docinfo: shared
 include::attributes.adoc[]
 
+Version {coherence-spring-version}
+
 include::legal.adoc[leveloffset=+1]
 include::overview.adoc[leveloffset=+1]
+include::quickstart.adoc[leveloffset=+1]
 include::core.adoc[leveloffset=+1]
 include::spring-cache.adoc[leveloffset=+1]
 include::spring-session.adoc[leveloffset=+1]
 include::spring-data.adoc[leveloffset=+1]
+include::spring-boot.adoc[leveloffset=+1]
 
 [[appendix]]
 == Appendices

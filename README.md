@@ -19,3 +19,11 @@ here: [https://coherence-community.github.io/coherence-spring/3.0.0-SNAPSHOT/](h
 >
 > The [Apache Maven](http://maven.apache.org)-based snapshots and releases for this project are published to [Maven Central](http://repo1.maven.org/maven2/com/oracle/coherence/spring/).
 >
+
+## Building
+
+Clone the repository and type
+
+```bash
+./mvnw clean install
+```

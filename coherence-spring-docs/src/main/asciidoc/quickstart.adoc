@@ -1,0 +1,14 @@
+[[quickstart]]
+= Quickstart
+include::attributes.adoc[]
+
+We provide various demos to illustrate basic usage of Oracle Coherence when using it with
+Spring:
+
+- https://github.com/ghillert/coherence-spring-demo[Coherence Spring Demo]
+
+This repository contains essentially 2 versions of the same app:
+
+- `coherence-spring-demo-classic` Provides a demo using Spring Framework without Spring Boot
+- `coherence-spring-demo-boot` Provide a demo using Spring Boot
+

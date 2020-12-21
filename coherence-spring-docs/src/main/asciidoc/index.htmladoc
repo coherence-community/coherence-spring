@@ -1,6 +1,8 @@
 = Coherence Spring Reference Documentation
 :doc-root: https://docs.spring.io
 
+Version {coherence-spring-version}
+
 ****
 _What's New_, _Upgrade Notes_, _Supported Versions_, and other topics,
 independent of release cadence, are maintained externally on the project's
@@ -10,8 +12,9 @@ http://coherence-community.github.io/coherence-spring[*Website*].
 [horizontal]
 <<legal.adoc#legal,Legal>> :: Legal information.
 <<overview.adoc#overview, Overview>> :: Introduction to the various Coherence Spring modules and getting started guide.
+<<quickstart.adoc#quickstart, Quickstart>> :: How to get started quickly
 <<core.adoc#spring-core, Coherence Spring Core>> :: Use Coherence with the Spring Framework
-<<spring-boot.adoc#spring-boot, Spring Boot>> :: Coherence for Spring Boot Users
+<<spring-boot.adoc#spring-boot, Spring Boot>> :: Coherence for Spring Boot users
 <<spring-cache.adoc#spring-cache, Spring Cache>> :: Coherence Spring Cache
 <<spring-session.adoc#spring-session, Spring Session>> :: Coherence Spring Session
 <<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data

@@ -168,7 +168,7 @@
 						</resource>
 					</resources>
 					<attributes>
-						<coherence-spring-version>${project.build.version}</coherence-spring-version>
+						<coherence-spring-version>${project.version}</coherence-spring-version>
 						<sources-root>${project.basedir}/src</sources-root>
 					</attributes>
 				</configuration>

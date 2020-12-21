@@ -1,6 +1,9 @@
 [[coherence-spring-reference-documentation]]
 = Coherence Spring Reference Documentation
 include::authors.adoc[]
+
+Version {coherence-spring-version}
+
 :docinfo: shared
 :title-logo-image: image:coherence-logo.svg[top=25%, align=center, pdfwidth=2in]
 :toc:
@@ -9,10 +12,12 @@ include::attributes.adoc[]
 
 include::legal.adoc[leveloffset=+1]
 include::overview.adoc[leveloffset=+1]
+include::quickstart.adoc[leveloffset=+1]
 include::core.adoc[leveloffset=+1]
 include::spring-cache.adoc[leveloffset=+1]
 include::spring-session.adoc[leveloffset=+1]
 include::spring-data.adoc[leveloffset=+1]
+include::spring-boot.adoc[leveloffset=+1]
 
 [[appendix]]
 == Appendices

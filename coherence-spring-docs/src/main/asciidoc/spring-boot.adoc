@@ -5,7 +5,53 @@ include::attributes.adoc[]
 This section dives into the Coherence Spring Boot module. It explains how to use
 Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g. Autoconfiguration.
 
-[[spring-boot-introduction]]
+[[spring-boot-getting-started]]
 == Getting Started
 
-TBD
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes"]
+----
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-boot-starter</artifactId>
+			<version>{coherence-spring-version}</version>
+		</dependency>
+	</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="attributes"]
+----
+	dependencies {
+		compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+	}
+----
+
+
+[[spring-boot-introduction]]
+== Using Coherence with Spring Boot
+
+
+
+== Using Coherence as Spring Caching Provider
+
+Coherence provides dedicated support for Spring Boot in order to further simplify
+configuration options for Spring.
+
+If caching is enabled via `@EnableCaching`, Coherence Autoconfiguration will it
+automatically provide a `CacheManager` to the ApplicationContext, however only if
+no `CacheManager` was configured explicitly beforehand.
+
+
+
+
+
+Caches can be created on startup by setting the property.
+If a custom `ConfigurationBuilder` bean is defined, it is used to customize the caches.
+
+NOTE: The support of Infinispan in Spring Boot is restricted to the embedded mode and is quite basic.
+If you want more options, you should use the official Infinispan Spring Boot starter instead.
+See https://github.com/infinispan/infinispan-spring-boot[Infinispan's documentation] for more details.
+
+
