@@ -130,7 +130,9 @@ $(globalSwitch);
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#spring-boot-introduction">1. Getting Started</a></li>
+<li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
+<li><a href="#spring-boot-introduction">2. Using Coherence with Spring Boot</a></li>
+<li><a href="#using-coherence-as-spring-caching-provider">3. Using Coherence as Spring Caching Provider</a></li>
 </ul>
 </div>
 </div>
@@ -144,17 +146,72 @@ Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-introduction"><a class="anchor" href="#spring-boot-introduction"></a>1. Getting Started</h2>
+<h2 id="spring-boot-getting-started"><a class="anchor" href="#spring-boot-getting-started"></a>1. Getting Started</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-introduction"><a class="anchor" href="#spring-boot-introduction"></a>2. Using Coherence with Spring Boot</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-coherence-as-spring-caching-provider"><a class="anchor" href="#using-coherence-as-spring-caching-provider"></a>3. Using Coherence as Spring Caching Provider</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TBD</p>
+<p>Coherence provides dedicated support for Spring Boot in order to further simplify
+configuration options for Spring.</p>
+</div>
+<div class="paragraph">
+<p>If caching is enabled via <code>@EnableCaching</code>, Coherence Autoconfiguration will it
+automatically provide a <code>CacheManager</code> to the ApplicationContext, however only if
+no <code>CacheManager</code> was configured explicitly beforehand.</p>
+</div>
+<div class="paragraph">
+<p>Caches can be created on startup by setting the property.
+If a custom <code>ConfigurationBuilder</code> bean is defined, it is used to customize the caches.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The support of Infinispan in Spring Boot is restricted to the embedded mode and is quite basic.
+If you want more options, you should use the official Infinispan Spring Boot starter instead.
+See <a href="https://github.com/infinispan/infinispan-spring-boot">Infinispan&#8217;s documentation</a> for more details.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-12-18 05:19:50 UTC
+Last updated 2020-12-21 10:11:57 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
