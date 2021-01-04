@@ -1,13 +1,10 @@
 [[coherence-spring-reference-documentation]]
 = Coherence Spring Reference Documentation
 include::authors.adoc[]
-
 Version {coherence-spring-version}
-
 :docinfo: shared
 :title-logo-image: image:coherence-logo.svg[top=25%, align=center, pdfwidth=2in]
 :toc:
-
 include::attributes.adoc[]
 
 include::legal.adoc[leveloffset=+1]

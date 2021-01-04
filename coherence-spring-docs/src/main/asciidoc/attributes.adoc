@@ -31,4 +31,6 @@
 
 :oracle-coherence: https://coherence.community
 :spring: https://spring.io
+:spring-io-website: https://spring.io/
+:spring-boot-website: https://spring.io/projects/spring-boot
 :spring-framework: https://spring.io/projects/spring-framework

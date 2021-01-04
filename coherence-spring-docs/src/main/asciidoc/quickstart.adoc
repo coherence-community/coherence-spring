@@ -2,13 +2,236 @@
 = Quickstart
 include::attributes.adoc[]
 
-We provide various demos to illustrate basic usage of Oracle Coherence when using it with
-Spring:
+In this getting started chapter we will look a demo to illustrate basic usage of Oracle Coherence when using it with
+Spring. This demo provides an example of using Coherence Spring's
+https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
 
-- https://github.com/ghillert/coherence-spring-demo[Coherence Spring Demo]
+The demo application is basically a super-simple event manager. We can create `Events` and assign `People` to them using
+an exposed REST API. The data is saved in an embedded HSQL database. The caching is implemented at the service layer:
 
-This repository contains essentially 2 versions of the same app:
+When an `Event` is created, it is not only persisted to the database but also _put_ to the Coherence Cache.
+Therefore, whenever an `Event` is retrieved, it will be returned from the Coherence Cache. You can also delete
+`Events`, in which case the `Event` will be _evicted_ from the cache. You can perform the same
+https://en.wikipedia.org/wiki/Create,_read,_update_and_delete[CRUD] operations for people as well.
 
-- `coherence-spring-demo-classic` Provides a demo using Spring Framework without Spring Boot
-- `coherence-spring-demo-boot` Provide a demo using Spring Boot
+== How to Run the Demo
 
+In order to get started, please checkout the code from the https://github.com/ghillert/coherence-spring-demo[Coherence Spring Demo]
+GitHub repository.
+
+.Clone GitHub Repository
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ git clone https://github.com/ghillert/coherence-spring-demo.git
+$ cd coherence-spring-demo
+----
+
+This repository contains a Maven project consisting of 3 modules. The first two Maven modules are essentially variations of
+the same app. The third module contains shared code.
+
+[cols=2*, caption=]
+|===
+|*coherence-spring-demo-classic*
+|Provides a demo using *Spring Framework* without Spring Boot
+
+|*coherence-spring-demo-boot*
+|Provides a demo using *Spring Boot*
+
+|*coherence-spring-demo-core*
+|Contains common code shared between the two apps
+|===
+
+In this chapter we will focus on the *Spring Boot* version. Since we checked out the project, let's build it using Maven:
+
+.Build the project
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package
+----
+
+Now we are ready to run the application:
+
+.Run the Spring Boot application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ java -jar coherence-spring-demo-boot/target/coherence-spring-demo-boot-1.0.0-SNAPSHOT.jar
+----
+
+== Interacting with the Cache
+
+Once the application is started, the embedded database is empty. Let's create an event with 2 people added to them using
+https://curl.se/docs/manual.html[curl]:
+
+.Create the first event
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ curl --request POST 'http://localhost:8080/api/events?title=First%20Event&date=2020-11-30'
+----
+
+This call will create and persist an `Event` to the database. However, there is more going on. The created `Event` is also
+added to the Coherence Cache. The magic is happening in the Service layer, specifically in
+`DefaultEventService#createAndStoreEvent()`, which is annotated with `@CachePut(cacheNames="events", key="#result.id")`.
+
+The `cacheNames` attribute of the `@CachePut` annotation indicates the name of the underlying cache to use. As caches are
+basically just a Map, we also need a key. In this case we use the expression `#result.id` to retrieve the primary key of
+the `Event` as it was persisted. Thus, the saved `Event` is added to the cache named `events` and ultimately also
+returned and printed to the console:
+
+.Return result of the created event
+[source,json,indent=1,subs="verbatim,quotes,attributes"]
+----
+{
+  "id" : 1,
+  "title" : "First Event",
+  "date" : "2020-11-30T00:00:00.000+00:00"
+}
+----
+
+We see that an Event with the id `1` was successfully created. Let's verify that the _cache put_ worked by looking at the
+chache's statistics:
+
+.Retrieving Cache Statistics
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ curl --request GET 'http://localhost:8080/api/statistics/events'
+----
+
+In the console you should see some basic statistics being printed including `totalPuts : 1`:
+
+.Cache Statistic Results
+[source,json,indent=1,subs="verbatim,quotes,attributes"]
+----
+{
+  "averageMissMillis" : 0.0,
+  "cachePrunesMillis" : 0,
+  "averagePruneMillis" : 0.0,
+  "totalGetsMillis" : 0,
+  "averageGetMillis" : 0.0,
+  "totalPutsMillis" : 11,
+  "averagePutMillis" : 11.0,
+  "cacheHitsMillis" : 0,
+  "averageHitMillis" : 0.0,
+  "cacheMissesMillis" : 0,
+  "cacheHits" : 0,
+  "cacheMisses" : 0,
+  "hitProbability" : 0.0,
+  "totalPuts" : 1,
+  "totalGets" : 0,
+  "cachePrunes" : 0
+}
+----
+
+Next, lets retrieve the Event using id 1:
+
+.Retrieve Event
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request GET 'http://localhost:8080/api/events/1'
+----
+
+The Event is returned. Did you notice? No SQL queries were executed as the value was directly retrieved from the Cache.
+Let's check the statistics again by executing:
+
+.Retrieve Cache Statistics
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request GET 'http://localhost:8080/api/statistics/events'
+----
+
+We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. `"cacheHits" : 1,`.
+Let's evict our Event with id 1 from the cache named events:
+
+.Evict Event
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request DELETE 'http://localhost:8080/api/events/1'
+----
+
+If you now retrieve the event again using:
+
+.Retrieve Event
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request GET 'http://localhost:8080/api/events/1'
+----
+
+you will see an SQL query executed in the console, re-populating the cache. Feel free to play along with the Rest API. We
+can for example add people:
+
+.Add people
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&lastName=Zuse&age=85'
+curl --request POST 'http://localhost:8080/api/people?firstName=Alan&lastName=Turing&age=41'
+----
+
+Or assign people to events:
+
+.Assign People to Events
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request POST 'http://localhost:8080/api/people/2/add-to-event/1'
+curl --request POST 'http://localhost:8080/api/people/3/add-to-event/1'
+----
+
+== Behind the Scenes
+
+What is involved to make this all work? Using Spring Boot, the setup is incredibly simple. We take advantage of Spring Boot's
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-auto-configuration[AutoConfiguration]
+capabilities, and the sensible defaults provided by _Coherence Spring_.
+
+In order to activate AutoConfiguration for Coherence Spring you need to add the `coherence-spring-boot-starter`
+dependency as well as the desired dependency for Coherence.
+
+.POM configuration
+[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-boot-starter</artifactId> <1>
+    <version>{coherence-spring-version}</version>
+</dependency>
+<dependency>
+    <groupId>com.oracle.coherence.ce</groupId>
+    <artifactId>coherence</artifactId>                     <2>
+    <version>{coherence-version}</version>
+</dependency>
+----
+<1> Activate Autoconfiguration by adding the `coherence-spring-boot-starter` dependency
+<2> Add the desired version of Coherence (CE or Commercial)
+
+In this quickstart example we are using Spring's Caching abstraction and therefore, we
+use the `spring-boot-starter-cache` dependency as well:
+
+.POM configuration for Spring Cache Abstraction
+[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+----
+
+For caching you also must activate caching using the `@EnableCaching` annotation.
+
+.Spring Boot App configuration
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@SpringBootApplication
+@EnableCaching                                             <1>
+public class CoherenceSpringBootDemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CoherenceSpringBootDemoApplication.class, args);
+	}
+
+}
+----
+<1> Activate the Spring Cache Abstraction
+
+Please see the relevant chapter on
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-caching[Caching] in the Spring Boot
+reference guide.
+
+With `@EnableCaching` in place, Coherence's autoconfiguration will also provide a `CoherenceCacheManager` bean to the
+application context.

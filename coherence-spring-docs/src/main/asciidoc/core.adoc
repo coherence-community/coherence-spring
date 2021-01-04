@@ -3,9 +3,14 @@
 include::attributes.adoc[]
 
 This section dives into the Coherence Spring Core module. Coherence Spring Core
-provides the basic support support for the {spring-framework}[Spring Framework].
+provides the basic support for the {spring-framework}[Spring Framework].
 
 [[coherence-spring-introduction]]
 == Getting Started
 
-TBD
+The main building block for setting up Coherence for Spring is the `@EnableCoherence` annotation.
+This annotation will import the `CoherenceSpringConfiguration` under the covers. Therefore, you can alternative also declare
+`@Import(CoherenceSpringConfiguration.class)` instead.
+
+Without providing any further configuration various defaults are applied.
+

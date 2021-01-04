@@ -17,39 +17,51 @@ The Coherence Spring reference guide is available as:
 
 [[getting-help]]
 == Getting Help
-If you have trouble with Spring Coherence, we would like to help.
+If you run into issues with Spring Coherence, we are here to help.
 
-* Try the <<howto.adoc#howto, How-to documents>>.
-  They provide solutions to the most common questions.
-* Learn the Coherence basics.
-  All Spring Coherence module directly support Oracle Coherence.
-  Check the https://coherence.community[Coherence CE] web-site for general Coherence
+* _Try the <<quickstart.adoc#quickstart, Quickstart>>._
+  The Quickstart will give you an overview of Coherence Spring's
+  capabilities and provides a sample application to get you started.
+* _Learn the Coherence basics._ Please have at least some basic understanding of Oracle Coherence since all Spring Coherence
+  modules depend on it. Check out the https://coherence.community[Coherence CE] web-site for general Coherence
   targeted reference documentation.
-* Learn the Spring basics.
-  Spring Coherence builds on several other Spring projects.
-  Check the https://spring.io[spring.io] web-site for general reference documentation.
-  If you are starting out with Spring, try one of the https://spring.io/guides[guides].
-* Ask a question.
+* _Learn the Spring basics._
+  The reference guide assumes that you have a basic understanding of {spring-framework}[Spring Framework] and
+  {spring-boot-website}[Spring Boot]. Coherence Spring utilizes several other Spring projects. Check the
+  {spring-io-website}[spring.io] web-site for general reference documentation. If you are starting out with Spring, try
+  one of the https://spring.io/guides[guides] or generate a starter project using https://start.spring.io/.
+* _Ask a question._
   Chat with us directly on https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw[Slack].
   We also monitor https://stackoverflow.com[stackoverflow.com] for questions tagged with
   https://stackoverflow.com/tags/oracle-coherence[oracle-coherence].
-* Report bugs with Spring Coherence via {github-issues}[GitHub Issues].
+* _Contribute._
+  Report bugs with Spring Coherence via {github-issues}[GitHub Issues]. Both, Coherence CE and Coherence Spring are Open
+  Source Software (OSS) under the liberal <<legal.adoc#legal, Universal Permissive License (UPL)>>. Contributing back is
+  a great way to attain a deeper understanding of our projects.
 
-NOTE: All of Coherence Spring is open source, including the documentation.
+NOTE: All of _Coherence Spring_ is open source, including the documentation.
 If you find problems with the docs or if you want to improve them, please {coherence-spring-code}[get involved].
 
 [[news]]
 == What is new?
 
-In order to see what changes were made from earlier versions of Coherence Spring,
-see the {coherence-spring-website}//history.html[Change History] as well as the
-{github-releases}[GitHub Releases] page.
+In order to see what changes were made from earlier versions of Coherence Spring, see the
+{coherence-spring-website}//history.html[Change History] as well as the {github-releases}[GitHub Releases] page.
 
 [[first-steps]]
 == First Steps
-If you are getting started with Spring Boot or 'Spring' in general, start with <<getting-started.adoc#getting-started, the following topics>>:
+If you are getting started with Coherence Spring, start with the <<quickstart.adoc#quickstart, Quickstart>>. It is a great
+way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
+<<spring-boot.adoc#spring-boot>> chapter next. The reference documentation makes a distinction between
+{spring-framework}[Spring Framework] and {spring-boot-website}[Spring Boot]. At its very core, Spring Framework provides
+Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives deveopers
+comprehensive infrastructure support for developing Java applications.
 
-* *From scratch:* <<getting-started.adoc#getting-started-introducing-spring-boot, Overview>> | <<getting-started.adoc#getting-started-system-requirements, Requirements>> | <<getting-started.adoc#getting-started-installing-spring-boot, Installation>>
-* *Tutorial:* <<getting-started.adoc#getting-started-first-application, Part 1>> | <<getting-started.adoc#getting-started-first-application-code, Part 2>>
-* *Running your example:* <<getting-started.adoc#getting-started-first-application-run, Part 1>> | <<getting-started.adoc#getting-started-first-application-executable-jar, Part 2>>
+Spring Boot on the other hand, is an opinionated extension to the Spring Framework by:
 
+- Eliminating boilerplate configurations
+- Providing Auto-Configuration for other Spring modules and third-party integrations
+- Metrics + health checks
+
+The vast majority of new Spring projects will utilize Spring Boot. Nonetheless, please also study the Spring Framework targeted
+chapters as Spring Frameworks is the foundation for everything related to Spring Boot.
