@@ -174,34 +174,38 @@ libraries that will help you to integrate <a href="https://coherence.community">
 <h2 id="getting-help"><a class="anchor" href="#getting-help"></a>2. Getting Help</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you have trouble with Spring Coherence, we would like to help.</p>
+<p>If you run into issues with Spring Coherence, we are here to help.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Try the <a href="howto.html#howto">How-to documents</a>.
-They provide solutions to the most common questions.</p>
+<p><em>Try the <a href="quickstart.html#quickstart">Quickstart</a>.</em>
+The Quickstart will give you an overview of Coherence Spring&#8217;s
+capabilities and provides a sample application to get you started.</p>
 </li>
 <li>
-<p>Learn the Coherence basics.
-All Spring Coherence module directly support Oracle Coherence.
-Check the <a href="https://coherence.community">Coherence CE</a> web-site for general Coherence
+<p><em>Learn the Coherence basics.</em> Please have at least some basic understanding of Oracle Coherence since all Spring Coherence
+modules depend on it. Check out the <a href="https://coherence.community">Coherence CE</a> web-site for general Coherence
 targeted reference documentation.</p>
 </li>
 <li>
-<p>Learn the Spring basics.
-Spring Coherence builds on several other Spring projects.
-Check the <a href="https://spring.io">spring.io</a> web-site for general reference documentation.
-If you are starting out with Spring, try one of the <a href="https://spring.io/guides">guides</a>.</p>
+<p><em>Learn the Spring basics.</em>
+The reference guide assumes that you have a basic understanding of <a href="https://spring.io/projects/spring-framework">Spring Framework</a> and
+<a href="https://spring.io/projects/spring-boot">Spring Boot</a>. Coherence Spring utilizes several other Spring projects. Check the
+<a href="https://spring.io/">spring.io</a> web-site for general reference documentation. If you are starting out with Spring, try
+one of the <a href="https://spring.io/guides">guides</a> or generate a starter project using <a href="https://start.spring.io/" class="bare">start.spring.io/</a>.</p>
 </li>
 <li>
-<p>Ask a question.
+<p><em>Ask a question.</em>
 Chat with us directly on <a href="https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw">Slack</a>.
 We also monitor <a href="https://stackoverflow.com">stackoverflow.com</a> for questions tagged with
 <a href="https://stackoverflow.com/tags/oracle-coherence">oracle-coherence</a>.</p>
 </li>
 <li>
-<p>Report bugs with Spring Coherence via <a href="https://github.com/coherence-community/coherence-spring/issues/">GitHub Issues</a>.</p>
+<p><em>Contribute.</em>
+Report bugs with Spring Coherence via <a href="https://github.com/coherence-community/coherence-spring/issues/">GitHub Issues</a>. Both, Coherence CE and Coherence Spring are Open
+Source Software (OSS) under the liberal <a href="legal.html#legal">Universal Permissive License (UPL)</a>. Contributing back is
+a great way to attain a deeper understanding of our projects.</p>
 </li>
 </ul>
 </div>
@@ -212,7 +216,7 @@ We also monitor <a href="https://stackoverflow.com">stackoverflow.com</a> for qu
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-All of Coherence Spring is open source, including the documentation.
+All of <em>Coherence Spring</em> is open source, including the documentation.
 If you find problems with the docs or if you want to improve them, please <a href="https://github.com/coherence-community/coherence-spring">get involved</a>.
 </td>
 </tr>
@@ -224,9 +228,8 @@ If you find problems with the docs or if you want to improve them, please <a hre
 <h2 id="news"><a class="anchor" href="#news"></a>3. What is new?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In order to see what changes were made from earlier versions of Coherence Spring,
-see the <a href="http://spring.coherence.community//3.0.0-SNAPSHOT//history.html">Change History</a> as well as the
-<a href="https://github.com/coherence-community/coherence-spring/releases">GitHub Releases</a> page.</p>
+<p>In order to see what changes were made from earlier versions of Coherence Spring, see the
+<a href="http://spring.coherence.community//3.0.0-SNAPSHOT//history.html">Change History</a> as well as the <a href="https://github.com/coherence-community/coherence-spring/releases">GitHub Releases</a> page.</p>
 </div>
 </div>
 </div>
@@ -234,27 +237,39 @@ see the <a href="http://spring.coherence.community//3.0.0-SNAPSHOT//history.html
 <h2 id="first-steps"><a class="anchor" href="#first-steps"></a>4. First Steps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you are getting started with Spring Boot or 'Spring' in general, start with <a href="getting-started.html#getting-started">the following topics</a>:</p>
+<p>If you are getting started with Coherence Spring, start with the <a href="quickstart.html#quickstart">Quickstart</a>. It is a great
+way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
+<a href="spring-boot.html#spring-boot">spring-boot.html</a> chapter next. The reference documentation makes a distinction between
+<a href="https://spring.io/projects/spring-framework">Spring Framework</a> and <a href="https://spring.io/projects/spring-boot">Spring Boot</a>. At its very core, Spring Framework provides
+Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives deveopers
+comprehensive infrastructure support for developing Java applications.</p>
+</div>
+<div class="paragraph">
+<p>Spring Boot on the other hand, is an opinionated extension to the Spring Framework by:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>From scratch:</strong> <a href="getting-started.html#getting-started-introducing-spring-boot">Overview</a> | <a href="getting-started.html#getting-started-system-requirements">Requirements</a> | <a href="getting-started.html#getting-started-installing-spring-boot">Installation</a></p>
+<p>Eliminating boilerplate configurations</p>
 </li>
 <li>
-<p><strong>Tutorial:</strong> <a href="getting-started.html#getting-started-first-application">Part 1</a> | <a href="getting-started.html#getting-started-first-application-code">Part 2</a></p>
+<p>Providing Auto-Configuration for other Spring modules and third-party integrations</p>
 </li>
 <li>
-<p><strong>Running your example:</strong> <a href="getting-started.html#getting-started-first-application-run">Part 1</a> | <a href="getting-started.html#getting-started-first-application-executable-jar">Part 2</a></p>
+<p>Metrics + health checks</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>The vast majority of new Spring projects will utilize Spring Boot. Nonetheless, please also study the Spring Framework targeted
+chapters as Spring Frameworks is the foundation for everything related to Spring Boot.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-12-21 10:11:57 UTC
+Last updated 2021-01-04 10:24:04 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
