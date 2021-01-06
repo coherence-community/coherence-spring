@@ -22,7 +22,7 @@
 	<description>Coherence Spring Boot Starter + Autoconfiguration</description>
 
 	<properties>
-		<coherence.hibernate.root>${basedir}/..</coherence.hibernate.root>
+		<coherence.spring.root>${basedir}/..</coherence.spring.root>
 		<spring-boot.version>2.4.0</spring-boot.version>
 	</properties>
 	<build>

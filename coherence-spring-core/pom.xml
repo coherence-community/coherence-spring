@@ -22,7 +22,7 @@
 	<description>Coherence Spring</description>
 
 	<properties>
-		<coherence.hibernate.root>${basedir}/..</coherence.hibernate.root>
+		<coherence.spring.root>${basedir}/..</coherence.spring.root>
 	</properties>
 
 	<dependencies>
