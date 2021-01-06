@@ -3,6 +3,8 @@
 
 name: CI Coherence Spring
 on:
+  schedule:
+    - cron: "0 5 * * *"
   push:
     branches: [ master ]
 jobs:
