@@ -159,8 +159,21 @@ Oracle Coherence.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Spring&#8217;s Cache abstraction also supports JSR-107 which is also supported by
+Spring&#8217;s Cache abstraction also supports <a href="https://jcp.org/en/jsr/detail?id=107">JSR-107</a> which is also supported by
 Oracle Coherence. As such you have another alternative for setting up caching.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you are using JPA/Hibernate you may also consider using the Coherence support for Hibernate&#8217;s second-level cache SPI,
+which is provided by the <a href="https://github.com/coherence-community/coherence-hibernate">Coherence Hibernate project</a>.
 </td>
 </tr>
 </table>
@@ -254,7 +267,7 @@ public class CacheConfiguration {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-07 05:28:37 UTC
+Last updated 2021-01-08 10:18:26 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
