@@ -102,7 +102,7 @@
 		<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<coherence.version>20.12-SNAPSHOT</coherence.version>
+		<coherence.version>20.12</coherence.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<junit.version>5.7.0</junit.version>
 		<mockito.version>1.9.5</mockito.version>
@@ -153,18 +153,18 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.7.0</version>
+				<version>${junit.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
-				<version>5.7.0</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest</artifactId>
-				<version>2.2</version>
+				<version>${hamcrest.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -173,6 +173,15 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -358,7 +367,7 @@
 				<jdk>[9,)</jdk>
 			</activation>
 			<properties>
-				<maven.compiler.release>8</maven.compiler.release>
+				<maven.compiler.release>${java.version}</maven.compiler.release>
 			</properties>
 		</profile>
 		<profile>

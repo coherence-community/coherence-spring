@@ -8,6 +8,7 @@ package com.oracle.coherence.spring.configuration;
 
 import javax.annotation.PostConstruct;
 
+import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InjectionPoint;
@@ -19,11 +20,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import com.oracle.coherence.spring.annotation.Name;
@@ -34,6 +31,7 @@ import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.Session;
+import org.springframework.core.env.Environment;
 
 /**
  * Main configuration class to configure Coherence.
@@ -43,6 +41,7 @@ import com.tangosol.net.Session;
  */
 @Configuration
 @Import(NamedCacheConfiguration.class)
+@PropertySource("classpath:coherence-spring.properties")
 public class CoherenceSpringConfiguration {
 
 	protected static final Log logger = LogFactory.getLog(CoherenceSpringConfiguration.class);
@@ -127,6 +126,8 @@ public class CoherenceSpringConfiguration {
 		if (initialized) {
 			return;
 		}
+		SpringSystemPropertyResolver s = this.context.getBean(SpringSystemPropertyResolver.class);
+		String o = s.getProperty("coherence.log");
 
 		final CoherenceConfigurer coherenceConfigurer = getConfigurer();
 
@@ -163,12 +164,13 @@ public class CoherenceSpringConfiguration {
 	}
 
 	@Bean
-	public static BeanFactoryPostProcessor beanFactoryPostProcessor() {
+	public static BeanFactoryPostProcessor beanFactoryPostProcessor(Environment environment) {
 		return beanFactory -> {
 			final String[] beanNames = beanFactory.getBeanDefinitionNames();
 
 			boolean cachingEnabled = false;
 			boolean cacheManagerFound = false;
+			boolean springSystemPropertyResolverFound = false;
 
 			for (String beanName : beanNames) {
 				final Class<?> beanType = beanFactory.getType(beanName);
@@ -179,18 +181,27 @@ public class CoherenceSpringConfiguration {
 				if (CacheManager.class.isAssignableFrom(beanType)) {
 					cacheManagerFound = true;
 				}
+				if (SpringSystemPropertyResolver.class.isAssignableFrom(beanType)) {
+					springSystemPropertyResolverFound = true;
+				}
 			}
 
 			if (logger.isInfoEnabled()) {
 				logger.info(String.format("Caching is enabled: %s. Found existing CacheManager: %s", cachingEnabled, cacheManagerFound));
 			}
 
+			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+
+			if (!springSystemPropertyResolverFound) {
+				registry.registerBeanDefinition("springSystemPropertyResolver",
+						BeanDefinitionBuilder.genericBeanDefinition(SpringSystemPropertyResolver.class)
+								.addConstructorArgValue(environment).getBeanDefinition());
+			}
+
 			if (cachingEnabled && !cacheManagerFound) {
 				if (logger.isInfoEnabled()) {
 					logger.info("Creating default CacheManager.");
 				}
-
-				BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 				registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
 						.addConstructorArgReference(COHERENCE_BEAN_NAME).getBeanDefinition());

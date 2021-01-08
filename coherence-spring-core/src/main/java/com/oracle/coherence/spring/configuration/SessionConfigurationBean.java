@@ -6,26 +6,27 @@
  */
 package com.oracle.coherence.spring.configuration;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.Optional;
 
+import com.oracle.coherence.spring.configuration.support.SessionType;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.SessionConfiguration;
 
 /**
  * A {@link SessionConfiguration} bean that will be created for
  * each named session in the application configuration properties.
- * <p>Sessions are configured with the {@code coherence.session} prefix,
+ * <p>
+ * Sessions are configured with the {@code coherence.session} prefix,
  * for example {@code coherence.session.foo} configures a session named
- * foo.</p>
- * <p>The session name {@code default} is a special case that configures
- * the default session named {@link com.tangosol.net.Coherence#DEFAULT_NAME}.</p>
+ * foo.
+ * <p>
+ * The session name {@code default} is a special case that configures
+ * the default session named {@link com.tangosol.net.Coherence#DEFAULT_NAME}.
  *
  * @author Gunnar Hillert
  *
  */
-public class SessionConfigurationBean {
+public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	private static final String DEFAULT_SESSION_NAME = "default";
 
@@ -38,6 +39,11 @@ public class SessionConfigurationBean {
 	 * The scope name for the session.
 	 */
 	private String scopeName;
+
+	/**
+	 * The type of this configuration.
+	 */
+	private SessionType type;
 
 	/**
 	 * The Coherence cache configuration URI for the session.
@@ -65,19 +71,25 @@ public class SessionConfigurationBean {
 		super();
 	}
 
-	public SessionConfiguration getConfiguration() {
+	@Override
+	public Optional<SessionConfiguration> getConfiguration() {
+		final SessionType type = getType();
+		if (SessionType.GRPC == type) {
+			return Optional.empty();
+		}
+
 		SessionConfiguration.Builder builder = SessionConfiguration
 				.builder()
-				.named(processSessionName(name))
-				.withPriority(priority);
+				.named(processSessionName(this.getName()))
+				.withPriority(this.getPriority());
 
-		if (scopeName != null) {
+		if (this.scopeName != null) {
 			builder = builder.withScopeName(scopeName);
 		}
-		if (configUri != null) {
-			builder = builder.withConfigUri(configUri);
+		if (this.configUri != null) {
+			builder = builder.withConfigUri(this.configUri);
 		}
-		return builder.build();
+		return Optional.of(builder.build());
 	}
 
 	/**
@@ -129,13 +141,12 @@ public class SessionConfigurationBean {
 	}
 
 	/**
-	 * A marker annotation on a {@link com.tangosol.net.SessionConfiguration} or
-	 * a {@link com.tangosol.net.SessionConfiguration.Provider} to indicate that
-	 * it replaces another configuration with the same name.
+	 * Set the priority of this configuration.
+	 *
+	 * @param type  the type of this configuration
 	 */
-	@Documented
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Replaces {
+	public void setType(SessionType type) {
+		this.type = type;
 	}
 
 	public String getName() {
@@ -148,6 +159,14 @@ public class SessionConfigurationBean {
 
 	public int getPriority() {
 		return priority;
+	}
+
+	public SessionType getType() {
+		return type;
+	}
+
+	public String getConfigUri() {
+		return configUri;
 	}
 
 	private String processSessionName(String sessionName) {

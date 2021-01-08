@@ -8,7 +8,9 @@ package com.oracle.coherence.spring.boot.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -29,7 +31,7 @@ public class CoherencePropertiesTests {
 	private CoherenceProperties coherenceProperties;
 
 	@Test
-	void testCoherenceProperties() {
+	void testCoherencePropertiesWithSessions() {
 		assertEquals(3, coherenceProperties.getSessions().size());
 		assertThat(coherenceProperties.getSessions().get(0).getName()).isEqualTo("default");
 		assertThat(coherenceProperties.getSessions().get(0).getConfig()).isEqualTo("coherence-cache-config.xml");
@@ -51,9 +53,9 @@ public class CoherencePropertiesTests {
 		assertThat(coherenceProperties.getSessions().get(1).getConfiguration()).isNotNull();
 		assertThat(coherenceProperties.getSessions().get(2).getConfiguration()).isNotNull();
 
-		final SessionConfiguration sessionConfiguration1 = coherenceProperties.getSessions().get(0).getConfiguration();
-		final SessionConfiguration sessionConfiguration2 = coherenceProperties.getSessions().get(1).getConfiguration();
-		final SessionConfiguration sessionConfiguration3 = coherenceProperties.getSessions().get(2).getConfiguration();
+		final SessionConfiguration sessionConfiguration1 = coherenceProperties.getSessions().get(0).getConfiguration().get();
+		final SessionConfiguration sessionConfiguration2 = coherenceProperties.getSessions().get(1).getConfiguration().get();
+		final SessionConfiguration sessionConfiguration3 = coherenceProperties.getSessions().get(2).getConfiguration().get();
 
 		assertThat(sessionConfiguration1.getName()).isEqualTo(Coherence.DEFAULT_NAME);
 		validateConfigUri("coherence-cache-config.xml", sessionConfiguration1);
@@ -67,6 +69,25 @@ public class CoherencePropertiesTests {
 		validateConfigUri("test-coherence-config.xml", sessionConfiguration3);
 		assertThat(sessionConfiguration3.getScopeName()).isEqualTo("myscope");
 		assertThat(sessionConfiguration3.getPriority()).isEqualTo(SessionConfiguration.DEFAULT_PRIORITY);
+	}
+
+	@Test
+	void testCoherenceLoggingProperties() {
+		assertNotNull(coherenceProperties.getLogging());
+		assertThat(coherenceProperties.getLogging().getCharacterLimit()).isEqualTo(123);
+		assertThat(coherenceProperties.getLogging().getDestination()).isEqualTo(LogType.SLF4J);
+		assertThat(coherenceProperties.getLogging().getLoggerName()).isEqualTo("testing");
+		assertThat(coherenceProperties.getLogging().getMessageFormat()).isEqualTo("Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}");
+	}
+
+	@Test
+	void testNativeCoherenceProperties() {
+		assertEquals(5, coherenceProperties.getProperties().size());
+		assertThat(coherenceProperties.getProperties().get("coherence.log.limit")).isEqualTo("444");
+		assertThat(coherenceProperties.getProperties().get("coherence.log.level")).isEqualTo("1");
+		assertThat(coherenceProperties.getProperties().get("coherence.log.logger")).isEqualTo("CoherenceSpring");
+		assertThat(coherenceProperties.getProperties().get("coherence.log")).isEqualTo("log4j");
+		assertThat(coherenceProperties.getProperties().get("coherence.log.format")).isEqualTo("foobar");
 	}
 
 	private void validateConfigUri(String expectedConfigUri, SessionConfiguration sessionConfiguration) {

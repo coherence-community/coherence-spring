@@ -8,50 +8,130 @@ Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g. Autoconf
 [[spring-boot-getting-started]]
 == Getting Started
 
+In order to start using Coherence with Spring Boot you have to add the `coherence-spring-boot-starter` dependency as well
+as the desired version of Coherence.
+
 .Maven
 [source,xml,indent=0,subs="verbatim,quotes,attributes"]
 ----
-	<dependencies>
-		<dependency>
-			<groupId>com.oracle.coherence.spring</groupId>
-			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>{coherence-spring-version}</version>
-		</dependency>
-	</dependencies>
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+</dependencies>
 ----
 
 .Gradle
 [source,groovy,indent=0,subs="attributes"]
 ----
-	dependencies {
-		compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-	}
+dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
 ----
 
+IMPORTANT: As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requires Oracle Coherence CE version
+`20.12` or higher.
 
-[[spring-boot-introduction]]
+[[spring-boot-using-coherence]]
 == Using Coherence with Spring Boot
 
+By adding the `coherence-spring-boot-starter` dependency, AutoConfiguration will be activated via the `CoherenceAutoConfiguration`
+class. This will also bind the `CoherenceProperties` for further configuration. The configuration for Spring Boot's
+Coherence support may look like the following:
 
+.Example YAML configuration
+[source,yaml,configblocks]
+----
+coherence:
+  logging:
+    destination: slf4j
+    logger-name: MyCoherence
+  sessions:
+  - name: default
+    config: "coherence-cache-config.xml"
+    priority: 1
+  - name: test
+    config: "test-coherence-config.xml"
+    priority: 2
+  properties:
+    coherence.log.limit: 400
+    coherence.log.level: 1
+----
 
+The following configuration properties are available.
+
+.Coherence Configuration Properties
+|===
+|Key |Default Value |Description
+
+| coherence.logging.destination
+|
+| The type of the logging destination. Default to `slf4j` if not set.
+
+| coherence.logging.severity-level
+|
+| Specifies which logged messages are emitted to the log destination. The legal values are `-1` to `9`.
+No messages are emitted if `-1` is specified. More log messages are emitted as the log level is increased.
+
+| coherence.logging.logger-name
+|
+|
+
+| coherence.logging.message-format
+|
+|
+
+| coherence.logging.character-limit
+|
+|
+
+| coherence.properties.*
+|
+| Any native Coherence properties
+
+| coherence.sessions[0].name
+|
+|
+
+| coherence.sessions[0].type
+|
+| Represents the various session type that can be configured: CLIENT, SERVER, GRPC
+
+| coherence.sessions[0].config
+|
+| The Coherence cache configuration URI for the session
+
+| coherence.sessions[0].priority
+|
+| The priority order to be used when starting the session. Sessions will be started with the lowest priority first.
+
+| coherence.sessions[0].scope-name
+|
+| The scope name for the session.
+
+|===
+
+IMPORTANT: All but the session property are translated into native Coherence properties. If both
+Spring Boot property AND a native property `coherence.properties.*` are configured, the Spring Boot
+property is used.
+
+For a list of available native properties, please consult the reference guide chapter on
+https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E[System Property Overrides].
+
+[[spring-boot-customize-coherence]]
+== Customize Coherence
+
+[[spring-boot-caching]]
 == Using Coherence as Spring Caching Provider
 
-Coherence provides dedicated support for Spring Boot in order to further simplify
-configuration options for Spring.
-
-If caching is enabled via `@EnableCaching`, Coherence Autoconfiguration will it
-automatically provide a `CacheManager` to the ApplicationContext, however only if
-no `CacheManager` was configured explicitly beforehand.
-
-
-
-
-
-Caches can be created on startup by setting the property.
-If a custom `ConfigurationBuilder` bean is defined, it is used to customize the caches.
-
-NOTE: The support of Infinispan in Spring Boot is restricted to the embedded mode and is quite basic.
-If you want more options, you should use the official Infinispan Spring Boot starter instead.
-See https://github.com/infinispan/infinispan-spring-boot[Infinispan's documentation] for more details.
-
+If caching is enabled via `@EnableCaching`, Coherence Autoconfiguration will it automatically provide a `CacheManager` to
+the ApplicationContext, however only if no `CacheManager` was configured explicitly beforehand.
 

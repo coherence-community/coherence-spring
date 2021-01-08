@@ -1,17 +1,10 @@
 coherence:
-  logging:
-    destination: slf4j
-    logger-name: testing
-    character-limit: 123
-    message-format: "Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}"
-    severity-level: 5
   sessions:
   - name: default
     config: "coherence-cache-config.xml"
     priority: 1
     scope-name: fooscope
   - name: test
-    type: client
     config: "test-coherence-config.xml"
     priority: 2
     scope-name: barscope
@@ -23,3 +16,4 @@ coherence:
     coherence.log.logger: CoherenceSpring
     coherence.log: log4j
     coherence.log.format: foobar
+

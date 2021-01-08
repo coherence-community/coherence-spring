@@ -89,7 +89,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 				this.sessionConfigurations.addAll(
 					sessionConfigurationBeans
 						.stream()
-						.map(sp -> sp.getConfiguration())
+						.map(sp -> sp.getConfiguration().get())
 						.collect(Collectors.toList()));
 			}
 

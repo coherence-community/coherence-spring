@@ -12,8 +12,11 @@ Spring provides its own cache abstraction, allowing you to add caching to
 Java methods. Coherence Spring provides an implementation of this abstraction for
 Oracle Coherence.
 
-NOTE: Spring's Cache abstraction also supports JSR-107 which is also supported by
+NOTE: Spring's Cache abstraction also supports https://jcp.org/en/jsr/detail?id=107[JSR-107] which is also supported by
 Oracle Coherence. As such you have another alternative for setting up caching.
+
+TIP: If you are using JPA/Hibernate you may also consider using the Coherence support for Hibernate's second-level cache SPI,
+which is provided by the https://github.com/coherence-community/coherence-hibernate[Coherence Hibernate project].
 
 [[spring-cache-configuration]]
 == Configuring Coherence Cache for Spring

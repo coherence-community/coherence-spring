@@ -1,0 +1,42 @@
+/*
+ * Copyright 2017-2020 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.oracle.coherence.spring.configuration.support;
+
+/**
+ * An enum representing the different types of {@link com.tangosol.net.SessionConfiguration}
+ * that can be configured in the Spring configuration.
+ *
+ * @author Gunnar Hillert
+ */
+public enum SessionType {
+
+	/**
+	 * The session is a client session, that is it expects to be a Coherence*Extend client.
+	 */
+	CLIENT,
+
+	/**
+	 * The session is a gRPC client session.
+	 */
+	GRPC,
+
+	/**
+	 * The session is a server session, that is it expects to be a Coherence cluster member.
+	 * <p>This is the default type if none is specified for a configuration.
+	 */
+	SERVER
+
+}
