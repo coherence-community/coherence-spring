@@ -29,6 +29,11 @@
 		<url>https://github.com/coherence-community/coherence-spring/issues</url>
 	</issueManagement>
 
+	<organization>
+		<name>Oracle, Inc</name>
+		<url>https://www.oracle.com/</url>
+	</organization>
+
 	<licenses>
 		<license>
 			<name>The Universal Permissive License (UPL), Version 1.0</name>

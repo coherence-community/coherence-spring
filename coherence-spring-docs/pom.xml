@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2021, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -32,6 +32,12 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-core</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-boot-starter</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
 
@@ -93,7 +99,6 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<source>8</source>
-							<additionalJOption>--no-module-directories</additionalJOption>
 							<includeDependencySources>true</includeDependencySources>
 							<dependencySourceIncludes>
 								<dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
