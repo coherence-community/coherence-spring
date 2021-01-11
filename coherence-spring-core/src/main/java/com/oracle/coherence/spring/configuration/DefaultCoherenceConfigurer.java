@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,18 +12,20 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.util.CollectionUtils;
-
 import com.oracle.coherence.spring.CoherenceServer;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 
 /**
+ * Default implementation of the {@link CoherenceConfigurer} interface.
+ *
  * @author Gunnar Hillert
  *
  */
@@ -73,13 +75,13 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 		if (this.context != null) {
 			final Collection<SessionConfigurationBean> sessionConfigurationBeans =
-					context.getBeansOfType(SessionConfigurationBean.class).values();
+					this.context.getBeansOfType(SessionConfigurationBean.class).values();
 
-			if (!CollectionUtils.isEmpty(sessionConfigurations)) {
+			if (!CollectionUtils.isEmpty(this.sessionConfigurations)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("%s sessionConfiguration(s) found.", sessionConfigurations.size()));
+					logger.debug(String.format("%s sessionConfiguration(s) found.", this.sessionConfigurations.size()));
 				}
-				this.sessionConfigurations.addAll(sessionConfigurations);
+				this.sessionConfigurations.addAll(this.sessionConfigurations);  //FIXME
 			}
 
 			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
@@ -89,12 +91,12 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 				this.sessionConfigurations.addAll(
 					sessionConfigurationBeans
 						.stream()
-						.map(sp -> sp.getConfiguration().get())
+						.map((sp) -> sp.getConfiguration().get())
 						.collect(Collectors.toList()));
 			}
 
 			final Collection<Coherence.LifecycleListener> lifecycleListeners =
-					context.getBeansOfType(Coherence.LifecycleListener.class).values();
+					this.context.getBeansOfType(Coherence.LifecycleListener.class).values();
 
 			if (!CollectionUtils.isEmpty(lifecycleListeners)) {
 				if (logger.isDebugEnabled()) {
@@ -104,15 +106,15 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			}
 		}
 
-		if(this.coherenceConfiguration == null) {
+		if (this.coherenceConfiguration == null) {
 			logger.warn("No Coherence configuration was provided...using default.");
 			this.coherenceConfiguration = this.createCoherenceConfiguration();
 		}
-		if(this.coherence == null) {
+		if (this.coherence == null) {
 			logger.warn("No Coherence instance was provided...creating a default instance.");
 			this.coherence = this.createCoherence();
 		}
-		if(this.coherenceServer == null) {
+		if (this.coherenceServer == null) {
 			logger.warn("No Coherence server defined...creating default server.");
 			this.coherenceServer = this.createCoherenceServer();
 		}
@@ -120,8 +122,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	}
 
 	/**
-	 *
-	 * @return
+	 * Create the {@link CoherenceConfiguration}.
+	 * @return the Configuration for a Coherence instance.
 	 */
 	protected CoherenceConfiguration createCoherenceConfiguration() {
 		final CoherenceConfiguration.Builder builder = CoherenceConfiguration.builder();
@@ -131,7 +133,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		}
 
 		if (!CollectionUtils.isEmpty(this.lifecycleListeners)) {
-			builder.withEventInterceptors(lifecycleListeners);
+			builder.withEventInterceptors(this.lifecycleListeners);
 		}
 
 		return builder.build();

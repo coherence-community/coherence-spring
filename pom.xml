@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2021, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -203,6 +203,37 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>2.3.4.RELEASE</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>3.1.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>8.32</version>
+						</dependency>
+						<dependency>
+							<groupId>io.spring.javaformat</groupId>
+							<artifactId>spring-javaformat-checkstyle</artifactId>
+							<version>0.0.27</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<id>checkstyle-validation</id>
+							<phase>validate</phase>
+							<inherited>true</inherited>
+							<configuration>
+								<configLocation>${coherence.spring.root}/src/checkstyle/checkstyle.xml</configLocation>
+								<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							</configuration>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

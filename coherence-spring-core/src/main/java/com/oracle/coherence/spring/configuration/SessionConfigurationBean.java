@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -60,7 +60,6 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Create a named {@link SessionConfigurationBean}.
-	 *
 	 * @param name the name for the session
 	 */
 	protected SessionConfigurationBean(String name) {
@@ -84,7 +83,7 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 				.withPriority(this.getPriority());
 
 		if (this.scopeName != null) {
-			builder = builder.withScopeName(scopeName);
+			builder = builder.withScopeName(this.scopeName);
 		}
 		if (this.configUri != null) {
 			builder = builder.withConfigUri(this.configUri);
@@ -94,7 +93,6 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Set the name of this configuration.
-	 *
 	 * @param name the name of this configuration
 	 */
 	public void setName(String name) {
@@ -103,7 +101,6 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Set the scope name for this configuration.
-	 *
 	 * @param scopeName the scope name for this configuration
 	 */
 	public void setScopeName(String scopeName) {
@@ -112,16 +109,14 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Get the Coherence cache configuration URI.
-	 *
 	 * @return the Coherence cache configuration URI
 	 */
 	public String getConfig() {
-		return configUri;
+		return this.configUri;
 	}
 
 	/**
 	 * Set the Coherence cache configuration URI.
-	 *
 	 * @param configUri the Coherence cache configuration URI
 	 */
 	public void setConfig(String configUri) {
@@ -130,9 +125,9 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Set the priority for this configuration.
-	 * <p>{@link com.tangosol.net.Session Sessions} are started lowest priority first
-	 * and closed in reverse order.</p>
-	 *
+	 * <p>
+	 * {@link com.tangosol.net.Session Sessions} are started lowest priority first
+	 * and closed in reverse order.
 	 * @param priority the priority for this configuration
 	 * @see com.tangosol.net.SessionConfiguration#getPriority()
 	 */
@@ -142,7 +137,6 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	/**
 	 * Set the priority of this configuration.
-	 *
 	 * @param type  the type of this configuration
 	 */
 	public void setType(SessionType type) {
@@ -150,23 +144,23 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String getScopeName() {
-		return scopeName;
+		return this.scopeName;
 	}
 
 	public int getPriority() {
-		return priority;
+		return this.priority;
 	}
 
 	public SessionType getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getConfigUri() {
-		return configUri;
+		return this.configUri;
 	}
 
 	private String processSessionName(String sessionName) {

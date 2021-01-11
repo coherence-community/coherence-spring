@@ -1,43 +1,30 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.configuration;
 
-import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
-import com.tangosol.coherence.config.SystemPropertyResolver;
+import com.oracle.coherence.spring.annotation.Name;
+import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import com.oracle.coherence.spring.annotation.Name;
-import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.tangosol.net.Coherence;
-import com.tangosol.net.Session;
-
-import java.util.Iterator;
-import java.util.ServiceLoader;
-import java.util.stream.Collectors;
 
 @SpringJUnitConfig(CoherenceSpringConfigurationTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext
 public class CoherenceSpringConfigurationTests {
-
-	@Configuration
-	@EnableCoherence
-	static class Config {
-
-	}
 
 	@Autowired
 	private Session defaultCoherenceSession;
@@ -58,4 +45,9 @@ public class CoherenceSpringConfigurationTests {
 		Assertions.assertEquals(Coherence.DEFAULT_NAME, this.defaultCoherenceSessionWithName.getName());
 	}
 
+	@Configuration
+	@EnableCoherence
+	static class Config {
+
+	}
 }

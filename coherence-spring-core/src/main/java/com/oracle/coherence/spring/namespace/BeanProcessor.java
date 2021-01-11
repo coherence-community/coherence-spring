@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.namespace;
 
-import com.oracle.coherence.spring.CoherenceContext;
+import java.util.function.Supplier;
 
+import com.oracle.coherence.spring.CoherenceContext;
 import com.tangosol.config.ConfigurationException;
 import com.tangosol.config.xml.ElementProcessor;
 import com.tangosol.config.xml.ProcessingContext;
@@ -15,13 +16,11 @@ import com.tangosol.run.xml.XmlElement;
 
 import org.springframework.context.ApplicationContext;
 
-import java.util.function.Supplier;
-
 /**
  * Element processor for {@code <spring:bean/>} XML element.
  *
  * @author Jonathan Knight
- * @author rl
+ * @author Ryan Lubke
  * @since 3.0
  */
 public class BeanProcessor implements ElementProcessor<BeanBuilder> {
@@ -32,7 +31,6 @@ public class BeanProcessor implements ElementProcessor<BeanBuilder> {
 	 */
 	private final Supplier<ApplicationContext> contextSupplier;
 
-
 	/**
 	 * The default constructor used by the Coherence XML processor.
 	 */
@@ -42,20 +40,17 @@ public class BeanProcessor implements ElementProcessor<BeanBuilder> {
 
 	/**
 	 * Create a {@code BeanProcessor}.
-	 * @param contextSupplier The {@link java.util.function.Supplier} used to provide an
+	 * @param contextSupplier the {@link java.util.function.Supplier} used to provide an
 	 * instance of {@link ApplicationContext}
 	 */
 	BeanProcessor(Supplier<ApplicationContext> contextSupplier) {
-		this.contextSupplier = contextSupplier == null
-				? CoherenceContext::getApplicationContext
-				: contextSupplier;
+		this.contextSupplier = (contextSupplier != null) ? contextSupplier : CoherenceContext::getApplicationContext;
 	}
 
 	@Override
-	public BeanBuilder process(final ProcessingContext processingContext,
-	                           final XmlElement xmlElement)
+	public BeanBuilder process(final ProcessingContext processingContext, final XmlElement xmlElement)
 			throws ConfigurationException {
-		return processingContext.inject(new BeanBuilder(contextSupplier.get(),
+		return processingContext.inject(new BeanBuilder(this.contextSupplier.get(),
 				xmlElement.getString()), xmlElement);
 	}
 }

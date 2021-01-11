@@ -1,13 +1,20 @@
+/*
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ *
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
+ */
 package com.oracle.coherence.spring;
 
-import com.oracle.coherence.inject.Injectable;
+import java.io.DataInput;
+import java.io.DataOutput;
 
+import com.oracle.coherence.inject.Injectable;
 import com.tangosol.io.DefaultSerializer;
 import com.tangosol.io.ExternalizableLite;
 import com.tangosol.io.Serializer;
 import com.tangosol.util.Binary;
 import com.tangosol.util.ExternalizableHelper;
-
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +26,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit test for {@link CoherenceInjector}.
@@ -40,24 +41,25 @@ class CoherenceInjectorTest {
 	@Test
 	void shouldInjectAfterDeserialization() {
 		BeanOne beanOne = new BeanOne();
-		assertThat(beanOne.getBeanTwo(), is(nullValue()));
+		assertThat(beanOne.getBeanTwo()).isNull();
 		Serializer serializer = new DefaultSerializer();
 		Binary binary = ExternalizableHelper.toBinary(beanOne, serializer);
 		BeanOne result = ExternalizableHelper.fromBinary(binary, serializer);
-		assertThat(result.getBeanTwo(), is(notNullValue()));
+		assertThat(result.getBeanTwo()).isNotNull();
 	}
 
 	@Configuration
 	@ComponentScan
 	static class Config {
-		@Bean(name="BeanOne")
-		@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-		public BeanOne getStoreBeanOne() {
+
+		@Bean("BeanOne")
+		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+		BeanOne getStoreBeanOne() {
 			return new BeanOne();
 		}
 
-		@Bean(name="BeanTwo")
-		public BeanTwo getStoreBeanTwo() {
+		@Bean("BeanTwo")
+		BeanTwo getStoreBeanTwo() {
 			return new BeanTwo();
 		}
 	}
@@ -68,7 +70,7 @@ class CoherenceInjectorTest {
 		BeanTwo beanTwo;
 
 		public BeanTwo getBeanTwo() {
-			return beanTwo;
+			return this.beanTwo;
 		}
 
 		@Override

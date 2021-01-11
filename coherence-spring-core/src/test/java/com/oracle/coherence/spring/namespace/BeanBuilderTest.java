@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,13 +7,12 @@
 package com.oracle.coherence.spring.namespace;
 
 import com.oracle.coherence.common.base.Classes;
-
 import com.tangosol.coherence.config.ParameterList;
 import com.tangosol.coherence.config.SimpleParameterList;
 import com.tangosol.config.ConfigurationException;
 import com.tangosol.config.expression.ParameterResolver;
 import com.tangosol.config.expression.SystemPropertyParameterResolver;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for {@link BeanBuilder}.
@@ -41,17 +37,19 @@ class BeanBuilderTest {
 
 
 	@Autowired
-	ApplicationContext ctx;
-	@Autowired FooBean fooBean;
+	private ApplicationContext ctx;
+
+	@Autowired
+	private FooBean fooBean;
 
 	@Test
 	void shouldRealizeNamedBean() {
 		ParameterResolver resolver = new SystemPropertyParameterResolver();
 		ClassLoader loader = Classes.getContextClassLoader();
 
-		BeanBuilder builder = new BeanBuilder(ctx, "Foo");
+		BeanBuilder builder = new BeanBuilder(this.ctx, "Foo");
 		Boolean result = builder.realizes(FooBean.class, resolver, loader);
-		assertThat(result, is(true));
+		assertThat(result).isTrue();
 	}
 
 	@Test
@@ -59,9 +57,9 @@ class BeanBuilderTest {
 		ParameterResolver resolver = new SystemPropertyParameterResolver();
 		ClassLoader loader = Classes.getContextClassLoader();
 
-		BeanBuilder builder = new BeanBuilder(ctx, "Bar");
+		BeanBuilder builder = new BeanBuilder(this.ctx, "Bar");
 		Boolean result = builder.realizes(FooBean.class, resolver, loader);
-		assertThat(result, is(false));
+		assertThat(result).isFalse();
 	}
 
 	@Test
@@ -70,9 +68,9 @@ class BeanBuilderTest {
 		ClassLoader loader = Classes.getContextClassLoader();
 		ParameterList parameters = new SimpleParameterList();
 
-		BeanBuilder builder = new BeanBuilder(ctx, "Foo");
+		BeanBuilder builder = new BeanBuilder(this.ctx, "Foo");
 		Object result = builder.realize(resolver, loader, parameters);
-		assertThat(result, is(sameInstance(fooBean)));
+		assertThat(result).isSameAs(this.fooBean);
 	}
 
 	@Test
@@ -81,13 +79,13 @@ class BeanBuilderTest {
 		ClassLoader loader = Classes.getContextClassLoader();
 		ParameterList parameters = new SimpleParameterList();
 
-		BeanBuilder builder = new BeanBuilder(ctx, "Bar");
-		assertThrows(ConfigurationException.class, () -> builder.realize(resolver, loader, parameters));
+		BeanBuilder builder = new BeanBuilder(this.ctx, "Bar");
+		Assertions.assertThrows(ConfigurationException.class, () -> builder.realize(resolver, loader, parameters));
 	}
 
 	@Configuration
 	static class Config {
-		@Bean(name="Foo")
+		@Bean("Foo")
 		FooBean getFooBean() {
 			return new FooBean();
 		}

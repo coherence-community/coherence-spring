@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,7 +7,6 @@
 package com.oracle.coherence.spring;
 
 import com.tangosol.net.events.EventInterceptor;
-
 import com.tangosol.net.events.partition.cache.EntryEvent;
 
 /**
@@ -15,28 +14,22 @@ import com.tangosol.net.events.partition.cache.EntryEvent;
  *
  * @author Patrick Peralta
  */
-public class StubInterceptor implements EventInterceptor<EntryEvent<?, ?>>
-{
+public class StubInterceptor implements EventInterceptor<EntryEvent<?, ?>> {
 	private volatile boolean m_fEventReceived = false;
-
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onEvent(EntryEvent<?, ?> event)
-	{
-		m_fEventReceived = true;
+	public void onEvent(EntryEvent<?, ?> event) {
+		this.m_fEventReceived = true;
 	}
-
 
 	/**
 	 * Return true if an event was received via {@link #onEvent}.
-	 *
 	 * @return true if an event was received.
 	 */
-	public boolean eventReceived()
-	{
-		return m_fEventReceived;
+	public boolean eventReceived() {
+		return this.m_fEventReceived;
 	}
 }

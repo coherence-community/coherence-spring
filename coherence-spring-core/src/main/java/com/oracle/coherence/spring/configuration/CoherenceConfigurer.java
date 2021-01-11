@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -20,17 +20,22 @@ import com.tangosol.net.CoherenceConfiguration;
 public interface CoherenceConfigurer {
 
 	/**
-	 * @return Coherence instance
+	 * Responsible for returning the {@link Coherence} instance.
+	 * @return the Coherence instance
 	 */
 	Coherence getCoherence();
 
 	/**
-	 * @return The Coherence Server
+	 * Responsible for creating the {@link CoherenceConfiguration} for the {@link CoherenceServer}.
+	 * @return the configuration for a Coherence instance
+	 */
+	CoherenceConfiguration getCoherenceConfiguration();
+
+	/**
+	 * Returns the {@link CoherenceServer} instance. Use the {@link CoherenceServer} to start and stop the {@link Coherence}
+	 * instance.
+	 * @return the Coherence Server
 	 */
 	CoherenceServer getCoherenceServer();
 
-	/**
-	 * @return The configuration for a Coherence instance
-	 */
-	CoherenceConfiguration getCoherenceConfiguration();
 }

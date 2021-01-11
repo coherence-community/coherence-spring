@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -10,16 +10,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.tangosol.coherence.config.Config;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.NamedCache;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.Lifecycle;
-
-import com.tangosol.coherence.config.Config;
-import com.tangosol.net.Coherence;
-import com.tangosol.net.NamedCache;
 
 /**
  * Responsible for starting the default
@@ -75,11 +75,11 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 	}
 
 	public ApplicationContext getApplicationContext() {
-		return applicationContext;
+		return this.applicationContext;
 	}
 
 	public Coherence getCoherence() {
-		return coherence;
+		return this.coherence;
 	}
 
 	@Override
@@ -95,18 +95,18 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 	@Override
 	public void start() {
 		try {
-			coherence.start().get(startupTimeout, TimeUnit.MILLISECONDS);
+			this.coherence.start().get(this.startupTimeout, TimeUnit.MILLISECONDS);
 		}
-		catch (InterruptedException | ExecutionException | TimeoutException e) {
+		catch (InterruptedException | ExecutionException | TimeoutException ex) {
 			throw new IllegalStateException(String.format("Oracle Coherence did not start "
-					+ "successfully within within the specified timeout period of %sms", startupTimeout), e);
+					+ "successfully within within the specified timeout period of %sms", this.startupTimeout), ex);
 		}
 	}
 
 	@Override
 	public void stop() {
-		if (coherence != null) {
-			coherence.close();
+		if (this.coherence != null) {
+			this.coherence.close();
 		}
 		Coherence.closeAll();
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,7 +7,6 @@
 package com.oracle.coherence.spring.namespace;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-
 import com.tangosol.net.BackingMapContext;
 import com.tangosol.net.BackingMapManager;
 import com.tangosol.net.BackingMapManagerContext;
@@ -15,7 +14,6 @@ import com.tangosol.net.ExtensibleConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.CacheStore;
 import com.tangosol.net.cache.ReadWriteBackingMap;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,12 +52,12 @@ class NamespaceHandlerTest {
 		String xml = "namespace-handler-test-config.xml";
 		ExtensibleConfigurableCacheFactory.Dependencies deps
 				= ExtensibleConfigurableCacheFactory.DependenciesHelper.newInstance(xml);
-		eccf = new ExtensibleConfigurableCacheFactory(deps);
+		this.eccf = new ExtensibleConfigurableCacheFactory(deps);
 	}
 
 	@AfterEach
 	void cleanup() {
-		eccf.dispose();
+		this.eccf.dispose();
 	}
 
 	@Test
@@ -75,7 +73,7 @@ class NamespaceHandlerTest {
 	}
 
 	Object getCacheStore(String cacheName) {
-		NamedCache<Object, Object> cache = eccf.ensureCache(cacheName, null);
+		NamedCache<Object, Object> cache = this.eccf.ensureCache(cacheName, null);
 		BackingMapManager manager = cache.getCacheService().getBackingMapManager();
 		BackingMapManagerContext context = manager.getContext();
 		BackingMapContext backingMapContext = context.getBackingMapContext(cache.getCacheName());
@@ -88,13 +86,13 @@ class NamespaceHandlerTest {
 	@EnableCoherence
 	@ComponentScan(basePackages = {"com.oracle.coherence.spring"})
 	static class Config {
-		@Bean(name="TestStoreOne")
-		public <K, V> CacheStore<K, V> getStoreBeanOne() {
+		@Bean("TestStoreOne")
+		<K, V> CacheStore<K, V> getStoreBeanOne() {
 			return new StoreBeanOne<>();
 		}
 
-		@Bean(name="TestStoreTwo")
-		public <K, V> CacheStore<K, V> getStoreBeanTwo() {
+		@Bean("TestStoreTwo")
+		<K, V> CacheStore<K, V> getStoreBeanTwo() {
 			return new StoreBeanTwo<>();
 		}
 	}

@@ -22,12 +22,39 @@ package com.oracle.coherence.spring.boot.autoconfigure.support;
  */
 public enum LogType {
 
+	/**
+	 * Log to Standard Out.
+	 */
 	STDOUT("stdout"),
+
+	/**
+	 * Log to Standard Error.
+	 */
 	STDERR("stderr"),
+
+	/**
+	 * Log using Java's logging facility.
+	 */
 	JDK("jdk"),
+
+	/**
+	 * Log using Log4J.
+	 */
 	LOG4J("log4j"),
+
+	/**
+	 * Log using Log4J2.
+	 */
 	LOG4J2("log4j2"),
+
+	/**
+	 * Log using Simple Logging Facade for Java.
+	 */
 	SLF4J("slf4j"),
+
+	/**
+	 * Log directly to a log file.
+	 */
 	FILENAME("file_name");
 
 	private String key;
@@ -37,6 +64,6 @@ public enum LogType {
 	}
 
 	public String getKey() {
-		return key;
+		return this.key;
 	}
 }

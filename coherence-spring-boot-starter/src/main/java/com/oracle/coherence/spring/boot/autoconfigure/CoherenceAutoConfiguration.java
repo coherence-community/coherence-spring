@@ -1,13 +1,18 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.cache.CoherenceCacheManager;
+import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
-import org.springframework.beans.factory.config.BeanDefinition;
+import com.tangosol.net.Coherence;
+
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -24,12 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.CollectionUtils;
-
-import com.oracle.coherence.spring.CoherenceServer;
-import com.oracle.coherence.spring.cache.CoherenceCacheManager;
-import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
-import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.tangosol.net.Coherence;
 
 /**
  * Activates Coherence Auto Configuration for Spring Boot, provided the respective
@@ -54,7 +53,7 @@ public class CoherenceAutoConfiguration {
 
 	@Bean
 	public static BeanFactoryPostProcessor coherenceAutoConfigurationBeanFactoryPostProcessor(ConfigurableEnvironment environment) {
-		return beanFactory -> {
+		return (beanFactory) -> {
 			BindResult<CoherenceProperties> result = Binder.get(environment)
 					.bind("coherence", CoherenceProperties.class);
 
@@ -79,7 +78,7 @@ public class CoherenceAutoConfiguration {
 							.addConstructorArgValue("coherence.properties.")
 							.getBeanDefinition());
 
-			if(!CollectionUtils.isEmpty(coherenceProperties.getSessions())) {
+			if (!CollectionUtils.isEmpty(coherenceProperties.getSessions())) {
 				int count = 1;
 				for (SessionConfigurationBean sessionConfigurationBean : coherenceProperties.getSessions()) {
 					beanFactory.registerSingleton("sessionConfigurationBean_" + count, sessionConfigurationBean);

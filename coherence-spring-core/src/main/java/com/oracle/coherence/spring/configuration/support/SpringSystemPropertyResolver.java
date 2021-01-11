@@ -8,6 +8,7 @@ package com.oracle.coherence.spring.configuration.support;
 
 import com.tangosol.coherence.config.EnvironmentVariableResolver;
 import com.tangosol.coherence.config.SystemPropertyResolver;
+
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
@@ -22,7 +23,6 @@ import org.springframework.util.Assert;
  */
 public class SpringSystemPropertyResolver
 		implements SystemPropertyResolver, EnvironmentVariableResolver {
-
 
 	/**
 	 * The Spring {@link Environment}.
@@ -44,7 +44,6 @@ public class SpringSystemPropertyResolver
 	/**
 	 * This constructor will be called by Spring to instantiate the
 	 * singleton bean and set the {@link Environment}.
-	 *
 	 * @param environment the Spring {@link Environment}. Must not be null.
 	 */
 	public SpringSystemPropertyResolver(Environment environment) {
@@ -55,9 +54,8 @@ public class SpringSystemPropertyResolver
 	/**
 	 * This constructor will be called by Spring to instantiate the
 	 * singleton bean and set the {@link Environment}.
-	 *
 	 * @param environment the Spring {@link Environment}
-	 * @param propertyPrefix Must not be null or empty
+	 * @param propertyPrefix must not be null or empty
 	 */
 	public SpringSystemPropertyResolver(Environment environment, String propertyPrefix) {
 		Assert.notNull(environment, "environment must not be null.");
@@ -69,15 +67,15 @@ public class SpringSystemPropertyResolver
 
 	@Override
 	public String getProperty(String coherenceProperty) {
-		return SpringSystemPropertyResolver.env == null
-				? null
-				: SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
+		return (SpringSystemPropertyResolver.env != null)
+				? SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class)
+				: null;
 	}
 
 	@Override
 	public String getEnv(String coherenceProperty) {
-		return SpringSystemPropertyResolver.env == null
-				? null
-				: SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
+		return (SpringSystemPropertyResolver.env != null)
+				? SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class)
+				: null;
 	}
 }

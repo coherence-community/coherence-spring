@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -9,12 +9,13 @@ package com.oracle.coherence.spring.cache;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 
+import com.tangosol.net.NamedCache;
+
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 
-import com.tangosol.net.NamedCache;
-
 /**
+ * Coherence-specific implementation of {@Cache} that defines common cache operations.
  *
  * @author Gunnar Hillert
  *
@@ -41,7 +42,7 @@ public class CoherenceCache implements Cache {
 	@Override
 	public ValueWrapper get(Object key) {
 		final Object value = this.cache.get(key);
-		return value != null ? new SimpleValueWrapper(value) : null;
+		return (value != null) ? new SimpleValueWrapper(value) : null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -61,16 +62,19 @@ public class CoherenceCache implements Cache {
 		final Object value = this.cache.get(key);
 		if (value != null) {
 			return (T) value;
-		} else {
+		}
+		else {
 			this.cache.lock(key);
 			try {
 				final Object value2 = this.cache.get(key);
 				if (value2 != null) {
 					return (T) value2;
-				} else {
+				}
+				else {
 					return loadValue(key, valueLoader);
 				}
-			} finally {
+			}
+			finally {
 				this.cache.unlock(key);
 			}
 		}
@@ -90,8 +94,9 @@ public class CoherenceCache implements Cache {
 		T value;
 		try {
 			value = valueLoader.call();
-		} catch (Exception e) {
-			throw new IllegalStateException("Executing the callabe failed.", e);
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException("Executing the callable failed.", ex);
 		}
 		put(key, value);
 		return value;
@@ -107,7 +112,6 @@ public class CoherenceCache implements Cache {
 
 	/**
 	 * Returns the number of key-value mappings of the underlying {@link NamedCache}.
-	 *
 	 * @return the number of key-value mappings in this map
 	 */
 	public int size() {

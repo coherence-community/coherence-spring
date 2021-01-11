@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ *
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
+ */
 package com.oracle.coherence.spring.configuration;
 
 import java.util.Collection;
@@ -18,27 +24,27 @@ public class CoherenceNamespaceHandlerIntegrationTests {
 		private Map<Long, String> storeMap = new HashMap<>();
 
 		public synchronized Map<Long, String> getStoreMap() {
-			return storeMap;
+			return this.storeMap;
 		}
 
 		@Override
 		public synchronized void store(Long key, String value) {
-			storeMap.put(key, value);
+			this.storeMap.put(key, value);
 		}
 
 		@Override
 		public synchronized void storeAll(Map<? extends Long, ? extends String> map) {
-			storeMap.putAll(map);
+			this.storeMap.putAll(map);
 		}
 
 		@Override
 		public synchronized void erase(Long key) {
-			storeMap.remove(key);
+			this.storeMap.remove(key);
 		}
 
 		@Override
 		public synchronized void eraseAll(Collection<? extends Long> keys) {
-			keys.forEach(storeMap::remove);
+			keys.forEach(this.storeMap::remove);
 		}
 
 		@Override
@@ -48,7 +54,7 @@ public class CoherenceNamespaceHandlerIntegrationTests {
 
 		@Override
 		public synchronized Map<Long, String> loadAll(Collection<? extends Long> keys) {
-			return keys.stream().collect(Collectors.toMap(k -> k, Object::toString));
+			return keys.stream().collect(Collectors.toMap((k) -> k, Object::toString));
 		}
 	}
 }

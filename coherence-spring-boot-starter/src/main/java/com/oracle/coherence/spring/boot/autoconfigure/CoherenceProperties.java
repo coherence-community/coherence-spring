@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
 /**
@@ -76,7 +76,7 @@ public class CoherenceProperties {
 
 
 	public List<SessionConfigurationBean> getSessions() {
-		return sessions;
+		return this.sessions;
 	}
 
 	public void setSessions(List<SessionConfigurationBean> sessions) {
@@ -84,7 +84,7 @@ public class CoherenceProperties {
 	}
 
 	public Map<String, String> getProperties() {
-		return properties;
+		return this.properties;
 	}
 
 	public void setProperties(Map<String, String> properties) {
@@ -92,7 +92,7 @@ public class CoherenceProperties {
 	}
 
 	public LoggingProperties getLogging() {
-		return logging;
+		return this.logging;
 	}
 
 	public void setLogging(LoggingProperties logging) {
@@ -100,8 +100,8 @@ public class CoherenceProperties {
 	}
 
 	/**
-	 *
-	 * @return
+	 * Returns a {@link Map} of Coherence properties using the format {@code coherence.properties.*}.
+	 * @return the Coherence properties as a {@link Map}. Never returns null.
 	 */
 	final Map<String, Object> getCoherencePropertiesAsMap() {
 		final Map<String, Object> coherenceProperties = new HashMap<>();
@@ -132,7 +132,7 @@ public class CoherenceProperties {
 	}
 
 	/**
-	 * Coherence Logging Configuration
+	 * Coherence Logging Configuration.
 	 */
 	public static class LoggingProperties {
 
@@ -174,7 +174,7 @@ public class CoherenceProperties {
 		private Integer characterLimit;
 
 		public LogType getDestination() {
-			return destination;
+			return this.destination;
 		}
 
 		public void setDestination(LogType destination) {
@@ -182,7 +182,7 @@ public class CoherenceProperties {
 		}
 
 		public Integer getSeverityLevel() {
-			return severityLevel;
+			return this.severityLevel;
 		}
 
 		public void setSeverityLevel(Integer severityLevel) {
@@ -190,7 +190,7 @@ public class CoherenceProperties {
 		}
 
 		public String getLoggerName() {
-			return loggerName;
+			return this.loggerName;
 		}
 
 		public void setLoggerName(String loggerName) {
@@ -198,7 +198,7 @@ public class CoherenceProperties {
 		}
 
 		public String getMessageFormat() {
-			return messageFormat;
+			return this.messageFormat;
 		}
 
 		public void setMessageFormat(String messageFormat) {
@@ -206,12 +206,11 @@ public class CoherenceProperties {
 		}
 
 		public Integer getCharacterLimit() {
-			return characterLimit;
+			return this.characterLimit;
 		}
 
 		public void setCharacterLimit(Integer characterLimit) {
 			this.characterLimit = characterLimit;
 		}
 	}
-
 }

@@ -1,33 +1,31 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring;
 
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+
 import com.tangosol.coherence.config.ParameterList;
 import com.tangosol.coherence.config.SimpleParameterList;
-
 import com.tangosol.coherence.config.builder.ParameterizedBuilder;
-
 import com.tangosol.config.ConfigurationException;
-
 import com.tangosol.config.annotation.Injectable;
-
 import com.tangosol.config.expression.Expression;
 import com.tangosol.config.expression.ExpressionParser;
 import com.tangosol.config.expression.Parameter;
 import com.tangosol.config.expression.ParameterResolver;
-
 import com.tangosol.config.xml.AbstractNamespaceHandler;
 import com.tangosol.config.xml.ElementProcessor;
 import com.tangosol.config.xml.ProcessingContext;
 import com.tangosol.config.xml.XmlSimpleName;
-
 import com.tangosol.run.xml.QualifiedName;
 import com.tangosol.run.xml.XmlElement;
-
 import com.tangosol.util.Base;
 import com.tangosol.util.Builder;
 import com.tangosol.util.ClassHelper;
@@ -36,25 +34,12 @@ import com.tangosol.util.ResourceRegistry;
 import com.tangosol.util.Resources;
 
 import org.springframework.beans.BeansException;
-
 import org.springframework.beans.factory.BeanFactory;
-
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-
 import org.springframework.context.ConfigurableApplicationContext;
-
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-
-import static com.tangosol.util.BuilderHelper.using;
-
-import java.net.URL;
-
-import java.text.ParseException;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * The {@link SpringNamespaceHandler} provides the ability to reference Spring beans in a
@@ -156,42 +141,36 @@ import java.util.List;
  * @author Patrick Peralta
  * @author Brian Oliver
  */
-public class SpringNamespaceHandler extends AbstractNamespaceHandler
-{
+public class SpringNamespaceHandler extends AbstractNamespaceHandler {
+
 	// ----- constructors ---------------------------------------------------
 
 	/**
 	 * Construct a {@link SpringNamespaceHandler}.
 	 */
-	public SpringNamespaceHandler()
-	{
-		registerProcessor("bean-factory", new ElementProcessor<Void>()
-		{
+	public SpringNamespaceHandler() {
+		registerProcessor("bean-factory", new ElementProcessor<Void>() {
 			@Override
 			public Void process(ProcessingContext context,
-								XmlElement        element) throws ConfigurationException
-			{
+								XmlElement        element) throws ConfigurationException {
 				ResourceRegistry registry = context.getResourceRegistry();
-				SpringBeanFactoryBuilder bldr = context.inject(new SpringBeanFactoryBuilder(registry,
-																							context.getExpressionParser()),
-															   element);
+				SpringBeanFactoryBuilder bldr = context.inject(
+						new SpringBeanFactoryBuilder(registry, context.getExpressionParser()),
+						element);
 
 				registry.registerResource(SpringBeanFactoryBuilder.class,
-										  getFactoryNameAsString(SpringBeanFactoryBuilder.class, bldr.getFactoryName(),
-																 context.getDefaultParameterResolver()),
-										  bldr);
+						getFactoryNameAsString(SpringBeanFactoryBuilder.class, bldr.getFactoryName(),
+								context.getDefaultParameterResolver()),
+						bldr);
 
 				return null;
 			}
 		});
 
-		registerProcessor("bean", new ElementProcessor<SpringBeanBuilder>()
-		{
+		registerProcessor("bean", new ElementProcessor<SpringBeanBuilder>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public SpringBeanBuilder process(ProcessingContext context,
-											 XmlElement        element) throws ConfigurationException
-			{
+			public SpringBeanBuilder process(ProcessingContext context, XmlElement element) throws ConfigurationException {
 				SpringBeanBuilder bldr = new SpringBeanBuilder(context.getResourceRegistry());
 
 				context.inject(bldr, element);
@@ -199,12 +178,10 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 				SimpleParameterList listParam = new SimpleParameterList();
 				String              sPrefix   = element.getQualifiedName().getPrefix();
 
-				for (XmlElement e : (List<XmlElement>) element.getElementList())
-				{
+				for (XmlElement e : (List<XmlElement>) element.getElementList()) {
 					QualifiedName qName = e.getQualifiedName();
 
-					if (Base.equals(sPrefix, qName.getPrefix()) && qName.getLocalName().equals("property"))
-					{
+					if (Base.equals(sPrefix, qName.getPrefix()) && qName.getLocalName().equals("property")) {
 						listParam.add(context.processElement(e));
 					}
 				}
@@ -216,28 +193,22 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		});
 	}
 
-
 	// ----- helper methods --------------------------------------------------
 
 	/**
 	 * Return the factory name produced by the provided expression, or
 	 * the name of the factory class if the expression is null.
-	 *
 	 * @param factoryClass     the {@link Class} of the factory
 	 *                         (this will be used if no factory name was specified)
 	 * @param exprFactoryName  the expression containing the {@link BeanFactory} name
 	 * @param resolver         the {@link ParameterResolver} to use for resolving
 	 *                         factory names
-	 *
 	 * @return factory name for the {@link BeanFactory}
 	 */
-	protected static String getFactoryNameAsString(Class<?>           factoryClass,
-												   Expression<String> exprFactoryName,
-												   ParameterResolver  resolver)
-	{
-		return exprFactoryName == null ? factoryClass.getName() : exprFactoryName.evaluate(resolver);
+	protected static String getFactoryNameAsString(Class<?> factoryClass, Expression<String> exprFactoryName,
+			ParameterResolver  resolver) {
+		return (exprFactoryName != null) ? exprFactoryName.evaluate(resolver) : factoryClass.getName();
 	}
-
 
 	// ----- inner class PropertyProcessor ----------------------------------
 
@@ -247,30 +218,24 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 	 * injected into a Spring bean.
 	 */
 	@XmlSimpleName("property")
-	public static class PropertyProcessor implements ElementProcessor<Parameter>
-	{
+	public static class PropertyProcessor implements ElementProcessor<Parameter> {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Parameter process(ProcessingContext context,
-								 XmlElement        element) throws ConfigurationException
-		{
+		public Parameter process(ProcessingContext context, XmlElement element) throws ConfigurationException {
 			String sName = context.getMandatoryProperty("name", String.class, element);
 
-			try
-			{
+			try {
 				return new Parameter(sName, context.getExpressionParser().parse(element.getString(), Object.class));
 			}
-			catch (ParseException e)
-			{
+			catch (ParseException ex) {
 				throw new ConfigurationException("Error processing <property> element",
-												 "Ensure a valid value is present in <property> element",
-												 e);
+						"Ensure a valid value is present in <property> element",
+						ex);
 			}
 		}
 	}
-
 
 	// ----- inner class SpringBeanBuilder -----------------------------------
 
@@ -289,8 +254,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 	 * </ol>
 	 */
 	public static class SpringBeanBuilder implements ParameterizedBuilder<Object>,
-													 ParameterizedBuilder.ReflectionSupport
-	{
+			ParameterizedBuilder.ReflectionSupport {
 		// ----- data members -----------------------------------------------
 
 		/**
@@ -314,97 +278,75 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		 */
 		private ParameterList m_listParameters;
 
-
 		// ----- constructors -----------------------------------------------
 
 		/**
 		 * Construct a {@link SpringBeanBuilder}.
-		 *
 		 * @param registry  the {@link ResourceRegistry} this builder will use
 		 *                  to locate the {@link BeanFactory} that will provide
 		 *                  the requested bean
 		 */
-		public SpringBeanBuilder(ResourceRegistry registry)
-		{
-			m_registry = registry;
+		public SpringBeanBuilder(ResourceRegistry registry) {
+			this.m_registry = registry;
 		}
-
 
 		// ----- accessors --------------------------------------------------
 
 		/**
 		 * Return an {@link Expression} used to determine the name of the
 		 * {@link BeanFactory} used by this builder.
-		 *
 		 * @return  an {@link Expression} for the {@link BeanFactory} name
 		 */
-		public Expression<String> getFactoryName()
-		{
-			return m_exprFactoryName;
+		public Expression<String> getFactoryName() {
+			return this.m_exprFactoryName;
 		}
-
 
 		/**
 		 * Set the {@link Expression} used to determine the name of the
 		 * {@link BeanFactory} used by this builder.
-		 *
 		 * @param exprFactoryName  the {@link Expression} for the {@link BeanFactory} name
 		 */
 		@Injectable
-		public void setFactoryName(Expression<String> exprFactoryName)
-		{
-			m_exprFactoryName = exprFactoryName;
+		public void setFactoryName(Expression<String> exprFactoryName) {
+			this.m_exprFactoryName = exprFactoryName;
 		}
-
 
 		/**
 		 * Return an {@link Expression} used to determine the name of the
 		 * bean provided by this builder.
-		 *
 		 * @return  an {@link Expression} for the bean name
 		 */
-		public Expression<String> getBeanName()
-		{
-			return m_exprBeanName;
+		public Expression<String> getBeanName() {
+			return this.m_exprBeanName;
 		}
-
 
 		/**
 		 * Set the {@link Expression} used to determine the name of the
 		 * bean provided by this builder.
-		 *
 		 * @param exprBeanName  an {@link Expression} for the bean name
 		 */
 		@Injectable
-		public void setBeanName(Expression<String> exprBeanName)
-		{
-			m_exprBeanName = exprBeanName;
+		public void setBeanName(Expression<String> exprBeanName) {
+			this.m_exprBeanName = exprBeanName;
 		}
-
 
 		/**
 		 * Return the {@link ParameterList} containing optional properties
 		 * to inject into the realized bean.
-		 *
 		 * @return the {@link ParameterList}
 		 */
-		public ParameterList getParameterList()
-		{
-			return m_listParameters;
+		public ParameterList getParameterList() {
+			return this.m_listParameters;
 		}
-
 
 		/**
 		 * Sets the {@link ParameterList} containing optional properties
 		 * to inject into the realized bean.
-		 *
 		 * @param listParameters  the {@link ParameterList}
 		 */
-		public void setParameterList(ParameterList listParameters)
-		{
-			m_listParameters = listParameters;
+		public void setParameterList(ParameterList listParameters) {
+			this.m_listParameters = listParameters;
 		}
-
 
 		// ----- ParameterizedBuilder interface------------------------------
 
@@ -412,49 +354,41 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object realize(ParameterResolver resolver,
-							  ClassLoader       loader,
-							  ParameterList     listParameters)
-		{
+		public Object realize(ParameterResolver resolver, ClassLoader loader, ParameterList listParameters) {
+
 			String        sBeanName      = getBeanName().evaluate(resolver);
 			Object        oBean          = ensureBeanFactory(resolver, loader).getBean(sBeanName);
-			ParameterList listPropParams = listParameters == null ? m_listParameters : listParameters;
+			ParameterList listPropParams = (listParameters != null) ? listParameters : this.m_listParameters;
 
-			if (listPropParams != null)
-			{
-				for (Parameter param : listPropParams)
-				{
+			if (listPropParams != null) {
+				for (Parameter param : listPropParams) {
 					Object oValue    = param.evaluate(resolver).get();
 					String sProperty = param.getName();
 
-					if (sProperty == null || sProperty.isEmpty())
-					{
+					if (sProperty == null || sProperty.isEmpty()) {
 						throw new ConfigurationException("Property element missing \"name\" attribute",
-														 "Ensure that bean property elements have a \"name\" attribute "
-														 + "(i.e. <property name=\"name\"> ");
+								"Ensure that bean property elements have a \"name\" attribute "
+								+ "(i.e. <property name=\"name\"> ");
 					}
 
 					String sMethod = "set" + Character.toUpperCase(sProperty.charAt(0)) + sProperty.substring(1);
 
-					try
-					{
+					try {
 						ClassHelper.invoke(oBean, sMethod, new Object[] {oValue});
 					}
-					catch (Exception e)
-					{
-						throw new ConfigurationException(String.format("Could not invoke '%s' on bean '%s'", sMethod,
-																	   sBeanName),
-														 String
-														 .format("Ensure that property '%s' contains a 'set' method on bean '%s'",
-															 sProperty, sBeanName),
-														 e);
+					catch (Exception ex) {
+						throw new ConfigurationException(String.format("Could not invoke '%s' on bean '%s'",
+								sMethod,
+								sBeanName),
+								String.format("Ensure that property '%s' contains a 'set' method on bean '%s'",
+										sProperty, sBeanName),
+								ex);
 					}
 				}
 			}
 
 			return oBean;
 		}
-
 
 		// ----- ParameterizedBuilder.ReflectionSupport interface -----------
 
@@ -464,17 +398,14 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		@Override
 		public boolean realizes(Class<?>          clzClass,
 								ParameterResolver resolver,
-								ClassLoader       loader)
-		{
+								ClassLoader       loader) {
 			String      sBeanName = getBeanName().evaluate(resolver);
 			BeanFactory factory   = ensureBeanFactory(resolver, loader);
 
-			if (factory.containsBean(sBeanName))
-			{
+			if (factory.containsBean(sBeanName)) {
 				return factory.isTypeMatch(sBeanName, clzClass);
 			}
-			else
-			{
+			else {
 				String        sFactory  = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
 				StringBuilder sbProblem = new StringBuilder();
 
@@ -490,35 +421,29 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 			}
 		}
 
-
 		// ----- helper methods ---------------------------------------------
 
 		/**
 		 * Ensure the {@link BeanFactory} used by this builder to provide the bean indicated
 		 * via {@link #getBeanName()}.
-		 *
 		 * @param resolver  the {@link ParameterResolver} to use for resolving parameters
 		 * @param loader    the {@link ClassLoader} for loading any necessary classes
-		 *
 		 * @return  the {@link BeanFactory} used by this builder
 		 */
-		protected BeanFactory ensureBeanFactory(ParameterResolver resolver,
-												ClassLoader       loader)
-		{
-			ResourceRegistry registry     = m_registry;
+		protected BeanFactory ensureBeanFactory(ParameterResolver resolver, ClassLoader loader) {
+
+			ResourceRegistry registry     = this.m_registry;
 			String           sFactoryName = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
 			BeanFactory      factory      = registry.getResource(BeanFactory.class, sFactoryName);
 
-			if (factory == null)
-			{
+			if (factory == null) {
 				sFactoryName = getFactoryNameAsString(SpringBeanFactoryBuilder.class, getFactoryName(), resolver);
 				SpringBeanFactoryBuilder bldr = registry.getResource(SpringBeanFactoryBuilder.class, sFactoryName);
 
-				if (bldr == null)
-				{
+				if (bldr == null) {
 					throw new ConfigurationException(String.format("Could not locate bean factory '%s'", sFactoryName),
-													 "Ensure that a bean factory is defined in the cache configuration file via"
-													 + "<bean-factory> or in the cache factory registry.");
+							"Ensure that a bean factory is defined in the cache configuration file via"
+							+ "<bean-factory> or in the cache factory registry.");
 				}
 
 				factory = bldr.realize(resolver, loader, /* params */ null);
@@ -526,18 +451,15 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 
 			BeanFactory innerFactory = factory;
 
-			if (factory instanceof ConfigurableApplicationContext)
-			{
+			if (factory instanceof ConfigurableApplicationContext) {
 				innerFactory = ((ConfigurableApplicationContext) factory).getBeanFactory();
 			}
 
-			if (innerFactory instanceof ConfigurableBeanFactory)
-			{
+			if (innerFactory instanceof ConfigurableBeanFactory) {
 				BeanExpressionResolver exprResolver =
 					((ConfigurableBeanFactory) innerFactory).getBeanExpressionResolver();
 
-				if (exprResolver instanceof CoherenceBeanExpressionResolver)
-				{
+				if (exprResolver instanceof CoherenceBeanExpressionResolver) {
 					((CoherenceBeanExpressionResolver) exprResolver).setParameterResolver(resolver);
 				}
 			}
@@ -545,7 +467,6 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 			return factory;
 		}
 	}
-
 
 	// ----- inner class SpringBeanFactoryBuilder ---------------------------
 
@@ -557,8 +478,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 	 * provided in the constructor via the value returned by {@link #getFactoryName()}.
 	 */
 	public static class SpringBeanFactoryBuilder implements ParameterizedBuilder<BeanFactory>,
-															ParameterizedBuilder.ReflectionSupport
-	{
+															ParameterizedBuilder.ReflectionSupport {
 		// ----- data members -----------------------------------------------
 
 		/**
@@ -582,74 +502,58 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		 */
 		private ExpressionParser m_exprParser;
 
-
 		// ----- constructors -----------------------------------------------
 
 		/**
 		 * Construct a {@link SpringBeanFactoryBuilder}.
-		 *
 		 * @param registry    the {@link ResourceRegistry} this builder will
 		 *                    use to register the realized {@link BeanFactory}
 		 * @param exprParser  the {@link ExpressionParser} used to evaluate
 		 *                    an expression
 		 */
 		public SpringBeanFactoryBuilder(ResourceRegistry registry,
-										ExpressionParser exprParser)
-		{
-			m_registry   = registry;
-			m_exprParser = exprParser;
+										ExpressionParser exprParser) {
+			this.m_registry   = registry;
+			this.m_exprParser = exprParser;
 		}
-
 
 		// ----- accessors --------------------------------------------------
 
 		/**
 		 * Return an {@link Expression} used to determine the name of the
 		 * {@link BeanFactory} realized by this builder.
-		 *
 		 * @return  an {@link Expression} for the {@link BeanFactory} name
 		 */
-		public Expression<String> getFactoryName()
-		{
-			return m_exprFactoryName;
+		public Expression<String> getFactoryName() {
+			return this.m_exprFactoryName;
 		}
-
 
 		/**
 		 * Set the {@link Expression} used to determine the name of the
 		 * {@link BeanFactory} realized by this builder.
-		 *
 		 * @param exprFactoryName  the {@link Expression} for the {@link BeanFactory} name
 		 */
 		@Injectable
-		public void setFactoryName(Expression<String> exprFactoryName)
-		{
-			m_exprFactoryName = exprFactoryName;
+		public void setFactoryName(Expression<String> exprFactoryName) {
+			this.m_exprFactoryName = exprFactoryName;
 		}
-
 
 		/**
 		 * Return an {@link Expression} for the {@link BeanFactory} URI.
-		 *
 		 * @return  an {@link Expression} for the {@link BeanFactory} URI
 		 */
-		public Expression<String> getApplicationContextUri()
-		{
-			return m_exprAppCtxUri;
+		public Expression<String> getApplicationContextUri() {
+			return this.m_exprAppCtxUri;
 		}
-
 
 		/**
 		 * Set the {@link Expression} for the {@link BeanFactory} URI.
-		 *
 		 * @param exprAppCtxUri  the {@link Expression} for the {@link BeanFactory} URI
 		 */
 		@Injectable
-		public void setApplicationContextUri(Expression<String> exprAppCtxUri)
-		{
-			m_exprAppCtxUri = exprAppCtxUri;
+		public void setApplicationContextUri(Expression<String> exprAppCtxUri) {
+			this.m_exprAppCtxUri = exprAppCtxUri;
 		}
-
 
 		// ----- ParameterizedBuilder.ReflectionSupport interface -----------
 
@@ -659,11 +563,9 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		@Override
 		public boolean realizes(Class<?>          clzClass,
 								ParameterResolver resolver,
-								ClassLoader       loader)
-		{
+								ClassLoader       loader) {
 			return BeanFactory.class.isAssignableFrom(clzClass);
 		}
-
 
 		// ----- ParameterizedBuilder interface -----------------------------
 
@@ -671,49 +573,39 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		 * {@inheritDoc}
 		 */
 		@Override
-		public BeanFactory realize(ParameterResolver resolver,
-								   ClassLoader       loader,
-								   ParameterList     listParameters)
-		{
-			ResourceRegistry registry     = m_registry;
+		public BeanFactory realize(ParameterResolver resolver, ClassLoader loader, ParameterList listParameters) {
+
+			ResourceRegistry registry     = this.m_registry;
 			String           sFactoryName = getFactoryNameAsString(BeanFactory.class, getFactoryName(), resolver);
 			BeanFactory      factory      = registry.getResource(BeanFactory.class, sFactoryName);
 
-			if (factory == null)
-			{
+			if (factory == null) {
 				Expression<String> exprAppCtxUri = getApplicationContextUri();
 
-				if (exprAppCtxUri == null)
-				{
+				if (exprAppCtxUri == null) {
 					throw new ConfigurationException("Missing parameter <application-context-uri>",
-													 "Ensure that parameter <application-context-uri> is supplied");
+							"Ensure that parameter <application-context-uri> is supplied");
 				}
 
 				String    sAppCtx = exprAppCtxUri.evaluate(resolver);
 				final URL url     = Resources.findFileOrResource(sAppCtx, loader);
 
-				if (url == null)
-				{
+				if (url == null) {
 					throw new ConfigurationException(String.format("Resource '%s' not found for bean factory '%s'",
-																   sAppCtx, sFactoryName),
-													 "Ensure that <application-context-uri> contains a valid file location");
+							sAppCtx, sFactoryName),
+							"Ensure that <application-context-uri> contains a valid file location");
 				}
 
 				// attempt to create a factory and register it
-				registry.registerResource(BeanFactory.class, sFactoryName, new Builder<BeanFactory>()
-				{
+				registry.registerResource(BeanFactory.class, sFactoryName, new Builder<BeanFactory>() {
 					@Override
-					public BeanFactory realize()
-					{
+					public BeanFactory realize() {
 						return new CoherenceApplicationContext(url.toExternalForm());
 					}
-				}, RegistrationBehavior.IGNORE, new ResourceRegistry.ResourceLifecycleObserver<BeanFactory>()
-				{
+				}, RegistrationBehavior.IGNORE, new ResourceRegistry.ResourceLifecycleObserver<BeanFactory>() {
 					@Override
-					public void onRelease(BeanFactory factory)
-					{
-						if (factory instanceof ConfigurableApplicationContext)
-						{
+					public void onRelease(BeanFactory factory) {
+						if (factory instanceof ConfigurableApplicationContext) {
 							((ConfigurableApplicationContext) factory).close();
 						}
 					}
@@ -726,7 +618,6 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 			return factory;
 		}
 
-
 		// ----- inner class: CoherenceApplicationContext -------------------
 
 		/**
@@ -737,22 +628,18 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 		 *
 		 * @see CoherenceBeanExpressionResolver
 		 */
-		public class CoherenceApplicationContext extends FileSystemXmlApplicationContext
-		{
+		public class CoherenceApplicationContext extends FileSystemXmlApplicationContext {
 			// ----- constructors -------------------------------------------
 
 			/**
 			 * Construct a CoherenceApplicationContext.
 			 *
 			 * @param configLocation   location of application context xml file
-			 *
 			 * @throws BeansException  if the context creation failed
 			 */
-			public CoherenceApplicationContext(String configLocation) throws BeansException
-			{
+			public CoherenceApplicationContext(String configLocation) throws BeansException {
 				super(configLocation);
 			}
-
 
 			// ----- FileSystemXmlApplicationContext methods ----------------
 
@@ -760,11 +647,11 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 			 * {@inheritDoc}
 			 */
 			@Override
-			protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory)
-			{
+			protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 				super.prepareBeanFactory(beanFactory);
 
-				beanFactory.setBeanExpressionResolver(new CoherenceBeanExpressionResolver(m_exprParser));
+				beanFactory.setBeanExpressionResolver(new CoherenceBeanExpressionResolver(
+						SpringBeanFactoryBuilder.this.m_exprParser));
 			}
 
 
@@ -774,8 +661,7 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler
 			 * {@inheritDoc}
 			 */
 			@Override
-			public String toString()
-			{
+			public String toString() {
 				return getClass().getName() + "; loaded from " + Arrays.asList(super.getConfigLocations());
 			}
 		}

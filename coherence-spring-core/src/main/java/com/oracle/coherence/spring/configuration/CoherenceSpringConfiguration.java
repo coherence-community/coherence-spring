@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,9 +8,18 @@ package com.oracle.coherence.spring.configuration;
 
 import javax.annotation.PostConstruct;
 
+import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.annotation.Name;
+import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
+import com.tangosol.net.CacheFactory;
+import com.tangosol.net.Cluster;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.CoherenceConfiguration;
+import com.tangosol.net.Session;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -20,17 +29,13 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.AnnotationUtils;
-
-import com.oracle.coherence.spring.annotation.Name;
-import com.oracle.coherence.spring.CoherenceServer;
-import com.oracle.coherence.spring.cache.CoherenceCacheManager;
-import com.tangosol.net.CacheFactory;
-import com.tangosol.net.Cluster;
-import com.tangosol.net.Coherence;
-import com.tangosol.net.CoherenceConfiguration;
-import com.tangosol.net.Session;
 import org.springframework.core.env.Environment;
 
 /**
@@ -55,33 +60,51 @@ public class CoherenceSpringConfiguration {
 
 	private boolean initialized = false;
 
+	/**
+	 * The name of the default {@link Coherence} bean.
+	 */
 	public static final String COHERENCE_BEAN_NAME = "coherence";
+
+	/**
+	 * The name of the default {@link CoherenceConfiguration} bean.
+	 */
 	public static final String COHERENCE_CONFIGURATION_BEAN_NAME = "coherenceConfiguration";
+
+	/**
+	 * The name of the default {@link CoherenceServer} bean.
+	 */
 	public static final String COHERENCE_SERVER_BEAN_NAME = "coherenceServer";
+
+	/**
+	 * The name of the default Coherence {@link Cluster} bean.
+	 */
 	public static final String COHERENCE_CLUSTER_BEAN_NAME = "coherenceCluster";
+
+	/**
+	 * The name of the {@link CoherenceConfigurer} bean.
+	 */
 	public static final String COHERENCE_CONFIGURER_BEAN_NAME = "coherenceConfigurer";
 
-	@Bean(name = COHERENCE_BEAN_NAME)
+	@Bean(COHERENCE_BEAN_NAME)
 	public Coherence getCoherence() {
-		return coherence;
+		return this.coherence;
 	}
 
-	@Bean(name = COHERENCE_CONFIGURATION_BEAN_NAME)
+	@Bean(COHERENCE_CONFIGURATION_BEAN_NAME)
 	public CoherenceConfiguration getCoherenceConfiguration() {
-		return coherenceConfiguration;
+		return this.coherenceConfiguration;
 	}
 
-	@Bean(name = COHERENCE_SERVER_BEAN_NAME)
+	@Bean(COHERENCE_SERVER_BEAN_NAME)
 	public CoherenceServer getCoherenceServer() {
-		return coherenceServer;
+		return this.coherenceServer;
 	}
 
 	/**
 	 * Return the Coherence {@link Cluster}.
-	 *
 	 * @return the Coherence {@link Cluster} (which may or may not be running)
 	 */
-	@Bean(name = COHERENCE_CLUSTER_BEAN_NAME)
+	@Bean(COHERENCE_CLUSTER_BEAN_NAME)
 	@DependsOn(COHERENCE_SERVER_BEAN_NAME)
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 	public Cluster getCoherenceCluster() {
@@ -92,7 +115,6 @@ public class CoherenceSpringConfiguration {
 	 * Create a {@link com.tangosol.net.Session} from the qualifiers on the specified
 	 * injection point. If no {@code Name} annotation is provided, then the default
 	 * session is returned.
-	 *
 	 * @param injectionPoint the injection point that the {@link com.tangosol.net.Session}
 	 *                       will be injected into
 	 * @return a {@link com.tangosol.net.Session}
@@ -118,12 +140,11 @@ public class CoherenceSpringConfiguration {
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the
 	 * underlying {@link CoherenceConfigurer}, defaulting to sensible values.
-	 *
 	 * @throws Exception if there is a problem in the configurer
 	 */
 	@PostConstruct
 	protected void initialize() throws Exception {
-		if (initialized) {
+		if (this.initialized) {
 			return;
 		}
 		SpringSystemPropertyResolver s = this.context.getBean(SpringSystemPropertyResolver.class);
@@ -165,7 +186,7 @@ public class CoherenceSpringConfiguration {
 
 	@Bean
 	public static BeanFactoryPostProcessor beanFactoryPostProcessor(Environment environment) {
-		return beanFactory -> {
+		return (beanFactory) -> {
 			final String[] beanNames = beanFactory.getBeanDefinitionNames();
 
 			boolean cachingEnabled = false;

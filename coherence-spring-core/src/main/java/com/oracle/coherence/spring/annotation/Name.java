@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2021 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * http://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.annotation;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 
 import javax.enterprise.util.Nonbinding;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * An annotation used when injecting Coherence resource to indicate a

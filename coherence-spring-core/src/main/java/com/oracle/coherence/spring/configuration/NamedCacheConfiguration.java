@@ -1,17 +1,10 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.configuration;
-
-import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 
 import com.oracle.coherence.inject.Name;
 import com.oracle.coherence.inject.SessionName;
@@ -19,6 +12,17 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
 
+import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+/**
+ * Provides support for injecting Coherence Caches using {@link NamedCache}.
+ *
+ * @author Gunnar Hillert
+ */
 @Configuration
 public class NamedCacheConfiguration {
 

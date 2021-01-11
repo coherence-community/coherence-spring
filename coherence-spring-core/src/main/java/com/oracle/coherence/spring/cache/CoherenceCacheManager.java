@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -10,11 +10,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
+
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 /**
  *
@@ -35,18 +35,18 @@ public class CoherenceCacheManager implements CacheManager {
 	}
 
 	/**
-	 *
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Cache getCache(String name) {
-		final CoherenceCache cache = coherenceCacheMap.get(name);
+		final CoherenceCache cache = this.coherenceCacheMap.get(name);
 
 		if (cache == null) {
 			final NamedCache<Object, Object> namedCache = this.coherence.getSession().getCache(name);
 			final CoherenceCache coherenceCache = new CoherenceCache(namedCache);
 			final CoherenceCache preExitingCoherenceCache = this.coherenceCacheMap.putIfAbsent(name, coherenceCache);
 
-			return preExitingCoherenceCache != null ? preExitingCoherenceCache : coherenceCache;
+			return (preExitingCoherenceCache != null) ? preExitingCoherenceCache : coherenceCache;
 		}
 		else {
 			return cache;
@@ -54,7 +54,7 @@ public class CoherenceCacheManager implements CacheManager {
 	}
 
 	/**
-	 *
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Collection<String> getCacheNames() {

@@ -1,16 +1,22 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.boot.tests;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
+import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
+import com.oracle.coherence.spring.cache.CoherenceCacheManager;
+import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.coherence.config.SystemPropertyResolver;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.Session;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
@@ -19,16 +25,10 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.oracle.coherence.spring.CoherenceServer;
-import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
-import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
-import com.oracle.coherence.spring.cache.CoherenceCacheManager;
-import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
-import com.tangosol.net.Coherence;
-import com.tangosol.net.Session;
 import org.springframework.core.env.Environment;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -41,47 +41,6 @@ public class CoherenceAutoConfigurationTests {
 			.withConfiguration(AutoConfigurations.of(CoherenceAutoConfiguration.class))
 			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class))
 			.withInitializer(new ConfigDataApplicationContextInitializer());
-			;
-
-	@Configuration
-	@EnableCaching
-	static class ConfigWithCacheManager {
-		@Bean
-		CacheManager cacheManager(Coherence coherence) {
-			return new CoherenceCacheManager(coherence);
-		}
-	}
-
-	@Configuration
-	@EnableCaching
-	static class ConfigWithoutCacheManager {
-	}
-
-	@Configuration
-	static class ConfigWithoutEnableCaching {
-	}
-
-	@Configuration
-	@EnableCaching
-	static class ConfigWith2SessionConfigurationBeans {
-		@Bean
-		SessionConfigurationBean sessionConfigurationBeanMySession() {
-			final SessionConfigurationBean sessionConfigurationBean =
-					new SessionConfigurationBean();
-			sessionConfigurationBean.setConfig("test-coherence-config.xml");
-			sessionConfigurationBean.setName("MySession");
-			return sessionConfigurationBean;
-		}
-
-		@Bean
-		SessionConfigurationBean sessionConfigurationBeanDefault() {
-			final SessionConfigurationBean sessionConfigurationBean =
-					new SessionConfigurationBean();
-			sessionConfigurationBean.setConfig("test-coherence-config.xml");
-			sessionConfigurationBean.setScopeName("fooscope");
-			return sessionConfigurationBean;
-		}
-	}
 
 	@Test
 	public void testDefaultCacheManagerExists() {
@@ -171,7 +130,7 @@ public class CoherenceAutoConfigurationTests {
 				.run((context) -> {
 					assertThat(context).hasSingleBean(SpringSystemPropertyResolver.class);
 					SpringSystemPropertyResolver springSystemPropertyResolver = context.getBean(SpringSystemPropertyResolver.class);
-					final String propertyPrefix = (String) ReflectionTestUtils.getField(springSystemPropertyResolver,"propertyPrefix");
+					final String propertyPrefix = (String) ReflectionTestUtils.getField(springSystemPropertyResolver, "propertyPrefix");
 					assertThat(propertyPrefix).isEqualTo("coherence.properties.");
 				});
 	}
@@ -213,5 +172,45 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(environment.getProperty("coherence.properties.coherence.log")).isEqualTo("slf4j");
 					assertThat(environment.getProperty("coherence.properties.coherence.log.format")).isEqualTo("Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}");
 				});
+	}
+
+	@Configuration
+	@EnableCaching
+	static class ConfigWithCacheManager {
+		@Bean
+		CacheManager cacheManager(Coherence coherence) {
+			return new CoherenceCacheManager(coherence);
+		}
+	}
+
+	@Configuration
+	@EnableCaching
+	static class ConfigWithoutCacheManager {
+	}
+
+	@Configuration
+	static class ConfigWithoutEnableCaching {
+	}
+
+	@Configuration
+	@EnableCaching
+	static class ConfigWith2SessionConfigurationBeans {
+		@Bean
+		SessionConfigurationBean sessionConfigurationBeanMySession() {
+			final SessionConfigurationBean sessionConfigurationBean =
+					new SessionConfigurationBean();
+			sessionConfigurationBean.setConfig("test-coherence-config.xml");
+			sessionConfigurationBean.setName("MySession");
+			return sessionConfigurationBean;
+		}
+
+		@Bean
+		SessionConfigurationBean sessionConfigurationBeanDefault() {
+			final SessionConfigurationBean sessionConfigurationBean =
+					new SessionConfigurationBean();
+			sessionConfigurationBean.setConfig("test-coherence-config.xml");
+			sessionConfigurationBean.setScopeName("fooscope");
+			return sessionConfigurationBean;
+		}
 	}
 }

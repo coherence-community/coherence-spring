@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -14,31 +14,28 @@ import org.springframework.stereotype.Component;
  * so that it is available to Coherence classes that are not
  * managed by Spring.
  *
- * @author rl
+ * @author Ryan Lubke
  * @since 3.0
  */
 @Component
 public class CoherenceContext {
-
 
 	/**
 	 * The {@link ApplicationContext}.
 	 */
 	private static ApplicationContext ctx;
 
-
 	/**
 	 * Create a {@link CoherenceContext}.
-	 *
 	 * @param ctx the {@link ApplicationContext}
 	 */
+
 	public CoherenceContext(ApplicationContext ctx) {
 		CoherenceContext.ctx = ctx;
 	}
 
 	/**
 	 * Returns the {@link ApplicationContext}.
-	 *
 	 * @return the {@link ApplicationContext}
 	 */
 	public static ApplicationContext getApplicationContext() {
