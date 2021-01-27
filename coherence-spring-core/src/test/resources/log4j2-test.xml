@@ -14,8 +14,9 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Root level="INFO">
+		<Root level="WARN">
 			<AppenderRef ref="ConsoleAppender" />
 		</Root>
+		<Logger name="com.oracle.coherence.spring" level="WARN"/>
 	</Loggers>
 </Configuration>

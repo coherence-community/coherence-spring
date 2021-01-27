@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
  * Configuration properties for the Coherence Spring integration.
  *
  * @author Gunnar Hillert
+ * @since 3.0
  */
 @ConfigurationProperties(prefix = "coherence")
 public class CoherenceProperties {

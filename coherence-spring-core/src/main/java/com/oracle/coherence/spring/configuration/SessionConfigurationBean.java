@@ -24,7 +24,7 @@ import com.tangosol.net.SessionConfiguration;
  * the default session named {@link com.tangosol.net.Coherence#DEFAULT_NAME}.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 public class SessionConfigurationBean implements SessionConfigurationProvider {
 
@@ -157,10 +157,6 @@ public class SessionConfigurationBean implements SessionConfigurationProvider {
 
 	public SessionType getType() {
 		return this.type;
-	}
-
-	public String getConfigUri() {
-		return this.configUri;
 	}
 
 	private String processSessionName(String sessionName) {

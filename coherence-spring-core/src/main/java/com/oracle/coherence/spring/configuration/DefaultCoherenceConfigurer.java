@@ -27,14 +27,14 @@ import org.springframework.util.CollectionUtils;
  * Default implementation of the {@link CoherenceConfigurer} interface.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 @Configuration
 public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private static final Log logger = LogFactory.getLog(DefaultCoherenceConfigurer.class);
 
-	private Collection<SessionConfiguration> sessionConfigurations = new ArrayList<>(0);
+	private final Collection<SessionConfiguration> sessionConfigurations = new ArrayList<>(0);
 
 	private Collection<Coherence.LifecycleListener> lifecycleListeners;
 
@@ -44,7 +44,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private CoherenceServer coherenceServer;
 
-	private ConfigurableApplicationContext context;
+	private final ConfigurableApplicationContext context;
 
 	private boolean initialized = false;
 
@@ -77,13 +77,6 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			final Collection<SessionConfigurationBean> sessionConfigurationBeans =
 					this.context.getBeansOfType(SessionConfigurationBean.class).values();
 
-			if (!CollectionUtils.isEmpty(this.sessionConfigurations)) {
-				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("%s sessionConfiguration(s) found.", this.sessionConfigurations.size()));
-				}
-				this.sessionConfigurations.addAll(this.sessionConfigurations);  //FIXME
-			}
-
 			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
 				if (logger.isDebugEnabled()) {
 					logger.debug(String.format("%s sessionConfigurationBean(s) found.", sessionConfigurationBeans.size()));
@@ -91,7 +84,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 				this.sessionConfigurations.addAll(
 					sessionConfigurationBeans
 						.stream()
-						.map((sp) -> sp.getConfiguration().get())
+						.map((sp) -> sp.getConfiguration().orElseThrow(
+								() -> new IllegalStateException("Empty sessionConfigurations found.")))
 						.collect(Collectors.toList()));
 			}
 
@@ -100,7 +94,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 			if (!CollectionUtils.isEmpty(lifecycleListeners)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("% lifecycleListener(s) found.", lifecycleListeners.size()));
+					logger.debug(String.format("%s lifecycleListener(s) found.", lifecycleListeners.size()));
 				}
 				this.lifecycleListeners = lifecycleListeners;
 			}

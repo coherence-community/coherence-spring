@@ -19,7 +19,7 @@ import org.springframework.util.Assert;
  * This class needs to be eagerly instantiated by Spring before any Coherence class that might need properties.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 public class SpringSystemPropertyResolver
 		implements SystemPropertyResolver, EnvironmentVariableResolver {

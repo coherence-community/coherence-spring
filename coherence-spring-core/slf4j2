@@ -1,0 +1,113 @@
+2021-01-11 16:34:03.473/2.663 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Loaded operational configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/tangosol-coherence.xml"
+2021-01-11 16:34:03.534/2.720 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Loaded operational overrides from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/tangosol-coherence-override-dev.xml"
+2021-01-11 16:34:03.535/2.722 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Optional configuration override "/tangosol-coherence-override.xml" is not specified
+2021-01-11 16:34:03.537/2.724 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Optional configuration override "cache-factory-config.xml" is not specified
+2021-01-11 16:34:03.538/2.725 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Optional configuration override "cache-factory-builder-config.xml" is not specified
+2021-01-11 16:34:03.539/2.725 Oracle Coherence 20.12 <Info> (thread=Coherence, member=n/a): Optional configuration override "/custom-mbeans.xml" is not specified
+
+Oracle Coherence Version 20.12 Build 83712
+ Community Edition: Development mode
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+2021-01-11 16:34:03.672/2.859 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): Loaded cache configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/coherence-system-config.xml"
+2021-01-11 16:34:04.028/3.214 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): The cluster name has not been configured, a value of "hillert's cluster" has been automatically generated
+2021-01-11 16:34:04.071/3.258 Oracle Coherence CE 20.12 <D5> (thread=Coherence, member=n/a): Created cache factory com.tangosol.net.ExtensibleConfigurableCacheFactory
+2021-01-11 16:34:04.122/3.308 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): Starting session $SYS with scope name $SYS
+2021-01-11 16:34:04.592/3.779 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): Tracing support will not be enabled.  The following dependencies appear to be missing: [opentracing-api, opentracing-util, opentracing-noop, opentracing-tracerresolver]
+2021-01-11 16:34:04.648/3.835 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): TCMP bound to /10.10.0.5:64869 using SystemDatagramSocketProvider
+2021-01-11 16:34:07.948/7.134 Oracle Coherence CE 20.12 <Info> (thread=NameService:TcpAcceptor, member=n/a): TcpAcceptor now listening for connections on Gunnars-MacBook-Pro.local:64869.3
+2021-01-11 16:34:07.956/7.143 Oracle Coherence CE 20.12 <Info> (thread=Cluster, member=n/a): NameService now listening for connections on Gunnars-MacBook-Pro.local:7574.3
+2021-01-11 16:34:07.958/7.145 Oracle Coherence CE 20.12 <Info> (thread=Cluster, member=n/a): Created a new cluster "hillert's cluster" with Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter, Edition=Community Edition, Mode=Development, CpuCount=16, SocketCount=16)
+2021-01-11 16:34:07.991/7.177 Oracle Coherence CE 20.12 <D5> (thread=Transport:TransportService, member=n/a): Service TransportService is bound to tmb://10.10.0.5:64869.46050
+2021-01-11 16:34:08.001/7.188 Oracle Coherence CE 20.12 <Info> (thread=Transport:TransportService, member=n/a): Service TransportService joined the cluster with senior service member 1
+2021-01-11 16:34:08.005/7.191 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=n/a): Started cluster Name=hillert's cluster, ClusterPort=7574
+
+Group{Address=239.192.0.0, TTL=4}
+
+MasterMemberSet(
+  ThisMember=Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+  OldestMember=Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+  ActualMemberSet=MemberSet(Size=1
+    Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+    )
+  MemberId|ServiceJoined|MemberState|Version|Edition
+    1|2021-01-11 16:34:04.677|JOINED|20.12.0|CE
+  RecycleMillis=1200000
+  RecycleSet=MemberSet(Size=0
+    )
+  )
+
+TcpRing{Connections=[]}
+IpMonitor{Addresses=0, Timeout=15s}
+
+2021-01-11 16:34:08.023/7.210 Oracle Coherence CE 20.12 <Info> (thread=Invocation:Management, member=1): Service Management joined the cluster with senior service member 1
+2021-01-11 16:34:08.044/7.230 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Loaded Reporter configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/reports/report-group.xml"
+2021-01-11 16:34:08.083/7.269 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): JMXConnectorServer now listening for connections on Gunnars-MacBook-Pro.local:64869
+2021-01-11 16:34:08.099/7.286 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Loaded Reporter configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/reports/report-group.xml"
+2021-01-11 16:34:08.427/7.614 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:$SYS:Config, member=1): Service $SYS:Config joined the cluster with senior service member 1
+2021-01-11 16:34:08.440/7.627 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:$SYS:Config, member=1): Service $SYS:Config: sending PartitionConfig ConfigSync to all
+2021-01-11 16:34:08.458/7.645 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Started DefaultCacheServer
+Services
+  (
+  ClusterService{Name=Cluster, State=(SERVICE_STARTED, STATE_JOINED), Id=0, OldestMemberId=1}
+  TransportService{Name=TransportService, State=(SERVICE_STARTED), Id=1, OldestMemberId=1}
+  InvocationService{Name=Management, State=(SERVICE_STARTED), Id=2, OldestMemberId=1}
+  PartitionedCache{Name=$SYS:Config, State=(SERVICE_STARTED), Id=3, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=0, BackupPartitions=0, CoordinatorId=1}
+  )
+
+2021-01-11 16:34:08.458/7.645 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Starting default Coherence instance
+2021-01-11 16:34:08.460/7.646 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:$SYS:Config, member=1): This member has become the distribution coordinator for MemberSet(Size=1
+  Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+  )
+2021-01-11 16:34:08.495/7.682 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Loaded cache configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/coherence-cache-config.xml"
+2021-01-11 16:34:08.513/7.700 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:$SYS:Config, member=1): Partition ownership has stabilized with 1 nodes
+2021-01-11 16:34:08.577/7.764 Oracle Coherence CE 20.12 <D5> (thread=Coherence, member=1): Created cache factory com.tangosol.net.ExtensibleConfigurableCacheFactory
+2021-01-11 16:34:08.578/7.765 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Starting default session
+2021-01-11 16:34:08.585/7.771 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedCache, member=1): Service PartitionedCache joined the cluster with senior service member 1
+2021-01-11 16:34:08.596/7.783 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedCache, member=1): Service PartitionedCache: sending PartitionConfig ConfigSync to all
+2021-01-11 16:34:08.599/7.786 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedCache, member=1): This member has become the distribution coordinator for MemberSet(Size=1
+  Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+  )
+2021-01-11 16:34:08.620/7.806 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Loaded POF configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/pof-config.xml"
+2021-01-11 16:34:08.620/7.807 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedCache, member=1): Partition ownership has stabilized with 1 nodes
+2021-01-11 16:34:08.635/7.822 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Loaded included POF configuration from "jar:file:/Users/hillert/.m2/repository/com/oracle/coherence/ce/coherence/20.12/coherence-20.12.jar!/coherence-pof-config.xml"
+2021-01-11 16:34:08.838/8.025 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Service PartitionedTopic joined the cluster with senior service member 1
+2021-01-11 16:34:08.841/8.028 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Service PartitionedTopic: sending PartitionConfig ConfigSync to all
+2021-01-11 16:34:08.844/8.031 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): This member has become the distribution coordinator for MemberSet(Size=1
+  Member(Id=1, Timestamp=2021-01-11 16:34:04.677, Address=10.10.0.5:64869, MachineId=53335, Location=process:29823, Role=IntellijRtJunitJUnitStarter)
+  )
+2021-01-11 16:34:08.852/8.039 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Partition ownership has stabilized with 1 nodes
+2021-01-11 16:34:08.886/8.073 Oracle Coherence CE 20.12 <Info> (thread=Proxy:TcpAcceptor, member=1): TcpAcceptor now listening for connections on Gunnars-MacBook-Pro.local:64869.56266
+2021-01-11 16:34:08.895/8.082 Oracle Coherence CE 20.12 <Info> (thread=Proxy, member=1): Service Proxy joined the cluster with senior service member 1
+2021-01-11 16:34:08.899/8.086 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Started DefaultCacheServer
+Services
+  (
+  PartitionedCache{Name=PartitionedTopic, State=(SERVICE_STARTED), Id=5, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=257, BackupPartitions=0, CoordinatorId=1}
+  ProxyService{Name=Proxy, State=(SERVICE_STARTED), Id=6, OldestMemberId=1}
+  PartitionedCache{Name=PartitionedCache, State=(SERVICE_STARTED), Id=4, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=257, BackupPartitions=0, CoordinatorId=1}
+  )
+2021-01-11 16:34:08.900/8.087 Oracle Coherence CE 20.12 <Info> (thread=Coherence, member=1): Started Coherence server 
+Services
+  (
+  ClusterService{Name=Cluster, State=(SERVICE_STARTED, STATE_JOINED), Id=0, OldestMemberId=1}
+  TransportService{Name=TransportService, State=(SERVICE_STARTED), Id=1, OldestMemberId=1}
+  InvocationService{Name=Management, State=(SERVICE_STARTED), Id=2, OldestMemberId=1}
+  PartitionedCache{Name=$SYS:Config, State=(SERVICE_STARTED), Id=3, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=257, BackupPartitions=0, CoordinatorId=1}
+  PartitionedCache{Name=PartitionedCache, State=(SERVICE_STARTED), Id=4, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=257, BackupPartitions=0, CoordinatorId=1}
+  PartitionedCache{Name=PartitionedTopic, State=(SERVICE_STARTED), Id=5, OldestMemberId=1, LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=257, BackupPartitions=0, CoordinatorId=1}
+  ProxyService{Name=Proxy, State=(SERVICE_STARTED), Id=6, OldestMemberId=1}
+  )
+
+2021-01-11 16:34:08.980/8.166 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Closing Session 
+2021-01-11 16:34:08.983/8.170 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Closed Session 
+2021-01-11 16:34:08.987/8.174 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedTopic, member=1): Service PartitionedTopic left the cluster
+2021-01-11 16:34:08.991/8.177 Oracle Coherence CE 20.12 <Info> (thread=Proxy, member=1): Service Proxy left the cluster
+2021-01-11 16:34:08.991/8.178 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:PartitionedCache, member=1): Service PartitionedCache left the cluster
+2021-01-11 16:34:08.995/8.182 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Stopping all Coherence instances
+2021-01-11 16:34:08.996/8.182 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Closing Session $SYS
+2021-01-11 16:34:08.996/8.182 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Closed Session $SYS
+2021-01-11 16:34:08.996/8.183 Oracle Coherence CE 20.12 <Info> (thread=DistributedCache:$SYS:Config, member=1): Service $SYS:Config left the cluster
+2021-01-11 16:34:08.997/8.184 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): All Coherence instances stopped
+2021-01-11 16:34:08.997/8.184 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): Stopping all Coherence instances
+2021-01-11 16:34:08.997/8.184 Oracle Coherence CE 20.12 <Info> (thread=main, member=1): All Coherence instances stopped
+2021-01-11 16:34:09.001/8.188 Oracle Coherence CE 20.12 <Info> (thread=ShutdownHook, member=1): ShutdownHook: stopping cluster node

@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.test.annotation.DirtiesContext;
@@ -49,8 +49,12 @@ class CoherenceInjectorTest {
 	}
 
 	@Configuration
-	@ComponentScan
 	static class Config {
+
+		@Bean
+		CoherenceContext coherenceContext(ApplicationContext applicationContext) {
+			return new CoherenceContext(applicationContext);
+		}
 
 		@Bean("BeanOne")
 		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

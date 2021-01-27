@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
+import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtils;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
@@ -21,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -42,17 +42,23 @@ import org.springframework.core.env.Environment;
  * Main configuration class to configure Coherence.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 @Configuration
-@Import(NamedCacheConfiguration.class)
+@Import({
+		NamedCacheConfiguration.class,
+		ExtractorConfiguration.class,
+		FilterConfiguration.class,
+		ExtractorService.class,
+		FilterService.class,
+		SerializerConfiguration.class
+})
 @PropertySource("classpath:coherence-spring.properties")
 public class CoherenceSpringConfiguration {
 
 	protected static final Log logger = LogFactory.getLog(CoherenceSpringConfiguration.class);
 
-	@Autowired
-	private ConfigurableApplicationContext context;
+	private final ConfigurableApplicationContext context;
 
 	private Coherence coherence;
 	private CoherenceConfiguration coherenceConfiguration;
@@ -79,6 +85,10 @@ public class CoherenceSpringConfiguration {
 	 * The name of the default Coherence {@link Cluster} bean.
 	 */
 	public static final String COHERENCE_CLUSTER_BEAN_NAME = "coherenceCluster";
+
+	public CoherenceSpringConfiguration(ConfigurableApplicationContext context) {
+		this.context = context;
+	}
 
 	/**
 	 * The name of the {@link CoherenceConfigurer} bean.
@@ -132,23 +142,19 @@ public class CoherenceSpringConfiguration {
 			sessionName = nameAnnotation.value();
 		}
 
-		final Session session = Coherence.findSession(sessionName)
+		return Coherence.findSession(sessionName)
 				.orElseThrow(() -> new IllegalStateException("No Session has been configured with the name " + sessionName));
-		return session;
 	}
 
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the
 	 * underlying {@link CoherenceConfigurer}, defaulting to sensible values.
-	 * @throws Exception if there is a problem in the configurer
 	 */
 	@PostConstruct
-	protected void initialize() throws Exception {
+	protected void initialize() {
 		if (this.initialized) {
 			return;
 		}
-		SpringSystemPropertyResolver s = this.context.getBean(SpringSystemPropertyResolver.class);
-		String o = s.getProperty("coherence.log");
 
 		final CoherenceConfigurer coherenceConfigurer = getConfigurer();
 
@@ -163,7 +169,7 @@ public class CoherenceSpringConfiguration {
 		this.initialized = true;
 	}
 
-	private CoherenceConfigurer getConfigurer() throws Exception {
+	private CoherenceConfigurer getConfigurer() {
 		int numberOfConfigurers = this.context.getBeanNamesForType(CoherenceConfigurer.class).length;
 
 		if (numberOfConfigurers < 1) {
@@ -194,7 +200,7 @@ public class CoherenceSpringConfiguration {
 			boolean springSystemPropertyResolverFound = false;
 
 			for (String beanName : beanNames) {
-				final Class<?> beanType = beanFactory.getType(beanName);
+				final Class<?> beanType = CoherenceAnnotationUtils.getBeanTypeForBeanName(beanFactory, beanName);
 				final EnableCaching enableCaching = AnnotationUtils.findAnnotation(beanType, EnableCaching.class);
 				if (enableCaching != null) {
 					cachingEnabled = true;

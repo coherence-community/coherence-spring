@@ -16,6 +16,7 @@ import com.tangosol.net.CoherenceConfiguration;
  * directly unless they are using it to supply the implementations for Spring Beans.
  *
  * @author Gunnar Hillert
+ * @since 3.0
  */
 public interface CoherenceConfigurer {
 

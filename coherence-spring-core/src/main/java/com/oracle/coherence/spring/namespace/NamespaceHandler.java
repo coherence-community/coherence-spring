@@ -9,7 +9,7 @@ package com.oracle.coherence.spring.namespace;
 import com.tangosol.config.xml.AbstractNamespaceHandler;
 
 /**
- * Custom namespace handler for the {@code micronaut} namespace.
+ * Custom namespace handler for the {@code Spring} namespace.
  * <p>
  * This namespace handler supports only one XML element:
  * <ul>
@@ -25,7 +25,7 @@ import com.tangosol.config.xml.AbstractNamespaceHandler;
 public class NamespaceHandler extends AbstractNamespaceHandler {
 
 	/**
-	 * Construct a {@code MicronautNamespaceHandler} instance.
+	 * Construct a {@code NamespaceHandler} instance.
 	 */
 	public NamespaceHandler() {
 		registerProcessor("bean", new BeanProcessor());

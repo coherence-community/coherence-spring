@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Main annotation for setting up Coherence within Spring Framework using the {@link CoherenceSpringConfiguration} class.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 @Documented
 @Retention(RUNTIME)

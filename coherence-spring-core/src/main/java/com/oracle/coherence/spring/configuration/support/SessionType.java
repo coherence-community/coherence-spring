@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.oracle.coherence.spring.configuration.support;
  * that can be configured in the Spring configuration.
  *
  * @author Gunnar Hillert
+ * @since 3.0
  */
 public enum SessionType {
 

@@ -15,10 +15,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 
 /**
- * Coherence-specific implementation of {@Cache} that defines common cache operations.
+ * Coherence-specific implementation of {@link Cache} that defines common cache operations.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 public class CoherenceCache implements Cache {
 

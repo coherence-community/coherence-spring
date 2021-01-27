@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.namespace;
 
+import com.oracle.coherence.spring.CoherenceContext;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.tangosol.net.BackingMapContext;
 import com.tangosol.net.BackingMapManager;
@@ -19,8 +20,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -38,7 +39,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SpringJUnitConfig(NamespaceHandlerTest.Config.class)
 @DirtiesContext
 class NamespaceHandlerTest {
-
 
 	ExtensibleConfigurableCacheFactory eccf;
 
@@ -84,8 +84,12 @@ class NamespaceHandlerTest {
 
 	@Configuration
 	@EnableCoherence
-	@ComponentScan(basePackages = {"com.oracle.coherence.spring"})
 	static class Config {
+		@Bean
+		CoherenceContext coherenceContext(ApplicationContext applicationContext) {
+			return new CoherenceContext(applicationContext);
+		}
+
 		@Bean("TestStoreOne")
 		<K, V> CacheStore<K, V> getStoreBeanOne() {
 			return new StoreBeanOne<>();

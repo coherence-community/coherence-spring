@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -25,9 +25,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @DirtiesContext
 public class CoherenceContextTest {
 
-
 	@Autowired
-	ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
 	@Test
 	void shouldSupplyContext() {
@@ -35,7 +34,10 @@ public class CoherenceContextTest {
 	}
 
 	@Configuration
-	@ComponentScan
 	static class Config {
+		@Bean
+		CoherenceContext coherenceContext(ApplicationContext applicationContext) {
+			return new CoherenceContext(applicationContext);
+		}
 	}
 }

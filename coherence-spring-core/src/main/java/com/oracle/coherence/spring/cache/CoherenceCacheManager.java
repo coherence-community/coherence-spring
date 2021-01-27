@@ -21,7 +21,7 @@ import org.springframework.cache.CacheManager;
  * Implementation of the {@link CacheManager} for Oracle Coherence.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 public class CoherenceCacheManager implements CacheManager {
 

@@ -7,25 +7,27 @@
 package com.oracle.coherence.spring.annotation;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * An annotation used when injecting Coherence resource to indicate a
- * specific resource name.
+ * A {@link FilterBinding} annotation representing a
+ * {@link com.tangosol.util.Filter} produced from a CohQL where clause.
  *
- * @author Jonathan Knight  2019.10.20
  * @author Gunnar Hillert
+ * @since 3.0
  */
+@Inherited
+@FilterBinding
 @Documented
-@Retention(RUNTIME)
-public @interface Name {
-
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WhereFilter {
 	/**
-	 * The name used to identify a specific resource.
+	 * The CohQL query expression.
 	 *
-	 * @return the name used to identify a specific resource
+	 * @return the CohQL query expression
 	 */
 	String value();
+
 }

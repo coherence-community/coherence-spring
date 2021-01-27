@@ -35,7 +35,7 @@ import org.springframework.util.CollectionUtils;
  * {@link CoherenceServer} is not defined.
  *
  * @author Gunnar Hillert
- *
+ * @since 3.0
  */
 @Configuration
 @ConditionalOnMissingBean(CoherenceServer.class)
