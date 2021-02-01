@@ -1,0 +1,13 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///Users/hillert/dev/spring-cloud-config-repo
+          clone-on-start: false
+  security:
+    user:
+      name: coherence
+      password: rocks
