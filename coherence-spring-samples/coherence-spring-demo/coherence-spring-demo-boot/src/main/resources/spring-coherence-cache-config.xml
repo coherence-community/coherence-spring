@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright (c) 2020, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  http://oss.oracle.com/licenses/upl.
+-->
+
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+
+    <caching-scheme-mapping>
+
+        <!-- Hibernate uses query caches to cache query results keyed by the SQL and parameters that yielded them.  These
+             are "GeneralDataRegions" in the Hibernate second-level cache design, as opposed to "TransactionalDataRegions",
+             and are therefore not subject to the more strict concurrency control and transaction isolation requirements
+             of the "read-write" "cache concurrency strategy" that can be used with TransactionalDataRegions (see
+             http://docs.jboss.org/hibernate/orm/4.2/manual/en-US/html/ch20.html#performance-cache).
+             Therefore the near scheme is the best choice for this cache, whose entries are never updated but only inserted,
+             read, and removed.  Hibernate removes query cache entries aggressively, so expiry is not necessary.  The cache
+             value in a query cache is an array of identifiers of the entities in the query result set (not the entities
+             themselves).  So as a precaution size limits should be used in both tiers.  Hibernate users can provide a name
+             for the query result cache on a per-query basis; by convention these names should begin with "query.".
+             Otherwise the name used is "org.hibernate.cache.internal.StandardQueryCache".
+        -->
+        <cache-mapping>
+            <cache-name>org.hibernate.cache.internal.StandardQueryCache</cache-name>
+            <scheme-name>hibernate-second-level-cache-near-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>front-tier-high-units</param-name>
+                    <param-value>100</param-value><!-- number of entries, not bytes of content, per client -->
+                </init-param>
+                <init-param>
+                    <param-name>back-tier-high-units</param-name>
+                    <param-value>100</param-value><!-- 100 megabytes of content per storage member -->
+                </init-param>
+            </init-params>
+        </cache-mapping>
+
+        <cache-mapping>
+            <cache-name>query.*</cache-name>
+            <scheme-name>hibernate-second-level-cache-near-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>front-tier-high-units</param-name>
+                    <param-value>10</param-value><!-- number of entries, not bytes of content, per cache per client -->
+                </init-param>
+                <init-param>
+                    <param-name>back-tier-high-units</param-name>
+                    <param-value>10</param-value><!-- 10 megabytes of content per cache per storage member -->
+                </init-param>
+            </init-params>
+        </cache-mapping>
+
+        <!-- Hibernate uses the update timestamps cache to cache the timestamp of its last write to each table it maps.
+             There is an entry per table, which Hibernate updates each time it writes any row in the table.  Hibernate
+             reads the update timestamps cache in deciding whether it can use the query cache during query processing.
+             Therefore the near scheme is the best choice for this cache, offering potentially lower read latency than
+             a distributed scheme, and better efficiency than a replicated scheme.  Use the "all" invalidation strategy,
+             and no size limit or expiry in either tier, for this small data set which is frequently read and written
+             in each client.
+        -->
+        <cache-mapping>
+            <cache-name>org.hibernate.cache.spi.UpdateTimestampsCache</cache-name>
+            <scheme-name>hibernate-second-level-cache-near-scheme</scheme-name>
+        </cache-mapping>
+
+        <!-- Besides query caches and the update timestamps cache, all other caches in the Hibernate second-level cache
+             design are "TransactionalDataRegions" used to cache entities, collections (bound to Collection-typed fields
+             of entities), or "natural IDs" (more precisely, mappings of secondary entity keys to primary keys).  For
+             entity caches, Hibernate uses the fully-qualified name of the entity class as the cache name by default;
+             Hibernate users can override.  For collection caches, Hibernate uses the fully-qualified name of the entity
+             class followed by the name of the collection-typed field (separated by a period).
+
+             The Coherence-based implementation of the Hibernate second-level cache SPI defaults to the "read-write"
+             "cache concurrency strategy" as defined by Hibernate, for maximum concurrency control and transaction
+             isolation (and therefore data correctness).  Therefore the default cache scheme for all entity, collection,
+             and natural id caches is a distributed scheme.
+
+             An optimization is possible for entities or collections that can tolerate a more relaxed cache concurrency
+             strategy, e.g. the nonstrict-read-write strategy or read-only strategy as defined by Hibernate (see
+             https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#caching).  Namely, a near scheme
+             can be used for those entity or collection caches.  Using a near scheme enables lower-latency cache reads
+             for data with less strict concurrency control requirements.  Even so, the default read-write strategy and
+             distributed scheme -based implementation uses Coherence EntryProcessors not pessimistic locking for concurrency
+             control, for best performance even in the face of stricter concurrency and isolation requirements.
+
+             Therefore it is highly recommended, in fact expected, that users of the Coherence-based Hibernate second-level
+             cache will customize this configuration file to provide explicit cache mappings for each entity, collection,
+             and non-default query cache used by the Hibernate application, specifying schemes, size limits, and expiry-delays,
+             as appropriate, for each cache, given the application's domain model and concurrency / isolation requirements.
+        -->
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>hibernate-second-level-cache-distributed-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>back-tier-size-limit</param-name>
+                    <param-value>100</param-value><!-- 100 megabytes of content per cache per storage member -->
+                </init-param>
+            </init-params>
+        </cache-mapping>
+
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+
+        <near-scheme>
+            <scheme-name>hibernate-second-level-cache-near-scheme</scheme-name>
+            <front-scheme>
+                <local-scheme>
+                    <high-units>{front-tier-high-units 0}</high-units>
+                </local-scheme>
+            </front-scheme>
+            <back-scheme>
+                <distributed-scheme>
+                    <scheme-ref>hibernate-second-level-cache-distributed-scheme</scheme-ref>
+                </distributed-scheme>
+            </back-scheme>
+            <invalidation-strategy>all</invalidation-strategy>
+        </near-scheme>
+
+        <distributed-scheme>
+            <scheme-name>hibernate-second-level-cache-distributed-scheme</scheme-name>
+            <service-name>TestHibernateSecondLevelCache</service-name>
+            <!-- default to no thread pool; users should increase if ServiceMBean.TaskBacklog grows -->
+            <thread-count>0</thread-count>
+            <!-- little value in backup copies since we're caching a database; cache server failure equals cold cache -->
+            <backup-count>0</backup-count>
+            <backing-map-scheme>
+                <local-scheme>
+                    <high-units>{back-tier-high-units 0}</high-units>
+                    <unit-calculator>BINARY</unit-calculator>
+                    <unit-factor>1048576</unit-factor><!-- one unit is one megabyte of content -->
+                    <expiry-delay>{back-tier-expiry-delay 0}</expiry-delay>
+                </local-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+        </distributed-scheme>
+
+    </caching-schemes>
+
+</cache-config>

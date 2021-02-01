@@ -1,0 +1,36 @@
+debug: false
+management:
+  endpoint:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.show_sql: false
+      hibernate.use_sql_comments: false
+      hibernate.format_sql: true
+  config:
+    import: optional:configserver:http://localhost:8888
+#    activate:
+#      on-profile: development
+  application:
+    name: config-client
+  cloud:
+    config:
+      username: coherence
+      password: rocks
+#  profiles:
+#    active: development
+coherence:
+  logging:
+    severity-level: 0

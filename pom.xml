@@ -71,6 +71,7 @@
 		<module>coherence-spring-tests</module>
 		<module>coherence-spring-site</module>
 		<module>coherence-spring-docs</module>
+		<module>coherence-spring-samples</module>
 	</modules>
 
 	<properties>
@@ -444,6 +445,12 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>docs</id>
+			<modules>
+				<module>coherence-spring-site-v2</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

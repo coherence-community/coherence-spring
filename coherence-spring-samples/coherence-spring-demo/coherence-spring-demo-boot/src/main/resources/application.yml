@@ -1,0 +1,14 @@
+debug: true
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.show_sql: true
+      hibernate.use_sql_comments: false
+      hibernate.format_sql: true
+

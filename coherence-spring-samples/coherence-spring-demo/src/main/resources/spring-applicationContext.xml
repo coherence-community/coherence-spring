@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans profile="xml" xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:cache="http://www.springframework.org/schema/cache"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd">
+
+		<cache:annotation-driven/>
+
+		<bean id="coherenceInstance" class="com.oracle.coherence.spring.CoherenceInstance"/>
+
+		<bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager">
+				<constructor-arg ref="coherenceInstance"/>
+		</bean>
+
+</beans>
