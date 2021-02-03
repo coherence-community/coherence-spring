@@ -1,0 +1,108 @@
+# Copyright (c) 2020, 2021, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at
+# http://oss.oracle.com/licenses/upl.
+
+engine:
+  asciidoctor:
+    images-dir: "images"
+    libraries:
+      - "asciidoctor-diagram"
+    attributes:
+      source-highlighter: "highlight.js"
+      highlightjs-theme: "idea"
+      plantumlconfig: "_plantuml-config.txt"
+      coherence-maven-group-id: "${coherence.group.id}"
+      javadoc-root: "https://coherence.community/${revision}/api/java/"
+      version-coherence-maven: "${revision}"
+      version-coherence-spring: "${project.version}"
+      version-coherence: "${site-coherence-version}"
+      timestamp: "${timestamp}"
+assets:
+  - target: "/"
+    includes:
+      - "css/*.css"
+  - target: "/"
+    includes:
+      - "images/**/*"
+header:
+  favicon:
+    path: "images/logo.png"
+    type: "png"
+  stylesheets:
+    - path: "css/styles.css"
+pages:
+    - includes:
+        - "**/*.adoc"
+      excludes:
+        - "examples/guides/README.adoc"
+        - "examples/tutorials/README.adoc"
+backend:
+    name: "vuetify"
+    homePage: "about/01_overview.adoc"
+    releases:
+        - "${project.version}"
+    navigation:
+      title: "Oracle Coherence Spring"
+      glyph:
+        type: "image"
+        value: "images/logo.png"
+      items:
+        - title: "Project Website"
+          pathprefix: "/about"
+          items:
+            - title: "Components"
+              pathprefix: "/about"
+              glyph:
+                type: "icon"
+                value: "assistant"
+              items:
+                - includes:
+                    - "about/*.adoc"
+            - title: "Development"
+              pathprefix: "/dev"
+              glyph:
+                type: "icon"
+                value: "fa-code"
+              items:
+                - includes:
+                    - "dev/*.adoc"
+        - title: "Reference Documentation"
+          pathprefix: "/docs"
+          items:
+            - title: "HTML"
+              glyph:
+                type: "icon"
+                value: "fa-html5"
+              href: "refdocs/reference/html/index.html"
+            - title: "Single Page"
+              glyph:
+                type: "icon"
+                value: "fa-html5"
+              href: "refdocs/reference/htmlsingle/index.html"
+            - title: "PDF"
+              glyph:
+                type: "icon"
+                value: "picture_as_pdf"
+              href: "refdocs/reference/pdf/coherence-spring-reference.pdf"
+        - title: "Additional Resources"
+          items:
+            - title: "Slack"
+              glyph:
+                type: "icon"
+                value: "fa-slack"
+              href: "https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE"
+            - title: "Coherence Web Site"
+              glyph:
+                type: "icon"
+                value: "fa-globe"
+              href: "https://coherence.community/"
+            - title: "GitHub"
+              glyph:
+                type: "icon"
+                value: "fa-github-square"
+              href: "https://github.com/coherence-community/coherence-spring/"
+            - title: "Twitter"
+              glyph:
+                type: "icon"
+                value: "fa-twitter-square"
+              href: "https://twitter.com/OracleCoherence/"

@@ -1,0 +1,180 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Usage
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+== Usage
+
+The Oracle Coherence Cache Configuration file `coherence-cache-config.xml`
+allows use of the `<class-scheme>` and `<instance>` xml elements as mechanisms
+to specify custom implementations of Coherence interfaces, such as `CacheStore`
+and `MapListener`.  Traditionally Oracle Coherence uses these elements to
+guide the instantiation of developer provided interface implementations in
+two ways;  It can
+
+* Create a new instance of a specified class
+* Invoke a user-provided factory method to return a specific instance
+
+For some applications it may be useful for Coherence to retrieve objects
+configured in a `<class-scheme>` element or `<instance>` element from alternative
+sources, say for example a Spring `BeanFactory` instance, instead of creating
+its own instance.  This is especially true for cache servers configured with
+`CacheStore` objects running in a standalone JVM, because these `CacheStore`
+objects typically must be configured with data sources, connection pools, and so on.
+Spring provides the ability to configure such data sources for plain Java objects,
+without requiring Java EE.
+
+=== The Spring Namespace Handler
+
+The Coherence Spring Namespace Handler `com.oracle.coherence.spring.SpringNamespaceHandler`
+is a custom extension to Coherence that allows you to configure Coherence to
+reference existing Spring beans in a cache configuration file instead of creating
+new instances at runtime.
+
+The references to Spring Beans are made declaratively in XML files using the
+new Spring namespace for Coherence.  The schema definitions
+for the Coherence Spring namespace elements are
+described in the `coherence-spring-config.xsd` file. You can find this file
+in the `coherence-spring.jar` file.
+
+*Coherence Spring Configuration Elements*+++<table cellspacing="20">++++++<tr>++++++<th width="30%">+++Element+++</th>+++
+    +++<th width="25%">+++Used In+++</th>+++
+    +++<th>+++Description+++</th>++++++</tr>+++
+  +++<tr>++++++<td valign="top">++++++<code>+++application-context-uri+++</code>++++++</td>+++
+    +++<td valign="top">++++++<code>+++bean-factory+++</code>++++++</td>+++
+    +++<td>+++(Optional) Defines a location for a Spring application context XML file.
+        If URL notation is used, the file will be loaded as a URL
+        (that is, file://, http://); otherwise the file will be
+        loaded from the classpath.  When not provide Coherence will look up
+        an ApplicationContext (and BeanFactory) using the SpringBasedCoherenceSession
+        that loaded the Coherence Cache Configuration File.+++</td>++++++</tr>+++
+  +++<tr>++++++<td valign="top">++++++<code>+++bean+++</code>++++++</td>+++
+    +++<td valign="top">++++++<code>+++class-scheme+++</code>+++ +++<code>+++instance+++</code>++++++</td>+++
+    +++<td>+++Defines a Spring bean that will be provided to Coherence.
+        Use the property attribute to inject a property into a
+        Spring bean.+++</td>++++++</tr>+++
+  +++<tr>++++++<td valign="top">++++++<code>+++bean-factory+++</code>++++++</td>+++
+    +++<td valign="top">+++Must appear as the first subelement under
+       +++<code>+++cache-config+++</code>++++++</td>+++
+    +++<td>+++Defines a Spring bean factory that will be used to
+        provide named beans to Coherence.+++</td>++++++</tr>+++
+  +++<tr>++++++<td valign="top">++++++<code>+++bean-name+++</code>++++++</td>+++
+    +++<td valign="top">++++++<code>+++bean+++</code>++++++</td>+++
+    +++<td>+++Identifies the name of a bean to be retrieved from a
+        Spring bean factory.+++</td>++++++</tr>+++
+  +++<tr>++++++<td valign="top">++++++<code>+++factory-name+++</code>++++++</td>+++
+    +++<td valign="top">++++++<code>+++bean+++</code>+++ +++<code>+++bean-factory+++</code>++++++</td>+++
+    +++<td>+++Identifies a Spring bean factory. This name is used to
+        refer to a factory when defining a bean definition.+++</td>++++++</tr>++++++</table>+++
+
+=== Declaring the Spring Namespace Handler
+
+To use the Coherence Spring namespace handler, you must declare it in a cache
+configuration file and then specify a factory for the Spring beans.
+
+Use the following Coherence Spring namespace handler declaration in the
+`<cache-config>` element of a cache configuration file:
+
+ xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
+
+To ensure proper configuration within the cache configuration file, the XSD file
+`coherence-spring-config.xsd` that corresponds with this namespace handler can
+also be referenced, as illustrated below:
+
+ <cache-config
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+     xmlns:spring="class://com.oracle.coherence.spring.SpringNamespaceHandler"
+     xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd
+                         class://com.oracle.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
+
+If your cache configuration must specify an externally provided user class by using a
+ `<class-scheme>` or `<instance>` element, then this namespace handler can provide a
+ Spring bean from a `BeanFactory`. To specify a Spring bean, use the `bean` and
+ `bean-name` elements under the `<class-scheme>` or `<instance>` element:
+
+ <class-scheme>
+     <spring:bean>
+         <spring:bean-name>listener</spring:bean-name>
+     </spring:bean>
+ </class-scheme>
+
+You can also use the property attribute to inject properties (including cache
+configuration macros) into a bean, as illustrated below:
+
+ <spring:bean>
+     <spring:bean-name>listener</spring:bean-name>
+     <spring:property name="backingMapManagerContext">{manager-context}</spring:property>
+ </spring:bean>
+
+=== Specifying a Factory for Spring Beans
+
+You can specify the bean factory that provides the Spring beans in one of the following ways:
+
+* Specify an Application Context in the cache configuration file
+* Specify a Bean Factory as a resource
+
+____
+If an Application Context or Bean Factory is not provided using these approaches
+Coherence will attempt to use the SpringBasedCoherenceSession that loaded the
+Cache Configuration File containing the +++<spring:bean>+++definitions.+++</spring:bean>+++
+____
+
+Use the `application-context-uri` element to specify the location of the Spring
+application context XML file. Like the cache configuration file, the application
+context file will be loaded either by using the file system or the classpath.
+The `application-context-uri` element also supports URLs as values.
+In the following example, `application-context.xml` represents the
+application context XML file:
+
+....
+<cache-config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+    xmlns:spring="class://com.oracle.coherence.spring. SpringNamespaceHandler"
+    xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd
+                        class://com.oracle.coherence.spring.SpringNamespaceHandler coherence-spring-config.xsd">
+
+<spring:bean-factory>
+    <spring:application-context-uri>application-context.xml</spring:application-context-uri>
+</spring:bean-factory>
+....
+
+Additionally, a Spring bean factory can be manually registered as a resource by
+using the `registerResource` method, as illustrated below. In the example,
+`DEFAULT_FACTORY_NAME` refers to the default Spring BeanFactory class:
+
+....
+ConfigurableCacheFactory factory = CacheFactory.getCacheFactoryBuilder()
+        .getConfigurableCacheFactory(...);
+
+factory.getResourceRegistry().registerResource(
+        BeanFactory.class,                            // type
+        factoryName,                                  // resource name
+        factory,                                      // factory reference
+        null);                                        // optional
+                                                      // ResourceLifecycleObserver
+....
+
+If you specify a resource name other than the fully-qualified-name of the
+BeanFactory.class, then reference that name in the bean element.
+Use the `factory-name` element for the name of the custom bean factory and
+`bean-name` for the name of the bean.
+
+In the example below, the name of the bean factory is "custom-factory" and the
+bean name is "listener":
+
+ <spring:bean>
+     <spring:factory-name>custom-factory</spring:factory-name>
+     <spring:bean-name>listener</spring:bean-name>
+ </spring:bean>
+

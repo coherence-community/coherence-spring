@@ -1,0 +1,64 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Building
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+To build the Coherence Spring project you need to have the following software installed:
+
+. Java SE Development Kit 11.
++
+Available from: http://www.oracle.com/technetwork/java/javase/downloads/index.html[Oracle Java SE Downloads]
+
+. Apache Maven Version 3.3.9
++
+Available here: http://maven.apache.org/[Apache Maven Downloads]
+
+. The link:source-code.html[source code].
+
+Once you have these installed building the entire source tree is as simple as
+executing the following shell command (from the root of the source directory):
+
+ $ mvn clean install
+
+However the fact that the Coherence Spring project depends on a commercial
+product, namely http://www.oracle.com/technetwork/middleware/coherence/overview/index.html[Oracle Coherence] that of which is not available in a
+public http://maven.apache.org/[Apache Maven] Repository, probably means that your first build is likely
+to fail because of a missing dependency on `coherence.jar`.
+
+Should this problem occur you may need to manually install a suitable
+`coherence.jar` into your local repository or your organization's repository
+manager.
+
+If you haven't used or don't plan on using the Maven support provided with
+the Oracle Coherence installed, to manually install the standard `coherence.jar`
+into your local Apache Maven repository, simply change to `$COHERENCE_HOME/lib`
+directory and run the following command:
+
+ $ mvn install:install-file  \
+       -DgroupId=com.oracle.coherence  \
+       -DartifactId=coherence  \
+       -Dversion=${site-coherence-version}  \
+       -Dfile=coherence.jar  \
+       -Dpackaging=jar \
+       -DgeneratePom=true
+
+____
+The `groupId`, `artifactId` and `version` are critically important.  They must
+  be as indicated above otherwise the Coherence Spring project won't build.
+____
+
+Of course the above assumes that you are installing the Coherence
+{site-coherence-version} `jar` file. If you want to install one of the more
+recent releases, change the version number in the command above accordingly.
+
+Once the `coherence.jar` is properly installed into your http://maven.apache.org/[Apache Maven]
+repository, you should be able to build the Coherence Spring project.

@@ -1,0 +1,99 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Overview
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+== Overview
+
+The Coherence Spring project provides mechanisms for application developers to integrate
+https://coherence.community/[Oracle Coherence] and https://spring.io/[Spring-based] applications.
+
+== Components
+
+[PILLARS]
+====
+[CARD]
+.Spring Core
+[icon=eco,link=about/03_spring-core.adoc]
+--
+Core Spring Framework Support
+--
+
+[CARD]
+.Spring Boot
+[icon=power_settings_new,link=about/04_spring-boot.adoc]
+--
+Autoconfiguration Support
+--
+
+[CARD]
+.Spring Cache
+[icon=cached,link=about/05_spring-cache.adoc]
+--
+Spring's Caching Abstraction Support
+--
+
+[CARD]
+.Spring Session
+[icon=fa-database,link=about/06_spring-session.adoc]
+--
+Spring's Session Abstraction
+--
+
+[CARD]
+.Spring Config Server
+[icon=settings,link=about/07_spring-config-server.adoc]
+--
+Centralize Configuration
+--
+
+[CARD]
+.Spring Data
+[icon=inventory,link=about/08_spring-data.adoc]
+--
+Use Coherence as a Spring Data Repository
+--
+
+====
+
+== Reference Documentation
+
+[PILLARS]
+====
+[CARD]
+.HTML
+[icon=text_snippet,link={version-coherence-spring}/refdocs/reference/html/index.html,link-type=url]
+--
+Reference Documentation.
+--
+
+[CARD]
+.Single Page HTML
+[icon=text_snippet,link={version-coherence-spring}/refdocs/reference/htmlsingle/index.html,link-type=url]
+--
+Reference Documentation.
+--
+
+[CARD]
+.PDF
+[icon=picture_as_pdf,link={version-coherence-spring}/refdocs/reference/pdf/coherence-spring-reference.pdf,link-type=url]
+--
+Reference Documentation.
+--
+
+[CARD]
+.Javadocs
+[icon=code,link={version-coherence-spring}/refdocs/api/index.html,link-type=url]
+--
+Browse the Coherence Spring JavaDocs.
+--
+====
