@@ -179,7 +179,14 @@ $(globalSwitch);
 <li><a href="#spring-boot-caching">7.4. Using Coherence as Spring Caching Provider</a></li>
 </ul>
 </li>
-<li><a href="#appendix">8. Appendices</a></li>
+<li><a href="#spring-cloud-config">8. Coherence Spring Cloud Config</a>
+<ul class="sectlevel2">
+<li><a href="#spring-cloud-config-overview">8.1. Overview</a></li>
+<li><a href="#spring-cloud-config-demo">8.2. Demo</a></li>
+<li><a href="#spring-cloud-config-coherence-backend">8.3. Coherence Backend</a></li>
+</ul>
+</li>
+<li><a href="#appendix">9. Appendices</a></li>
 </ul>
 </div>
 </div>
@@ -245,7 +252,7 @@ SOFTWARE.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Welcome to the reference documentation of <a href="https://github.com/coherence-community/coherence-spring">Coherence Spring</a>, a collection of several
-libraries that will help you to integrate <a href="https://coherence.community">Coherence</a> with the wider <a href="https://spring.io">Spring</a> ecosystem.</p>
+libraries that will help you to integrate <a href="https://coherence.community/">Coherence</a> with the wider <a href="https://spring.io/">Spring</a> ecosystem.</p>
 </div>
 <div class="paragraph">
 <p>This section provides a brief overview of the Coherence Spring reference documentation.</p>
@@ -723,7 +730,7 @@ of Spring&#8217;s reference documentation.</p>
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">example.property.alpha=a</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -737,7 +744,7 @@ of Spring&#8217;s reference documentation.</p>
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.devtools.restart.exclude=static/**,public/**</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -890,16 +897,7 @@ Coherence support may look like the following:</p>
 <div class="listingblock primary">
 <div class="title">Example YAML configuration (Properties)</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">coherence.logging.destination=slf4j
-coherence.logging.logger-name=MyCoherence
-coherence.sessions[0].name=default
-coherence.sessions[0].config=coherence-cache-config.xml
-coherence.sessions[0].priority=1
-coherence.sessions[1].name=test
-coherence.sessions[1].config=test-coherence-config.xml
-coherence.sessions[1].priority=2
-coherence.properties.coherence.log.limit=400
-coherence.properties.coherence.log.level=1</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -1030,7 +1028,128 @@ the ApplicationContext, however only if no <code>CacheManager</code> was configu
 </div>
 </div>
 <div class="sect1">
-<h2 id="appendix"><a class="anchor" href="#appendix"></a>8. Appendices</h2>
+<h2 id="spring-cloud-config"><a class="anchor" href="#spring-cloud-config"></a>8. Coherence Spring Cloud Config</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section explains how to configure Coherence using <a href="https://spring.io/projects/spring-cloud-config">Spring Cloud Config</a>. Furthermore,
+this chapter also shows how to use <a href="https://coherence.community/">Coherence</a> as a Spring Cloud Config storage backend, allowing you
+to set up Spring applications with configuration data stored in Coherence.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-overview"><a class="anchor" href="#spring-cloud-config-overview"></a>8.1. Overview</h3>
+<div class="paragraph">
+<p>Spring Cloud Config provides support for externalized configuration in distributed systems. It integrates seamlessly
+with Spring Boot applications and allows you to externalize / centralize critical application properties. Spring Cloud
+Config provides numerous storage backends for your configuration data.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Please familiarize yourself with the <a href="https://docs.spring.io/spring-cloud-config/docs/current/reference/html/">Spring Cloud Config reference documentation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this chapter we will cover two aspects of Coherence-specific support for Spring Cloud Config:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure Coherence and its Spring support using Spring Cloud Config</p>
+</li>
+<li>
+<p>Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
+Coherence cluster</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s get started with an example to show the general functioning of Spring Cloud Config.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-demo"><a class="anchor" href="#spring-cloud-config-demo"></a>8.2. Demo</h3>
+<div class="paragraph">
+<p>This demo is essentially the same as used in the <a href="#quickstart">Quickstart</a> chapter. However, we externalize some
+Coherence configuration using Spring Cloud Config. To get started, please clone the demo projects:</p>
+</div>
+<div class="listingblock">
+<div class="title">Clone the Spring Cloud Config demo project</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> git clone https://github.com/ghillert/coherence-spring-cloud-config-demo
+ cd coherence-spring-cloud-config-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The project consists of 2 Maven modules:</p>
+</div>
+<div class="paragraph">
+<p>-</p>
+</div>
+<div class="paragraph">
+<p>The Config Server is essentially using 3 dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:20.12")
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The demo client will use the following dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>curl <a href="http://coherence:c0h3r3nc3r0ck5@localhost:8888/config-client/development/master" class="bare">coherence:c0h3r3nc3r0ck5@localhost:8888/config-client/development/master</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-coherence-backend"><a class="anchor" href="#spring-cloud-config-coherence-backend"></a>8.3. Coherence Backend</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix"><a class="anchor" href="#appendix"></a>9. Appendices</h2>
 <div class="sectionbody">
 
 </div>
@@ -1038,7 +1157,7 @@ the ApplicationContext, however only if no <code>CacheManager</code> was configu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-03 05:09:06 UTC
+Last updated 2021-02-03 10:01:15 -1000
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
