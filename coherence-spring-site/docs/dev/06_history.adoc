@@ -1,0 +1,116 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Change History
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+== Change History
+
+The following sections outline Coherence Spring project changes in
+reverse chronological order.
+
+=== Version {version-coherence-spring} built on2 {timestamp}
+
+*Source and Documentation Contributors*
+
+* Gunnar Hillert
+
+*Global and Cross-Module Changes*
+
+* Change Licensing to UPL
+* Completely refactor bootstrapping mechanism using the new Coherence Bootstrap API
+* Add Spring Cache abstraction support
+
+=== Version 2.0.0-SNAPSHOT built on 2017-07-13 20:03
+
+*Source and Documentation Contributors*
+
+* Brian Oliver
+
+*Global and Cross-Module Changes*
+
+* https://github.com/coherence-community/coherence-spring/issues/8[Issue #8]: Ensured compliance with
+Coherence 12.1.2 and 12.1.3 (for building and running) and 12.2.1 (for running)
+* https://github.com/coherence-community/coherence-spring/issues/9[Issue #9]: Upgraded to use
+Spring Framework 4.3.9
+* https://github.com/coherence-community/coherence-spring/issues/10[Issue #10]: Upgraded to require Java 7
+* https://github.com/coherence-community/coherence-spring/issues/9[Issue #11]: Made Spring Framework
+dependencies scope "provided"
+* https://github.com/coherence-community/coherence-spring/issues/13[Issue #13]: Introduced the
+SpringBasedCoherenceSession to provide a mechanism to configure and acquire
+Coherence-based resources (NamedCaches) from Coherence without using
+static functions or methods.
+* https://github.com/coherence-community/coherence-spring/issues/15[Issue #15]: Provided access to
+Coherence Services via the SpringBasedCoherenceSession
+* https://github.com/coherence-community/coherence-spring/issues/16[Issue #16]: Resolved incorrect XSD
+declaration of spring:property
+* https://github.com/coherence-community/coherence-spring/issues/17[Issue #17]: Migrated to use Maven Central
+(from maven.java.net)
+
+'''
+
+=== Version 1.0.2 built on 2015-08-06 20:45
+
+*Source and Documentation Contributors*
+
+* Brian Oliver
+
+*Global and Cross-Module Changes*
+
+* https://java.net/jira/browse/COHSPR-8[COHSPR-8]: Upgraded to use
+Coherence 12.1.2-0-4 (and certified against Coherence 12.1.3-0-2)
+
+'''
+
+=== Version: 1.0.1 built on 2014-11-04 11:09
+
+*Acknowledgements*
+
+Huge thanks to everyone that provided feedback, isolated defects and contributed fixes.
+
+*Source and Documentation Contributors*
+
+* Brian Oliver
+
+*Global and Cross-Module Changes*
+
+* Upgraded Maven Plug-ins
+
+*The `coherence-spring` Module*
+
+* https://java.net/jira/browse/COHSPR-5[COHSPR-5]: Resolved issue where
+multiple CoherenceApplicationContexts were created during concurrent
+initialization.
+
+'''
+
+=== Version: 1.0.0 built on 2013-09-10 13:35
+
+*Acknowledgements*
+
+Huge thanks to everyone that contributed feedback, suggestions, documentation
+and ideas for this initial release.
+
+*Source and Documentation Contributors*
+
+* Brian Oliver and Patrick Peralta
+
+*Global and Cross-Module Changes*
+
+* Initial Release
+
+*The `coherence-spring` Module*
+
+* Initial Release.
+
+*The `coherence-spring-tests` Module*
+
+* Initial Release.

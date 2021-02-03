@@ -1,0 +1,19 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Issue Tracking
+
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+== Issue Tracking
+
+The https://github.com/coherence-community/coherence-spring/issues[Issue Tracking] system for the Coherence Spring project is hosted
+by https://github.com/[github.com].  It can be found here: https://github.com/coherence-community/coherence-spring/issues.

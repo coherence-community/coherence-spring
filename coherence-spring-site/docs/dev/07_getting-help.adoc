@@ -1,0 +1,43 @@
+///////////////////////////////////////////////////////////////////////////////
+    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+    Licensed under the Universal Permissive License v 1.0 as shown at
+    http://oss.oracle.com/licenses/upl.
+///////////////////////////////////////////////////////////////////////////////
+
+= Getting Help
+:description: Oracle Coherence Spring Website
+:keywords: coherence, spring, java, documentation
+
+// DO NOT remove this header - it might look like a duplicate of the header above, but
+// both they serve a purpose, and the docs will look wrong if it is removed.
+
+== Getting Help
+
+There are many avenues to receive help when using the Coherence Spring project.
+Here are a few options.
+
+=== Slack
+
+The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack at:
+
+https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE
+
+=== Source Code, Tests and Examples
+
+As all of the source code, including tests and examples are now published, these are often a great place to start for implementation tips. The source code is located here:
+https://github.com/coherence-community/coherence-spring[https://github.com/coherence-community/coherence-spring-integration]
+
+=== Issue Tracking System
+
+If you find an issue with the Coherence Spring project or have an idea for a new feature
+the best place to start is with the Issue Tracking System.  All issues, both current and
+past are publicly viewable.
+
+The Issue Tracking System can be found here: https://github.com/coherence-community/coherence-spring/issues
+
+=== Oracle Support
+
+Alternatively Oracle Coherence customers can file Support Requests (SR) against the
+Coherence Product, clearly specifying that requests are for a Coherence Community
+project.

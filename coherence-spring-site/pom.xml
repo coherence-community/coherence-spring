@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0"?>
 <!--
-  Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+  Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
   Licensed under the Universal Permissive License v 1.0 as shown at
-  https://oss.oracle.com/licenses/upl.
+  http://oss.oracle.com/licenses/upl.
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -17,18 +16,19 @@
 	</parent>
 
 	<artifactId>coherence-spring-site</artifactId>
-
-	<name>Coherence Spring Site</name>
-	<description>The Coherence Spring Site</description>
+	<name>Coherence Spring Website</name>
+	<packaging>site</packaging>
+	<description>
+		Coherence Spring Website
+	</description>
 
 	<properties>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<timestamp>${maven.build.timestamp}</timestamp>
+		<coherence.spring.root>${basedir}/..</coherence.spring.root>
+		<helidon.sitegen.version>2.0.0-RC1</helidon.sitegen.version>
+		<asciidoctor.diagram.version>2.0.2</asciidoctor.diagram.version>
 
-		<!-- content properties for site generation -->
-		<site-project-title>Coherence Spring</site-project-title>
-		<site-timestamp>${maven.build.timestamp}</site-timestamp>
-		<site-coherence-version>${coherence.version}</site-coherence-version>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 	</properties>
 
 	<dependencies>
@@ -40,6 +40,7 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -67,28 +68,90 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>${maven-site-plugin.version}</version>
+				<groupId>io.helidon.build-tools</groupId>
+				<artifactId>sitegen-maven-plugin</artifactId>
+				<version>${helidon.sitegen.version}</version>
+				<extensions>true</extensions>
 				<configuration>
-					<skipDeploy>true</skipDeploy>
-					<generateReports>false</generateReports>
+					<siteConfigFile>${basedir}/sitegen.yaml</siteConfigFile>
+					<siteSourceDirectory>${basedir}/docs</siteSourceDirectory>
 				</configuration>
 				<dependencies>
 					<dependency>
-						<groupId>org.kohsuke</groupId>
-						<artifactId>doxia-module-markdown</artifactId>
-						<version>${doxia-module-markdown.version}</version>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-diagram</artifactId>
+						<version>${asciidoctor.diagram.version}</version>
 					</dependency>
 				</dependencies>
-				<executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+				<inherited>false</inherited>
+				<configuration>
+					<skipDeploy>true</skipDeploy>
+					<skip>false</skip>
+					<siteDirectory>docs</siteDirectory>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>io.helidon.build-tools</groupId>
+						<artifactId>sitegen-maven-plugin</artifactId>
+						<version>${helidon.sitegen.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-diagram</artifactId>
+						<version>${asciidoctor.diagram.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.doxia</groupId>
+						<artifactId>doxia-site-renderer</artifactId>
+						<version>1.6</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.doxia</groupId>
+						<artifactId>doxia-core</artifactId>
+						<version>1.6</version>
+					</dependency>
+				</dependencies>
+				<!-- <executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
 							<goal>site</goal>
 						</goals>
 					</execution>
+				</executions> -->
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
 				</executions>
+				<configuration>
+					<executable>python</executable>
+					<workingDirectory>${project.build.directory}/docs</workingDirectory>
+					<arguments>
+						<argument>-m</argument>
+						<argument>SimpleHTTPServer</argument>
+						<argument>8080</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -124,10 +187,18 @@
 				</configuration>
 				<executions>
 					<execution>
+						<id>deploy</id>
 						<phase>deploy</phase>
 						<goals>
 							<goal>site</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>site</id>
+						<goals>
+							<goal>site:deploy</goal>
+						</goals>
+						<phase>site-deploy</phase>
 					</execution>
 				</executions>
 			</plugin>
