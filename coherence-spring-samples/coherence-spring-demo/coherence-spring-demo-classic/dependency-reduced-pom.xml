@@ -167,7 +167,7 @@
     <hsqldb.version>2.5.1</hsqldb.version>
     <spring.version>5.3.1</spring.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <tomcat.version>9.0.1</tomcat.version>
+    <tomcat.version>9.0.43</tomcat.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jackson-datatype.version>2.11.3</jackson-datatype.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
