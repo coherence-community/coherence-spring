@@ -31,7 +31,7 @@
 		<jackson-datatype.version>2.11.3</jackson-datatype.version>
 
 		<!-- <tomcat.version>9.0.41</tomcat.version> -->
-		<tomcat.version>9.0.1</tomcat.version>
+		<tomcat.version>10.0.2</tomcat.version>
 		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
 		<hsqldb.version>2.5.1</hsqldb.version>
 		<log4j.version>2.13.2</log4j.version>
