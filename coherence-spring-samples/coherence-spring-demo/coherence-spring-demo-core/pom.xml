@@ -20,7 +20,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<java.version>8</java.version>
-		<coherence.version>20.12-SNAPSHOT</coherence.version>
+		<coherence.version>21.06-SNAPSHOT</coherence.version>
 		<spring.version>5.3.1</spring.version>
 		<spring-data-bom.version>2020.0.2</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>

@@ -24,7 +24,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
-		<coherence.version>20.12-SNAPSHOT</coherence.version>
+		<coherence.version>21.06-SNAPSHOT</coherence.version>
 	</properties>
 
 	<dependencies>
