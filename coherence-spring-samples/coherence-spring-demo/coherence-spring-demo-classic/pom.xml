@@ -34,7 +34,7 @@
 		<spring.version>5.3.1</spring.version>
 		<spring-data-bom.version>2020.0.2</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
-		<hibernate.version>5.3.20.Final</hibernate.version>
+		<hibernate.version>5.4.27.Final</hibernate.version>
 		<jackson-datatype.version>2.11.3</jackson-datatype.version>
 
 		<tomcat.version>9.0.43</tomcat.version>

@@ -12,7 +12,7 @@
 
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
-		<artifactId>coherence-spring-parent</artifactId>
+		<artifactId>coherence-spring-samples</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 
@@ -26,7 +26,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2020.0.0</spring-cloud.version>
+		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
 		<coherence.version>21.06-SNAPSHOT</coherence.version>
 	</properties>
