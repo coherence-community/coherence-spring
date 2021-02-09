@@ -40,4 +40,5 @@ public interface PersonService {
 	 */
 	void addPersonToEvent(Long personId, Long eventId);
 
+	Person getPerson(Long personId);
 }

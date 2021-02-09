@@ -6,6 +6,9 @@
  */
 package com.oracle.coherence.spring.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +31,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="PEOPLE")
-public class Person {
+public class Person implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -38,9 +43,10 @@ public class Person {
 	private String lastname;
 
 	@ManyToMany(targetEntity = Event.class)
+	@JsonIgnore
 	private Set<Event> events = new HashSet<>();
 
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERSON_EMAIL_ADDR", joinColumns = @JoinColumn(name = "PERSON_ID"))
 	@Column(name = "EMAIL_ADDR")
 	private Set<String> emailAddresses = new HashSet<>();

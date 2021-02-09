@@ -18,6 +18,7 @@ http://coherence-community.github.io/coherence-spring[*Website*].
 <<spring-cache.adoc#spring-cache, Spring Cache>> :: Coherence Spring Cache
 <<spring-session.adoc#spring-session, Spring Session>> :: Coherence Spring Session
 <<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data
+<<spring-cloud-config.adoc#spring-cloud-config, Spring Cloud Config>> :: Use Coherence with Spring Cloud Config
 
 Gunnar Hillert
 

@@ -53,4 +53,10 @@ public class PersonController {
 		@PathVariable("eventId") Long eventId) {
 		personService.addPersonToEvent(personId, eventId);
 	}
+
+	@GetMapping("/{personId}")
+	public Person getPerson (
+			@PathVariable("personId") Long personId) {
+		return personService.getPerson(personId);
+	}
 }

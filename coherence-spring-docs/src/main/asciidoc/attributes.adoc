@@ -19,6 +19,7 @@
 :coherence-spring-code: https://github.com/coherence-community/coherence-spring
 
 :github-repo: coherence-community/coherence-spring
+:github-repo-clone-url: https://github.com/{github-repo}.git
 :github-raw: https://raw.githubusercontent.com/{github-repo}/{github-tag}
 :github-issues: https://github.com/{github-repo}/issues/
 :github-wiki: https://github.com/{github-repo}/wiki
@@ -28,9 +29,13 @@
 :spring-docs-caching: https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/integration.html#cache
 :spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
 :spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
+:spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
+:oracle-coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0
 
-:oracle-coherence: https://coherence.community
-:spring: https://spring.io
+:oracle-coherence: https://coherence.community/
+:spring: https://spring.io/
 :spring-io-website: https://spring.io/
 :spring-boot-website: https://spring.io/projects/spring-boot
+:spring-cloud-config-website: https://spring.io/projects/spring-cloud-config
 :spring-framework: https://spring.io/projects/spring-framework
+:spring-security-website: https://spring.io/projects/spring-security

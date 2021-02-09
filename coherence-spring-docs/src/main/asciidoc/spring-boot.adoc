@@ -129,9 +129,25 @@ https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-appl
 [[spring-boot-customize-coherence]]
 == Customize Coherence
 
+[[spring-boot-config-data-api]]
+== Coherence Support of the Spring Boot ConfigData API
+
+Starting with Spring Boot `2.4.x` you can define your own
+https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[custom config locations]. This allows you to
+import these as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+configuration data for your Spring Boot based applications.
+
+NOTE: Please also consult the Spring Boot reference guide on https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config[Externalized Configuration],
+especially the chapter on https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config-files-importing[Importing Additional Data].
+
+NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
+
+TBD
+
 [[spring-boot-caching]]
 == Using Coherence as Spring Caching Provider
 
 If caching is enabled via `@EnableCaching`, Coherence Autoconfiguration will it automatically provide a `CacheManager` to
 the ApplicationContext, however only if no `CacheManager` was configured explicitly beforehand.
+
 
