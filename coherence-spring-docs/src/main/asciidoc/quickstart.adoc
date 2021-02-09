@@ -16,17 +16,26 @@ https://en.wikipedia.org/wiki/Create,_read,_update_and_delete[CRUD] operations f
 
 == How to Run the Demo
 
-In order to get started, please checkout the code from the https://github.com/ghillert/coherence-spring-demo[Coherence Spring Demo]
+In order to get started, please checkout the code from the {github-repo}[Coherence Spring Repository]
 GitHub repository.
 
 .Clone GitHub Repository
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ git clone https://github.com/ghillert/coherence-spring-demo.git
-$ cd coherence-spring-demo
+$ git clone {github-repo-clone-url}
+$ cd coherence-spring
 ----
 
-This repository contains a Maven project consisting of 3 modules. The first two Maven modules are essentially variations of
+You now have checked out all the code for Coherence Spring. The relevant demo code for this Quickstart demo is under
+`coherence-spring-samples/coherence-spring-demo/`.
+
+There you will find 3 Maven sub-modules:
+
+- coherence-spring-demo-classic
+- coherence-spring-demo-boot
+- coherence-spring-demo-core
+
+The first two Maven modules are essentially variations of
 the same app. The third module contains shared code.
 
 [cols=2*, caption=]
@@ -46,7 +55,7 @@ In this chapter we will focus on the *Spring Boot* version. Since we checked out
 .Build the project
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package
+$ ./mvnw clean package -pl coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot
 ----
 
 Now we are ready to run the application:
@@ -54,7 +63,7 @@ Now we are ready to run the application:
 .Run the Spring Boot application
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ java -jar coherence-spring-demo-boot/target/coherence-spring-demo-boot-1.0.0-SNAPSHOT.jar
+$ java -jar coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-{coherence-spring-version}.jar
 ----
 
 == Interacting with the Cache
@@ -65,7 +74,7 @@ https://curl.se/docs/manual.html[curl]:
 .Create the first event
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ curl --request POST 'http://localhost:8080/api/events?title=First%20Event&date=2020-11-30'
+curl --request POST 'http://localhost:8080/api/events?title=First%20Event&date=2020-11-30'
 ----
 
 This call will create and persist an `Event` to the database. However, there is more going on. The created `Event` is also
@@ -88,7 +97,7 @@ returned and printed to the console:
 ----
 
 We see that an Event with the id `1` was successfully created. Let's verify that the _cache put_ worked by looking at the
-chache's statistics:
+cache statistics:
 
 .Retrieving Cache Statistics
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
@@ -138,7 +147,7 @@ Let's check the statistics again by executing:
 curl --request GET 'http://localhost:8080/api/statistics/events'
 ----
 
-We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. `"cacheHits" : 1,`.
+We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. `"cacheHits" : 1`.
 Let's evict our Event with id 1 from the cache named events:
 
 .Evict Event
@@ -163,6 +172,12 @@ can for example add people:
 ----
 curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&lastName=Zuse&age=85'
 curl --request POST 'http://localhost:8080/api/people?firstName=Alan&lastName=Turing&age=41'
+----
+
+.List people
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+curl --request GET 'http://localhost:8080/api/people'
 ----
 
 Or assign people to events:

@@ -86,6 +86,11 @@ public class CoherenceSpringConfiguration {
 	 */
 	public static final String COHERENCE_CLUSTER_BEAN_NAME = "coherenceCluster";
 
+	/**
+	 * The name of the default Coherence {@link Cluster} bean.
+	 */
+	public static final String SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME = "springSystemPropertyResolver";
+
 	public CoherenceSpringConfiguration(ConfigurableApplicationContext context) {
 		this.context = context;
 	}
@@ -96,6 +101,7 @@ public class CoherenceSpringConfiguration {
 	public static final String COHERENCE_CONFIGURER_BEAN_NAME = "coherenceConfigurer";
 
 	@Bean(COHERENCE_BEAN_NAME)
+	@DependsOn(SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME)
 	public Coherence getCoherence() {
 		return this.coherence;
 	}
@@ -220,7 +226,7 @@ public class CoherenceSpringConfiguration {
 			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 			if (!springSystemPropertyResolverFound) {
-				registry.registerBeanDefinition("springSystemPropertyResolver",
+				registry.registerBeanDefinition(SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME,
 						BeanDefinitionBuilder.genericBeanDefinition(SpringSystemPropertyResolver.class)
 								.addConstructorArgValue(environment).getBeanDefinition());
 			}

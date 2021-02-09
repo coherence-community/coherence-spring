@@ -1,0 +1,203 @@
+[[spring-cloud-config]]
+= Coherence Spring Cloud Config
+include::attributes.adoc[]
+
+This section explains how to configure Coherence using {spring-cloud-config-website}[Spring Cloud Config]. Furthermore,
+this chapter also shows how to use {oracle-coherence}[Coherence] as a Spring Cloud Config storage backend, allowing you
+to set up Spring applications with configuration data stored in Coherence.
+
+[[spring-cloud-config-overview]]
+== Overview
+
+Spring Cloud Config provides support for externalized configuration in distributed systems. It integrates seamlessly
+with Spring Boot applications and allows you to externalize / centralize critical application properties. Spring Cloud
+Config provides numerous storage backends for your configuration data and as part of Coherence Spring we also provide
+a backend for Oracle Coherence.
+
+IMPORTANT: Please familiarize yourself with the {spring-docs-cloud-config}[Spring Cloud Config reference documentation].
+
+In this chapter we will cover two aspects of Coherence-specific support for Spring Cloud Config:
+
+- Configure Coherence and its Spring support using Spring Cloud Config
+- Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
+Coherence cluster
+
+Let's get started with an example to show the general functioning of Spring Cloud Config.
+
+[[spring-cloud-config-demo]]
+== Demo
+
+This demo is essentially the same as is used in the <<quickstart, Quickstart>> chapter. However, we externalize some
+Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
+{coherence-spring-code}[Coherence Spring source code repository]. Therefore, to get started, please clone its repository:
+
+.Clone the Spring Cloud Config demo project
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ git clone {github-repo-clone-url}
+$ cd coherence-spring
+----
+
+You now have checked out all the code for Coherence Spring. The relevant demo code for the Spring Cloud Config demo is
+under `coherence-spring-samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
+
+- *coherence-spring-cloud-config-demo-server*: Spring Cloud Config Server implementation
+- *coherence-spring-cloud-config-demo-app*: Main application
+
+The Config Server is essentially using 2 dependencies:
+
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-server</artifactId>    <1>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>  <2>
+</dependency>
+----
+<1> Spring Cloud Config Server dependency
+<2> Provides rudimentary security for the exposed configuration REST endpoints using
+{spring-security-website}[Spring Security]
+
+The demo client on the other hand will use the following dependencies:
+
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-boot-starter</artifactId> <1>
+    <version>{coherence-spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.oracle.coherence.ce</groupId>
+    <artifactId>coherence</artifactId>                     <2>
+    <version>{coherence.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-config</artifactId>   <3>
+</dependency>
+----
+<1> Provides all integration code, caching + autoconfiguration support
+<2> The Oracle Coherence dependency
+<3> The dependency to integrate with the Spring Cloud Config server
+
+NOTE: We made the decision to not automatically bring in the Coherence dependencies. The main reason is that users can
+specify the version they need, either the Oracle Coherence CE (OSS) or the commercial version.
+
+[[spring-cloud-config-demo-setup]]
+=== Configure the Demo Application
+
+In order to run the demo, we first need to create a Git repository that will contain
+the configuration data.
+
+.Setup the Config Data
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ cd /path/to/git/repo
+$ mkdir coherence-spring-config-repository
+$ cd coherence-spring-config-repository
+$ git init
+----
+
+Add a properties file called `config-client.properties`:
+
+.config-client.properties
+[source,properties,indent=1,subs="verbatim,quotes,attributes"]
+----
+coherence.logging.severity-level=6                                                     <1>
+coherence.logging.destination=slf4j                                                    <2>
+
+coherence.properties.coherence.cluster=Demo Cluster                                    <3>
+coherence.properties.coherence.member=Demo Cluster Member                              <4>
+coherence.properties.coherence.management.remote=true                                  <5>
+coherence.properties.coherence.management=all                                          <6>
+coherence.properties.coherence.management.report.autostart=true                        <7>
+coherence.properties.coherence.reporter.output.directory=/path/to/reports/             <8>
+coherence.properties.coherence.management.report.configuration=/reports/report-all.xml <9>
+----
+<1> `-1` emits no log messages, `9` emits the most
+<2> Specifies the logger e.g. `stdout`, `log4j`, `log4j2`, `slf4j`
+<3> The name of the cluster
+<4> The name of the cluster member
+<5> Specifies whether this cluster node exposes its managed objects to remote MBean server. `true` or `false`
+<6> `none` means no MBean server is instantiated. `all` enables management of both local and remotely manageable cluster nodes.
+<7> `true` or `false` (default) Specifies whether the Reporter automatically starts when the node starts.
+<8> The output directory for generated reports. By default, reports are saved reports to the directory from which the cluster member starts.
+<9> You can control which reports are generated by specifying a different report group configuration file. The pre-defined
+reports are located at `coherence-{coherence-version}.jar/reports`
+
+For more options please see the following three chapters in the official Oracle Coherence reference guide:
+
+- {oracle-coherence-docs}/develop-applications/operational-configuration-elements.html[Operational Configuration Elements]
+- {oracle-coherence-docs}/develop-applications/system-property-overrides.html[System Property Overrides]
+- {oracle-coherence-docs}/manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
+
+[[spring-cloud-config-demo-how-to-run]]
+=== Run the Demo Application
+
+Please execute the following:
+
+.Start the Spring Cloud Config Server
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
+$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
+$ java -jar coherence-spring-cloud-config-demo-server-{coherence-spring-version}.jar \n
+    --spring.cloud.config.server.git.uri=file:///path/to/git/repo
+----
+
+.Start the Coherence Spring Application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
+$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
+$ java -jar coherence-spring-cloud-config-demo-app-{coherence-spring-version}.jar
+----
+
+Feel free to change configuration settings and see, once you restart the apps, how the behavior of the Coherence cluster
+changes.
+
+[[spring-cloud-config-coherence]]
+== Use Spring Cloud Config Server to Configure Coherence
+
+The previously discussed demo application illustrated the main concepts of using Spring Cloud Config Server as a
+configuration backend for Oracle Coherence. For a general understanding of Spring Cloud Config Server, please consult
+the respective {spring-docs-cloud-config}[reference documentation].
+
+Coherence Spring is essentially unaware of Spring Cloud Config Server. Coherence Spring merely takes advantage of Spring
+Boot's configuration facilities. The main integration point for configuration between Spring and
+Oracle Coherence is the `SpringSystemPropertyResolver` class, which makes the properties of Spring's `Environment` available
+to Oracle Coherence.
+
+When using Spring Boot (and not just plain Spring Framework), we also provide the `CoherenceProperties` class. It provides
+means to expose Coherence Spring configuration options in a type-safe manner, to provide code completion via your IDE etc.
+
+NOTE: Providing dedicated CoherenceProperties support is work in progress.
+
+Behind the scenes using `CoherenceProperties.getCoherencePropertiesAsMap()` will translate the explicit Spring Boot properties
+into the property format used by Oracle Coherence. It is important to note that you can always provide ANY Oracle Coherence
+property via the `coherence.properties.*` prefix.
+
+For instance the following properties are equivalent:
+
+.Equivalent Properties
+[source,properties,indent=1,subs="verbatim,quotes,attributes"]
+----
+coherence.logging.severity-level=5
+coherence.logging.destination=log4j
+
+coherence.properties.coherence.log.level=5
+coherence.properties.coherence.log=log4j
+----
+
+NOTE: Please also see xref:spring-boot.adoc#spring-boot-config-data-api[Coherence Support of the Spring Boot ConfigData API].
+
+[[spring-cloud-config-coherence-as-backend]]
+== Coherence as Spring Cloud Config Server Backend
+
+TBD

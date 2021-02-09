@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.demo.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,12 @@ public class DefaultPersonService implements PersonService {
 	@Override
 	public void addPersonToEvent(Long personId, Long eventId) {
 		// TODO Auto-generated method stub
+	}
+
+	@Cacheable(cacheNames="people", key="#personId")
+	@Override
+	public Person getPerson(Long personId) {
+		return this.personRepository.findById(personId).get();
 	}
 
 }

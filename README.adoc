@@ -56,30 +56,37 @@ cd coherence-spring
 
 Coherence Spring uses https://maven.apache.org/[Apache Maven] as build tool. You do not need to have Maven installed to build the project. Simply use the provided https://github.com/takari/maven-wrapper[Maven Wrapper], e.g.:
 
-- *Windows:* `mvnw.cmd clean package` 
+- *Windows:* `mvnw.cmd clean package`
 - *Linux/Mac:* `./mvnw clean package`
 
 === Build the entire project
 
-Build the entire projet using https://maven.apache.org/[Maven]:
+Build the entire project using https://maven.apache.org/[Maven]:
 
 [source,bash]
 ----
-./mvnw clean package
+./mvnw clean package -Pspring
+----
+
+=== Build the Documentation
+
+[source,bash]
+----
+./mvnw clean package -pl coherence-spring-docs -Pspring
 ----
 
 === Build the project website
 
 [source,bash]
 ----
-./mvnw clean install -pl coherence-spring-site
+./mvnw clean install -pl coherence-spring-site -Pspring
 ----
 
 === Deploy the project website
 
 [source,bash]
 ----
-./mvnw com.github.github:site-maven-plugin:site -pl coherence-spring-site
+./mvnw com.github.github:site-maven-plugin:site -pl coherence-spring-site -Pspring
 ----
 
 == Getting Support

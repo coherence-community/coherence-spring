@@ -37,9 +37,7 @@ public class StatisticsController {
 	@GetMapping
 	public CacheStatistics getEvents(@PathVariable String cacheName) {
 		final NearCache<?, ?> nearCache = (NearCache<?, ?>) CacheFactory.getCache(cacheName);
-
 		final CacheStatistics cacheStatistics = nearCache.getCacheStatistics();
-
 		return cacheStatistics;
 	}
 

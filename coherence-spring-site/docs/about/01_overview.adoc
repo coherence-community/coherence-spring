@@ -71,28 +71,28 @@ Use Coherence as a Spring Data Repository
 ====
 [CARD]
 .HTML
-[icon=text_snippet,link={version-coherence-spring}/refdocs/reference/html/index.html,link-type=url]
+[icon=text_snippet,link=refdocs/reference/html/index.html,link-type=url]
 --
 Reference Documentation.
 --
 
 [CARD]
 .Single Page HTML
-[icon=text_snippet,link={version-coherence-spring}/refdocs/reference/htmlsingle/index.html,link-type=url]
+[icon=text_snippet,link=refdocs/reference/htmlsingle/index.html,link-type=url]
 --
 Reference Documentation.
 --
 
 [CARD]
 .PDF
-[icon=picture_as_pdf,link={version-coherence-spring}/refdocs/reference/pdf/coherence-spring-reference.pdf,link-type=url]
+[icon=picture_as_pdf,link=refdocs/reference/pdf/coherence-spring-reference.pdf,link-type=url]
 --
 Reference Documentation.
 --
 
 [CARD]
 .Javadocs
-[icon=code,link={version-coherence-spring}/refdocs/api/index.html,link-type=url]
+[icon=code,link=refdocs/api/index.html,link-type=url]
 --
 Browse the Coherence Spring JavaDocs.
 --

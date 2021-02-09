@@ -1,0 +1,8 @@
+# Coherence Spring Demo
+
+In this demo we are show-casing Coherence support for Spring
+applications using the https://github.com/coherence-community/coherence-spring[Coherence Spring project].
+
+In this demo we provide an example of using Coherence with the Spring Cache abstraction. Please check out
+the **Quickstart chapter** of the http://spring.coherence.community/[Coherence Spring Reference documentation]
+for further details.

@@ -8,6 +8,7 @@ package com.oracle.coherence.spring.boot.autoconfigure;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
+import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
@@ -68,11 +69,11 @@ public class CoherenceAutoConfiguration {
 
 			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
-			if (registry.containsBeanDefinition("springSystemPropertyResolver")) {
+			if (registry.containsBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME)) {
 				registry.removeBeanDefinition("springSystemPropertyResolver");
 			}
 
-			registry.registerBeanDefinition("springSystemPropertyResolver",
+			registry.registerBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME,
 					BeanDefinitionBuilder.genericBeanDefinition(SpringSystemPropertyResolver.class)
 							.addConstructorArgValue(environment)
 							.addConstructorArgValue("coherence.properties.")
