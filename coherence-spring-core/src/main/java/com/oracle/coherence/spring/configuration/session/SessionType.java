@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oracle.coherence.spring.configuration.support;
+package com.oracle.coherence.spring.configuration.session;
 
 /**
  * An enum representing the different types of {@link com.tangosol.net.SessionConfiguration}

@@ -1,0 +1,5 @@
+coherence:
+  sessions:
+    grpc:
+      - name: grpc-session
+

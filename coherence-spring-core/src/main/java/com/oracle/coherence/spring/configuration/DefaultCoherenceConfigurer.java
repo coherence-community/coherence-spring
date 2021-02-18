@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
