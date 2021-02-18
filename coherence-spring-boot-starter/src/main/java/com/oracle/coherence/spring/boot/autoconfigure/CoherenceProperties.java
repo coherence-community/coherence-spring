@@ -6,14 +6,18 @@
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
-import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -22,8 +26,13 @@ import org.springframework.util.StringUtils;
  * @author Gunnar Hillert
  * @since 3.0
  */
-@ConfigurationProperties(prefix = "coherence")
+@ConfigurationProperties(prefix = CoherenceProperties.PREFIX)
 public class CoherenceProperties {
+
+	/**
+	 * Configuration prefix for config properties.
+	 */
+	public static final String PREFIX = "coherence";
 
 	/**
 	 * Default service name prefix. Defaults recursively to ${code coherence.role}.
@@ -70,17 +79,19 @@ public class CoherenceProperties {
 	 */
 	private LoggingProperties logging;
 
+	//TODO
+	private boolean configEnabled;
+
 	/**
 	 * Session configuration.
 	 */
-	private List<SessionConfigurationBean> sessions;
+	private SessionProperties sessions = new SessionProperties();
 
-
-	public List<SessionConfigurationBean> getSessions() {
+	public SessionProperties getSessions() {
 		return this.sessions;
 	}
 
-	public void setSessions(List<SessionConfigurationBean> sessions) {
+	public void setSessions(SessionProperties sessions) {
 		this.sessions = sessions;
 	}
 
@@ -100,33 +111,41 @@ public class CoherenceProperties {
 		this.logging = logging;
 	}
 
+	public boolean isConfigEnabled() {
+		return this.configEnabled;
+	}
+
+	public void setConfigEnabled(boolean configEnabled) {
+		this.configEnabled = configEnabled;
+	}
+
 	/**
 	 * Returns a {@link Map} of Coherence properties using the format {@code coherence.properties.*}.
 	 * @return the Coherence properties as a {@link Map}. Never returns null.
 	 */
-	final Map<String, Object> getCoherencePropertiesAsMap() {
+	final Map<String, Object> retrieveCoherencePropertiesAsMap() {
 		final Map<String, Object> coherenceProperties = new HashMap<>();
 
 		if (this.logging != null) {
 
 			if (this.logging.destination != null) {
-				coherenceProperties.put(SPRING_COHERENCE_PROPERTIES_PREFIX + LOG_DESTINATION, this.logging.destination.getKey());
+				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_DESTINATION, this.logging.destination.getKey());
 			}
 
 			if (StringUtils.hasText(this.logging.loggerName)) {
-				coherenceProperties.put(SPRING_COHERENCE_PROPERTIES_PREFIX + LOG_LOGGER_NAME, this.logging.loggerName);
+				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LOGGER_NAME, this.logging.loggerName);
 			}
 
 			if (this.logging.severityLevel != null) {
-				coherenceProperties.put(SPRING_COHERENCE_PROPERTIES_PREFIX + LOG_LEVEL, this.logging.severityLevel);
+				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LEVEL, this.logging.severityLevel);
 			}
 
 			if (StringUtils.hasText(this.logging.messageFormat)) {
-				coherenceProperties.put(SPRING_COHERENCE_PROPERTIES_PREFIX + LOG_MESSAGE_FORMAT, this.logging.messageFormat);
+				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_MESSAGE_FORMAT, this.logging.messageFormat);
 			}
 
 			if (this.logging.characterLimit != null) {
-				coherenceProperties.put(SPRING_COHERENCE_PROPERTIES_PREFIX + LOG_LIMIT, this.logging.characterLimit);
+				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LIMIT, this.logging.characterLimit);
 			}
 		}
 		return coherenceProperties;
@@ -212,6 +231,65 @@ public class CoherenceProperties {
 
 		public void setCharacterLimit(Integer characterLimit) {
 			this.characterLimit = characterLimit;
+		}
+	}
+
+	/**
+	 * Coherence Session Configuration.
+	 */
+	public static class SessionProperties {
+
+		/**
+		 * Session configuration.
+		 */
+		private List<GrpcSessionConfigurationBean> grpc;
+
+		/**
+		 * Session configuration.
+		 */
+		private List<SessionConfigurationBean> client;
+
+		/**
+		 * Session configuration.
+		 */
+		private List<SessionConfigurationBean> server;
+
+		public List<GrpcSessionConfigurationBean> getGrpc() {
+			return this.grpc;
+		}
+
+		public void setGrpc(List<GrpcSessionConfigurationBean> grpc) {
+			this.grpc = grpc;
+		}
+
+		public List<SessionConfigurationBean> getClient() {
+			return this.client;
+		}
+
+		public void setClient(List<SessionConfigurationBean> client) {
+			this.client = client;
+		}
+
+		public List<SessionConfigurationBean> getServer() {
+			return this.server;
+		}
+
+		public void setServer(List<SessionConfigurationBean> server) {
+			this.server = server;
+		}
+
+		public List<AbstractSessionConfigurationBean> getAllSessionConfigurationBeans() {
+			final List<AbstractSessionConfigurationBean> sessionConfigurationBeans = new ArrayList<>();
+			if (!CollectionUtils.isEmpty(this.client)) {
+				sessionConfigurationBeans.addAll(this.client);
+			}
+			if (!CollectionUtils.isEmpty(this.server)) {
+				sessionConfigurationBeans.addAll(this.server);
+			}
+			if (!CollectionUtils.isEmpty(this.grpc)) {
+				sessionConfigurationBeans.addAll(this.grpc);
+			}
+			return sessionConfigurationBeans;
 		}
 	}
 }

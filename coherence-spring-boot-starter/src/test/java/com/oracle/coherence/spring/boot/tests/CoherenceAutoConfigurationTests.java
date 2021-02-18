@@ -10,7 +10,7 @@ import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
-import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.coherence.config.SystemPropertyResolver;
 import com.tangosol.net.Coherence;
@@ -107,7 +107,7 @@ public class CoherenceAutoConfigurationTests {
 			assertThat(context).hasSingleBean(CoherenceProperties.class);
 
 			final CoherenceProperties coherenceProperties = context.getBean(CoherenceProperties.class);
-			assertThat(coherenceProperties.getSessions()).hasSize(2);
+			assertThat(coherenceProperties.getSessions().getServer()).hasSize(2);
 
 			coherenceProperties.getSessions();
 			assertThat(context).hasBean("sessionConfigurationBean_1");

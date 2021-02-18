@@ -8,9 +8,111 @@ provides the basic support for the {spring-framework}[Spring Framework].
 [[coherence-spring-introduction]]
 == Getting Started
 
-The main building block for setting up Coherence for Spring is the `@EnableCoherence` annotation.
-This annotation will import the `CoherenceSpringConfiguration` under the covers. Therefore, you can alternative also declare
-`@Import(CoherenceSpringConfiguration.class)` instead.
+To add support for Oracle Coherence to an existing Spring Framework project, you should first add the required Spring
+Coherence dependencies to your build configuration:
 
-Without providing any further configuration various defaults are applied.
+.Coherence Spring Dependencies
+====
+.Maven
+[source,xml,role="primary",subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-core</artifactId>
+    <version>{coherence-spring-version}</version>
+</dependency>
+----
 
+.Gradle
+[source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
+----
+implementation("com.oracle.coherence.spring:coherence-spring-core:{coherence-spring-version}")
+----
+====
+
+Next you also need to add the version of Coherence that your application will be using. Coherence Spring is compatible
+with both the open source Coherence CE and the commercial version of Oracle Coherence. Therefore, we don't bring in
+Oracle Coherence as transitive dependency. For example, to use Coherence CE specify:
+
+.Oracle Coherence CE Dependency
+====
+.Maven
+[source,xml,role="primary",subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.ce</groupId>
+    <artifactId>coherence</artifactId>
+    <version>{coherence-version}</version>
+</dependency>
+----
+
+.Gradle
+[source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
+----
+implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+----
+====
+
+In order to use the commercial version of Coherence:
+
+.Commercial Oracle Coherence Dependency
+====
+.Maven
+[source,xml,role="primary",subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence</groupId>
+    <artifactId>coherence</artifactId>
+    <version>{commercial-coherence-version}</version>
+</dependency>
+----
+
+.Gradle
+[source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
+----
+implementation("com.oracle.coherence.ce:coherence:{commercial-coherence-version}")
+----
+====
+
+NOTE: Coherence CE versions are available from Maven Central. The commercial versions of Coherence needs to be uploaded
+into your own Maven repository.
+
+[[coherence-spring-botstrap]]
+== Bootstrapping Coherence
+
+The default behaviour of Coherence Spring is to use the Coherence bootstrap API introduced in Coherence CE `20.12` to
+configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
+part of a Coherence Session.
+
+By default, Coherence will start a single Session configured to use the default Coherence configuration file. This
+behavior can easily be configured using traditional Coherence using system properties or using dedicated configuration.
+
+[[coherence-spring-botstrap-with-default-session]]
+== Using the Default Session
+
+The main building block for setting up Coherence for Spring is the `@EnableCoherence` annotation. This annotation will
+import the `CoherenceSpringConfiguration` under the covers. Therefore, you can alternatively also declare
+`@Import(CoherenceSpringConfiguration.class)` instead. Without providing any further configuration the default session
+is configured using the embedded default configuration file.
+
+To provide further customization, you may for example provide an implementation of
+the `AbstractSessionConfigurationBean`, e.g.:
+
+.SessionConfigurationBean
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@Bean
+SessionConfigurationBean sessionConfigurationBeanDefault() {
+    final SessionConfigurationBean sessionConfigurationBean =
+            new SessionConfigurationBean();
+    sessionConfigurationBean.setType(SessionType.SERVER);
+    sessionConfigurationBean.setConfig("test-coherence-config.xml");
+    return sessionConfigurationBean;
+}
+----
+
+[[coherence-spring-botstrap-with-multiple-session]]
+== Configure Multiple Sessions
+
+[[coherence-spring-botstrap-session-config-properties]]
+== Session Configuration Properties

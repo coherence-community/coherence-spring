@@ -39,3 +39,5 @@
 :spring-cloud-config-website: https://spring.io/projects/spring-cloud-config
 :spring-framework: https://spring.io/projects/spring-framework
 :spring-security-website: https://spring.io/projects/spring-security
+
+:commercial-coherence-version: 14.1.1-0-1

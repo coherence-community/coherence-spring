@@ -6,11 +6,14 @@
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import java.util.List;
+
 import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.boot.config.CoherenceConfigClientProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
-import com.oracle.coherence.spring.configuration.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.net.Coherence;
 
@@ -41,7 +44,9 @@ import org.springframework.util.CollectionUtils;
 @Configuration
 @ConditionalOnMissingBean(CoherenceServer.class)
 @EnableCoherence
-@EnableConfigurationProperties(CoherenceProperties.class)
+@EnableConfigurationProperties({
+		CoherenceProperties.class,
+		CoherenceConfigClientProperties.class})
 @AutoConfigureBefore(CacheAutoConfiguration.class)
 public class CoherenceAutoConfiguration {
 
@@ -65,7 +70,7 @@ public class CoherenceAutoConfiguration {
 			final CoherenceProperties coherenceProperties = result.get();
 
 			environment.getPropertySources().addFirst(
-					new MapPropertySource("coherence.properties", coherenceProperties.getCoherencePropertiesAsMap()));
+					new MapPropertySource("coherence.properties", coherenceProperties.retrieveCoherencePropertiesAsMap()));
 
 			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
@@ -79,9 +84,10 @@ public class CoherenceAutoConfiguration {
 							.addConstructorArgValue("coherence.properties.")
 							.getBeanDefinition());
 
-			if (!CollectionUtils.isEmpty(coherenceProperties.getSessions())) {
+			final List<AbstractSessionConfigurationBean> sessionConfigurationBeans = coherenceProperties.getSessions().getAllSessionConfigurationBeans();
+			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
 				int count = 1;
-				for (SessionConfigurationBean sessionConfigurationBean : coherenceProperties.getSessions()) {
+				for (AbstractSessionConfigurationBean sessionConfigurationBean : sessionConfigurationBeans) {
 					beanFactory.registerSingleton("sessionConfigurationBean_" + count, sessionConfigurationBean);
 					count++;
 				}

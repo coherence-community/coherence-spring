@@ -6,8 +6,12 @@
  */
 package com.oracle.coherence.spring.boot.tests;
 
+import java.util.List;
+
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
+import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.SessionConfiguration;
 import com.tangosol.net.SessionConfiguration.ConfigurableCacheFactorySessionConfig;
@@ -30,30 +34,38 @@ public class CoherencePropertiesTests {
 
 	@Test
 	void testCoherencePropertiesWithSessions() {
-		assertThat(this.coherenceProperties.getSessions()).hasSize(3);
-		assertThat(this.coherenceProperties.getSessions().get(0).getName()).isEqualTo("default");
-		assertThat(this.coherenceProperties.getSessions().get(0).getConfig()).isEqualTo("coherence-cache-config.xml");
-		assertThat(this.coherenceProperties.getSessions().get(0).getScopeName()).isEqualTo("fooscope");
-		assertThat(this.coherenceProperties.getSessions().get(0).getPriority()).isEqualTo(1);
-		assertThat(this.coherenceProperties.getSessions().get(1).getName()).isEqualTo("test");
-		assertThat(this.coherenceProperties.getSessions().get(1).getConfig()).isEqualTo("test-coherence-config.xml");
-		assertThat(this.coherenceProperties.getSessions().get(1).getScopeName()).isEqualTo("barscope");
-		assertThat(this.coherenceProperties.getSessions().get(1).getPriority()).isEqualTo(2);
-		assertThat(this.coherenceProperties.getSessions().get(2).getName()).isNull();
-		assertThat(this.coherenceProperties.getSessions().get(2).getConfig()).isEqualTo("test-coherence-config.xml");
-		assertThat(this.coherenceProperties.getSessions().get(2).getScopeName()).isEqualTo("myscope");
-		assertThat(this.coherenceProperties.getSessions().get(2).getPriority()).isEqualTo(0);
+		final List<SessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
+		final List<SessionConfigurationBean> clientSessions = this.coherenceProperties.getSessions().getClient();
+		final List<GrpcSessionConfigurationBean> grpcSessions = this.coherenceProperties.getSessions().getGrpc();
+
+		assertThat(serverSessions).hasSize(3);
+		assertThat(serverSessions.get(0).getName()).isEqualTo("default");
+		assertThat(serverSessions.get(0).getConfig()).isEqualTo("coherence-cache-config.xml");
+		assertThat(serverSessions.get(0).getScopeName()).isEqualTo("fooscope");
+		assertThat(serverSessions.get(0).getPriority()).isEqualTo(1);
+		assertThat(serverSessions.get(1).getName()).isEqualTo("test");
+		assertThat(serverSessions.get(1).getConfig()).isEqualTo("test-coherence-config.xml");
+		assertThat(serverSessions.get(1).getScopeName()).isEqualTo("barscope");
+		assertThat(serverSessions.get(1).getPriority()).isEqualTo(2);
+		assertThat(serverSessions.get(2).getName()).isNull();
+		assertThat(serverSessions.get(2).getConfig()).isEqualTo("test-coherence-config.xml");
+		assertThat(serverSessions.get(2).getScopeName()).isEqualTo("myscope");
+		assertThat(serverSessions.get(2).getPriority()).isEqualTo(0);
+
+		assertThat(clientSessions).hasSize(1);
 	}
 
 	@Test
 	void testCoherenceConfiguration() {
-		assertThat(this.coherenceProperties.getSessions().get(0).getConfiguration()).isNotNull();
-		assertThat(this.coherenceProperties.getSessions().get(1).getConfiguration()).isNotNull();
-		assertThat(this.coherenceProperties.getSessions().get(2).getConfiguration()).isNotNull();
+		final List<SessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
 
-		final SessionConfiguration sessionConfiguration1 = this.coherenceProperties.getSessions().get(0).getConfiguration().get();
-		final SessionConfiguration sessionConfiguration2 = this.coherenceProperties.getSessions().get(1).getConfiguration().get();
-		final SessionConfiguration sessionConfiguration3 = this.coherenceProperties.getSessions().get(2).getConfiguration().get();
+		assertThat(serverSessions.get(0).getConfiguration()).isNotNull();
+		assertThat(serverSessions.get(1).getConfiguration()).isNotNull();
+		assertThat(serverSessions.get(2).getConfiguration()).isNotNull();
+
+		final SessionConfiguration sessionConfiguration1 = serverSessions.get(0).getConfiguration().get();
+		final SessionConfiguration sessionConfiguration2 = serverSessions.get(1).getConfiguration().get();
+		final SessionConfiguration sessionConfiguration3 = serverSessions.get(2).getConfiguration().get();
 
 		assertThat(sessionConfiguration1.getName()).isEqualTo(Coherence.DEFAULT_NAME);
 		validateConfigUri("coherence-cache-config.xml", sessionConfiguration1);
