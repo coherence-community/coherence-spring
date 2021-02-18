@@ -176,10 +176,24 @@ $(globalSwitch);
 <li><a href="#spring-boot-getting-started">7.1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">7.2. Using Coherence with Spring Boot</a></li>
 <li><a href="#spring-boot-customize-coherence">7.3. Customize Coherence</a></li>
-<li><a href="#spring-boot-caching">7.4. Using Coherence as Spring Caching Provider</a></li>
+<li><a href="#spring-boot-config-data-api">7.4. Coherence Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">7.5. Using Coherence as Spring Caching Provider</a></li>
 </ul>
 </li>
-<li><a href="#appendix">8. Appendices</a></li>
+<li><a href="#spring-cloud-config">8. Coherence Spring Cloud Config</a>
+<ul class="sectlevel2">
+<li><a href="#spring-cloud-config-overview">8.1. Overview</a></li>
+<li><a href="#spring-cloud-config-demo">8.2. Demo</a>
+<ul class="sectlevel3">
+<li><a href="#spring-cloud-config-demo-setup">8.2.1. Configure the Demo Application</a></li>
+<li><a href="#spring-cloud-config-demo-how-to-run">8.2.2. Run the Demo Application</a></li>
+</ul>
+</li>
+<li><a href="#spring-cloud-config-coherence">8.3. Use Spring Cloud Config Server to Configure Coherence</a></li>
+<li><a href="#spring-cloud-config-coherence-as-backend">8.4. Coherence as Spring Cloud Config Server Backend</a></li>
+</ul>
+</li>
+<li><a href="#appendix">9. Appendices</a></li>
 </ul>
 </div>
 </div>
@@ -245,7 +259,7 @@ SOFTWARE.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Welcome to the reference documentation of <a href="https://github.com/coherence-community/coherence-spring">Coherence Spring</a>, a collection of several
-libraries that will help you to integrate <a href="https://coherence.community">Coherence</a> with the wider <a href="https://spring.io">Spring</a> ecosystem.</p>
+libraries that will help you to integrate <a href="https://coherence.community/">Coherence</a> with the wider <a href="https://spring.io/">Spring</a> ecosystem.</p>
 </div>
 <div class="paragraph">
 <p>This section provides a brief overview of the Coherence Spring reference documentation.</p>
@@ -382,18 +396,38 @@ Therefore, whenever an <code>Event</code> is retrieved, it will be returned from
 <div class="sect2">
 <h3 id="how-to-run-the-demo"><a class="anchor" href="#how-to-run-the-demo"></a>2.1. How to Run the Demo</h3>
 <div class="paragraph">
-<p>In order to get started, please checkout the code from the <a href="https://github.com/ghillert/coherence-spring-demo">Coherence Spring Demo</a>
+<p>In order to get started, please checkout the code from the coherence-community/coherence-spring[Coherence Spring Repository]
 GitHub repository.</p>
 </div>
 <div class="listingblock">
 <div class="title">Clone GitHub Repository</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/ghillert/coherence-spring-demo.git
- $ cd coherence-spring-demo</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+ $ cd coherence-spring</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This repository contains a Maven project consisting of 3 modules. The first two Maven modules are essentially variations of
+<p>You now have checked out all the code for Coherence Spring. The relevant demo code for this Quickstart demo is under
+<code>coherence-spring-samples/coherence-spring-demo/</code>.</p>
+</div>
+<div class="paragraph">
+<p>There you will find 3 Maven sub-modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>coherence-spring-demo-classic</p>
+</li>
+<li>
+<p>coherence-spring-demo-boot</p>
+</li>
+<li>
+<p>coherence-spring-demo-core</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The first two Maven modules are essentially variations of
 the same app. The third module contains shared code.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -422,7 +456,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Build the project</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -431,7 +465,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar coherence-spring-demo-boot/target/coherence-spring-demo-boot-1.0.0-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-3.0.0-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 </div>
@@ -444,7 +478,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Create the first event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -470,7 +504,7 @@ returned and printed to the console:</p>
 </div>
 <div class="paragraph">
 <p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by looking at the
-chache&#8217;s statistics:</p>
+cache statistics:</p>
 </div>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
@@ -524,7 +558,7 @@ Let&#8217;s check the statistics again by executing:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1,</code>.
+<p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1</code>.
 Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 </div>
 <div class="listingblock">
@@ -551,6 +585,12 @@ can for example add people:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
  curl --request POST 'http://localhost:8080/api/people?firstName=Alan&amp;lastName=Turing&amp;age=41'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">List people</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1012,7 +1052,44 @@ property is used.
 
 </div>
 <div class="sect2">
-<h3 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>7.4. Using Coherence as Spring Caching Provider</h3>
+<h3 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>7.4. Coherence Support of the Spring Boot ConfigData API</h3>
+<div class="paragraph">
+<p>Starting with Spring Boot <code>2.4.x</code> you can define your own
+<a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
+import these as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+configuration data for your Spring Boot based applications.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">Externalized Configuration</a>,
+especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config-files-importing">Importing Additional Data</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also see the chapter on <a href="#spring-cloud-config">Coherence Spring Cloud Config</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>7.5. Using Coherence as Spring Caching Provider</h3>
 <div class="paragraph">
 <p>If caching is enabled via <code>@EnableCaching</code>, Coherence Autoconfiguration will it automatically provide a <code>CacheManager</code> to
 the ApplicationContext, however only if no <code>CacheManager</code> was configured explicitly beforehand.</p>
@@ -1021,7 +1098,348 @@ the ApplicationContext, however only if no <code>CacheManager</code> was configu
 </div>
 </div>
 <div class="sect1">
-<h2 id="appendix"><a class="anchor" href="#appendix"></a>8. Appendices</h2>
+<h2 id="spring-cloud-config"><a class="anchor" href="#spring-cloud-config"></a>8. Coherence Spring Cloud Config</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section explains how to configure Coherence using <a href="https://spring.io/projects/spring-cloud-config">Spring Cloud Config</a>. Furthermore,
+this chapter also shows how to use <a href="https://coherence.community/">Coherence</a> as a Spring Cloud Config storage backend, allowing you
+to set up Spring applications with configuration data stored in Coherence.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-overview"><a class="anchor" href="#spring-cloud-config-overview"></a>8.1. Overview</h3>
+<div class="paragraph">
+<p>Spring Cloud Config provides support for externalized configuration in distributed systems. It integrates seamlessly
+with Spring Boot applications and allows you to externalize / centralize critical application properties. Spring Cloud
+Config provides numerous storage backends for your configuration data and as part of Coherence Spring we also provide
+a backend for Oracle Coherence.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Please familiarize yourself with the <a href="https://docs.spring.io/spring-cloud-config/docs/current/reference/html/">Spring Cloud Config reference documentation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this chapter we will cover two aspects of Coherence-specific support for Spring Cloud Config:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure Coherence and its Spring support using Spring Cloud Config</p>
+</li>
+<li>
+<p>Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
+Coherence cluster</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s get started with an example to show the general functioning of Spring Cloud Config.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-demo"><a class="anchor" href="#spring-cloud-config-demo"></a>8.2. Demo</h3>
+<div class="paragraph">
+<p>This demo is essentially the same as is used in the <a href="#quickstart">Quickstart</a> chapter. However, we externalize some
+Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
+<a href="https://github.com/coherence-community/coherence-spring">Coherence Spring source code repository</a>. Therefore, to get started, please clone its repository:</p>
+</div>
+<div class="listingblock">
+<div class="title">Clone the Spring Cloud Config demo project</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+ $ cd coherence-spring</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You now have checked out all the code for Coherence Spring. The relevant demo code for the Spring Cloud Config demo is
+under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>. The demo consists of 2 Maven modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>coherence-spring-cloud-config-demo-server</strong>: Spring Cloud Config Server implementation</p>
+</li>
+<li>
+<p><strong>coherence-spring-cloud-config-demo-app</strong>: Main application</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Config Server is essentially using 2 dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;    <i class="conum" data-value="1"></i><b>(1)</b>
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;  <i class="conum" data-value="2"></i><b>(2)</b>
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Spring Cloud Config Server dependency</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Provides rudimentary security for the exposed configuration REST endpoints using
+<a href="https://spring.io/projects/spring-security">Spring Security</a></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The demo client on the other hand will use the following dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;version&gt;{coherence-spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence&lt;/artifactId&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;version&gt;{coherence.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;   <i class="conum" data-value="3"></i><b>(3)</b>
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Provides all integration code, caching + autoconfiguration support</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The Oracle Coherence dependency</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The dependency to integrate with the Spring Cloud Config server</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We made the decision to not automatically bring in the Coherence dependencies. The main reason is that users can
+specify the version they need, either the Oracle Coherence CE (OSS) or the commercial version.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="spring-cloud-config-demo-setup"><a class="anchor" href="#spring-cloud-config-demo-setup"></a>8.2.1. Configure the Demo Application</h4>
+<div class="paragraph">
+<p>In order to run the demo, we first need to create a Git repository that will contain
+the configuration data.</p>
+</div>
+<div class="listingblock">
+<div class="title">Setup the Config Data</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cd /path/to/git/repo
+ $ mkdir coherence-spring-config-repository
+ $ cd coherence-spring-config-repository
+ $ git init</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add a properties file called <code>config-client.properties</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">config-client.properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=6                                                     <i class="conum" data-value="1"></i><b>(1)</b>
+ coherence.logging.destination=slf4j                                                    <i class="conum" data-value="2"></i><b>(2)</b>
+
+ coherence.properties.coherence.cluster=Demo Cluster                                    <i class="conum" data-value="3"></i><b>(3)</b>
+ coherence.properties.coherence.member=Demo Cluster Member                              <i class="conum" data-value="4"></i><b>(4)</b>
+ coherence.properties.coherence.management.remote=true                                  <i class="conum" data-value="5"></i><b>(5)</b>
+ coherence.properties.coherence.management=all                                          <i class="conum" data-value="6"></i><b>(6)</b>
+ coherence.properties.coherence.management.report.autostart=true                        <i class="conum" data-value="7"></i><b>(7)</b>
+ coherence.properties.coherence.reporter.output.directory=/path/to/reports/             <i class="conum" data-value="8"></i><b>(8)</b>
+ coherence.properties.coherence.management.report.configuration=/reports/report-all.xml <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>-1</code> emits no log messages, <code>9</code> emits the most</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Specifies the logger e.g. <code>stdout</code>, <code>log4j</code>, <code>log4j2</code>, <code>slf4j</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The name of the cluster</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The name of the cluster member</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Specifies whether this cluster node exposes its managed objects to remote MBean server. <code>true</code> or <code>false</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><code>none</code> means no MBean server is instantiated. <code>all</code> enables management of both local and remotely manageable cluster nodes.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td><code>true</code> or <code>false</code> (default) Specifies whether the Reporter automatically starts when the node starts.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>The output directory for generated reports. By default, reports are saved reports to the directory from which the cluster member starts.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>You can control which reports are generated by specifying a different report group configuration file. The pre-defined
+reports are located at <code>coherence-20.12.jar/reports</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For more options please see the following three chapters in the official Oracle Coherence reference guide:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/operational-configuration-elements.html">Operational Configuration Elements</a></p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/system-property-overrides.html">System Property Overrides</a></p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/manage/using-oracle-coherence-reporting.html">Using Oracle Coherence Reporting</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-cloud-config-demo-how-to-run"><a class="anchor" href="#spring-cloud-config-demo-how-to-run"></a>8.2.2. Run the Demo Application</h4>
+<div class="paragraph">
+<p>Please execute the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">Start the Spring Cloud Config Server</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
+ $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
+ $ java -jar coherence-spring-cloud-config-demo-server-3.0.0-SNAPSHOT.jar \n
+     --spring.cloud.config.server.git.uri=file:///path/to/git/repo</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Start the Coherence Spring Application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
+ $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
+ $ java -jar coherence-spring-cloud-config-demo-app-3.0.0-SNAPSHOT.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Feel free to change configuration settings and see, once you restart the apps, how the behavior of the Coherence cluster
+changes.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-coherence"><a class="anchor" href="#spring-cloud-config-coherence"></a>8.3. Use Spring Cloud Config Server to Configure Coherence</h3>
+<div class="paragraph">
+<p>The previously discussed demo application illustrated the main concepts of using Spring Cloud Config Server as a
+configuration backend for Oracle Coherence. For a general understanding of Spring Cloud Config Server, please consult
+the respective <a href="https://docs.spring.io/spring-cloud-config/docs/current/reference/html/">reference documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>Coherence Spring is essentially unaware of Spring Cloud Config Server. Coherence Spring merely takes advantage of Spring
+Boot&#8217;s configuration facilities. The main integration point for configuration between Spring and
+Oracle Coherence is the <code>SpringSystemPropertyResolver</code> class, which makes the properties of Spring&#8217;s <code>Environment</code> available
+to Oracle Coherence.</p>
+</div>
+<div class="paragraph">
+<p>When using Spring Boot (and not just plain Spring Framework), we also provide the <code>CoherenceProperties</code> class. It provides
+means to expose Coherence Spring configuration options in a type-safe manner, to provide code completion via your IDE etc.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Providing dedicated CoherenceProperties support is work in progress.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Behind the scenes using <code>CoherenceProperties.getCoherencePropertiesAsMap()</code> will translate the explicit Spring Boot properties
+into the property format used by Oracle Coherence. It is important to note that you can always provide ANY Oracle Coherence
+property via the <code>coherence.properties.*</code> prefix.</p>
+</div>
+<div class="paragraph">
+<p>For instance the following properties are equivalent:</p>
+</div>
+<div class="listingblock">
+<div class="title">Equivalent Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=5
+ coherence.logging.destination=log4j
+
+ coherence.properties.coherence.log.level=5
+ coherence.properties.coherence.log=log4j</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also see <a href="#spring-boot-config-data-api">Coherence Support of the Spring Boot ConfigData API</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-cloud-config-coherence-as-backend"><a class="anchor" href="#spring-cloud-config-coherence-as-backend"></a>8.4. Coherence as Spring Cloud Config Server Backend</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix"><a class="anchor" href="#appendix"></a>9. Appendices</h2>
 <div class="sectionbody">
 
 </div>
@@ -1029,7 +1447,7 @@ the ApplicationContext, however only if no <code>CacheManager</code> was configu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-18 05:08:02 UTC
+Last updated 2021-02-18 21:45:30 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

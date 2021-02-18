@@ -160,18 +160,38 @@ Therefore, whenever an <code>Event</code> is retrieved, it will be returned from
 <h2 id="how-to-run-the-demo"><a class="anchor" href="#how-to-run-the-demo"></a>1. How to Run the Demo</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In order to get started, please checkout the code from the <a href="https://github.com/ghillert/coherence-spring-demo">Coherence Spring Demo</a>
+<p>In order to get started, please checkout the code from the coherence-community/coherence-spring[Coherence Spring Repository]
 GitHub repository.</p>
 </div>
 <div class="listingblock">
 <div class="title">Clone GitHub Repository</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/ghillert/coherence-spring-demo.git
- $ cd coherence-spring-demo</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+ $ cd coherence-spring</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This repository contains a Maven project consisting of 3 modules. The first two Maven modules are essentially variations of
+<p>You now have checked out all the code for Coherence Spring. The relevant demo code for this Quickstart demo is under
+<code>coherence-spring-samples/coherence-spring-demo/</code>.</p>
+</div>
+<div class="paragraph">
+<p>There you will find 3 Maven sub-modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>coherence-spring-demo-classic</p>
+</li>
+<li>
+<p>coherence-spring-demo-boot</p>
+</li>
+<li>
+<p>coherence-spring-demo-core</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The first two Maven modules are essentially variations of
 the same app. The third module contains shared code.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -200,7 +220,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Build the project</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -209,7 +229,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar coherence-spring-demo-boot/target/coherence-spring-demo-boot-1.0.0-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-3.0.0-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 </div>
@@ -224,7 +244,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Create the first event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -250,7 +270,7 @@ returned and printed to the console:</p>
 </div>
 <div class="paragraph">
 <p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by looking at the
-chache&#8217;s statistics:</p>
+cache statistics:</p>
 </div>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
@@ -304,7 +324,7 @@ Let&#8217;s check the statistics again by executing:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1,</code>.
+<p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1</code>.
 Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 </div>
 <div class="listingblock">
@@ -331,6 +351,12 @@ can for example add people:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
  curl --request POST 'http://localhost:8080/api/people?firstName=Alan&amp;lastName=Turing&amp;age=41'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">List people</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -436,7 +462,7 @@ application context.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-18 05:08:02 UTC
+Last updated 2021-02-18 21:45:30 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

@@ -153,7 +153,7 @@
 <v-layout row wrap class="pillars">
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="3.0.0-SNAPSHOT/refdocs/reference/html/index.html"><div class="card__link-hover"/>
+<a id="" title="" target="_blank" href="refdocs/reference/html/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -174,7 +174,7 @@
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="3.0.0-SNAPSHOT/refdocs/reference/htmlsingle/index.html"><div class="card__link-hover"/>
+<a id="" title="" target="_blank" href="refdocs/reference/htmlsingle/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -195,7 +195,7 @@
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="3.0.0-SNAPSHOT/refdocs/reference/pdf/coherence-spring-reference.pdf"><div class="card__link-hover"/>
+<a id="" title="" target="_blank" href="refdocs/reference/pdf/coherence-spring-reference.pdf"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -216,7 +216,7 @@
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="3.0.0-SNAPSHOT/refdocs/api/index.html"><div class="card__link-hover"/>
+<a id="" title="" target="_blank" href="refdocs/api/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">

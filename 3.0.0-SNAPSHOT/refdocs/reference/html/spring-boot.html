@@ -133,7 +133,8 @@ $(globalSwitch);
 <li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
 <li><a href="#spring-boot-customize-coherence">3. Customize Coherence</a></li>
-<li><a href="#spring-boot-caching">4. Using Coherence as Spring Caching Provider</a></li>
+<li><a href="#spring-boot-config-data-api">4. Coherence Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">5. Using Coherence as Spring Caching Provider</a></li>
 </ul>
 </div>
 </div>
@@ -330,7 +331,46 @@ property is used.
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>4. Using Coherence as Spring Caching Provider</h2>
+<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>4. Coherence Support of the Spring Boot ConfigData API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Starting with Spring Boot <code>2.4.x</code> you can define your own
+<a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
+import these as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+configuration data for your Spring Boot based applications.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">Externalized Configuration</a>,
+especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config-files-importing">Importing Additional Data</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also see the chapter on <a href="spring-cloud-config.html#spring-cloud-config">Coherence Spring Cloud Config</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>5. Using Coherence as Spring Caching Provider</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If caching is enabled via <code>@EnableCaching</code>, Coherence Autoconfiguration will it automatically provide a <code>CacheManager</code> to
@@ -341,7 +381,7 @@ the ApplicationContext, however only if no <code>CacheManager</code> was configu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-18 05:08:02 UTC
+Last updated 2021-02-18 21:45:30 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
