@@ -131,6 +131,10 @@ $(globalSwitch);
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#coherence-spring-introduction">1. Getting Started</a></li>
+<li><a href="#coherence-spring-botstrap">2. Bootstrapping Coherence</a></li>
+<li><a href="#coherence-spring-botstrap-with-default-session">3. Using the Default Session</a></li>
+<li><a href="#coherence-spring-botstrap-with-multiple-session">4. Configure Multiple Sessions</a></li>
+<li><a href="#coherence-spring-botstrap-session-config-properties">5. Session Configuration Properties</a></li>
 </ul>
 </div>
 </div>
@@ -147,19 +151,153 @@ provides the basic support for the <a href="https://spring.io/projects/spring-fr
 <h2 id="coherence-spring-introduction"><a class="anchor" href="#coherence-spring-introduction"></a>1. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The main building block for setting up Coherence for Spring is the <code>@EnableCoherence</code> annotation.
-This annotation will import the <code>CoherenceSpringConfiguration</code> under the covers. Therefore, you can alternative also declare
-<code>@Import(CoherenceSpringConfiguration.class)</code> instead.</p>
+<p>To add support for Oracle Coherence to an existing Spring Framework project, you should first add the required Spring
+Coherence dependencies to your build configuration:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Coherence Spring Dependencies</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-core&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-core:3.0.0-SNAPSHOT")</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="paragraph">
-<p>Without providing any further configuration various defaults are applied.</p>
+<p>Next you also need to add the version of Coherence that your application will be using. Coherence Spring is compatible
+with both the open source Coherence CE and the commercial version of Oracle Coherence. Therefore, we don&#8217;t bring in
+Oracle Coherence as transitive dependency. For example, to use Coherence CE specify:</p>
 </div>
+<div class="exampleblock">
+<div class="title">Example 2. Oracle Coherence CE Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+    &lt;version&gt;20.12&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:20.12")</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to use the commercial version of Coherence:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. Commercial Oracle Coherence Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+    &lt;version&gt;14.1.1-0-1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:14.1.1-0-1")</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Coherence CE versions are available from Maven Central. The commercial versions of Coherence needs to be uploaded
+into your own Maven repository.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-botstrap"><a class="anchor" href="#coherence-spring-botstrap"></a>2. Bootstrapping Coherence</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default behaviour of Coherence Spring is to use the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
+configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
+part of a Coherence Session.</p>
+</div>
+<div class="paragraph">
+<p>By default, Coherence will start a single Session configured to use the default Coherence configuration file. This
+behavior can easily be configured using traditional Coherence using system properties or using dedicated configuration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-botstrap-with-default-session"><a class="anchor" href="#coherence-spring-botstrap-with-default-session"></a>3. Using the Default Session</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main building block for setting up Coherence for Spring is the <code>@EnableCoherence</code> annotation. This annotation will
+import the <code>CoherenceSpringConfiguration</code> under the covers. Therefore, you can alternatively also declare
+<code>@Import(CoherenceSpringConfiguration.class)</code> instead. Without providing any further configuration the default session
+is configured using the embedded default configuration file.</p>
+</div>
+<div class="paragraph">
+<p>To provide further customization, you may for example provide an implementation of
+the <code>AbstractSessionConfigurationBean</code>, e.g.:</p>
+</div>
+<div class="listingblock">
+<div class="title">SessionConfigurationBean</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Bean
+ SessionConfigurationBean sessionConfigurationBeanDefault() {
+     final SessionConfigurationBean sessionConfigurationBean =
+             new SessionConfigurationBean();
+     sessionConfigurationBean.setType(SessionType.SERVER);
+     sessionConfigurationBean.setConfig("test-coherence-config.xml");
+     return sessionConfigurationBean;
+ }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-botstrap-with-multiple-session"><a class="anchor" href="#coherence-spring-botstrap-with-multiple-session"></a>4. Configure Multiple Sessions</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-botstrap-session-config-properties"><a class="anchor" href="#coherence-spring-botstrap-session-config-properties"></a>5. Session Configuration Properties</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-01 05:09:20 UTC
+Last updated 2021-03-02 10:41:03 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
