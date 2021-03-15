@@ -61,25 +61,27 @@ public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBe
 	 * @param name the name for the session
 	 * @param ctx  the Spring application context
 	 */
-	GrpcSessionConfigurationBean(String name, ConfigurableApplicationContext ctx) {
+	public GrpcSessionConfigurationBean(String name, ConfigurableApplicationContext ctx) {
 		super(name);
 		super.setType(SessionType.GRPC);
 		this.ctx = ctx;
 	}
 
-	public GrpcSessionConfigurationBean() {
+	public GrpcSessionConfigurationBean() {  //TODO
+		super.setType(SessionType.GRPC);
 	}
 
 	@Override
 	public Optional<SessionConfiguration> getConfiguration() {
-		if (this.getType() != SessionType.GRPC) {
+		if (this.getType() != SessionType.GRPC) {   //TODO
 			return Optional.empty();
 		}
 
 		GrpcSessionConfiguration.Builder builder;
 
 		if (this.channelName == null || this.channelName.trim().isEmpty()) {
-			builder = GrpcSessionConfiguration.builder(GrpcSessionConfiguration.DEFAULT_HOST);
+			//TODO builder = GrpcSessionConfiguration.builder(GrpcSessionConfiguration.DEFAULT_HOST);
+			builder = GrpcSessionConfiguration.builder();
 		}
 		else {
 			try {

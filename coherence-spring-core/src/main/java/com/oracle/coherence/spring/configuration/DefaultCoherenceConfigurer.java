@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
-import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
+import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
@@ -75,8 +76,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		}
 
 		if (this.context != null) {
-			final Collection<SessionConfigurationBean> sessionConfigurationBeans =
-					this.context.getBeansOfType(SessionConfigurationBean.class).values();
+			final Collection<AbstractSessionConfigurationBean> sessionConfigurationBeans =
+					this.context.getBeansOfType(AbstractSessionConfigurationBean.class).values();
 
 			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
 				if (logger.isDebugEnabled()) {
@@ -130,7 +131,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		if (!CollectionUtils.isEmpty(this.lifecycleListeners)) {
 			builder.withEventInterceptors(this.lifecycleListeners);
 		}
-
+		builder.named("default"); //TODO
+		builder.withEventInterceptors(this.context.getBean(CoherenceEventListenerMethodProcessor.class).getInterceptors());
 		return builder.build();
 	}
 

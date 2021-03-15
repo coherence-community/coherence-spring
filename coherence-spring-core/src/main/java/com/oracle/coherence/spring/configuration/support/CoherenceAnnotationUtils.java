@@ -9,9 +9,11 @@ package com.oracle.coherence.spring.configuration.support;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -61,5 +63,19 @@ public class CoherenceAnnotationUtils {
 		}
 
 		return beanType;
+	}
+
+	public static <T> T getSingleBeanWithAnnotation(ApplicationContext applicationContext, final Class<? extends Annotation> annotationType) {
+		final Map<String, Object> beans = applicationContext.getBeansWithAnnotation(annotationType);
+
+		if (beans.isEmpty()) {
+			throw new IllegalStateException(String.format("No bean annotated with '%s' found.", annotationType.getCanonicalName()));
+		}
+		else if (beans.size() > 1) {
+			throw new IllegalStateException(String.format("Needed 1 but found %s beans annotated with '%s': %s.",
+					beans.size(), annotationType.getCanonicalName(), StringUtils.collectionToCommaDelimitedString(beans.keySet())));
+		}
+
+		return (T) beans.values().iterator().next();
 	}
 }

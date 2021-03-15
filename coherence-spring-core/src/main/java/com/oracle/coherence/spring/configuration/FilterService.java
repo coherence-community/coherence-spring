@@ -7,7 +7,10 @@
 package com.oracle.coherence.spring.configuration;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.FilterBinding;
 import com.oracle.coherence.spring.annotation.FilterFactory;
@@ -54,6 +57,40 @@ public class FilterService {
 		}
 		else {
 			return Filters.always();
+		}
+	}
+
+	/**
+	 * Resolve a {@link Filter} implementation from the specified qualifiers.
+	 * @param annotations  the qualifiers to use to create the {@link Filter}
+	 * @param <T>          the type that the {@link Filter} can filter
+	 * @return a {@link Filter} implementation created from the specified qualifiers.
+	 */
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public <T> Filter<T> resolve(Set<Annotation> annotations) {
+		final List<Filter<?>> list = new ArrayList<>();
+
+		for (Annotation annotation : annotations) {
+			final Class<? extends Annotation> annotationType = annotation.annotationType();
+			if (annotationType.isAnnotationPresent(FilterBinding.class)) {
+				final FilterFactory factory = CoherenceAnnotationUtils.getSingleBeanWithAnnotation(this.applicationContext, annotationType);
+				final Filter filter = factory.create(annotation);
+				if (filter != null) {
+					list.add(filter);
+				}
+			}
+		}
+
+		Filter[] aFilters = list.toArray(new Filter[0]);
+
+		if (aFilters.length == 0) {
+			return Filters.always();
+		}
+		else if (aFilters.length == 1) {
+			return aFilters[0];
+		}
+		else {
+			return Filters.all(aFilters);
 		}
 	}
 }

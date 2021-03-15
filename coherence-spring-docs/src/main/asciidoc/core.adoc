@@ -116,3 +116,13 @@ SessionConfigurationBean sessionConfigurationBeanDefault() {
 
 [[coherence-spring-botstrap-session-config-properties]]
 == Session Configuration Properties
+
+
+== Events
+
+Spring `4.2` introduced
+https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2[Annotation-driven event listeners]
+
+- Spring https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#context-functionality-events[Standard and Custom Events]
+@EventListener
+

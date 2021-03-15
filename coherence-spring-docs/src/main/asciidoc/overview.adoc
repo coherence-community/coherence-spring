@@ -2,10 +2,22 @@
 = Coherence Spring Documentation
 include::attributes.adoc[]
 
-Welcome to the reference documentation of {coherence-spring-code}[Coherence Spring], a collection of several
-libraries that will help you to integrate {oracle-coherence}[Coherence] with the wider {spring}[Spring] ecosystem.
+Welcome to the reference documentation of {coherence-spring-code}[Coherence Spring], a collection of libraries that will
+help you to integrate {oracle-coherence}[Oracle Coherence] with the wider {spring}[Spring] ecosystem.
 
-This section provides a brief overview of the Coherence Spring reference documentation.
+{oracle-coherence}[Oracle Coherence] is a scalable, fault-tolerant, cloud-ready, distributed platform for building
+grid-based applications and reliably storing data. The product is used at scale, for both compute and raw storage, in a
+vast array of industries such as critical financial trading systems, high performance telecommunication products and
+e-commerce applications.
+
+Coherence Spring features dedicated support to bootstrap Oracle Coherence and to inject Coherence resources into Spring
+beans as well as to inject Spring beans into Coherence resources. Spring's dependency injection (DI) support simplifies
+application code as Oracle Coherence _maps_, _caches_ and _topics_ are just injected instead of being obtained explicitly
+via Coherence APIs. Furthermore, using annotated _event listener_ methods simplifies building reactive code that responds
+to Coherence cache events.
+
+Before diving into the technical aspects of the reference documentation let's provide a brief overview of the Coherence
+Spring reference documentation, where to start, how to obtain further helper and more.
 
 [[about]]
 == About the Documentation
@@ -54,7 +66,7 @@ If you are getting started with Coherence Spring, start with the <<quickstart.ad
 way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
 <<spring-boot.adoc#spring-boot>> chapter next. The reference documentation makes a distinction between
 {spring-framework}[Spring Framework] and {spring-boot-website}[Spring Boot]. At its very core, Spring Framework provides
-Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives deveopers
+Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives developers
 comprehensive infrastructure support for developing Java applications.
 
 Spring Boot on the other hand, is an opinionated extension to the Spring Framework by:

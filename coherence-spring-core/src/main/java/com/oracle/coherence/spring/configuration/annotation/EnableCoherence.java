@@ -11,6 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
+import com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar;
 
 import org.springframework.context.annotation.Import;
 
@@ -18,7 +19,8 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Main annotation for setting up Coherence within Spring Framework using the {@link CoherenceSpringConfiguration} class.
+ * Main annotation for setting up Coherence within Spring Framework using the {@link CoherenceSpringConfiguration} class
+ * as well as the {@link EnableCoherenceImportBeanDefinitionRegistrar}.
  *
  * @author Gunnar Hillert
  * @since 3.0
@@ -26,7 +28,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)
-@Import(CoherenceSpringConfiguration.class)
+@Import({EnableCoherenceImportBeanDefinitionRegistrar.class, CoherenceSpringConfiguration.class })
 public @interface EnableCoherence {
-
 }
