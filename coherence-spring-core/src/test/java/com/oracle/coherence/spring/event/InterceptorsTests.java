@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -47,6 +48,7 @@ import com.tangosol.net.events.partition.cache.EntryProcessorEvent;
 import com.tangosol.util.InvocableMap;
 import data.Person;
 import data.PhoneNumber;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -103,38 +105,40 @@ class InterceptorsTests {
 		people.truncate();
 		people.destroy();
 
-		this.coherence.getCluster().shutdown();
 		this.coherence.close();
-		//context.close();
 
 		// ensure that Coherence is closed so that we should have the Stopped event
 		closeFuture.join();
 
 		this.observers.getEvents().forEach(System.err::println);
 
+		Awaitility.await()
+				.atMost(10, TimeUnit.SECONDS)
+				.until(this.observers.getEvents()::size, is(25));
+
 		assertThat(this.observers.getEvents(), hasItems(
-                LifecycleEvent.Type.ACTIVATED,
+				LifecycleEvent.Type.ACTIVATED,
 				LifecycleEvent.Type.ACTIVATING,
-                TransferEvent.Type.ASSIGNED,
-                TransactionEvent.Type.COMMITTED,
-                TransactionEvent.Type.COMMITTING,
-                CacheLifecycleEvent.Type.CREATED,
-                CacheLifecycleEvent.Type.DESTROYED,
-                LifecycleEvent.Type.DISPOSING,
-                EntryProcessorEvent.Type.EXECUTED,
-                EntryProcessorEvent.Type.EXECUTING,
-                EntryEvent.Type.INSERTED,
-                EntryEvent.Type.INSERTING,
-                EntryEvent.Type.REMOVED,
-                EntryEvent.Type.REMOVING,
-                CoherenceLifecycleEvent.Type.STARTED,
-                CoherenceLifecycleEvent.Type.STARTING,
-                CoherenceLifecycleEvent.Type.STOPPED,
-                SessionLifecycleEvent.Type.STOPPING,
-                EntryEvent.Type.UPDATED,
-                EntryEvent.Type.UPDATING,
-                CacheLifecycleEvent.Type.TRUNCATED
-        ));
+				TransferEvent.Type.ASSIGNED,
+				TransactionEvent.Type.COMMITTED,
+				TransactionEvent.Type.COMMITTING,
+				CacheLifecycleEvent.Type.CREATED,
+				CacheLifecycleEvent.Type.DESTROYED,
+				LifecycleEvent.Type.DISPOSING,
+				EntryProcessorEvent.Type.EXECUTED,
+				EntryProcessorEvent.Type.EXECUTING,
+				EntryEvent.Type.INSERTED,
+				EntryEvent.Type.INSERTING,
+				EntryEvent.Type.REMOVED,
+				EntryEvent.Type.REMOVING,
+				CoherenceLifecycleEvent.Type.STARTED,
+				CoherenceLifecycleEvent.Type.STARTING,
+				CoherenceLifecycleEvent.Type.STOPPED,
+				SessionLifecycleEvent.Type.STOPPING,
+				EntryEvent.Type.UPDATED,
+				EntryEvent.Type.UPDATING,
+				CacheLifecycleEvent.Type.TRUNCATED
+		));
 	}
 
 	/**

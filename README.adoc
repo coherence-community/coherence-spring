@@ -105,3 +105,4 @@ We would love to review your https://help.github.com/articles/creating-a-pull-re
 == License
 
 Coherence Spring is Open Source software released under link:LICENSE.txt[The Universal Permissive License] (UPL), Version 1.0.
+
