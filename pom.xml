@@ -122,7 +122,7 @@
 
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.18.1</assertj.version>
-		<coherence.version>21.06-SNAPSHOT</coherence.version>
+		<coherence.version>21.06-M1</coherence.version>
 		<classgraph.version>4.8.102</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<javaee-api.version>8.0.1</javaee-api.version>
