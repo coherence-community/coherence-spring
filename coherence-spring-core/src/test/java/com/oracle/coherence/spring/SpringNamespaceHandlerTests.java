@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for {@link com.oracle.coherence.spring.SpringNamespaceHandler}.
+ * Tests for {@link SpringNamespaceHandler}.
  *
  * @author Patrick Peralta
  */

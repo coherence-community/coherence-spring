@@ -10,9 +10,7 @@ import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
-import com.oracle.coherence.spring.cache.CoherenceCacheManager;
-import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtils;
-import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
+import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
@@ -23,11 +21,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +28,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.env.Environment;
 
 /**
  * Main configuration class to configure Coherence.
@@ -51,7 +42,9 @@ import org.springframework.core.env.Environment;
 		FilterConfiguration.class,
 		ExtractorService.class,
 		FilterService.class,
-		SerializerConfiguration.class
+		MapEventTransformerService.class,
+		SerializerConfiguration.class,
+		CoherenceEventListenerMethodProcessor.class
 })
 @PropertySource("classpath:coherence-spring.properties")
 public class CoherenceSpringConfiguration {
@@ -158,6 +151,7 @@ public class CoherenceSpringConfiguration {
 	 */
 	@PostConstruct
 	protected void initialize() {
+
 		if (this.initialized) {
 			return;
 		}
@@ -194,51 +188,5 @@ public class CoherenceSpringConfiguration {
 						"Expected one CoherenceConfigurer but found " + numberOfConfigurers);
 			}
 		}
-	}
-
-	@Bean
-	public static BeanFactoryPostProcessor beanFactoryPostProcessor(Environment environment) {
-		return (beanFactory) -> {
-			final String[] beanNames = beanFactory.getBeanDefinitionNames();
-
-			boolean cachingEnabled = false;
-			boolean cacheManagerFound = false;
-			boolean springSystemPropertyResolverFound = false;
-
-			for (String beanName : beanNames) {
-				final Class<?> beanType = CoherenceAnnotationUtils.getBeanTypeForBeanName(beanFactory, beanName);
-				final EnableCaching enableCaching = AnnotationUtils.findAnnotation(beanType, EnableCaching.class);
-				if (enableCaching != null) {
-					cachingEnabled = true;
-				}
-				if (CacheManager.class.isAssignableFrom(beanType)) {
-					cacheManagerFound = true;
-				}
-				if (SpringSystemPropertyResolver.class.isAssignableFrom(beanType)) {
-					springSystemPropertyResolverFound = true;
-				}
-			}
-
-			if (logger.isInfoEnabled()) {
-				logger.info(String.format("Caching is enabled: %s. Found existing CacheManager: %s", cachingEnabled, cacheManagerFound));
-			}
-
-			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
-
-			if (!springSystemPropertyResolverFound) {
-				registry.registerBeanDefinition(SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME,
-						BeanDefinitionBuilder.genericBeanDefinition(SpringSystemPropertyResolver.class)
-								.addConstructorArgValue(environment).getBeanDefinition());
-			}
-
-			if (cachingEnabled && !cacheManagerFound) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Creating default CacheManager.");
-				}
-
-				registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
-						.addConstructorArgReference(COHERENCE_BEAN_NAME).getBeanDefinition());
-			}
-		};
 	}
 }

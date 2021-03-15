@@ -10,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
 import com.oracle.coherence.spring.annotation.ExtractorFactory;
@@ -96,5 +97,42 @@ public class ExtractorService {
 	 */
 	ValueExtractor<?, ?> getExtractor(InjectionPoint injectionPoint) {
 		return this.getExtractor(injectionPoint, false);
+	}
+
+	/**
+	 * Resolve a {@link ValueExtractor} implementation from the specified qualifiers.
+	 * @param annotations  the qualifiers to use to create the {@link ValueExtractor}
+	 * @param <T>          the type that the {@link ValueExtractor} can extract from
+	 * @param <E>          the type that the {@link ValueExtractor} extracts
+	 * @return a {@link ValueExtractor} implementation created from the specified qualifiers.
+	 */
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public <T, E> ValueExtractor<T, E> resolve(Set<Annotation> annotations) {
+		final List<ValueExtractor> list = new ArrayList<>();
+
+		for (Annotation annotation : annotations) {
+			final Class<? extends Annotation> annotationType = annotation.annotationType();
+
+			final ExtractorFactory<Annotation, Object, Object> extractorFactory =
+					CoherenceAnnotationUtils.getSingleBeanWithAnnotation(this.applicationContext, annotationType);
+
+			final ValueExtractor extractor = extractorFactory.create(annotation);
+			if (extractor == null) {
+				throw new IllegalStateException("Unsatisfied dependency - no extractor could be created by "
+						+ extractorFactory + " extractor factory.");
+			}
+			list.add(extractor);
+		}
+
+		ValueExtractor[] aExtractors = list.toArray(new ValueExtractor[0]);
+		if (aExtractors.length == 0) {
+			return null;
+		}
+		else if (aExtractors.length == 1) {
+			return aExtractors[0];
+		}
+		else {
+			return Extractors.multi(aExtractors);
+		}
 	}
 }
