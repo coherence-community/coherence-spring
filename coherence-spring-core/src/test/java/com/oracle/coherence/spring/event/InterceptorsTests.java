@@ -65,6 +65,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * @author Gunnar Hillert
+ */
 @SpringJUnitConfig(InterceptorsTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext
@@ -113,7 +116,7 @@ class InterceptorsTests {
 		this.observers.getEvents().forEach(System.err::println);
 
 		Awaitility.await()
-				.atMost(10, TimeUnit.SECONDS)
+				.atMost(20, TimeUnit.SECONDS)
 				.until(this.observers.getEvents()::size, is(25));
 
 		assertThat(this.observers.getEvents(), hasItems(

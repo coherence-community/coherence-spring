@@ -25,6 +25,7 @@ import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
@@ -68,6 +69,7 @@ public class NamedCacheConfiguration {
 	}
 
 	@Bean(destroyMethod = "release")
+	@DependsOn(CoherenceSpringConfiguration.COHERENCE_SERVER_BEAN_NAME)
 	@Primary
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 	<K, V> NamedCache<K, V> getCache(InjectionPoint injectionPoint) {

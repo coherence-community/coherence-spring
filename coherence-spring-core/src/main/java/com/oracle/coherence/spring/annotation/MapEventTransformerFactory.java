@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oracle.coherence.spring.configuration;
+package com.oracle.coherence.spring.annotation;
 
 import java.lang.annotation.Annotation;
 
-import com.oracle.coherence.spring.annotation.MapEventTransformerBinding;
 import com.tangosol.util.MapEventTransformer;
 
 /**
