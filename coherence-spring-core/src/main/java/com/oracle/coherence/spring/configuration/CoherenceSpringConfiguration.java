@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Scope;
 		ExtractorService.class,
 		FilterService.class,
 		MapEventTransformerService.class,
+		MapEventTransformerConfiguration.class,
 		SerializerConfiguration.class,
 		CoherenceEventListenerMethodProcessor.class
 })

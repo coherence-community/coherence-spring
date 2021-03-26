@@ -1,11 +1,11 @@
 <productname>Coherence Spring</productname>
 <releaseinfo>{coherence-spring-version}</releaseinfo>
 <copyright>
-	<year>2013, 2020</year>
+	<year>2013, 2021</year>
 </copyright>
 <legalnotice>
 	<para>
-		Copyright (c) 2013, 2020, Oracle and/or its affiliates.
+		Copyright (c) 2013, 2021, Oracle and/or its affiliates.
 		Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 	</para>
 </legalnotice>

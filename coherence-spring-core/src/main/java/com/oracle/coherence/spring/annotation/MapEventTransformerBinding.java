@@ -30,10 +30,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * associate {@link com.tangosol.util.MapEventTransformer}s with target beans.
  * <p>
  * MapEventTransformer bindings are used by annotating a {@link
- * com.oracle.coherence.spring.configuration.MapEventTransformerFactory} bean with the binding type
+ * MapEventTransformerFactory} bean with the binding type
  * annotations. Wherever the same annotation is used at an injection point that
  * requires a {@link com.tangosol.util.MapEventTransformer} the corresponding
- * factory's {@link com.oracle.coherence.spring.configuration.MapEventTransformerFactory#create(java.lang.annotation.Annotation)}
+ * factory's {@link MapEventTransformerFactory#create(java.lang.annotation.Annotation)}
  * method is called to produce a {@link com.tangosol.util.MapEventTransformer}
  * instance.
  *

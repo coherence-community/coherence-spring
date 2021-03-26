@@ -117,12 +117,1133 @@ SessionConfigurationBean sessionConfigurationBeanDefault() {
 [[coherence-spring-botstrap-session-config-properties]]
 == Session Configuration Properties
 
-
+[[coherence-spring-events]]
 == Events
 
-Spring `4.2` introduced
-https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2[Annotation-driven event listeners]
+Event driven patterns are a common way to build scalable applications and microservices. Coherence produces a number of
+events that can be used by applications to respond to data changes and other actions in Coherence.
 
-- Spring https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#context-functionality-events[Standard and Custom Events]
-@EventListener
+There are two types of events in Coherence:
 
+- link:{coherence-api}com/tangosol/util/MapEvent.html[MapEvents] which are subscribed to using a link:{coherence-api}com/tangosol/util/MapListener.html[MapListener]
+- link:{coherence-api}com/tangosol/net/events/Event.html[Events], which are subscribed to using an link:{coherence-api}com/tangosol/net/events/EventInterceptor.html[EventInterceptor]
+
+Spring makes subscribing to both of these event-types much simpler using observer methods annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener].
+
+.Example of using a Coherence Event Listener
+[source,java]
+----
+@CoherenceEventListener
+void onEvent(CoherenceLifecycleEvent event) {
+    // TODO: process event...
+}
+----
+
+The method above receives all events of type `CoherenceLifecycleEvent` emitted during the lifetime of the application. The
+actual events received can be controlled further by annotating the method or the method arguments.
+
+NOTE: Spring `4.2` introduced
+https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2[Annotation-driven event listeners] as
+part of its {spring-docs}/html/core.html#context-functionality-events[event support].
+Coherence Spring does *NOT* directly use Spring's `ApplicationEvent` class and the corresponding `ApplicationListener`
+interface. However, Coherence Spring follows that pattern conceptually in order to provide a similar user experience.
+
+[[coherence-spring-events-mapevent-listeners]]
+=== MapEvent Listeners
+
+Listening for changes to data in Coherence is a common use case in applications. Typically, this involves creating an
+implementation of a link:{coherence-api}com/tangosol/util/MapListener.html[MapListener] and adding that listener to a
+`NamedMap` or `NamedCache`. Using Coherence Spring makes this much simpler by just using Spring beans with suitably
+annotated observer methods that will receive the respective events.
+
+==== MapEvent Observer Methods
+
+A link:{coherence-api}com/tangosol/util/MapEvent.html[MapEvent] observer method is a method on a Spring bean that is
+annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The annotated method must have a `void` return type and must take a single method parameter of type `MapEvent`, typically
+this has the generic types of the underlying map/cache key and value.
+
+For example, assuming that there is a map/cache named `people`, with keys of type `String` and values of type `Plant`,
+and the application has logic that should be executed each time a new `Plant` is inserted into the map:
+
+.Example of listening to Inserted events
+[source,java]
+----
+include::{include-source-code}event/PersonEventHandler.java[tags=!hide]
+----
+<1> The `PersonController` is a simple Spring bean, in this case a `Controller`.
+<2> The `onNewPerson` method is annotated with `@CoherenceEventListener` making it a Coherence event listener.
+<3> The `@MapName("people")` annotation specifies the name of the map to receive events from, in this case `people`.
+<4> The `@Inserted` annotation specified that only `Inserted` events should be sent to this method.
+
+The above example is still rather simple. There are a number of other annotations that provide much finer-grained control
+over what events are received from where.
+
+===== Specify the Map/Cache name
+
+By default, a `MapEvent` observer method would receive events for all maps/caches. In practice though, this would not be
+a very common use case, and typically you would want an observer method to listen to events that are for specific caches.
+The Coherence Spring API contains two annotations for specifying the map name:
+
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/MapName.html[@MapName]
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CacheName.html[@CacheName]
+
+Both annotations take a single `String` value that represents the name of the map or cache that events should be received
+from.
+
+.Listening to events for all caches
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=all-caches]
+----
+
+The above method receives events for _all_ caches.
+
+.Listening to events for the map named "foo"
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=foo-map]
+----
+<1> The above method receives events for the map named `foo`.
+
+.Listening to events for the cache named "bar"
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=bar-cache]
+----
+<1> The above method receives events for the cache named `bar`.
+
+===== Specify the Cache Service name
+
+In the previous section we showed to restrict received events to a specific map or cache name. Events can also be restricted
+to only events from a specific {oracle-coherence-docs}develop-applications/introduction-coherence-clusters.html#GUID-62A54E60-E964-4DFE-BE7F-CA7ADA93354E[cache service].
+In Coherence all caches are owned by a cache service, which has a unique name. By default, a `MapEvent` observer method
+would receive events for a matching cache name on _all_ services. If an applications Coherence configuration has multiple
+services, the events can be restricted to just specific services using the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+.Listening to events for the "foo" map on all services
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=all-services]
+----
+<1> The above method receives events for the map named `foo` on _all_ cache services.
+
+.Listening to events for the "foo" map on the "Storage" service only
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=storage-service]
+----
+<1> The above method receives events for the map named `foo` owned by the cache service named `Storage`.
+
+.Listening to events for ALL caches on the "Storage" service
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=storage-service-all-caches]
+----
+<1> The above method receives events for _all_ caches owned by the cache service named `Storage` as there is no `@MapName` or `@CacheName` annotation.
+
+===== Specify the Owning Session Name
+
+In applications that use multiple `Sessions`, there may be a situation where more than one session has a map with
+the same name. In those cases an observer method may need to restrict the events it receives to a specific session.
+The events can be restricted to `maps` and/or `caches` in specific sessions using the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+.Listening to events for the "orders" map in ALL sessions
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=orders-all-sessions]
+----
+<1> The above method receives events for the map named `orders` in _all_ sessions.
+
+.Listening to events for the "orders" map in the "Customer" session only
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=orders-customer-session]
+----
+<1> The above method receives events for the map named `orders` owned by the `Session` named `Customer`.
+
+.Listening to events for ALL caches in the "Customer" session
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=all-caches-customer-session]
+----
+<1> The above method receives events for the _all_ caches owned by the `Session` named `Customer` as there is no `@MapName` or `@CacheName` annotation.
+
+Therefore, in application with multiple sessions, events with the same name can be routed by session.
+
+.Route events with the cache name by the name of the session
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-customer-catalog-orders]
+----
+<1> The `onCustomerOrders` method will receive events for the `orders` map owned by the `Session` named `Customer`.
+<2> The `onCatalogOrders` method will receive events for the `orders` map owned by the `Session` named `Catalog`.
+
+[[coherence-spring-events-mapevent-listeners-specific-events]]
+==== Receive Specific Event Types
+
+There are three types of event that a `MapEvent` observer method can receive:
+
+- `Insert`
+- `Update`
+- `Delete`
+
+By default, an observer method will receive all events for the map (or maps) it applies to. This can be controlled using
+the following annotations:
+
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Inserted.html[@Inserted] - to receive `Insert` events.
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Updated.html[@Updated] - to receive `Update` events.
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Deleted.html[@Deleted] - to receive `Delete` events.
+
+Zero or more of the above annotations can be used to annotate the `MapEvent` parameter of the observer method.
+
+.Listen to "Insert" event for the "test" map only
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-insert-event]
+----
+<1> Only `Insert` events for the map `test` will be received.
+
+.Listen to "Insert" and "Delete" events for the "test" map only
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-insert-delete-event]
+----
+<1> Only `Insert` and `Delete` events for the map `test` will be received.
+
+.Listen to ALL map events for the "test" map
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-map-event-test-map]
+----
+All events for the map `test` will be received.
+
+[[coherence-spring-events-mapevent-listeners-filtering-events]]
+==== Filtering Events
+
+The `MapEvents` received by an observer method can be further restricted by applying a filter. Filters are applied by
+annotating the method with a <<coherence-spring-filter-binding-annotations,filter binding>> annotation, which is a link
+to a factory that creates a specific instance of a link:{coherence-api}com/tangosol/util/Filter.html[Filter]. Event
+filters applied in this way are executed on the server, which can make receiving events more efficient for clients, as
+the event will not be sent from the server at all.
+
+Coherence Spring comes with some built in implementations, for example:
+
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/AlwaysFilter.html[@AlwaysFilter],
+- link:{coherence-spring-api}com/oracle/coherence/spring/annotation/WhereFilter.html[@WhereFilter],
+
+It is simple to implement custom filters as required by applications. Please refer to the
+<<coherence-spring-filter-binding-annotations,Filter Binding Annotation>> section for more details.
+
+For example, let's assume there is a map named `people` with keys of type `String` and values of type `People`, and an
+observer method needs to receive events for all values where the `age` property is `18` or over. A custom filter binding
+annotation could be written to create the required `Filter`. However, as the condition is very simple, the
+built-in `@WhereFilter` filter binding annotation will be used in this example with a where-clause of `age >= 18`.
+
+.Example of a Where Filter
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-map-event-with-where-filter]
+----
+<1> The `@WhereFilter` annotation is applied to the method.
+
+The `onAdult` method above will receive all events emitted from the `people` map, but only for entries where the value
+of the `age` property of the entry value is `>= 18`.
+
+[[coherence-spring-events-mapevent-listeners-transforming-events]]
+==== Transforming Events
+
+In some use-cases the `MapEvent` observer method does not require the whole map or cache value to process, it might only
+require one, or a few, properties of the value, or it might require some calculated value. This can be achieved by
+using an event transformer to convert the values that will be received by the observer method. The transformation takes
+place on the server before the event is emitted to the method. This can improve efficiency on a client in cases where
+the cache value is large, but the client only requires a small part of that value because only the required values are
+sent over the wire to the client.
+
+In Coherence Spring, event values are transformed using a link:{coherence-api}com/tangosol/util/ValueExtractor.html[ValueExtractor].
+A `ValueExtractor` is a simple interface that takes in one value and transforms it into another value. The `ValueExtractor`
+is applied to the event value. As events contain both a new and old values, the extractor is applied to both as applicable.
+For `Insert` events there is only a new value, for `Update` events there will be both, a new and an old value, and for
+`Delete` events, there will only be an old value. The extractor is not applied to the event key.
+
+The `ValueExtractor` to use for a `MapEvent` observer method is indicated by annotating the method with an
+<<coherence-spring-extractor-binding-annotations,extractor binding annotation>>. An extractor binding is an annotation
+that is itself annotated with the meta-annotation link:{coherence-spring-api}com/oracle/coherence/spring/ExtractorBinding.html[@ExtractorBinding].
+The extractor binding annotation is a link to a corresponding link:{coherence-spring-api}com/oracle/coherence/spring/ExtractorFactory.html[ExtractorFactory]
+that will build an instance of a `ValueExtractor`.
+
+For example, assuming that there is a `NamedMap` with the name `orders` that has keys of type `String` and values of type `Order`.
+The `Order` class has a `customerId` property of type `String`. A `MapEvent` observer method is only interested in the
+`customerId` for an order, so the built-in extractor binding annotation
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/PropertyExtractor.html[@PropertyExtractor] can be used
+to just extract the `customerId` from the event:
+
+.Example of a Property Extractor
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-order-with-property-extractor]
+----
+<1> The method is annotated with `@PropertyExtractor` to indicate that a `ValueExtractor` that just extracts the `customerId`
+property should be used to transform the event.
+<2> The map name to receive events from is set to `orders`
+<3> Note that the generic types of the `MapEvent` parameter are now `MapEvent<String, String>` instead of
+`MapEvent<String, Order>` because the event values will have been transformed from an `Order` into just the `String`
+`customerId`.
+
+It is possible to apply multiple filter binding annotations to a method. In this case the extractors are combined into a
+Coherence {coherence-api}com/tangosol/util/extractor/ChainedExtractor.html[ChainedExtractor], which will return the
+extracted values as a `java.util.List`.
+
+Expanding on the example above, if the `Order` class also has an `orderId` property of type `Long`, and an observer
+method, only interested in `Insert` events needs both the `customerId` and `orderId`, then the method can be annotated
+with a two `@PropertyExtractor` annotations:
+
+.Example of using multiple Property Extractors
+[source,java]
+----
+include::{include-source-code}event/EventHandler.java[tags=on-order-with-multiple-property-extractors]
+----
+<1> The method is annotated with two `@PropertyExtractor` annotations, one to extract `customerId` and one to extract `orderId`.
+<2> The method parameter is annotated with `@Inserted` so that the method only receives `Insert` events.
+<3> The `MapEvent` parameter not has a key of type `String` and a value of type `List<Object>`, because the values from
+the multiple extractors will be returned in a `List`. We cannot use a generic value narrower than `Object`
+for the list because it will contain a `String` and a `Long`.
+<4> The extracted values can be obtained from the list, they will be in the same order that the annotations were applied
+to the method.
+
+[[coherence-spring-events-event-interceptors]]
+=== Coherence Event Interceptors
+
+Coherence produces many events in response to various server-side and client-side actions. For example, _Lifecycle events_
+for Coherence itself, maps and cache, _Entry events_ when data in maps and caches changes, _Partition events_ for
+partition lifecycle and distribution, _EntryProcessor events_ when invoked on a map or cache, etc. In a stand-alone
+Coherence application these events are subscribed to using a
+link:{coherence-api}com/tangosol/net/events/EventInterceptor.html[EventInterceptor] implementation registered to listen
+to specific event types.
+
+The Coherence Spring API makes subscribing to these events simple, by using the same approach used for Spring Application
+events, namely annotated event observer methods. A Coherence event observer method is a method annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener]
+that has a `void` return type, and a single parameter of the type of event to be received. The exact events received
+can be further controlled by applying other annotations to the method or event parameter. The annotations applied will
+vary depending on the type of the event.
+
+==== Event Types
+
+The different types of event that can be observed are listed below:
+
+* link:{coherence-api}com/tangosol/net/events/CoherenceLifecycleEvent.html[CoherenceLifecycleEvent] -
+lifecycle events for  link:{coherence-api}com/tangosol/net/Coherence.html[Coherence] instances
+* link:{coherence-api}com/tangosol/net/events/SessionLifecycleEvent.html[SessionLifecycleEvent] -
+lifecycle events for link:{coherence-api}com/tangosol/net/Session.html[Session] instances
+* link:{coherence-api}com/tangosol/net/events/application/LifecycleEvent.html[LifecycleEvent] -
+lifecycle events for link:{coherence-api}com/tangosol/net/ConfigurableCacheFactory.html[ConfigurableCacheFactory] instances
+* link:{coherence-api}com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html[CacheLifecycleEvent] -
+lifecycle events for link:{coherence-api}com/tangosol/net/NamedMap.html[NamedMap] and link:{coherence-api}com/tangosol/net/NamedCache.html[NamedCache] instances
+* link:{coherence-api}com/tangosol/net/events/partition/cache/EntryEvent.html[EntryEvent] - events emitted by the
+mutation of entries in a link:{coherence-api}com/tangosol/net/NamedMap.html[NamedMap]
+or link:{coherence-api}com/tangosol/net/NamedCache.html[NamedCache]
+* link:{coherence-api}com/tangosol/net/events/partition/cache/EntryProcessorEvent.html[EntryProcessorEvent] - events emitted
+by the invocation of an link:{coherence-api}com/tangosol/util/EntryProcessor.html[EntryProcessor] on entries in a
+link:{coherence-api}com/tangosol/net/NamedMap.html[NamedMap] or link:{coherence-api}com/tangosol/net/NamedCache.html[NamedCache]
+* link:{coherence-api}com/tangosol/net/events/partition/TransactionEvent.html[TransactionEvent] - events pertaining to
+all mutations performed within the context of a single request in a partition of a
+link:{coherence-api}com/tangosol/net/NamedMap.html[NamedMap] or link:{coherence-api}com/tangosol/net/NamedCache.html[NamedCache],
+also referred to as "partition level transactions".
+* link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html[TransferEvent] - captures information
+concerning the transfer of a partition for a storage enabled member.
+* link:{coherence-api}com/tangosol/net/events/partition/UnsolicitedCommitEvent.html[UnsolicitedCommitEvent] - captures
+changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the
+partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers
+of the backing map causing changes.
+* If using commercial versions of Coherence with Coherence Spring, there are also events associated to
+the federation of data between different clusters.
+
+Most of the events above only apply to storage enabled cluster members. For example, an `EntryEvent` will only be
+emitted for mutations of an entry on the storage enabled cluster member that owns that entry. Lifecycle events on the
+other hand, may be emitted on all members, such as `CacheLifecycle` event that may be emitted on any member when a cache
+is created, truncated, or destroyed.
+
+==== Coherence Lifecycle Events
+
+link:{coherence-api}com/tangosol/net/events/application/LifecycleEvent.html[LifecycleEvent] are emitted to indicate the lifecycle of a link:{coherence-api}com/tangosol/net/ConfigurableCacheFactory.html[ConfigurableCacheFactory] instance.
+
+To subscribe to `LifecycleEvent` simply create a Spring bean with a listener method that is annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `LifecycleEvent`.
+
+`LifecycleEvent` are emitted by `ConfigurableCacheFactory` instances and will only be received in the same JVM, which could be a cluster member or a client.
+
+For example, the `onEvent` method below will receive lifecycle events for all `ConfigurableCacheFactory` instances in the current application:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(LifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific LifecycleEvent Types
+
+There are four different types of `LifecycleEvent`.
+By adding the corresponding annotation to the method parameter the method will only receive the specified events.
+
+* *Activating* - a `ConfigurableCacheFactory` instance is about to be activated, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Activating.html[@Activating] annotation
+* *Activated* - a `ConfigurableCacheFactory` instance has been activated, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Activated.html[@Activated] annotation
+* *Disposing* - a `ConfigurableCacheFactory` instance is about to be disposed, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Disposing.html[@Disposing] annotation
+
+For example, the method below will only receive `Activated` and `Disposing` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Activated @Disposing LifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive CoherenceLifecycleEvents for a Specific Coherence Instance
+
+Each `Coherence` instance in an application has a unique name. The observer method can be annotated to only receive events associated with a specific `Coherence` instance by using the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name] annotation.
+
+For example, the method below will only receive events for the `Coherence` instance named `customers`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+The method in this example will receive events for the default `Coherence` instance:
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+==== Session Lifecycle Events
+
+link:{coherence-api}com/tangosol/net/events/SessionLifecycleEvent.html[SessionLifecycleEvents] are emitted to indicate
+the lifecycle event of a link:{coherence-api}com/tangosol/net/Session.html[Session] instance.
+
+To subscribe to `SessionLifecycleEvents` simply create a Spring bean with a listener method annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `SessionLifecycleEvent`.
+
+`SessionLifecycleEvents` are emitted by `Session` instances and will only be received in the same JVM, which could be a cluster member or a client.
+
+For example, the `onEvent` method below will receive lifecycle events for all `Session` instances in the current application:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(SessionLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific SessionLifecycleEvent Types
+
+There are four different types of `SessionLifecycleEvent`.
+By adding the corresponding annotation to the method parameter the method will only receive the specified events.
+
+* *Starting* - a `Coherence` instance is about to start, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Starting.html[@Starting] annotation
+* *Started* - a `Coherence` instance has started, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Started.html[@Started] annotation
+* *Stopping* - a `Coherence` instance is about to stop, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Stopping.html[@Stopping] annotation
+* *Stopped* - a `Coherence` instance has stopped, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Stopped.html[@Stopped] annotation
+
+For example, the method below will only receive `Started` and `Stopped` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Started @Stopped SessionLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive SessionLifecycleEvents for a Specific Session Instance
+
+Each `Session` instance in an application has a name. The observer method can be annotated to only receive events
+associated with a specific `Session` instance by using the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name] annotation.
+
+For example, the method below will only receive events for the `Session` instance named `customers`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name("customers") SessionLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+The method in this example will receive events for the default `Coherence` instance:
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name(Coherence.DEFAULT_NAME) SessionLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+==== ConfigurableCacheFactory Lifecycle Events
+
+link:{coherence-api}com/tangosol/net/events/CoherenceLifecycleEvent.html[CoherenceLifecycleEvents] are emitted to
+indicate the lifecycle of a link:{coherence-api}com/tangosol/net/Coherence.html[Coherence] instance.
+
+To subscribe to `CoherenceLifecycleEvent` simply create a Spring bean with a listener method annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `CoherenceLifecycleEvent`.
+
+`CoherenceLifecycleEvent` are emitted by `Coherence` instances and will only be received in the same JVM, which could be
+a cluster member or a client.
+
+For example, the `onEvent` method below will receive lifecycle events for all `Coherence` instances in the current application:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific CoherenceLifecycleEvent Types
+
+There are four different types of `CoherenceLifecycleEvent`.
+By adding the corresponding annotation to the method parameter the method will only receive the specified events.
+
+* *Starting* - a `Coherence` instance is about to start, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Starting.html[@Starting] annotation
+* *Started* - a `Coherence` instance has started, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Started.html[@Started] annotation
+* *Stopping* - a `Coherence` instance is about to stop, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Stopping.html[@Stopping] annotation
+* *Stopped* - a `Coherence` instance has stopped, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Stopped.html[@Stopped] annotation
+
+For example, the method below will only receive `Started` and `Stopped` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Started @Stopped CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive CoherenceLifecycleEvents for a Specific Coherence Instance
+
+Each `Coherence` instance in an application has a unique name. The observer method can be annotated to only receive events associated with a specific `Coherence` instance by using the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name] annotation.
+
+For example, the method below will only receive events for the `Coherence` instance named `customers`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+The method in this example will receive events for the default `Coherence` instance:
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+==== Cache Lifecycle Events
+
+link:{coherence-api}com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html[CacheLifecycleEvent] are emitted to indicate the lifecycle of a cache instance.
+
+To subscribe to `CacheLifecycleEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `CacheLifecycleEvent`.
+
+For example, the `onEvent` method below will receive lifecycle events for all caches.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(CacheLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific CacheLifecycleEvent Types
+
+There are three types of `CacheLifecycleEvent:
+
+* *Created* - a cache instance has been created, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Created.html[@Created] annotation
+* *Truncated* - a cache instance has been truncated (all data was removed), use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Truncated.html[@Truncated] annotation
+* *Destroyed* - a cache has been destroyed (destroy is a cluster wide operation, so the cache is destroyed on all members of the cluster and clients) use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Destroyed.html[@Destroyed] annotation
+
+For example, the method below will only receive `Created` and `Destroyed` events for all caches.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Created @Destroyed CacheLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive CacheLifecycleEvents for a Specific NamedMap or NamedCache
+
+To only receive events for a specific `NamedMap` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/MapName.html[@MapName] annotation.
+To only receive events for a specific `NamedCache` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CacheName.html[@CacheName] annotation.
+
+The `@MapName` and `@CacheName` annotations are actually interchangeable so use whichever reads better for your application code, i.e. if your code is dealing with `NamedMap` used `@MapName`. At the storage level, where the events are generated a `NamedMap` and `NamedCache` are the same.
+
+The method below will only receive events for the map named `orders`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@MapName("orders") CacheLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive CacheLifecycleEvents from a Specific Cache Service
+
+Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+The method below will only receive events for the caches owned by the service named `StorageService`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@ServiceName("StorageService") CacheLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive CacheLifecycleEvents from a Specific Session
+
+A typical use case is to obtain `NamedCache` and `NamedMap` instances from a `Session`. It is possible to restrict events received by a method to only those related to caches owned by a specific `Session` by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+The method below will only receive events for the caches owned by the `Session` named `BackEnd`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
+    // TODO: process the event
+}
+----
+
+==== Entry Events
+
+An link:{coherence-api}com/tangosol/net/events/partition/cache/EntryProcessorEvent.html[EntryProcessorEvent] is emitted when a link:{coherence-api}com/tangosol/util/EntryProcessor.html[EntryProcessor] is invoked on a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry that the `EntryProcessor` is invoked on.
+
+To subscribe to `EntryProcessorEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `EntryProcessorEvent`.
+
+For example, the `onEvent` method below will receive entry events for all caches.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific EntryProcessorEvent Types
+
+There are a number of different `EntryProcessorEvent` types.
+
+* *Inserting* - an entry is being inserted into a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Inserting.html[@Inserting] annotation
+* *Inserted* - an entry has been inserted into a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Inserted.html[@Inserted] annotation
+* *Updating* - an entry is being updated in a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Updating.html[@Updating] annotation
+* *Updated* - an entry has been updated in a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Updated.html[@Updated] annotation
+* *Deleting* - an entry is being deleted from a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Deleting.html[@Deleting] annotation
+* *Deleted* - an entry has been deleted from a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Deleted.html[@Deleted] annotation
+
+To restrict the `EntryProcessorEvent` types received by a method apply one or more of the annotations above to the method parameter. For example, the method below will receive `Inserted` and `Deleted` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Inserted @Deleted EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+[NOTE]
+====
+The event types fall into two categories, pre-events (those name *ing) and post-events, those named *ed). Pre-events are emitted synchronously before the entry is mutated. Post-events are emitted asynchronously after the entry has been mutated.
+
+As pre-events are synchronous the listener method should not take a long time to execute as it is blocking the cache mutation and could obviously be a performance impact. It is also important that developers understand Coherence reentrancy as the pre-events are executing on the Cache Service thread so cannot call into caches owned by the same service.
+====
+
+===== Receive EntryProcessorEvents for a Specific NamedMap or NamedCache
+
+To only receive events for a specific `NamedMap` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/MapName.html[@MapName] annotation.
+To only receive events for a specific `NamedCache` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CacheName.html[@CacheName] annotation.
+
+The `@MapName` and `@CacheName` annotations are actually interchangeable so use whichever reads better for your application code, i.e. if your code is dealing with `NamedMap` used `@MapName`. At the storage level, where the events are generated a `NamedMap` and `NamedCache` are the same.
+
+The method below will only receive events for the map named `orders`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@MapName("orders") EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive EntryProcessorEvents from a Specific Cache Service
+
+Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+The method below will only receive events for the caches owned by the service named `StorageService`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
+    // TODO: process the event
+}
+----
+
+===== Receive EntryProcessorEvents from a Specific Session
+
+A typical use case is to obtain `NamedCache` and `NamedMap` instances from a `Session`. It is possible to restrict events received by a method to only those related to caches owned by a specific `Session` by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+The method below will only receive events for the caches owned by the `Session` named `BackEnd`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
+    // TODO: process the event
+}
+----
+
+==== EntryProcessor Events
+
+An link:{coherence-api}com/tangosol/net/events/partition/cache/EntryProcessorEvent.html[EntryProcessorEvent] is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.
+
+To subscribe to `EntryProcessorEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `EntryProcessorEvent`.
+
+For example, the `onEvent` method below will receive entry events for all caches.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific EntryProcessorEvent Types
+
+There are a number of different `EntryProcessorEvent` types.
+
+* Executing - an `EntryProcessor` is being invoked on a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Executing.html[@Executing] annotation
+* Executed - an `EntryProcessor` has been invoked on a cache, use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Executed.html[@Executed] annotation
+
+To restrict the `EntryProcessorEvent` types received by a method apply one or more of the annotations above to the method parameter. For example, the method below will receive `Executed` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Executed EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+[NOTE]
+====
+The event types fall into two categories, pre-event ('Executing') and post-event (`Executed`). Pre-events are emitted synchronously before the `EntryProcessor` is invoked. Post-events are emitted asynchronously after the `EntryProcessor` has been invoked.
+
+As pre-events are synchronous the listener method should not take a long time to execute as it is blocking the `EntryProcessor` invocation and could obviously be a performance impact. It is also important that developers understand Coherence reentrancy as the pre-events are executing on the Cache Service thread so cannot call into caches owned by the same service.
+====
+
+
+===== Receive EntryProcessorEvents for a Specific NamedMap or NamedCache
+
+To only receive events for a specific `NamedMap` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/MapName.html[@MapName] annotation.
+To only receive events for a specific `NamedCache` annotate the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CacheName.html[@CacheName] annotation.
+
+The `@MapName` and `@CacheName` annotations are actually interchangeable so use whichever reads better for your application code, i.e. if your code is dealing with `NamedMap` used `@MapName`. At the storage level, where the events are generated a `NamedMap` and `NamedCache` are the same.
+
+The method below will only receive events for the map named `orders`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@MapName("orders") EntryProcessorEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive EntryProcessorEvents from a Specific Cache Service
+
+Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+The method below will only receive events for the caches owned by the service named `StorageService`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
+    // TODO: process the event
+}
+----
+
+===== Receive EntryProcessorEvents from a Specific Session
+
+A typical use case is to obtain `NamedCache` and `NamedMap` instances from a `Session`. It is possible to restrict events received by a method to only those related to caches owned by a specific `Session` by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+The method below will only receive events for the caches owned by the `Session` named `BackEnd`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
+    // TODO: process the event
+}
+----
+
+==== Partition Level Transaction Events
+
+A link:{coherence-api}com/tangosol/net/events/partition/TransactionEvent.html[TransactionEvent] is emitted in relation to all mutations in a single partition in response to executing a single request.
+These are commonly referred to as partition level transactions.
+For example, an `EntryProcessor` that mutates more than one entry (which could be in multiple caches) as part of a single invocation will cause a partition level transaction to occur encompassing all of those cache entries.
+
+Transaction events are emitted by storage enabled cache services, they will only e received on the same member that the partition level transaction occurred.
+
+To subscribe to `TransactionEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `TransactionEvent`.
+
+For example, the `onEvent` method below will receive all transaction events emitted by storage enabled cache services in the same JVM.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(TransactionEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific TransactionEvent Types
+
+There are a number of different `TransactionEvent` types.
+
+* *Committing* - A COMMITTING event is raised prior to any updates to the underlying backing map.
+This event will contain all modified entries which may span multiple backing maps. Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Inserting.html[@Committing] annotation
+* *Committed* - A COMMITTED event is raised after any mutations have been committed to the underlying backing maps.
+This event will contain all modified entries which may span multiple backing maps.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Inserted.html[@Committed] annotation
+
+To restrict the `TransactionEvent` types received by a method apply one or more of the annotations above to the method parameter. For example, the method below will receive `Committed` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Committed TransactionEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive TransactionEvent from a Specific Cache Service
+
+Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+The method below will only receive events for the caches owned by the service named `StorageService`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
+    // TODO: process the event
+}
+----
+
+==== Partition Transfer Events
+
+A link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html[TransferEvent] captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of link:{coherence-api}com/tangosol/util/BinaryEntry.html[BinaryEntry] instances that are being transferred.
+
+NOTE: TransferEvents are dispatched to interceptors while holding a lock on the partition being transferred, blocking any operations for the partition. Event observer methods should therfore execute as quickly as possible of hand-off execution to another thread.
+
+To subscribe to `TransferEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `TransferEvent`.
+
+For example, the `onEvent` method below will receive all transaction events emitted by storage enabled cache services in the same JVM.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(TransferEvent event) {
+    // TODO: process the event
+}
+----
+
+===== Receive Specific TransferEvent Types
+
+There are a number of different `TransferEvent` types.
+
+* *Arrived* - This `TransferEvent` is dispatched when a set of `BinaryEntry` instances have been transferred to the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member] or restored from backup.The reason for the event (primary transfer from another member or restore from backup) can be derived as follows:
+
+[source,java]
+----
+TransferEvent event;
+boolean restored = event.getRemoteMember() == event.getLocalMember();
+----
+
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Arrived.html[@Arrived] annotation to restrict the received events to arrived type.
+
+* *Assigned* -  This `TransferEvent` is dispatched when a partition has been assigned to the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member]. This event will only be emitted by the ownership senior during the initial partition assignment.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Assigned.html[@Assigned] annotation to restrict received events.
+
+* *Departing* - This `TransferEvent` is dispatched when a set of `BinaryEntry` are being transferred from the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member]. This event is followed by either a `Departed` or `Rollback` event to indicate the success or failure of the transfer.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Departing.html[@Departing] annotation to restrict received events.
+
+* *Departed* - This `TransferEvent` is dispatched when a partition has been successfully transferred from the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member]. To derive the `BinaryEntry` instances associated with the transfer, consumers should subscribe to the `Departing` event that would precede this event.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Departed.html[@Departed] annotation to restrict received events.
+
+* *Lost* - This `TransferEvent` is dispatched when a partition has been orphaned (data loss _may_ have occurred), and the ownership is assumed by the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member]. This event is only be emitted by the ownership senior.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Lost.html[@Lost] annotation to restrict received events.
+
+* *Recovered* - This `TransferEvent` is dispatched when a set of `BinaryEntry` instances have been recovered from a persistent storage by the link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()[local member].
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Recovered.html[@Recovered] annotation to restrict received events.
+
+* *Rollback* - This `TransferEvent` is dispatched when partition transfer has failed and was therefore rolled back. To derive the `BinaryEntry` instances associated with the failed transfer, consumers should subscribe to the `Departing` event that would precede this event.
+Use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/Rollback.html[@Rollback] annotation to restrict received events.
+
+To restrict the `TransferEvent` types received by a method apply one or more of the annotations above to the method parameter. For example, the method below will receive `Lost` events.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@Lost TransferEvent event) {
+    // TODO: process the event
+}
+----
+
+Multiple type annotations may be used to receive multiple types of `TransferEvent`.
+
+===== Receive TransferEvent from a Specific Cache Service
+
+Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ServiceName.html[@ServiceName] annotation.
+
+The method below will only receive events for the caches owned by the service named `StorageService`:
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(@ServiceName("StorageService") TransferEvent event) {
+    // TODO: process the event
+}
+----
+
+==== Unsolicited Commit Events
+
+An link:{coherence-api}com/tangosol/net/events/partition/UnsolicitedCommitEvent.html[UnsolicitedCommitEvent] captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.
+
+Unsolicited commit events are emitted by storage enabled cache services, they will only e received on the same member.
+
+To subscribe to `UnsolicitedCommitEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html[@CoherenceEventListener].
+The method should have a single parameter of type `UnsolicitedCommitEvent`.
+
+For example, the `onEvent` method below will receive all Unsolicited commit events emitted by storage enabled cache services in the same JVM.
+
+[source,java]
+----
+@CoherenceEventListener
+public void onEvent(UnsolicitedCommitEvent event) {
+    // TODO: process the event
+}
+----
+
+[[coherence-spring-filter-binding-annotations]]
+== Filter Binding Annotations
+
+Filter binding annotations are normal annotations that are themselves annotated with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/FilterBinding.html[@FilterBinding] meta-annotation.
+A filter binding annotation represents a Coherence link:{coherence-api}com/tangosol/util/Filter.html[Filter] and is used
+to specify a `Filter` in certain injection points, for example a View (CQC), `NamedTopic` `Subscriber` beans,
+event listeners, etc.
+
+There are three parts to using a filter binding:
+
+* The filter binding annotation
+* An implementation of a link:{coherence-spring-api}com/oracle/coherence/spring/FilterFactory.html[FilterFactory] that
+is annotated with the filter binding annotation. This is a factory that produces the required `Filter`.
+* Injection points annotated with the filter binding annotation.
+
+We will put all three parts together in an example. Let's use a Coherence `NamedMap` named `plants` that contains plants
+represented by instances of the `Plant` class as map values. Among the various properties on the `Plant` class there is
+a property called `plantType` and a property called `height`. In this exaple, we want to inject a view that only shows
+large palm trees (any palm tree larger than 20 meters). We would need a `Filter` that has a condition like the following:
+`plantType == PlantType.PALM && height >= 20`.
+
+=== Create the filter binding annotation
+
+First create a simple annotation, it could be called something like `PlantNameExtractor`
+
+[source,java]
+----
+include::{include-source-code}filterbinding/LargePalmTrees.java[tags=!hide]
+----
+<1> The annotation class is annotated with `@FilterBinding`
+<2> The annotation name is `PlantNameExtractor`
+
+In this case the annotation does not need any other attributes.
+
+=== Create the `FilterFactory`
+
+Now create the link:{coherence-spring-api}com/oracle/coherence/spring/FilterFactory.html[FilterFactory] implementation
+that will produce instances of the required `Filter`.
+
+[source,java]
+----
+include::{include-source-code}filterbinding/LargePalmTreesFilterFactory.java[tags=!hide]
+----
+<1> The class is annotated with the `PlantNameExtractor` filter binding annotation
+<2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
+up as a Spring bean
+<3> The `create` method uses the Coherence `filters` API to create the required `filter`.
+
+The parameter to the `create` method is the annotation used on the injection point.
+In this case the annotation has no values, but if it did we could access those values to customize how the filter is created.
+
+For example, we can make the filter more general purpose by calling the annotation `@PalmTrees` and by
+adding a value parameter representing the height like this:
+[source,java]
+----
+@FilterBinding
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PalmTrees {
+    String value();
+}
+include::{include-source-code}filterbinding/PalmTrees.java[tags=!hide]
+----
+
+We then need to modify our filter factory to use the height value:
+
+[source,java]
+----
+include::{include-source-code}filterbinding/PalmTreesFilterFactory.java[tags=!hide]
+----
+<1> The class is annotated with the more flexible `PalmTrees` filter binding annotation accepting a height parameter
+<2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
+up as a Spring bean
+<3> The `create` method uses the Coherence `filters` API to create the required `filter`
+<4> Instead of hard-coding the height, we use the value from the `@PalmTrees` annotation
+
+=== Annotate the Injection Point
+
+Now the application code where the view is to be injected can use the custom filter binding annotation.
+
+[source,java]
+----
+include::{include-source-code}filterbinding/PlantService.java[tags=!hide]
+----
+<1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
+<2> The `@PalmTrees` annotation links to the custom filter factory which is used to create the filter for the view. The
+annotation value of `1` indicates that we are interested in all palm trees of at least 1 meter in height.
+<3> The `@Name` annotation indicates the underlying cache/map name to use for the view
+<4> Due to some Spring limitations, we have to use the `@Resource` annotation to inject the `NamedMap` as we need to match
+the underlying bean by name.
+
+[[coherence-spring-extractor-binding-annotations]]
+== Extractor Binding Annotations
+
+ValueExtractor binding annotations are normal annotations that are themselves annotated with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/ExtractorBinding.html[@ExtractorBinding] meta-annotation.
+An extractor binding annotation represents a Coherence link:{coherence-api}com/tangosol/util/ValueExtractor.html[ValueExtractor]
+and is used to specify a `ValueExtractor` in certain injection points, for example a View (CQC), `NamedTopic` `Subscriber`
+beans, `MapEvent` listeners, etc.
+
+There are three parts to using an extractor binding:
+
+* The extractor binding annotation
+* An implementation of a link:{coherence-spring-api}com/oracle/coherence/spring/ExtractorFactory.html[ExtractorFactory] that is annotated with the extractor binding annotation. This is a factory that produces the required `ValueExtractor`.
+* Injection points annotated with the extractor binding annotation.
+
+As an example, let's continue with our previous example, where we have a Coherence `NamedMap` named `plants` that contains
+`Plant` instances as values. In this example we are interested in inject a map of plant names instead of the actual
+plant instances. Each plant has a `name` property that we will use for that purpose. We will need a `ValueExtractor` that
+extracts the `name` property and the resulting map of plant names can be injected into our Spring beans.
+
+=== Create the extractor binding annotation
+
+First create a simple annotation called `PlantName`
+
+[source,java]
+----
+@ExtractorBinding                         // <1>
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PersonAge {            // <2>
+}
+include::{include-source-code}extractorbinding/PlantNameExtractor.java[tags=!hide]
+----
+<1> The annotation class is annotated with `@ExtractorBinding`
+<2> The annotation name is `PlantNameExtractor`
+
+In this case the annotation does not need any other attributes.
+
+=== Create the `ExtractorFactory`
+
+Now create the link:{coherence-spring-api}com/oracle/coherence/spring/ExtractorFactory.html[ExtractorFactory]
+implementation that will produce instances of the required `ValueExtractor`.
+
+[source,java]
+----
+include::{include-source-code}extractorbinding/PlantNameExtractorFactory.java[tags=!hide]
+----
+<1> The class is annotated with the `PlantNameExtractor` extractor binding annotation
+<2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
+up as a Spring bean
+<3> The `create` method uses the Coherence `Extractors` API to create the required extractor, in this case a trivial property extractor.
+
+The parameter to the `create` method is the annotation used on the injection point.
+In this case the annotation has no values, but if it did we could access those values to customize how the `ValueExtractor` is created.
+
+=== Annotate the Injection Point
+
+Now the application code where the view is to be injected can use the custom extractor binding annotation.
+
+[source,java]
+----
+@View               // <1>
+@PersonAge          // <2>
+@Name("people")     // <3>
+private NamedMap<String, Integer> ages;   // <4>
+include::{include-source-code}extractorbinding/PlantService.java[tags=!hide]
+----
+<1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
+<2> The `@PlantNameExtractor` annotation links to the custom extractor factory used to create the `ValueExtractor` for the view
+<3> The `@Name` annotation indicates the underlying cache/map name to use for the view
+<4> Due to some Spring limitations, we have to use the `@Resource` annotation to inject the `NamedMap` as we need to match
+the underlying bean by name.
+<5> Note that the `NamedMap` generics are now `Long` and `String` instead of `Long` and `Plant` as the `Plant` values
+from the underlying cache are transformed into `String` values by extracting just the name property.

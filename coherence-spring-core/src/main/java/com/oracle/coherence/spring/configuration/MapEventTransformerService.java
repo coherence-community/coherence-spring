@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
 import com.oracle.coherence.spring.annotation.MapEventTransformerBinding;
+import com.oracle.coherence.spring.annotation.MapEventTransformerFactory;
 import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtils;
 import com.tangosol.util.MapEventTransformer;
 import com.tangosol.util.ValueExtractor;

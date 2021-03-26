@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import com.oracle.bedrock.testsupport.deferred.Eventually;
 import com.oracle.coherence.common.collections.ConcurrentHashMap;
 import com.oracle.coherence.spring.annotation.MapEventTransformerBinding;
+import com.oracle.coherence.spring.annotation.MapEventTransformerFactory;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.PropertyExtractor;
 import com.oracle.coherence.spring.annotation.WhereFilter;
@@ -32,7 +33,6 @@ import com.oracle.coherence.spring.annotation.event.ScopeName;
 import com.oracle.coherence.spring.annotation.event.ServiceName;
 import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.annotation.event.Updated;
-import com.oracle.coherence.spring.configuration.MapEventTransformerFactory;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
@@ -58,6 +58,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 
+/**
+ * @author Gunnar Hillert
+ */
 @SpringJUnitConfig(MapListenerTest.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext
