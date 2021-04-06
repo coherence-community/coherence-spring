@@ -195,14 +195,14 @@ class MapListenerTest {
 		@PropertyExtractor("firstName")
 		@CoherenceEventListener
 		void onPersonInsertedTransformedWithExtractor(@Inserted @MapName("people") MapEvent<String, String> event) {
-            this.transformedWithExtractorEvents.add(event);
+			this.transformedWithExtractorEvents.add(event);
 		}
 
 		@Synchronous
 		@UppercaseName
 		@CoherenceEventListener
 		void onPersonInsertedTransformed(@Inserted @MapName("people") MapEvent<String, String> event) {
-            this.transformedEvents.add(event);
+			this.transformedEvents.add(event);
 		}
 
 		@Synchronous

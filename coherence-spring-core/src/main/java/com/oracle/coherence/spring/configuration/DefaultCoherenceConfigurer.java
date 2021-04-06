@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
-import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
+import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
@@ -46,12 +46,14 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private CoherenceServer coherenceServer;
 
-	private final ConfigurableApplicationContext context;
+	private final ConfigurableApplicationContext applicationContext;
 
 	private boolean initialized = false;
 
-	public DefaultCoherenceConfigurer(ConfigurableApplicationContext context) {
-		this.context = context;
+	public DefaultCoherenceConfigurer(ConfigurableApplicationContext context,
+			CoherenceEventListenerCandidates coherenceEventListenerCandidates) {
+		this.applicationContext = context;
+		this.coherenceEventListenerCandidates = coherenceEventListenerCandidates;
 	}
 
 	@Override
@@ -69,15 +71,17 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		return this.coherenceConfiguration;
 	}
 
+	CoherenceEventListenerCandidates coherenceEventListenerCandidates;
+
 	@PostConstruct
 	public void initialize() {
 		if (this.initialized) {
 			return;
 		}
 
-		if (this.context != null) {
+		if (this.applicationContext != null) {
 			final Collection<AbstractSessionConfigurationBean> sessionConfigurationBeans =
-					this.context.getBeansOfType(AbstractSessionConfigurationBean.class).values();
+					this.applicationContext.getBeansOfType(AbstractSessionConfigurationBean.class).values();
 
 			if (!CollectionUtils.isEmpty(sessionConfigurationBeans)) {
 				if (logger.isDebugEnabled()) {
@@ -92,7 +96,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			}
 
 			final Collection<Coherence.LifecycleListener> lifecycleListeners =
-					this.context.getBeansOfType(Coherence.LifecycleListener.class).values();
+					this.applicationContext.getBeansOfType(Coherence.LifecycleListener.class).values();
 
 			if (!CollectionUtils.isEmpty(lifecycleListeners)) {
 				if (logger.isDebugEnabled()) {
@@ -102,15 +106,15 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			}
 		}
 
-		if (this.coherenceConfiguration == null) {
+		if (this.getCoherenceConfiguration() == null) {
 			logger.warn("No Coherence configuration was provided...using default.");
 			this.coherenceConfiguration = this.createCoherenceConfiguration();
 		}
-		if (this.coherence == null) {
+		if (this.getCoherence() == null) {
 			logger.warn("No Coherence instance was provided...creating a default instance.");
 			this.coherence = this.createCoherence();
 		}
-		if (this.coherenceServer == null) {
+		if (this.getCoherenceServer() == null) {
 			logger.warn("No Coherence server defined...creating default server.");
 			this.coherenceServer = this.createCoherenceServer();
 		}
@@ -132,7 +136,9 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			builder.withEventInterceptors(this.lifecycleListeners);
 		}
 		builder.named("default"); //TODO
-		builder.withEventInterceptors(this.context.getBean(CoherenceEventListenerMethodProcessor.class).getInterceptors());
+
+		this.coherenceEventListenerCandidates.processEventListeners();
+		builder.withEventInterceptors(this.coherenceEventListenerCandidates.getInterceptors());
 		return builder.build();
 	}
 
@@ -143,4 +149,5 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	protected CoherenceServer createCoherenceServer() {
 		return new CoherenceServer(this.getCoherence());
 	}
+
 }

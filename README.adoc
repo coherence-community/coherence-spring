@@ -68,6 +68,17 @@ Build the entire project using https://maven.apache.org/[Maven]:
 ./mvnw clean package -Pspring
 ----
 
+==== Offline Builds
+
+In case you are offline and you run into issues building the project, e.g.
+the Coherence cluster as part of JUnit tests does not start up successfully, then
+you may have to provide additional command line arguments:
+
+[source,bash]
+----
+./mvnw clean package -Pspring -DargLine="-Dcoherence.localhost=127.0.0.1 -Djava.net.preferIPv4Stack=true"
+----
+
 === Build the Documentation
 
 [source,bash]

@@ -1,0 +1,6 @@
+server:
+  port: 3000
+spring:
+  application:
+    name: todo-list-spring-server
+debug: false

@@ -31,9 +31,14 @@ import org.springframework.context.Lifecycle;
 public class CoherenceServer implements InitializingBean, DisposableBean, Lifecycle, ApplicationContextAware {
 
 	/**
-	 * Start up default of 15 seconds.
+	 * Start up default of 60 seconds.
 	 */
-	private static final long DEFAULT_STARTUP_TIMEOUT_MILLIS = 15000;
+	public static final long DEFAULT_STARTUP_TIMEOUT_MILLIS = 60000;
+
+	/**
+	 * Start up default of 60 seconds.
+	 */
+	public static final String STARTUP_TIMEOUT_SYSTEM_PROPERTY = "coherence.spring.server.startup-timeout-millis";
 
 	/**
 	 * The bean context.
@@ -48,7 +53,7 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 	/**
 	 * {@link Coherence} startup timeout in milliseconds.
 	 */
-	private final long startupTimeout = Config.getLong("coherence.spring.server.startup-timeout-millis",
+	private long startupTimeout = Config.getLong(STARTUP_TIMEOUT_SYSTEM_PROPERTY,
 			DEFAULT_STARTUP_TIMEOUT_MILLIS);
 
 	/**
@@ -58,6 +63,20 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 	 */
 	public CoherenceServer(Coherence coherence) {
 		this.coherence = coherence;
+	}
+
+	/**
+	 * Create a {@link CoherenceServer} with a startup timeout.
+	 *
+	 * @param coherence the {@link com.tangosol.net.Coherence} instance to run
+	 * @param startupTimeout specifies the time within which the Coherence instance
+	 *        needs to start up. If not set defaults to {@value #DEFAULT_STARTUP_TIMEOUT_MILLIS}
+	 *        or to what the system property {@value #STARTUP_TIMEOUT_SYSTEM_PROPERTY}
+	 *        specifies
+	 */
+	public CoherenceServer(Coherence coherence, long startupTimeout) {
+		this.coherence = coherence;
+		this.startupTimeout = startupTimeout;
 	}
 
 	@Override

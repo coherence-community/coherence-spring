@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 
 import com.tangosol.net.events.Event;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -20,19 +21,20 @@ import org.springframework.util.ReflectionUtils;
  * @author Gunnar Hillert
  * @since 3.0
  */
-class MethodEventObserver<E extends Event<?>> extends BaseMethodObserver {
+public class MethodEventObserver<E extends Event<?>> extends BaseMethodObserver {
 
 	/**
 	 * Create a {@link MethodEventObserver}.
-	 * @param bean to lazily provide the Spring bean that has the executable method
+	 * @param beanName provide the Spring bean name that has the executable method
 	 * @param method the method to execute when events are received
+	 * @param applicationContext the Spring application context to look up the Spring bean
 	 */
-	MethodEventObserver(Object bean, Method method) {
-		super(bean, method);
+	public MethodEventObserver(String beanName, Method method, ApplicationContext applicationContext) {
+		super(beanName, method, applicationContext);
 	}
 
 	void notify(E event) {
 		ReflectionUtils.makeAccessible(this.method); //TODO
-		ReflectionUtils.invokeMethod(this.method, this.bean, event);
+		ReflectionUtils.invokeMethod(this.method, this.getTargetBean(), event);
 	}
 }

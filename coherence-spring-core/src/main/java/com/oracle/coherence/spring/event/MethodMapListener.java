@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 
 import com.tangosol.util.MapEvent;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -25,11 +26,12 @@ class MethodMapListener<K, V> extends BaseMethodObserver {
 
 	/**
 	 * Create a {@link MethodEventObserver}.
-	 * @param bean to lazily provide the Spring bean that has the executable method
+	 * @param beanName to provide the Spring bean name that has the executable method
 	 * @param method the method to execute when events are received
+	 * @param applicationContext spring application context to look up the Spring bean
 	 */
-	MethodMapListener(Object bean, Method method) {
-		super(bean, method);
+	MethodMapListener(String beanName, Method method, ApplicationContext applicationContext) {
+		super(beanName, method, applicationContext);
 	}
 
 	/**
@@ -38,6 +40,6 @@ class MethodMapListener<K, V> extends BaseMethodObserver {
 	 */
 	void notify(MapEvent<K, V> event) {
 		ReflectionUtils.makeAccessible(this.method); //TODO
-		ReflectionUtils.invokeMethod(this.method, this.bean, event);
+		ReflectionUtils.invokeMethod(this.method, this.getTargetBean(), event);
 	}
 }

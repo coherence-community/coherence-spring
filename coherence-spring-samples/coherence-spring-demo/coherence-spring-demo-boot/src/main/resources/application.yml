@@ -1,5 +1,8 @@
 debug: false
-
+coherence:
+  logging:
+    destination: slf4j
+    severity-level: 6
 spring:
   jackson:
     serialization:

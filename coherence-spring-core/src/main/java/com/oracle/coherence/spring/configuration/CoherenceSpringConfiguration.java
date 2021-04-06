@@ -10,7 +10,9 @@ import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
+import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
+import com.oracle.coherence.spring.event.MapListenerRegistrationBean;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
@@ -20,7 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,8 +48,7 @@ import org.springframework.context.annotation.Scope;
 		FilterService.class,
 		MapEventTransformerService.class,
 		MapEventTransformerConfiguration.class,
-		SerializerConfiguration.class,
-		CoherenceEventListenerMethodProcessor.class
+		SerializerConfiguration.class
 })
 @PropertySource("classpath:coherence-spring.properties")
 public class CoherenceSpringConfiguration {
@@ -84,6 +87,11 @@ public class CoherenceSpringConfiguration {
 	 * The name of the default Coherence {@link Cluster} bean.
 	 */
 	public static final String SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME = "springSystemPropertyResolver";
+
+	/**
+	 * Candidates for Coherence event listeners.
+	 */
+	private CoherenceEventListenerCandidates coherenceEventListenerCandidates;
 
 	public CoherenceSpringConfiguration(ConfigurableApplicationContext context) {
 		this.context = context;
@@ -146,6 +154,10 @@ public class CoherenceSpringConfiguration {
 				.orElseThrow(() -> new IllegalStateException("No Session has been configured with the name " + sessionName));
 	}
 
+	@Bean
+	MapListenerRegistrationBean mapListenerRegistrationBean(ApplicationContext applicationContext) {
+		return new MapListenerRegistrationBean(applicationContext);
+	}
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the
 	 * underlying {@link CoherenceConfigurer}, defaulting to sensible values.
@@ -174,7 +186,7 @@ public class CoherenceSpringConfiguration {
 		int numberOfConfigurers = this.context.getBeanNamesForType(CoherenceConfigurer.class).length;
 
 		if (numberOfConfigurers < 1) {
-			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer(this.context);
+			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer(this.context, this.coherenceEventListenerCandidates);
 			coherenceConfigurer.initialize();
 			this.context.getBeanFactory().registerSingleton(COHERENCE_CONFIGURER_BEAN_NAME,
 					coherenceConfigurer);
@@ -189,5 +201,15 @@ public class CoherenceSpringConfiguration {
 						"Expected one CoherenceConfigurer but found " + numberOfConfigurers);
 			}
 		}
+	}
+
+	@Bean
+	public static CoherenceEventListenerMethodProcessor coherenceEventListenerMethodProcessor() {
+		return new CoherenceEventListenerMethodProcessor();
+	}
+
+	@Autowired
+	public void setCoherenceEventListenerCandidates(CoherenceEventListenerCandidates coherenceEventListenerCandidates) {
+		this.coherenceEventListenerCandidates = coherenceEventListenerCandidates;
 	}
 }
