@@ -15,7 +15,7 @@ can download a zip containing of the latest development branch from here:</p>
 <div class="admonition important">
 <p class="admonition-textlabel">Important</p>
 <p ><p><strong>Pull Requests</strong> are welcome! Just make sure to become an official
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md">contributor</a>)</p>
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md">contributor</a>.</p>
 </p>
 </div>
 </div>

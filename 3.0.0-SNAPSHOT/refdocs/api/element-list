@@ -1,9 +1,13 @@
 com.oracle.coherence.spring
 com.oracle.coherence.spring.annotation
+com.oracle.coherence.spring.annotation.event
 com.oracle.coherence.spring.boot.autoconfigure
 com.oracle.coherence.spring.boot.autoconfigure.support
+com.oracle.coherence.spring.boot.config
 com.oracle.coherence.spring.cache
 com.oracle.coherence.spring.configuration
 com.oracle.coherence.spring.configuration.annotation
+com.oracle.coherence.spring.configuration.session
 com.oracle.coherence.spring.configuration.support
+com.oracle.coherence.spring.event
 com.oracle.coherence.spring.namespace
