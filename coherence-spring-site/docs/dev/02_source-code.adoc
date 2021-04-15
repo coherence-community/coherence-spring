@@ -27,5 +27,5 @@ https://github.com/coherence-community/coherence-spring/archive/master.zip
 [IMPORTANT]
 ====
 *Pull Requests* are welcome! Just make sure to become an official
-https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md[contributor])
+https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md[contributor].
 ====

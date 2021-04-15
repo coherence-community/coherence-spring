@@ -1,2 +1,2 @@
-/** Support for Spring's Cache Abstraction. */
+/** Support for Spring's cache abstraction. */
 package com.oracle.coherence.spring.cache;

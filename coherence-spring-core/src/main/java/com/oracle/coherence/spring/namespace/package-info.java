@@ -6,6 +6,6 @@
  */
 
 /**
- * Spring Namespace Support.
+ * Spring namespace support.
  */
 package com.oracle.coherence.spring.namespace;

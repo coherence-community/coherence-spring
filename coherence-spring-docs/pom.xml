@@ -40,6 +40,13 @@
 
 		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence-java-client</artifactId>
+			<version>${coherence.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.coherence.ce</groupId>
 			<artifactId>coherence</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
