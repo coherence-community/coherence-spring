@@ -208,19 +208,6 @@ function createRoutes(){
             component: loadPage('dev-07_getting-help', '/dev/07_getting-help', {})
         },
         {
-            path: '/dev/08_usage',
-            meta: {
-                h1: 'Usage',
-                title: 'Usage',
-                h1Prefix: null,
-                description: 'Oracle Coherence Spring Website',
-                keywords: 'coherence, spring, java, documentation',
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('dev-08_usage', '/dev/08_usage', {})
-        },
-        {
             path: '/', redirect: '/about/01_overview'
         },
         {
@@ -257,8 +244,7 @@ function createNav(){
                 { href: '/dev/04_issue-tracking', title: 'Issue Tracking' },
                 { href: '/dev/05_contributions', title: 'Contributing' },
                 { href: '/dev/06_history', title: 'Change History' },
-                { href: '/dev/07_getting-help', title: 'Getting Help' },
-                { href: '/dev/08_usage', title: 'Usage' }
+                { href: '/dev/07_getting-help', title: 'Getting Help' }
             ]
         },
         { divider: true },

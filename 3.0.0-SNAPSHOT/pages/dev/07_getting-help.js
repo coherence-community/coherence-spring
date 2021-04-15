@@ -8,15 +8,15 @@ Here are a few options.</p>
 
 <h3 id="_slack">Slack</h3>
 <div class="section">
-<p>The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack at:</p>
-
-<p><a id="" title="" target="_blank" href="https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE">https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE</a></p>
+<p>The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack
+<a id="" title="" target="_blank" href="https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE">here</a>.</p>
 
 </div>
 
 <h3 id="_source_code_tests_and_examples">Source Code, Tests and Examples</h3>
 <div class="section">
-<p>As all of the source code, including tests and examples are now published, these are often a great place to start for implementation tips. The source code is located here:
+<p>Coherence Spring&#8217;s source code, including tests and examples, is hosted on GitHub. The source code repository is a great
+place to start looking for implementation tips. The source code is located at:
 <a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring">https://github.com/coherence-community/coherence-spring-integration</a></p>
 
 </div>
