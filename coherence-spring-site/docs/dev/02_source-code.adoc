@@ -24,12 +24,8 @@ can download a zip containing of the latest development branch from here:
 
 https://github.com/coherence-community/coherence-spring/archive/master.zip
 
-The branching model adopted for development and releases is as outlined by Vincent Driessen in
-http://nvie.com/posts/a-successful-git-branching-model[A successful Git branching model]
-
 [IMPORTANT]
 ====
-. Source Code and Documentation is licensed under link:license.html[CDDL-1.0].
-. *Read-Only Access* is provided to the public.
-. *Pull Requests* are welcome as long as you become a official link:contributions.html[contributor])
+*Pull Requests* are welcome! Just make sure to become an official
+https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md[contributor])
 ====

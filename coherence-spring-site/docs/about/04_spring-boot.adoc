@@ -8,3 +8,44 @@
 = Spring Boot
 
 == Spring Boot
+
+The Spring Boot module of the Coherence Spring project builds upon the core Spring module and enhances it by providing
+dedicated auto-configuration support for Spring Boot as well support for Spring Boot configuration properties
+Spring Boot's new ConfigData API to use Coherence as a source of configuration data.
+
+Getting your first Coherence powered Spring Boot application off the ground could not be easier. Create a basic Spring
+Boot app using https://start.spring.io/[start.spring.io].
+
+Add the Coherence Spring Boot Starter to your generated app's `pom.xml`
+
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{version-coherence-spring}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{version-coherence}</version>
+    </dependency>
+</dependencies>
+----
+
+NOTE: Instead of Coherence CE you can also specify the commercial version of Coherence.
+
+This will be enough to start up a default instance of Coherence with default settings. E.g. inject Coherence beans into
+your Spring Controllers, Services and other components:
+
+[source,java]
+----
+@Resource(name = "getCache")
+private NamedMap<Long, String> myMap;
+----
+
+In order to dive deeper, please see the link:refdocs/reference/html/quickstart.html[Quickstart Guide], the
+https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server[To-do List Sample], and also
+refer to the link:refdocs/reference/html/index.html[reference guide].

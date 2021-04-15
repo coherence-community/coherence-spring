@@ -7,7 +7,9 @@ image:https://img.shields.io/badge/Coherence-Join%20Slack-brightgreen[Chat with 
 image:https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence[Stack Exchange questions,link=https://stackoverflow.com/questions/tagged/oracle-coherence]
 image:https://img.shields.io/twitter/follow/OracleCoherence?style=social[Twitter Follow,link=https://twitter.com/OracleCoherence]
 
-The Coherence Spring project provides boostrapping support of https://coherence.community/[Oracle Coherence] for https://spring.io/projects/spring-framework[Spring Framework] and https://spring.io/projects/spring-boot[Spring Boot]. Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring eco-system:
+The Coherence Spring project provides bootstrapping support of https://coherence.community/[Oracle Coherence] for
+https://spring.io/projects/spring-framework[Spring Framework] and https://spring.io/projects/spring-boot[Spring Boot].
+Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring eco-system:
 
 - Spring's Cache Abstraction
 - Spring Cloud Config Server (In-process)
@@ -23,15 +25,20 @@ in the Reference Guide which is provided in various formats:
 - https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]
 - https://spring.coherence.community/{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]
 
-Extensive JavaDoc for the Cohrence Spring code is also available in the https://spring.coherence.community/{snapshot-version}/refdocs/api/index.html[Coherence Spring API Documentation].
+Extensive JavaDoc for the Coherence Spring code is also available in the
+https://spring.coherence.community/{snapshot-version}/refdocs/api/index.html[Coherence Spring API Documentation].
 
-NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
+NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
+http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 
 == Quick Start
 
-In order to get started quickly, please read the reference guide as it provides a detailed https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter].
+In order to get started quickly, please read the reference guide as it provides a detailed
+https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter].
 
-Through the reference documentation we will also refer to various demo and sample aplications. Those are part of this repository and you can find those in the https://github.com/coherence-community/coherence-spring/tree/master/coherence-spring-samples[coherence-spring-samples] module.
+Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
+repository, and you can find those in the
+https://github.com/coherence-community/coherence-spring/tree/master/coherence-spring-samples[coherence-spring-samples] module.
 
 == Building from Source
 
@@ -42,7 +49,8 @@ In order to build Coherence Spring, you need to have installed:
 - https://www.oracle.com/java/technologies/javase-jdk11-downloads.html[JDK 11]
 - https://help.github.com/set-up-git-redirect[Git]
 
-NOTE: When using Coherence Spring merely as a dependency in a project, without intending to build the project from source code, then an installed _JDK 8_ version is sufficient.
+NOTE: When using Coherence Spring merely as a dependency in a project, without intending to build the project from
+source code, then an installed _JDK 8_ version is sufficient.
 
 === Check out sources
 
@@ -54,7 +62,8 @@ git clone https://github.com/coherence-community/coherence-spring.git
 cd coherence-spring
 ----
 
-Coherence Spring uses https://maven.apache.org/[Apache Maven] as build tool. You do not need to have Maven installed to build the project. Simply use the provided https://github.com/takari/maven-wrapper[Maven Wrapper], e.g.:
+Coherence Spring uses https://maven.apache.org/[Apache Maven] as build tool. You do not need to have Maven installed to
+build the project. Simply use the provided https://github.com/takari/maven-wrapper[Maven Wrapper], e.g.:
 
 - *Windows:* `mvnw.cmd clean package`
 - *Linux/Mac:* `./mvnw clean package`
@@ -102,7 +111,8 @@ you may have to provide additional command line arguments:
 
 == Getting Support
 
-In case you have questions or if you run into issue using the Coherence Spring project, please feel free to reach out to us either via:
+In case you have questions or if you run into issue using the Coherence Spring project, please feel free to reach out to
+us either via:
 
 - https://stackoverflow.com/tags/oracle-coherence[Stackoverflow] using the _oracle-coherence_ tag
 - https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw[Slack]
@@ -111,7 +121,8 @@ Both support channels are monitored by the project community.
 
 == Contributing
 
-We would love to review your https://help.github.com/articles/creating-a-pull-request[Pull requests]. Please see the link:CONTRIBUTING.md[contributor guidelines] for details.
+We would love to review your https://help.github.com/articles/creating-a-pull-request[Pull requests]. Please see the
+link:CONTRIBUTING.md[contributor guidelines] for details.
 
 == License
 

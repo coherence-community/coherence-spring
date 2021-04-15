@@ -8,3 +8,5 @@
 = Spring Cache
 
 == Spring Cache
+
+Coherence Spring provides direct support for Spring's Cache abstraction.

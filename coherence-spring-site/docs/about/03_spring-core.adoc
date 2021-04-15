@@ -8,3 +8,12 @@
 = Core Spring Framework
 
 == Core Spring Framework
+
+Coherence Spring provides dedicated support for the core Spring Framework and all central Coherence Spring functionality
+is provided by the core module.
+
+TIP: If you are building a new Spring project from scratch, consider using Spring Boot as it provides better
+auto-configuration support as well as better configuration properties support.
+
+
+

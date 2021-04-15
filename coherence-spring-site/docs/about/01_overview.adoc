@@ -17,7 +17,7 @@
 The Coherence Spring project provides mechanisms for application developers to integrate
 https://coherence.community/[Oracle Coherence] and https://spring.io/[Spring-based] applications.
 
-== Components
+== Core Components
 
 [PILLARS]
 ====
@@ -34,7 +34,10 @@ Core Spring Framework Support
 --
 Autoconfiguration Support
 --
+====
 
+[PILLARS]
+====
 [CARD]
 .Spring Cache
 [icon=cached,link=about/05_spring-cache.adoc]
@@ -61,6 +64,26 @@ Centralize Configuration
 [icon=inventory,link=about/08_spring-data.adoc]
 --
 Use Coherence as a Spring Data Repository
+--
+
+====
+
+== Get Started
+
+[PILLARS]
+====
+[CARD]
+.Quickstart
+[icon=arrow_circle_up,link=refdocs/reference/html/quickstart.html,link-type=url]
+--
+Chapter of the Reference Guide.
+--
+
+[CARD]
+.To Do List
+[icon=format_list_bulleted,link=https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server,link-type=url]
+--
+Sample Application.
 --
 
 ====

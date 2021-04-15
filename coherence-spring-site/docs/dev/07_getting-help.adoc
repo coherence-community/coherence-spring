@@ -19,13 +19,13 @@ Here are a few options.
 
 === Slack
 
-The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack at:
-
-https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE
+The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack
+https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE[here].
 
 === Source Code, Tests and Examples
 
-As all of the source code, including tests and examples are now published, these are often a great place to start for implementation tips. The source code is located here:
+Coherence Spring's source code, including tests and examples, is hosted on GitHub. The source code repository is a great
+place to start looking for implementation tips. The source code is located at:
 https://github.com/coherence-community/coherence-spring[https://github.com/coherence-community/coherence-spring-integration]
 
 === Issue Tracking System

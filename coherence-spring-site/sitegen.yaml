@@ -15,7 +15,7 @@ engine:
       javadoc-root: "https://coherence.community/${revision}/api/java/"
       version-coherence-maven: "${revision}"
       version-coherence-spring: "${project.version}"
-      version-coherence: "${site-coherence-version}"
+      version-coherence: "${coherence.version}"
       timestamp: "${timestamp}"
 assets:
   - target: "/"
