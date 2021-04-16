@@ -91,7 +91,7 @@ behavior can easily be configured using traditional Coherence using system prope
 == Using the Default Session
 
 The main building block for setting up Coherence for Spring is the `@EnableCoherence` annotation. This annotation will
-import the `CoherenceSpringConfiguration` under the covers. Therefore, you can alternatively also declare
+import the `CoherenceSpringConfiguration` class under the covers. Therefore, you can alternatively also declare
 `@Import(CoherenceSpringConfiguration.class)` instead. Without providing any further configuration the default session
 is configured using the embedded default configuration file.
 

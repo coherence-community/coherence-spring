@@ -142,12 +142,24 @@ especially the chapter on https://docs.spring.io/spring-boot/docs/current/refere
 
 NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
 
-TBD
-
 [[spring-boot-caching]]
 == Using Coherence as Spring Caching Provider
 
-If caching is enabled via `@EnableCaching`, Coherence Autoconfiguration will it automatically provide a `CacheManager` to
-the ApplicationContext, however only if no `CacheManager` was configured explicitly beforehand.
+As long as `coherence-spring-boot-starter` is added to your project, and caching is enabled via `@EnableCaching`,
+Coherence Autoconfiguration will automatically provide a `CacheManager` to the ApplicationContext. However, the
+`CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
+
+Once that is in place, you can take advantage of {spring-docs}html/integration.html#cache[Spring's Cache abstraction]
+backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEvict`, `@CachePut` etc.
+
+[NOTE]
+====
+When learning about Coherence's Spring cache abstraction support, please also familiarize yourself with the
+following resources:
+
+- Coherence Core Spring Cache Support
+- Spring Boot's reference documentation's support regarding caching
+- The Cache Abstraction chapter in the core Spring Framework reference guide
+====
 
 

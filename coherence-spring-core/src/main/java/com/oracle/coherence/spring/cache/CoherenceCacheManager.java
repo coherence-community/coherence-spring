@@ -15,6 +15,7 @@ import com.tangosol.net.NamedCache;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -29,8 +30,12 @@ public class CoherenceCacheManager implements CacheManager {
 
 	private final Map<String, CoherenceCache> coherenceCacheMap = new ConcurrentHashMap<String, CoherenceCache>(16);
 
+	/**
+	 *
+	 * @param coherence
+	 */
 	public CoherenceCacheManager(Coherence coherence) {
-		super();
+		Assert.notNull(coherence, "The coherence instance must not be null.");
 		this.coherence = coherence;
 	}
 

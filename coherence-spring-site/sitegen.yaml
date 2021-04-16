@@ -96,6 +96,11 @@ backend:
                 type: "icon"
                 value: "fa-globe"
               href: "https://coherence.community/"
+            - title: "Coherence Hibernate"
+              glyph:
+                type: "icon"
+                value: "fa-globe"
+              href: "https://hibernate.coherence.community/"
             - title: "GitHub"
               glyph:
                 type: "icon"

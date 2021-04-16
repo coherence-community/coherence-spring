@@ -21,26 +21,17 @@ which is provided by the https://github.com/coherence-community/coherence-hibern
 [[spring-cache-configuration]]
 == Configuring Coherence Cache for Spring
 
-As a start, please familiarize yourself with Spring's Cache Abstraction by reading the
-https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[relevant section]
-of Spring's reference documentation.
+As a start, please familiarize yourself with Spring's Cache Abstraction by reading the following resources:
 
+- The {spring-docs-caching}[Cache Abstraction chapter] in the core Spring Framework reference guide
+- Spring Boot's reference documentation's {spring-docs-boot}spring-boot-features.html#boot-features-caching[support regarding caching]
 
-[source,yaml,configblocks]
-----
-example:
-  property:
-    alpha: a
-----
+Spring's cache abstraction for Coherence will be automatically enabled as soon as you specify `@EnableCaching` in your
+applications configuration classes. In that case a `CoherenceCacheManager` bean implementation is registered as
+`CacheManager`. Of course, you can define your own `CacheManager` as well, but in that case auto-configuration will back-off.
 
-[source,yaml,indent=0,configblocks]
-----
-	spring:
-	  devtools:
-	    restart:
-	      exclude: "static/**,public/**"
-----
-
+NOTE: The autoconfiguration logic is defined in class
+`com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar`.
 
 .Creating a CoherenceInstance
 ====
