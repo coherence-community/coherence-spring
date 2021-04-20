@@ -6,12 +6,11 @@
  */
 package com.oracle.coherence.spring.boot.tests.event;
 
+import java.util.concurrent.TimeUnit;
+
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.event.CoherenceEventListener;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedMap;
-import com.tangosol.net.events.application.LifecycleEvent;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 /**
 *
@@ -42,7 +44,6 @@ public class CoherenceEventListenerTest {
 	private TestService testService;
 
 	@Test
-	@RepeatedTest(2)
 	@DirtiesContext
 	public void testCoherenceEventListener() {
 		final NamedMap<String, String> namedMap = this.coherence.getSession().getMap("tasks");
@@ -50,14 +51,9 @@ public class CoherenceEventListenerTest {
 		namedMap.put("foo2", "bar2");
 		namedMap.remove("foo1");
 
-//		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->
-//			assertThat(this.testService.getEventNames()).hasSize(3));
-//		assertThat(this.testService.getEventNames()).contains("insert", "insert", "delete");
-
-	}
-
-	@CoherenceEventListener
-	public void handleCoherenceEvent(LifecycleEvent event) {
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->
+			assertThat(this.testService.getEventNames()).hasSize(3));
+		assertThat(this.testService.getEventNames()).contains("insert", "insert", "delete");
 
 	}
 

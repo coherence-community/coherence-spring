@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.boot.tests.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TestService {
-	final List<String> eventNames = new ArrayList<String>();
+	final List<String> eventNames = Collections.synchronizedList(new ArrayList<>());
 
 	public void addEventName(String eventName) {
 		this.eventNames.add(eventName);

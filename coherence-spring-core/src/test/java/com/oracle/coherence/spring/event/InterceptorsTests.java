@@ -30,6 +30,7 @@ import com.oracle.coherence.spring.annotation.event.Processor;
 import com.oracle.coherence.spring.annotation.event.Removed;
 import com.oracle.coherence.spring.annotation.event.ScopeName;
 import com.oracle.coherence.spring.annotation.event.ServiceName;
+import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.annotation.event.Updated;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
@@ -119,7 +120,7 @@ class InterceptorsTests {
 			System.out.println(entry.getKey() + " - "
 			+ StringUtils.collectionToCommaDelimitedString(entry.getValue())));
 
-		assertThat(this.observers.getUniqueEventsNames().size()).isGreaterThan(23);
+		assertThat(this.observers.getUniqueEventsNames().size()).isGreaterThan(24);
 
 		assertThat(this.observers.getUniqueEventsNames(), hasItems(
 				LifecycleEvent.Type.ACTIVATED,
@@ -138,7 +139,7 @@ class InterceptorsTests {
 				EntryEvent.Type.REMOVING,
 				CoherenceLifecycleEvent.Type.STARTED,
 				CoherenceLifecycleEvent.Type.STARTING,
-				//CoherenceLifecycleEvent.Type.STOPPED, //TODO
+				CoherenceLifecycleEvent.Type.STOPPED,
 				SessionLifecycleEvent.Type.STOPPING,
 				EntryEvent.Type.UPDATED,
 				EntryEvent.Type.UPDATING,
@@ -182,29 +183,34 @@ class InterceptorsTests {
 		}
 
 		// cache lifecycle events
+		@Synchronous
 		@CoherenceEventListener
 		void onCacheLifecycleEvent(@ServiceName("StorageService") CacheLifecycleEvent event) {
 			record("onCacheLifecycleEvent", event);
 		}
 
 		// Coherence lifecycle events
+		@Synchronous
 		@CoherenceEventListener
 		void onCoherenceLifecycleEvent(CoherenceLifecycleEvent event) {
 			record("onCoherenceLifecycleEvent", event);
 		}
 
 		// Session lifecycle events
+		@Synchronous
 		@CoherenceEventListener
 		void onSessionLifecycleEvent(SessionLifecycleEvent event) {
 			record("onSessionLifecycleEvent", event);
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onCreatedPeople(@Created @MapName("people") CacheLifecycleEvent event) {
 			record("onCreatedPeople", event);
 			assertThat(event.getCacheName(), is("people"));
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onDestroyedPeople(@Destroyed @CacheName("people") CacheLifecycleEvent event) {
 			record("onDestroyedPeople", event);
@@ -212,11 +218,13 @@ class InterceptorsTests {
 		}
 
 		// entry events
+		@Synchronous
 		@CoherenceEventListener
 		void onEntryEvent(@MapName("people") EntryEvent<String, Person> event) {
 			record("onEntryEvent", event);
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onExecuted(@Executed @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuted", event);
@@ -224,6 +232,7 @@ class InterceptorsTests {
 			assertThat(event.getEntrySet().size(), is(0));
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onExecuting(@Executing @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuting", event);
@@ -232,23 +241,27 @@ class InterceptorsTests {
 		}
 
 		// lifecycle events
+		@Synchronous
 		@CoherenceEventListener
 		void onLifecycleEvent(LifecycleEvent event) {
 			record("onLifecycleEvent", event);
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onPersonInserted(@Inserted @CacheName("people") EntryEvent<String, Person> event) {
 			record("onPersonInserted", event);
 			assertThat(event.getValue().getLastName(), is("Simpson"));
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onPersonRemoved(@Removed @CacheName("people") EntryEvent<String, Person> event) {
 			record("onPersonRemoved", event);
 			assertThat(event.getOriginalValue().getLastName(), is("SIMPSON"));
 		}
 
+		@Synchronous
 		@CoherenceEventListener
 		void onPersonUpdated(@Updated @CacheName("people") EntryEvent<String, Person> event) {
 			record("onPersonUpdated", event);
@@ -256,12 +269,14 @@ class InterceptorsTests {
 		}
 
 		// transaction events
+		@Synchronous
 		@CoherenceEventListener
 		void onTransactionEvent(TransactionEvent event) {
 			record("onTransactionEvent", event);
 		}
 
 		// transfer events
+		@Synchronous
 		@CoherenceEventListener
 		void onTransferEvent(@ScopeName("Test") @ServiceName("StorageService") TransferEvent event) {
 			record("onTransferEvent", event);

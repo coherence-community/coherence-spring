@@ -9,6 +9,7 @@ package com.oracle.coherence.spring.boot.tests.event;
 import com.oracle.coherence.spring.annotation.event.Deleted;
 import com.oracle.coherence.spring.annotation.event.Inserted;
 import com.oracle.coherence.spring.annotation.event.MapName;
+import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.event.CoherenceEventListener;
 import com.tangosol.util.MapEvent;
 
@@ -32,6 +33,7 @@ public class TestController {
 		this.testService = testService;
 	}
 
+	@Synchronous
 	@CoherenceEventListener
 	public void broadCastEvents(
 			@MapName("tasks") @Inserted @Deleted MapEvent<String, String> event) {
