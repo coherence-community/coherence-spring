@@ -1,0 +1,1 @@
+org.springframework.data.repository.core.support.RepositoryFactorySupport=com.oracle.coherence.spring.data.support.CoherenceRepositoryFactorySupport

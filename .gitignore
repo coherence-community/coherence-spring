@@ -22,3 +22,4 @@ target/
 .factorypath
 .java-version
 *.iml
+/coherence-spring-core/slf4j2

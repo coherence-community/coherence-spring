@@ -67,6 +67,7 @@
 
 	<modules>
 		<module>coherence-spring-core</module>
+		<module>coherence-spring-data</module>
 		<module>coherence-spring-boot-starter</module>
 		<module>coherence-spring-tests</module>
 		<module>coherence-spring-site</module>
@@ -123,7 +124,7 @@
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.18.1</assertj.version>
 		<awaitility.version>4.0.3</awaitility.version>
-		<coherence.version>21.06-M1</coherence.version>
+		<coherence.version>21.06-SNAPSHOT</coherence.version>
 		<classgraph.version>4.8.102</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<javaee-api.version>8.0.1</javaee-api.version>

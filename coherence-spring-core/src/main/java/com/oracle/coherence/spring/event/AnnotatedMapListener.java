@@ -332,7 +332,8 @@ class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable<Annota
 	 * Return {@code true} if this is synchronous event listener.
 	 * @return {@code true} if this is synchronous event listener
 	 */
-	boolean isSynchronous() {
+	@SuppressWarnings("checkstyle:SpringMethodVisibility")
+	public boolean isSynchronous() {
 		return this.synchronousEvents;
 	}
 
