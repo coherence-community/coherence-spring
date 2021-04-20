@@ -33,6 +33,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * the default session named {@link com.tangosol.net.Coherence#DEFAULT_NAME}.
  * @author Gunnar Hillert
  * @since 3.0
+ *
+ * @see GrpcSessionConfiguration
  */
 public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBean {
 
@@ -47,7 +49,7 @@ public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBe
 	private String channelName;
 
 	/**
-	 * The nam eof the {@link Serializer} bean.
+	 * The name of the {@link Serializer} bean.
 	 */
 	private String serializer;
 

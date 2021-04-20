@@ -11,8 +11,10 @@ Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g. Autoconf
 In order to start using Coherence with Spring Boot you have to add the `coherence-spring-boot-starter` dependency as well
 as the desired version of Coherence.
 
+.Adding the Coherence Spring Boot Starter Dependency
+====
 .Maven
-[source,xml,indent=0,subs="verbatim,quotes,attributes"]
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
 ----
 <dependencies>
     <dependency>
@@ -29,13 +31,14 @@ as the desired version of Coherence.
 ----
 
 .Gradle
-[source,groovy,indent=0,subs="attributes"]
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
     compile("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
+====
 
 IMPORTANT: As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requires Oracle Coherence CE version
 `20.12` or higher.
@@ -47,8 +50,7 @@ By adding the `coherence-spring-boot-starter` dependency, AutoConfiguration will
 class. This will also bind the `CoherenceProperties` for further configuration. The configuration for Spring Boot's
 Coherence support may look like the following:
 
-.Example YAML configuration
-[source,yaml,configblocks]
+[source,yaml]
 ----
 coherence:
   logging:
@@ -149,17 +151,19 @@ As long as `coherence-spring-boot-starter` is added to your project, and caching
 Coherence Autoconfiguration will automatically provide a `CacheManager` to the ApplicationContext. However, the
 `CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
 
-Once that is in place, you can take advantage of {spring-docs}html/integration.html#cache[Spring's Cache abstraction]
+Once that is in place, you can take advantage of
+https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching[Spring's Cache abstraction]
 backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEvict`, `@CachePut` etc.
 
 [NOTE]
 ====
-When learning about Coherence's Spring cache abstraction support, please also familiarize yourself with the
+When learning about Coherence's Spring cache abstraction support, please familiarize yourself with the
 following resources:
 
-- Coherence Core Spring Cache Support
-- Spring Boot's reference documentation's support regarding caching
-- The Cache Abstraction chapter in the core Spring Framework reference guide
+- <<spring-cache.adoc#quickstart,Coherence Core Spring Cache Support>>
+- {spring-docs-boot}spring-boot-features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
+- https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching[The Cache Abstraction]
+chapter in the core Spring Framework reference guide
 ====
 
 

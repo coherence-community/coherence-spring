@@ -27,7 +27,7 @@ Let's get started with an example to show the general functioning of Spring Clou
 [[spring-cloud-config-demo]]
 == Demo
 
-This demo is essentially the same as is used in the <<quickstart, Quickstart>> chapter. However, we externalize some
+This demo is essentially the same as is used in the <<quickstart.adoc#quickstart, Quickstart>> chapter. However, we externalize some
 Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
 {coherence-spring-code}[Coherence Spring source code repository]. Therefore, to get started, please clone its repository:
 

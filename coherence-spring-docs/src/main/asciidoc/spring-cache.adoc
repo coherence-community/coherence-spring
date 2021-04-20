@@ -33,7 +33,7 @@ applications configuration classes. In that case a `CoherenceCacheManager` bean 
 NOTE: The autoconfiguration logic is defined in class
 `com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar`.
 
-.Creating a CoherenceInstance
+.Defining your own CacheManager
 ====
 .Java
 [source,java,role="primary"]
@@ -41,14 +41,8 @@ NOTE: The autoconfiguration logic is defined in class
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
-
 	@Bean
-	public CoherenceInstance coherenceInstance() {
-	  return new CoherenceInstance();
-	}
-
-	@Bean
-	public CacheManager cacheManager(CoherenceInstance coherenceInstance) {
+	public CacheManager cacheManager(Coherence coherence) {
 	  return new CoherenceCacheManager(coherenceInstance);
 	}
 }
@@ -66,8 +60,6 @@ public class CacheConfiguration {
     http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd">
 
   <cache:annotation-driven/>
-
-  <bean id="coherenceInstance" class="com.oracle.coherence.spring.CoherenceInstance"/>
 
   <bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager">
     <constructor-arg ref="coherenceInstance"/>

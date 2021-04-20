@@ -7,7 +7,8 @@ Spring. This demo provides an example of using Coherence Spring's
 https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
 
 The demo application is basically a super-simple event manager. We can create `Events` and assign `People` to them using
-an exposed REST API. The data is saved in an embedded HSQL database. The caching is implemented at the service layer:
+an exposed REST API. The data is saved in an embedded https://hsqldb.org/[HSQL database]. The caching is implemented at
+the service layer.
 
 When an `Event` is created, it is not only persisted to the database but also _put_ to the Coherence Cache.
 Therefore, whenever an `Event` is retrieved, it will be returned from the Coherence Cache. You can also delete
@@ -96,8 +97,14 @@ returned and printed to the console:
 }
 ----
 
-We see that an Event with the id `1` was successfully created. Let's verify that the _cache put_ worked by looking at the
-cache statistics:
+We see that an Event with the id `1` was successfully created. Let's verify that the _cache put_ worked by inspecting
+the cache using the open-source tool https://visualvm.github.io/[VisualVM].
+
+.VisualVM - Cache Put
+image::visual-vm-cache-put.png[VisuamVM]
+
+Under the `MBeans` tab you will find the Cache MBeans, including and entry for the `events` cache,
+providing numerous statistical information regarding the cache.
 
 .Retrieving Cache Statistics
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
@@ -105,30 +112,11 @@ cache statistics:
 $ curl --request GET 'http://localhost:8080/api/statistics/events'
 ----
 
-In the console you should see some basic statistics being printed including `totalPuts : 1`:
+You should see an entry for `TotalPuts` of `1`.
 
-.Cache Statistic Results
-[source,json,indent=1,subs="verbatim,quotes,attributes"]
-----
-{
-  "averageMissMillis" : 0.0,
-  "cachePrunesMillis" : 0,
-  "averagePruneMillis" : 0.0,
-  "totalGetsMillis" : 0,
-  "averageGetMillis" : 0.0,
-  "totalPutsMillis" : 11,
-  "averagePutMillis" : 11.0,
-  "cacheHitsMillis" : 0,
-  "averageHitMillis" : 0.0,
-  "cacheMissesMillis" : 0,
-  "cacheHits" : 0,
-  "cacheMisses" : 0,
-  "hitProbability" : 0.0,
-  "totalPuts" : 1,
-  "totalGets" : 0,
-  "cachePrunes" : 0
-}
-----
+TIP: When using VisualVM consider installing the respective
+https://medium.com/oracle-coherence/open-source-coherence-visualvm-plugin-released-533ea2f576bc[Coherence VisualVM Plugin]
+as it provides some additional insights and visualizations.
 
 Next, lets retrieve the Event using id 1:
 
@@ -139,13 +127,10 @@ curl --request GET 'http://localhost:8080/api/events/1'
 ----
 
 The Event is returned. Did you notice? No SQL queries were executed as the value was directly retrieved from the Cache.
-Let's check the statistics again by executing:
+Let's check the statistics again, this time via the Coherence VisualVM Plugin:
 
-.Retrieve Cache Statistics
-[source,shell,indent=1,subs="verbatim,quotes,attributes"]
-----
-curl --request GET 'http://localhost:8080/api/statistics/events'
-----
+.Cache Statistics via Coherence VisualVM Plugin
+image::visual-vm-cache-get-value.png[VisuamVM Get Value From Cache]
 
 We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. `"cacheHits" : 1`.
 Let's evict our Event with id 1 from the cache named events:
@@ -165,7 +150,7 @@ curl --request GET 'http://localhost:8080/api/events/1'
 ----
 
 you will see an SQL query executed in the console, re-populating the cache. Feel free to play along with the Rest API. We
-can for example add people:
+can, for example, add people:
 
 .Add people
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]

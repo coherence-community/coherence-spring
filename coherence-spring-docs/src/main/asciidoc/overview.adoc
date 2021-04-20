@@ -58,13 +58,18 @@ If you find problems with the docs or if you want to improve them, please {coher
 == What is new?
 
 In order to see what changes were made from earlier versions of Coherence Spring, see the
-{coherence-spring-website}//history.html[Change History] as well as the {github-releases}[GitHub Releases] page.
+{coherence-spring-website}index.html#/dev/06_history[Change History] as well as the {github-releases}[GitHub Releases] page.
 
 [[first-steps]]
 == First Steps
 If you are getting started with Coherence Spring, start with the <<quickstart.adoc#quickstart, Quickstart>>. It is a great
 way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
-<<spring-boot.adoc#spring-boot>> chapter next. The reference documentation makes a distinction between
+<<spring-boot.adoc#spring-boot>> chapter next.
+
+NOTE: Another great example application is the Spring Boot implementation of the
+https://github.com/coherence-community/todo-list-example/tree/master/java[To-do List application].
+
+The reference documentation makes a distinction between
 {spring-framework}[Spring Framework] and {spring-boot-website}[Spring Boot]. At its very core, Spring Framework provides
 Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives developers
 comprehensive infrastructure support for developing Java applications.

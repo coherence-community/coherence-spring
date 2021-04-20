@@ -31,8 +31,8 @@ public class CoherenceCacheManager implements CacheManager {
 	private final Map<String, CoherenceCache> coherenceCacheMap = new ConcurrentHashMap<String, CoherenceCache>(16);
 
 	/**
-	 *
-	 * @param coherence
+	 * Constructs a new {@link CoherenceCacheManager} using the provided {@link Coherence} instance.
+	 * @param coherence must not be null
 	 */
 	public CoherenceCacheManager(Coherence coherence) {
 		Assert.notNull(coherence, "The coherence instance must not be null.");

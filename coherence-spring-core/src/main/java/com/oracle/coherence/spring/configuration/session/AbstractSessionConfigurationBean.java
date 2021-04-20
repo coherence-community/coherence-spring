@@ -24,6 +24,8 @@ import org.springframework.util.Assert;
  *
  * @author Gunnar Hillert
  * @since 3.0
+ *
+ * @see SessionConfiguration
  */
 public abstract class AbstractSessionConfigurationBean implements SessionConfigurationProvider {
 

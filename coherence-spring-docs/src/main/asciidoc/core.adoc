@@ -80,7 +80,7 @@ into your own Maven repository.
 [[coherence-spring-botstrap]]
 == Bootstrapping Coherence
 
-The default behaviour of Coherence Spring is to use the Coherence bootstrap API introduced in Coherence CE `20.12` to
+Coherence Spring uses the Coherence bootstrap API introduced in Coherence CE `20.12` to
 configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
 part of a Coherence Session.
 
@@ -92,11 +92,21 @@ behavior can easily be configured using traditional Coherence using system prope
 
 The main building block for setting up Coherence for Spring is the `@EnableCoherence` annotation. This annotation will
 import the `CoherenceSpringConfiguration` class under the covers. Therefore, you can alternatively also declare
-`@Import(CoherenceSpringConfiguration.class)` instead. Without providing any further configuration the default session
-is configured using the embedded default configuration file.
+`@Import(CoherenceSpringConfiguration.class)` instead.
 
-To provide further customization, you may for example provide an implementation of
-the `AbstractSessionConfigurationBean`, e.g.:
+In most use-cases, only a single Coherence Session is expected to be used. Therefore, without providing any further
+configuration the default session is configured using the embedded default configuration file. This results in the application
+joining Coherence as a cluster member (Session type `SERVER`). This is of course not the only way. Coherence Spring support
+the following 3 session types:
+
+- *SERVER* - Join as Coherence cluster member. This is the default dession type.
+- *CLIENT* - Connect to Coherence as a Coherence*Extend client
+- *GRPC* Connect to Coherence as gRPC client
+
+If the application is a Coherence cluster member, or a Coherence*Extend client, then all that needs to be specified is
+the Coherence configuration file name. For instance, you may for example provide an implementation of
+the `AbstractSessionConfigurationBean`, to specify the type of your session and to use a custom Coherence configuration
+file.
 
 .SessionConfigurationBean
 [source,java,indent=1,subs="verbatim,quotes,attributes"]
@@ -111,11 +121,86 @@ SessionConfigurationBean sessionConfigurationBeanDefault() {
 }
 ----
 
+If you connect as gRPC client, however, the properties change slightly and you need to specify a
+`GrpcSessionConfigurationBean`:
+
+.GrpcSessionConfigurationBean
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@Bean
+GrpcSessionConfigurationBean grpcSessionConfigurationBean() {
+    final GrpcSessionConfigurationBean sessionConfigurationBean = new GrpcSessionConfigurationBean();
+    sessionConfigurationBean.setName("sessionName");
+    sessionConfigurationBean.setChannelName("grpcChanelBeanName");
+    return sessionConfigurationBean;
+}
+----
+
+The Channel Name property would refer to a grpcChannel bean.
+
 [[coherence-spring-botstrap-with-multiple-session]]
 == Configure Multiple Sessions
 
-[[coherence-spring-botstrap-session-config-properties]]
-== Session Configuration Properties
+If you need to configure multiple Coherence sessions, simply define multiple `SessionConfigurationBeans`. The auto-configuration
+will pick those up automatically to configure the required sessions.
+
+NOTE: The `default` session will only exist when zero sessions are specifically configured, or the default session is
+specifically configured with the default session name.
+
+[[coherence-spring-bootstrap-session-config-properties]]
+== Session Configuration Bean Properties
+
+Depending on the session type the available properties change a bit. The following properties all to ALL session types.
+
+**name**
+
+The name of the session. If not set it will be set to the default session name which is an empty String.
+
+**scopeName**
+
+A scope name is typically used in an application where the Coherence cluster member has multiple sessions. The scope
+name is used to keep the sessions separate. The scope name will be applied to the session’s underlying
+_ConfigurableCacheFactory_ and used to scope Coherence services. In this way multiple session configurations may use
+identical service names, which will be kept separate using the scope. On a Coherence cluster member, each session should
+have a unique scope name.
+
+**type**
+
+The session type of this configuration. There are three different types of sessions that can be configured:
+
+- *server* represents storage enabled cluster member session.
+- *client* represents a storage disabled cluster member or Coherence*Extend client session.
+- *grpc* is a gRPC client session (see the gRPC documentation).
+
+The type of the session affects how the bootstrap API starts the session.
+
+**priority**
+
+The priority specifies the order to use, when starting the session. Sessions will be started with the lowest priority
+first. If this property is not specified, the property will default to `0`.
+
+The following property applies to the `CLIENT` (Coherence*Extend) and `Server` mode, only:
+
+**configUri**
+
+The Coherence cache configuration URI for the session. As already mentioned, the most common configuration to set will
+be the Coherence configuration file name. If not specified, the default value will be `coherence-cache-config.xml`.
+
+The following property applies to the `GRPC` mode, only:
+
+**channelName**
+
+Sets the underlying gRPC channel. If not set, it will default to `localhost` and port `1408`.
+
+**serializer**
+
+Specifies the serializer to that shall be used, in order to serialize gRPC message payloads. If not specified,
+the serializer will be the default Coherence serializer, either POF if it has been enabled with the `coherence.pof.enabled`
+system property or Java serialization.
+
+**tracingEnabled**
+
+Specifies if client gRPC tracing should be enabled. This is `false` by default.
 
 [[coherence-spring-events]]
 == Events
