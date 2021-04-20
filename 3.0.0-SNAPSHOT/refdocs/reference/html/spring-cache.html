@@ -40,87 +40,110 @@
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -184,41 +207,38 @@ which is provided by the <a href="https://github.com/coherence-community/coheren
 <h2 id="spring-cache-configuration"><a class="anchor" href="#spring-cache-configuration"></a>2. Configuring Coherence Cache for Spring</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As a start, please familiarize yourself with Spring&#8217;s Cache Abstraction by reading the
-<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">relevant section</a>
-of Spring&#8217;s reference documentation.</p>
+<p>As a start, please familiarize yourself with Spring&#8217;s Cache Abstraction by reading the following resources:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/integration.html#cache">Cache Abstraction chapter</a> in the core Spring Framework reference guide</p>
+</li>
+<li>
+<p>Spring Boot&#8217;s reference documentation&#8217;s <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">support regarding caching</a></p>
+</li>
+</ul>
 </div>
+<div class="paragraph">
+<p>Spring&#8217;s cache abstraction for Coherence will be automatically enabled as soon as you specify <code>@EnableCaching</code> in your
+applications configuration classes. In that case a <code>CoherenceCacheManager</code> bean implementation is registered as
+<code>CacheManager</code>. Of course, you can define your own <code>CacheManager</code> as well, but in that case auto-configuration will back-off.</p>
 </div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">example:
-  property:
-    alpha: a</code></pre>
-</div>
-</div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
-  devtools:
-    restart:
-      exclude: "static/**,public/**"</code></pre>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The autoconfiguration logic is defined in class
+<code>com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar</code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="exampleblock">
-<div class="title">Example 1. Creating a CoherenceInstance</div>
+<div class="title">Example 1. Defining your own CacheManager</div>
 <div class="content">
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -226,14 +246,8 @@ of Spring&#8217;s reference documentation.</p>
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
 @EnableCaching
 public class CacheConfiguration {
-
     @Bean
-    public CoherenceInstance coherenceInstance() {
-      return new CoherenceInstance();
-    }
-
-    @Bean
-    public CacheManager cacheManager(CoherenceInstance coherenceInstance) {
+    public CacheManager cacheManager(Coherence coherence) {
       return new CoherenceCacheManager(coherenceInstance);
     }
 }</code></pre>
@@ -252,8 +266,6 @@ public class CacheConfiguration {
 
   &lt;cache:annotation-driven/&gt;
 
-  &lt;bean id="coherenceInstance" class="com.oracle.coherence.spring.CoherenceInstance"/&gt;
-
   &lt;bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager"&gt;
     &lt;constructor-arg ref="coherenceInstance"/&gt;
   &lt;/bean&gt;
@@ -267,7 +279,7 @@ public class CacheConfiguration {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 05:19:30 UTC
+Last updated 2021-04-20 08:25:14 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

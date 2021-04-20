@@ -282,6 +282,12 @@ function createNav(){
             target: '_blank'
         },
         {
+            title: 'Coherence Hibernate',
+            action: 'fa-globe',
+            href: 'https://hibernate.coherence.community/',
+            target: '_blank'
+        },
+        {
             title: 'GitHub',
             action: 'fa-github-square',
             href: 'https://github.com/coherence-community/coherence-spring/',

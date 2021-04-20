@@ -40,87 +40,110 @@
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -134,7 +157,7 @@ $(globalSwitch);
 <li><a href="#coherence-spring-botstrap">2. Bootstrapping Coherence</a></li>
 <li><a href="#coherence-spring-botstrap-with-default-session">3. Using the Default Session</a></li>
 <li><a href="#coherence-spring-botstrap-with-multiple-session">4. Configure Multiple Sessions</a></li>
-<li><a href="#coherence-spring-botstrap-session-config-properties">5. Session Configuration Properties</a></li>
+<li><a href="#coherence-spring-bootstrap-session-config-properties">5. Session Configuration Bean Properties</a></li>
 <li><a href="#coherence-spring-events">6. Events</a>
 <ul class="sectlevel2">
 <li><a href="#coherence-spring-events-mapevent-listeners">6.1. MapEvent Listeners</a>
@@ -336,7 +359,7 @@ into your own Maven repository.
 <h2 id="coherence-spring-botstrap"><a class="anchor" href="#coherence-spring-botstrap"></a>2. Bootstrapping Coherence</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The default behaviour of Coherence Spring is to use the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
+<p>Coherence Spring uses the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
 configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
 part of a Coherence Session.</p>
 </div>
@@ -351,13 +374,33 @@ behavior can easily be configured using traditional Coherence using system prope
 <div class="sectionbody">
 <div class="paragraph">
 <p>The main building block for setting up Coherence for Spring is the <code>@EnableCoherence</code> annotation. This annotation will
-import the <code>CoherenceSpringConfiguration</code> under the covers. Therefore, you can alternatively also declare
-<code>@Import(CoherenceSpringConfiguration.class)</code> instead. Without providing any further configuration the default session
-is configured using the embedded default configuration file.</p>
+import the <code>CoherenceSpringConfiguration</code> class under the covers. Therefore, you can alternatively also declare
+<code>@Import(CoherenceSpringConfiguration.class)</code> instead.</p>
 </div>
 <div class="paragraph">
-<p>To provide further customization, you may for example provide an implementation of
-the <code>AbstractSessionConfigurationBean</code>, e.g.:</p>
+<p>In most use-cases, only a single Coherence Session is expected to be used. Therefore, without providing any further
+configuration the default session is configured using the embedded default configuration file. This results in the application
+joining Coherence as a cluster member (Session type <code>SERVER</code>). This is of course not the only way. Coherence Spring support
+the following 3 session types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SERVER</strong> - Join as Coherence cluster member. This is the default dession type.</p>
+</li>
+<li>
+<p><strong>CLIENT</strong> - Connect to Coherence as a Coherence*Extend client</p>
+</li>
+<li>
+<p><strong>GRPC</strong> Connect to Coherence as gRPC client</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the application is a Coherence cluster member, or a Coherence*Extend client, then all that needs to be specified is
+the Coherence configuration file name. For instance, you may for example provide an implementation of
+the <code>AbstractSessionConfigurationBean</code>, to specify the type of your session and to use a custom Coherence configuration
+file.</p>
 </div>
 <div class="listingblock">
 <div class="title">SessionConfigurationBean</div>
@@ -372,18 +415,133 @@ the <code>AbstractSessionConfigurationBean</code>, e.g.:</p>
  }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>If you connect as gRPC client, however, the properties change slightly and you need to specify a
+<code>GrpcSessionConfigurationBean</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">GrpcSessionConfigurationBean</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Bean
+ GrpcSessionConfigurationBean grpcSessionConfigurationBean() {
+     final GrpcSessionConfigurationBean sessionConfigurationBean = new GrpcSessionConfigurationBean();
+     sessionConfigurationBean.setName("sessionName");
+     sessionConfigurationBean.setChannelName("grpcChanelBeanName");
+     return sessionConfigurationBean;
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Channel Name property would refer to a grpcChannel bean.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="coherence-spring-botstrap-with-multiple-session"><a class="anchor" href="#coherence-spring-botstrap-with-multiple-session"></a>4. Configure Multiple Sessions</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>If you need to configure multiple Coherence sessions, simply define multiple <code>SessionConfigurationBeans</code>. The auto-configuration
+will pick those up automatically to configure the required sessions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>default</code> session will only exist when zero sessions are specifically configured, or the default session is
+specifically configured with the default session name.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-botstrap-session-config-properties"><a class="anchor" href="#coherence-spring-botstrap-session-config-properties"></a>5. Session Configuration Properties</h2>
+<h2 id="coherence-spring-bootstrap-session-config-properties"><a class="anchor" href="#coherence-spring-bootstrap-session-config-properties"></a>5. Session Configuration Bean Properties</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Depending on the session type the available properties change a bit. The following properties all to ALL session types.</p>
+</div>
+<div class="paragraph">
+<p><strong>name</strong></p>
+</div>
+<div class="paragraph">
+<p>The name of the session. If not set it will be set to the default session name which is an empty String.</p>
+</div>
+<div class="paragraph">
+<p><strong>scopeName</strong></p>
+</div>
+<div class="paragraph">
+<p>A scope name is typically used in an application where the Coherence cluster member has multiple sessions. The scope
+name is used to keep the sessions separate. The scope name will be applied to the session’s underlying
+<em>ConfigurableCacheFactory</em> and used to scope Coherence services. In this way multiple session configurations may use
+identical service names, which will be kept separate using the scope. On a Coherence cluster member, each session should
+have a unique scope name.</p>
+</div>
+<div class="paragraph">
+<p><strong>type</strong></p>
+</div>
+<div class="paragraph">
+<p>The session type of this configuration. There are three different types of sessions that can be configured:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>server</strong> represents storage enabled cluster member session.</p>
+</li>
+<li>
+<p><strong>client</strong> represents a storage disabled cluster member or Coherence*Extend client session.</p>
+</li>
+<li>
+<p><strong>grpc</strong> is a gRPC client session (see the gRPC documentation).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The type of the session affects how the bootstrap API starts the session.</p>
+</div>
+<div class="paragraph">
+<p><strong>priority</strong></p>
+</div>
+<div class="paragraph">
+<p>The priority specifies the order to use, when starting the session. Sessions will be started with the lowest priority
+first. If this property is not specified, the property will default to <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following property applies to the <code>CLIENT</code> (Coherence*Extend) and <code>Server</code> mode, only:</p>
+</div>
+<div class="paragraph">
+<p><strong>configUri</strong></p>
+</div>
+<div class="paragraph">
+<p>The Coherence cache configuration URI for the session. As already mentioned, the most common configuration to set will
+be the Coherence configuration file name. If not specified, the default value will be <code>coherence-cache-config.xml</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following property applies to the <code>GRPC</code> mode, only:</p>
+</div>
+<div class="paragraph">
+<p><strong>channelName</strong></p>
+</div>
+<div class="paragraph">
+<p>Sets the underlying gRPC channel. If not set, it will default to <code>localhost</code> and port <code>1408</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>serializer</strong></p>
+</div>
+<div class="paragraph">
+<p>Specifies the serializer to that shall be used, in order to serialize gRPC message payloads. If not specified,
+the serializer will be the default Coherence serializer, either POF if it has been enabled with the <code>coherence.pof.enabled</code>
+system property or Java serialization.</p>
+</div>
+<div class="paragraph">
+<p><strong>tracingEnabled</strong></p>
+</div>
+<div class="paragraph">
+<p>Specifies if client gRPC tracing should be enabled. This is <code>false</code> by default.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2320,7 +2478,7 @@ from the underlying cache are transformed into <code>String</code> values by ext
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 05:19:30 UTC
+Last updated 2021-04-20 08:25:14 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

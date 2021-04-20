@@ -40,87 +40,110 @@
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -146,7 +169,8 @@ Spring. This demo provides an example of using Coherence Spring&#8217;s
 </div>
 <div class="paragraph">
 <p>The demo application is basically a super-simple event manager. We can create <code>Events</code> and assign <code>People</code> to them using
-an exposed REST API. The data is saved in an embedded HSQL database. The caching is implemented at the service layer:</p>
+an exposed REST API. The data is saved in an embedded <a href="https://hsqldb.org/">HSQL database</a>. The caching is implemented at
+the service layer.</p>
 </div>
 <div class="paragraph">
 <p>When an <code>Event</code> is created, it is not only persisted to the database but also <em>put</em> to the Coherence Cache.
@@ -269,8 +293,18 @@ returned and printed to the console:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by looking at the
-cache statistics:</p>
+<p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by inspecting
+the cache using the open-source tool <a href="https://visualvm.github.io/">VisualVM</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/visual-vm-cache-put.png" alt="VisuamVM">
+</div>
+<div class="title">Figure 1. VisualVM - Cache Put</div>
+</div>
+<div class="paragraph">
+<p>Under the <code>MBeans</code> tab you will find the Cache MBeans, including and entry for the <code>events</code> cache,
+providing numerous statistical information regarding the cache.</p>
 </div>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
@@ -279,30 +313,21 @@ cache statistics:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In the console you should see some basic statistics being printed including <code>totalPuts : 1</code>:</p>
+<p>You should see an entry for <code>TotalPuts</code> of <code>1</code>.</p>
 </div>
-<div class="listingblock">
-<div class="title">Cache Statistic Results</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {
-   "averageMissMillis" : 0.0,
-   "cachePrunesMillis" : 0,
-   "averagePruneMillis" : 0.0,
-   "totalGetsMillis" : 0,
-   "averageGetMillis" : 0.0,
-   "totalPutsMillis" : 11,
-   "averagePutMillis" : 11.0,
-   "cacheHitsMillis" : 0,
-   "averageHitMillis" : 0.0,
-   "cacheMissesMillis" : 0,
-   "cacheHits" : 0,
-   "cacheMisses" : 0,
-   "hitProbability" : 0.0,
-   "totalPuts" : 1,
-   "totalGets" : 0,
-   "cachePrunes" : 0
- }</code></pre>
-</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When using VisualVM consider installing the respective
+<a href="https://medium.com/oracle-coherence/open-source-coherence-visualvm-plugin-released-533ea2f576bc">Coherence VisualVM Plugin</a>
+as it provides some additional insights and visualizations.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Next, lets retrieve the Event using id 1:</p>
@@ -315,13 +340,13 @@ cache statistics:</p>
 </div>
 <div class="paragraph">
 <p>The Event is returned. Did you notice? No SQL queries were executed as the value was directly retrieved from the Cache.
-Let&#8217;s check the statistics again by executing:</p>
+Let&#8217;s check the statistics again, this time via the Coherence VisualVM Plugin:</p>
 </div>
-<div class="listingblock">
-<div class="title">Retrieve Cache Statistics</div>
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
+<img src="./images/visual-vm-cache-get-value.png" alt="VisuamVM Get Value From Cache">
 </div>
+<div class="title">Figure 2. Cache Statistics via Coherence VisualVM Plugin</div>
 </div>
 <div class="paragraph">
 <p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1</code>.
@@ -344,7 +369,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 </div>
 <div class="paragraph">
 <p>you will see an SQL query executed in the console, re-populating the cache. Feel free to play along with the Rest API. We
-can for example add people:</p>
+can, for example, add people:</p>
 </div>
 <div class="listingblock">
 <div class="title">Add people</div>
@@ -462,7 +487,7 @@ application context.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 05:19:30 UTC
+Last updated 2021-04-20 08:25:14 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

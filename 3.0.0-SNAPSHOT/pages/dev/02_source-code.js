@@ -7,8 +7,8 @@
 <p>It is located here:
 <a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring">https://github.com/coherence-community/coherence-spring</a></p>
 
-<p>Alternatively if you&#8217;re not using or want to avoid setting up <a id="" title="" target="_blank" href="http://git-scm.com">git</a>
-can download a zip containing of the latest development branch from here:</p>
+<p>Alternatively, if you&#8217;re not using or want to avoid setting up <a id="" title="" target="_blank" href="http://git-scm.com">git</a>, you
+can download a zip containing the latest development branch from here:</p>
 
 <p><a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/archive/master.zip">https://github.com/coherence-community/coherence-spring/archive/master.zip</a></p>
 

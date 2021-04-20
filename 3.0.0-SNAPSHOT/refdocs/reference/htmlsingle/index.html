@@ -41,87 +41,110 @@
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -156,7 +179,7 @@ $(globalSwitch);
 <li><a href="#coherence-spring-botstrap">3.2. Bootstrapping Coherence</a></li>
 <li><a href="#coherence-spring-botstrap-with-default-session">3.3. Using the Default Session</a></li>
 <li><a href="#coherence-spring-botstrap-with-multiple-session">3.4. Configure Multiple Sessions</a></li>
-<li><a href="#coherence-spring-botstrap-session-config-properties">3.5. Session Configuration Properties</a></li>
+<li><a href="#coherence-spring-bootstrap-session-config-properties">3.5. Session Configuration Bean Properties</a></li>
 <li><a href="#coherence-spring-events">3.6. Events</a>
 <ul class="sectlevel3">
 <li><a href="#coherence-spring-events-mapevent-listeners">3.6.1. MapEvent Listeners</a>
@@ -397,7 +420,7 @@ If you find problems with the docs or if you want to improve them, please <a hre
 <h3 id="news"><a class="anchor" href="#news"></a>1.3. What is new?</h3>
 <div class="paragraph">
 <p>In order to see what changes were made from earlier versions of Coherence Spring, see the
-<a href="https://spring.coherence.community/3.0.0-SNAPSHOT///history.html">Change History</a> as well as the <a href="https://github.com/coherence-community/coherence-spring/releases/">GitHub Releases</a> page.</p>
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/index.html#/dev/06_history">Change History</a> as well as the <a href="https://github.com/coherence-community/coherence-spring/releases/">GitHub Releases</a> page.</p>
 </div>
 </div>
 <div class="sect2">
@@ -405,7 +428,23 @@ If you find problems with the docs or if you want to improve them, please <a hre
 <div class="paragraph">
 <p>If you are getting started with Coherence Spring, start with the <a href="#quickstart">Quickstart</a>. It is a great
 way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
-<a href="#spring-boot">Coherence Spring Boot</a> chapter next. The reference documentation makes a distinction between
+<a href="#spring-boot">Coherence Spring Boot</a> chapter next.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Another great example application is the Spring Boot implementation of the
+<a href="https://github.com/coherence-community/todo-list-example/tree/master/java">To-do List application</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The reference documentation makes a distinction between
 <a href="https://spring.io/projects/spring-framework/">Spring Framework</a> and <a href="https://spring.io/projects/spring-boot/">Spring Boot</a>. At its very core, Spring Framework provides
 Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives developers
 comprehensive infrastructure support for developing Java applications.</p>
@@ -443,7 +482,8 @@ Spring. This demo provides an example of using Coherence Spring&#8217;s
 </div>
 <div class="paragraph">
 <p>The demo application is basically a super-simple event manager. We can create <code>Events</code> and assign <code>People</code> to them using
-an exposed REST API. The data is saved in an embedded HSQL database. The caching is implemented at the service layer:</p>
+an exposed REST API. The data is saved in an embedded <a href="https://hsqldb.org/">HSQL database</a>. The caching is implemented at
+the service layer.</p>
 </div>
 <div class="paragraph">
 <p>When an <code>Event</code> is created, it is not only persisted to the database but also <em>put</em> to the Coherence Cache.
@@ -561,8 +601,18 @@ returned and printed to the console:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by looking at the
-cache statistics:</p>
+<p>We see that an Event with the id <code>1</code> was successfully created. Let&#8217;s verify that the <em>cache put</em> worked by inspecting
+the cache using the open-source tool <a href="https://visualvm.github.io/">VisualVM</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/visual-vm-cache-put.png" alt="VisuamVM">
+</div>
+<div class="title">Figure 1. VisualVM - Cache Put</div>
+</div>
+<div class="paragraph">
+<p>Under the <code>MBeans</code> tab you will find the Cache MBeans, including and entry for the <code>events</code> cache,
+providing numerous statistical information regarding the cache.</p>
 </div>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
@@ -571,30 +621,21 @@ cache statistics:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In the console you should see some basic statistics being printed including <code>totalPuts : 1</code>:</p>
+<p>You should see an entry for <code>TotalPuts</code> of <code>1</code>.</p>
 </div>
-<div class="listingblock">
-<div class="title">Cache Statistic Results</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {
-   "averageMissMillis" : 0.0,
-   "cachePrunesMillis" : 0,
-   "averagePruneMillis" : 0.0,
-   "totalGetsMillis" : 0,
-   "averageGetMillis" : 0.0,
-   "totalPutsMillis" : 11,
-   "averagePutMillis" : 11.0,
-   "cacheHitsMillis" : 0,
-   "averageHitMillis" : 0.0,
-   "cacheMissesMillis" : 0,
-   "cacheHits" : 0,
-   "cacheMisses" : 0,
-   "hitProbability" : 0.0,
-   "totalPuts" : 1,
-   "totalGets" : 0,
-   "cachePrunes" : 0
- }</code></pre>
-</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When using VisualVM consider installing the respective
+<a href="https://medium.com/oracle-coherence/open-source-coherence-visualvm-plugin-released-533ea2f576bc">Coherence VisualVM Plugin</a>
+as it provides some additional insights and visualizations.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Next, lets retrieve the Event using id 1:</p>
@@ -607,13 +648,13 @@ cache statistics:</p>
 </div>
 <div class="paragraph">
 <p>The Event is returned. Did you notice? No SQL queries were executed as the value was directly retrieved from the Cache.
-Let&#8217;s check the statistics again by executing:</p>
+Let&#8217;s check the statistics again, this time via the Coherence VisualVM Plugin:</p>
 </div>
-<div class="listingblock">
-<div class="title">Retrieve Cache Statistics</div>
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
+<img src="./images/visual-vm-cache-get-value.png" alt="VisuamVM Get Value From Cache">
 </div>
+<div class="title">Figure 2. Cache Statistics via Coherence VisualVM Plugin</div>
 </div>
 <div class="paragraph">
 <p>We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. <code>"cacheHits" : 1</code>.
@@ -636,7 +677,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 </div>
 <div class="paragraph">
 <p>you will see an SQL query executed in the console, re-populating the cache. Feel free to play along with the Rest API. We
-can for example add people:</p>
+can, for example, add people:</p>
 </div>
 <div class="listingblock">
 <div class="title">Add people</div>
@@ -851,7 +892,7 @@ into your own Maven repository.
 <div class="sect2">
 <h3 id="coherence-spring-botstrap"><a class="anchor" href="#coherence-spring-botstrap"></a>3.2. Bootstrapping Coherence</h3>
 <div class="paragraph">
-<p>The default behaviour of Coherence Spring is to use the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
+<p>Coherence Spring uses the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
 configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
 part of a Coherence Session.</p>
 </div>
@@ -864,13 +905,33 @@ behavior can easily be configured using traditional Coherence using system prope
 <h3 id="coherence-spring-botstrap-with-default-session"><a class="anchor" href="#coherence-spring-botstrap-with-default-session"></a>3.3. Using the Default Session</h3>
 <div class="paragraph">
 <p>The main building block for setting up Coherence for Spring is the <code>@EnableCoherence</code> annotation. This annotation will
-import the <code>CoherenceSpringConfiguration</code> under the covers. Therefore, you can alternatively also declare
-<code>@Import(CoherenceSpringConfiguration.class)</code> instead. Without providing any further configuration the default session
-is configured using the embedded default configuration file.</p>
+import the <code>CoherenceSpringConfiguration</code> class under the covers. Therefore, you can alternatively also declare
+<code>@Import(CoherenceSpringConfiguration.class)</code> instead.</p>
 </div>
 <div class="paragraph">
-<p>To provide further customization, you may for example provide an implementation of
-the <code>AbstractSessionConfigurationBean</code>, e.g.:</p>
+<p>In most use-cases, only a single Coherence Session is expected to be used. Therefore, without providing any further
+configuration the default session is configured using the embedded default configuration file. This results in the application
+joining Coherence as a cluster member (Session type <code>SERVER</code>). This is of course not the only way. Coherence Spring support
+the following 3 session types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SERVER</strong> - Join as Coherence cluster member. This is the default dession type.</p>
+</li>
+<li>
+<p><strong>CLIENT</strong> - Connect to Coherence as a Coherence*Extend client</p>
+</li>
+<li>
+<p><strong>GRPC</strong> Connect to Coherence as gRPC client</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the application is a Coherence cluster member, or a Coherence*Extend client, then all that needs to be specified is
+the Coherence configuration file name. For instance, you may for example provide an implementation of
+the <code>AbstractSessionConfigurationBean</code>, to specify the type of your session and to use a custom Coherence configuration
+file.</p>
 </div>
 <div class="listingblock">
 <div class="title">SessionConfigurationBean</div>
@@ -885,14 +946,129 @@ the <code>AbstractSessionConfigurationBean</code>, e.g.:</p>
  }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>If you connect as gRPC client, however, the properties change slightly and you need to specify a
+<code>GrpcSessionConfigurationBean</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">GrpcSessionConfigurationBean</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Bean
+ GrpcSessionConfigurationBean grpcSessionConfigurationBean() {
+     final GrpcSessionConfigurationBean sessionConfigurationBean = new GrpcSessionConfigurationBean();
+     sessionConfigurationBean.setName("sessionName");
+     sessionConfigurationBean.setChannelName("grpcChanelBeanName");
+     return sessionConfigurationBean;
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Channel Name property would refer to a grpcChannel bean.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="coherence-spring-botstrap-with-multiple-session"><a class="anchor" href="#coherence-spring-botstrap-with-multiple-session"></a>3.4. Configure Multiple Sessions</h3>
-
+<div class="paragraph">
+<p>If you need to configure multiple Coherence sessions, simply define multiple <code>SessionConfigurationBeans</code>. The auto-configuration
+will pick those up automatically to configure the required sessions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>default</code> session will only exist when zero sessions are specifically configured, or the default session is
+specifically configured with the default session name.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-botstrap-session-config-properties"><a class="anchor" href="#coherence-spring-botstrap-session-config-properties"></a>3.5. Session Configuration Properties</h3>
-
+<h3 id="coherence-spring-bootstrap-session-config-properties"><a class="anchor" href="#coherence-spring-bootstrap-session-config-properties"></a>3.5. Session Configuration Bean Properties</h3>
+<div class="paragraph">
+<p>Depending on the session type the available properties change a bit. The following properties all to ALL session types.</p>
+</div>
+<div class="paragraph">
+<p><strong>name</strong></p>
+</div>
+<div class="paragraph">
+<p>The name of the session. If not set it will be set to the default session name which is an empty String.</p>
+</div>
+<div class="paragraph">
+<p><strong>scopeName</strong></p>
+</div>
+<div class="paragraph">
+<p>A scope name is typically used in an application where the Coherence cluster member has multiple sessions. The scope
+name is used to keep the sessions separate. The scope name will be applied to the session’s underlying
+<em>ConfigurableCacheFactory</em> and used to scope Coherence services. In this way multiple session configurations may use
+identical service names, which will be kept separate using the scope. On a Coherence cluster member, each session should
+have a unique scope name.</p>
+</div>
+<div class="paragraph">
+<p><strong>type</strong></p>
+</div>
+<div class="paragraph">
+<p>The session type of this configuration. There are three different types of sessions that can be configured:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>server</strong> represents storage enabled cluster member session.</p>
+</li>
+<li>
+<p><strong>client</strong> represents a storage disabled cluster member or Coherence*Extend client session.</p>
+</li>
+<li>
+<p><strong>grpc</strong> is a gRPC client session (see the gRPC documentation).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The type of the session affects how the bootstrap API starts the session.</p>
+</div>
+<div class="paragraph">
+<p><strong>priority</strong></p>
+</div>
+<div class="paragraph">
+<p>The priority specifies the order to use, when starting the session. Sessions will be started with the lowest priority
+first. If this property is not specified, the property will default to <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following property applies to the <code>CLIENT</code> (Coherence*Extend) and <code>Server</code> mode, only:</p>
+</div>
+<div class="paragraph">
+<p><strong>configUri</strong></p>
+</div>
+<div class="paragraph">
+<p>The Coherence cache configuration URI for the session. As already mentioned, the most common configuration to set will
+be the Coherence configuration file name. If not specified, the default value will be <code>coherence-cache-config.xml</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following property applies to the <code>GRPC</code> mode, only:</p>
+</div>
+<div class="paragraph">
+<p><strong>channelName</strong></p>
+</div>
+<div class="paragraph">
+<p>Sets the underlying gRPC channel. If not set, it will default to <code>localhost</code> and port <code>1408</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>serializer</strong></p>
+</div>
+<div class="paragraph">
+<p>Specifies the serializer to that shall be used, in order to serialize gRPC message payloads. If not specified,
+the serializer will be the default Coherence serializer, either POF if it has been enabled with the <code>coherence.pof.enabled</code>
+system property or Java serialization.</p>
+</div>
+<div class="paragraph">
+<p><strong>tracingEnabled</strong></p>
+</div>
+<div class="paragraph">
+<p>Specifies if client gRPC tracing should be enabled. This is <code>false</code> by default.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="coherence-spring-events"><a class="anchor" href="#coherence-spring-events"></a>3.6. Events</h3>
@@ -2865,41 +3041,38 @@ which is provided by the <a href="https://github.com/coherence-community/coheren
 <div class="sect2">
 <h3 id="spring-cache-configuration"><a class="anchor" href="#spring-cache-configuration"></a>4.2. Configuring Coherence Cache for Spring</h3>
 <div class="paragraph">
-<p>As a start, please familiarize yourself with Spring&#8217;s Cache Abstraction by reading the
-<a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">relevant section</a>
-of Spring&#8217;s reference documentation.</p>
+<p>As a start, please familiarize yourself with Spring&#8217;s Cache Abstraction by reading the following resources:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/integration.html#cache">Cache Abstraction chapter</a> in the core Spring Framework reference guide</p>
+</li>
+<li>
+<p>Spring Boot&#8217;s reference documentation&#8217;s <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">support regarding caching</a></p>
+</li>
+</ul>
 </div>
+<div class="paragraph">
+<p>Spring&#8217;s cache abstraction for Coherence will be automatically enabled as soon as you specify <code>@EnableCaching</code> in your
+applications configuration classes. In that case a <code>CoherenceCacheManager</code> bean implementation is registered as
+<code>CacheManager</code>. Of course, you can define your own <code>CacheManager</code> as well, but in that case auto-configuration will back-off.</p>
 </div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">example:
-  property:
-    alpha: a</code></pre>
-</div>
-</div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
-  devtools:
-    restart:
-      exclude: "static/**,public/**"</code></pre>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The autoconfiguration logic is defined in class
+<code>com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar</code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="exampleblock">
-<div class="title">Example 4. Creating a CoherenceInstance</div>
+<div class="title">Example 4. Defining your own CacheManager</div>
 <div class="content">
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2907,14 +3080,8 @@ of Spring&#8217;s reference documentation.</p>
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
 @EnableCaching
 public class CacheConfiguration {
-
     @Bean
-    public CoherenceInstance coherenceInstance() {
-      return new CoherenceInstance();
-    }
-
-    @Bean
-    public CacheManager cacheManager(CoherenceInstance coherenceInstance) {
+    public CacheManager cacheManager(Coherence coherence) {
       return new CoherenceCacheManager(coherenceInstance);
     }
 }</code></pre>
@@ -2932,8 +3099,6 @@ public class CacheConfiguration {
     http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd"&gt;
 
   &lt;cache:annotation-driven/&gt;
-
-  &lt;bean id="coherenceInstance" class="com.oracle.coherence.spring.CoherenceInstance"/&gt;
 
   &lt;bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager"&gt;
     &lt;constructor-arg ref="coherenceInstance"/&gt;
@@ -2989,7 +3154,10 @@ Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-b
 <p>In order to start using Coherence with Spring Boot you have to add the <code>coherence-spring-boot-starter</code> dependency as well
 as the desired version of Coherence.</p>
 </div>
-<div class="listingblock">
+<div class="exampleblock">
+<div class="title">Example 5. Adding the Coherence Spring Boot Starter Dependency</div>
+<div class="content">
+<div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
@@ -3006,13 +3174,15 @@ as the desired version of Coherence.</p>
 &lt;/dependencies&gt;</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:21.06-M1")
 }</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -3036,14 +3206,7 @@ As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requi
 class. This will also bind the <code>CoherenceProperties</code> for further configuration. The configuration for Spring Boot&#8217;s
 Coherence support may look like the following:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Example YAML configuration (Properties)</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Example YAML configuration (Yaml)</div>
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
   logging:
@@ -3193,15 +3356,47 @@ Please also see the chapter on <a href="#spring-cloud-config">Coherence Spring C
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>TBD</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>7.5. Using Coherence as Spring Caching Provider</h3>
 <div class="paragraph">
-<p>If caching is enabled via <code>@EnableCaching</code>, Coherence Autoconfiguration will it automatically provide a <code>CacheManager</code> to
-the ApplicationContext, however only if no <code>CacheManager</code> was configured explicitly beforehand.</p>
+<p>As long as <code>coherence-spring-boot-starter</code> is added to your project, and caching is enabled via <code>@EnableCaching</code>,
+Coherence Autoconfiguration will automatically provide a <code>CacheManager</code> to the ApplicationContext. However, the
+<code>CacheManager</code> is only added if no <code>CacheManager</code> was configured explicitly beforehand.</p>
+</div>
+<div class="paragraph">
+<p>Once that is in place, you can take advantage of
+<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">Spring&#8217;s Cache abstraction</a>
+backed by Coherence and use Spring&#8217;s annotations such as <code>@Cacheable</code>, <code>@CacheEvict</code>, <code>@CachePut</code> etc.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When learning about Coherence&#8217;s Spring cache abstraction support, please familiarize yourself with the
+following resources:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#quickstart">Coherence Core Spring Cache Support</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">Spring Boot&#8217;s reference documentation&#8217;s support regarding caching</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">The Cache Abstraction</a>
+chapter in the core Spring Framework reference guide</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -3556,7 +3751,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 05:19:30 UTC
+Last updated 2021-04-20 08:25:14 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
