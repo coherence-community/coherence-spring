@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.oracle.coherence.spring.data.model.Address;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.net.NamedMap;
@@ -29,22 +30,22 @@ public abstract class AbstractDataTest {
 	/**
 	 * Author: Frank Herbert
 	 */
-	public static final Author FRANK_HERBERT = new Author("Frank", "Herbert");
+	public static final Author FRANK_HERBERT = new Author("Frank", "Herbert", new Address("Shirley Road", "923"));
 
 	/**
 	 * Author: J.R.R. (John) Tolkien.
 	 */
-	public static final Author JOHN_TOLKIEN = new Author("John", "Tolkien");
+	public static final Author JOHN_TOLKIEN = new Author("John", "Tolkien", new Address("Johnson Ave", "8756"));
 
 	/**
 	 * Author: Patrick Rothfuss.
 	 */
-	public static final Author PATRICK_ROTHFUSS = new Author("Patrick", "Rothfuss");
+	public static final Author PATRICK_ROTHFUSS = new Author("Patrick", "Rothfuss", new Address("Strawberry Rd", "8148"));
 
 	/**
 	 * Author: Stephen King.
 	 */
-	public static final Author STEPHEN_KING = new Author("Stephen", "King");
+	public static final Author STEPHEN_KING = new Author("Stephen", "King", new Address("Arnold Street", "19"));
 
 	/**
 	 * Book: Dune

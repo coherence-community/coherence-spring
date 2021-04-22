@@ -6,18 +6,31 @@
  */
 package com.oracle.coherence.spring.data.repository.query;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Aggregators;
+import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
+import com.tangosol.util.Fragment;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.Processors;
+import com.tangosol.util.ValueExtractor;
+import com.tangosol.util.extractor.IdentityExtractor;
+import com.tangosol.util.extractor.ReflectionExtractor;
+import com.tangosol.util.extractor.UniversalExtractor;
 import com.tangosol.util.filter.LimitFilter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.SliceImpl;
@@ -29,8 +42,11 @@ import org.springframework.data.repository.query.ParameterAccessor;
 import org.springframework.data.repository.query.ParametersParameterAccessor;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.data.repository.query.RepositoryQuery;
+import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ReflectionUtils;
 
 import static com.oracle.coherence.spring.data.support.Utils.configureLimitFilter;
 import static com.oracle.coherence.spring.data.support.Utils.toComparator;
@@ -99,6 +115,20 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 
 		Filter filter = queryResult.getFilter();
 
+		ResultProcessor processor = this.queryMethod.getResultProcessor().withDynamicProjection(accessor);
+		ReturnedType returnedType = processor.getReturnedType();
+
+		if (returnedType.isProjecting()) {
+			Class<?> resultType = returnedType.getReturnedType();
+			List result = resultType.isInterface()
+					? fetchWithInterfaceProjection(queryResult.getFilter(), resultType, returnedType.getDomainType())
+					: fetchWithClassProjection(queryResult.getFilter(), resultType);
+			return processor.processResult(result);
+		}
+
+		if (queryResult.getAggregator() != null) {
+			return this.namedMap.aggregate(queryResult.getFilter(), queryResult.getAggregator());
+		}
 		if (partTree.isDelete()) {
 			Map result = this.namedMap.invokeAll(Processors.remove(filter, true));
 			return result.size();
@@ -142,8 +172,88 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 				return new SliceImpl(Arrays.asList(result.toArray()), pageable, result.size() == pageable.getPageSize());
 			}
 		}
-
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List fetchWithClassProjection(Filter filter, Class<?> resultType) {
+		Constructor<?>[] constructors = resultType.getConstructors();
+		if (constructors.length == 0) {
+			throw new IllegalArgumentException("Type " + resultType.getName() + " has no public constructor.");
+		}
+		Constructor constructor = constructors[0];
+		String[] ctorParameterNames = Arrays.stream(constructor.getParameters())
+				.map(Parameter::getName)
+				.toArray(String[]::new);
+		ValueExtractor[] ctorArgsExtractors = Arrays.stream(ctorParameterNames)
+				.map(UniversalExtractor::new)
+				.toArray(ValueExtractor[]::new);
+		InvocableMap.EntryProcessor entryProcessor = Processors.extract(Extractors.fragment(ctorArgsExtractors));
+		Collection<Fragment<?>> values = this.namedMap.invokeAll(filter, entryProcessor).values();
+		return values.stream()
+				.map((fragment) -> createDto(constructor, ctorParameterNames, fragment))
+				.collect(Collectors.toList());
+	}
+
+	private Object createDto(Constructor ctor, String[] argNames, Fragment fragment) {
+		Object[] args = Arrays.stream(argNames).map(fragment::get).toArray();
+		try {
+			return ctor.newInstance(args);
+		}
+		catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List fetchWithInterfaceProjection(Filter filter, Class<?> resultType, Class<?> domainType) {
+		if (isOpenProjection(resultType)) {
+			InvocableMap.EntryProcessor entryProcessor = Processors.extract(IdentityExtractor.INSTANCE);
+			Collection<?> values = this.namedMap.invokeAll(filter, entryProcessor).values();
+			return new ArrayList(values);
+		}
+
+
+		InvocableMap.EntryProcessor entryProcessor = Processors.extract(Extractors.fragment(createExtractors(resultType, domainType)));
+		Collection<Fragment<?>> values = this.namedMap.invokeAll(filter, entryProcessor).values();
+		return values.stream()
+				.map(Fragment::toMap)
+				.collect(Collectors.toList());
+	}
+
+	@SuppressWarnings("unchecked")
+	private ValueExtractor[] createExtractors(Class<?> projection, Class<?> domainType) {
+		List<ValueExtractor<?, ?>> extractors = new ArrayList<>();
+		Method[] methods = projection.getMethods();
+		for (Method m : methods) {
+			Class<?> returnType = m.getReturnType();
+			if (!returnType.isInterface() || isOpenProjection(returnType)) {
+				extractors.add(new ReflectionExtractor<>(m.getName()));
+				continue;
+			}
+
+			ValueExtractor from = new ReflectionExtractor<>(m.getName());
+			Method domainMethod = ReflectionUtils.findMethod(domainType, m.getName());
+			if (domainMethod == null) {
+				throw new IllegalArgumentException("Method " + m.getName() + " not found in " + domainType);
+			}
+
+			if (returnType.isAssignableFrom(domainMethod.getReturnType())) {
+				extractors.add(new ReflectionExtractor<>(m.getName()));
+			}
+			else {
+				ValueExtractor[] subExtractors = createExtractors(returnType, domainMethod.getReturnType());
+				if (subExtractors.length > 0) {
+					extractors.add(Extractors.fragment(from, subExtractors));
+				}
+			}
+		}
+		return extractors.toArray(new ValueExtractor[0]);
+	}
+
+	private boolean isOpenProjection(Class<?> projection) {
+		return Arrays.stream(projection.getMethods())
+				.anyMatch((m) -> m.isAnnotationPresent(Value.class));
 	}
 
 	@Override

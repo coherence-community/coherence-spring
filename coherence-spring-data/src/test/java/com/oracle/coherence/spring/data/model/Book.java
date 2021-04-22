@@ -124,6 +124,15 @@ public class Book implements Cloneable, Serializable {
 	}
 
 	/**
+	 * Return this {@code book}'s title.
+	 *
+	 * @return this {@code book}'s title
+	 */
+	public String getTitleSequence() {
+		return this.title;
+	}
+
+	/**
 	 * Set the number of pages in this {@code book}.
 	 *
 	 * @param pages the new value for the page count
