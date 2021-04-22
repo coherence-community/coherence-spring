@@ -16,6 +16,7 @@
 package com.oracle.coherence.spring.data.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -34,14 +35,30 @@ public class Author implements Serializable, Comparable<Author> {
     final String lastName;
 
     /**
+     * The {@code Author}'s address.
+     */
+    final Address address;
+
+    /**
      * Creates a new Author.
      *
      * @param firstName author's first name
      * @param lastName author's last name
+     * @param address author's address
      */
-    public Author(final String firstName, final String lastName) {
+    public Author(final String firstName, final String lastName, final Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.address = address;
+    }
+
+    /**
+     * Return the {@code Author}'s address.
+     *
+     * @return the {@code Author}'s address
+     */
+    public Address getAddress() {
+        return this.address;
     }
 
     /**
@@ -54,6 +71,25 @@ public class Author implements Serializable, Comparable<Author> {
     }
 
     /**
+     * Return the {@code Author}'s uppercase first name.
+     *
+     * @return the {@code Author}'s uppercase first name
+     */
+    public String getUpperFirstName() {
+        return this.firstName.toUpperCase(Locale.ROOT);
+    }
+
+    /**
+     * Return the {@code Author}'s lowercase first name.
+     *
+     * @return the {@code Author}'s lowercase first name
+     */
+    public CharSequence getLowerFirstName() {
+        return this.firstName.toLowerCase(Locale.ROOT);
+    }
+
+
+    /**
      * Return the {@code Author}'s last name.
      *
      * @return the {@code Author}'s last name
@@ -63,20 +99,28 @@ public class Author implements Serializable, Comparable<Author> {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final Author author = (Author) o;
-        return getFirstName().equals(author.getFirstName()) && getLastName().equals(author.getLastName());
+
+        Author author = (Author) o;
+
+        if ((this.firstName != null) ? !this.firstName.equals(author.firstName) : author.firstName != null) {
+            return false;
+        }
+        if ((this.lastName != null) ? !this.lastName.equals(author.lastName) : author.lastName != null) {
+            return false;
+        }
+        return (this.address != null) ? this.address.equals(author.address) : author.address == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName());
+        return Objects.hash(getFirstName(), getLastName(), getAddress());
     }
 
     @Override
@@ -84,6 +128,7 @@ public class Author implements Serializable, Comparable<Author> {
         return "Author{" +
                 "firstName='" + this.firstName + '\'' +
                 ", lastName='" + this.lastName + '\'' +
+                ", address='" + this.address + '\'' +
                 '}';
     }
 
