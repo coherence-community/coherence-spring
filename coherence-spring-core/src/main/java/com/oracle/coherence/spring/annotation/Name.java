@@ -7,19 +7,21 @@
 package com.oracle.coherence.spring.annotation;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * An annotation used when injecting Coherence resource to indicate a
  * specific resource name.
  *
- * @author Jonathan Knight  2019.10.20
+ * @author Jonathan Knight
  * @author Gunnar Hillert
  */
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Retention(RUNTIME)
 public @interface Name {
 
 	/**
@@ -27,5 +29,6 @@ public @interface Name {
 	 *
 	 * @return the name used to identify a specific resource
 	 */
-	String value();
+	String value() default "";
+
 }

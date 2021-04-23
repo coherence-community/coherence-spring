@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.View;
+import com.oracle.coherence.spring.configuration.annotation.NamedCache;
 import com.tangosol.net.NamedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,14 +26,12 @@ public class PlantService {
 
 	@View                                                                    // <1>
 	@LargePalmTrees                                                          // <2>
-	@Name("plants")                                                          // <3>
-	@Resource(name = "getCache")                                             // <4>
+	@NamedCache("plants")                                                    // <3>
 	private NamedMap<Long, Plant> largePalmTrees;
 // end::hide[]
 	@View                                                                    // <1>
 	@PalmTrees(1)                                                            // <2>
-	@Name("plants")                                                          // <3>
-	@Resource(name = "getCache")                                             // <4>
+	@NamedCache("plants")                                                    // <3>
 	private NamedMap<Long, Plant> palmTrees;
 // tag::hide[]
 	public void getLargePalmTrees() {

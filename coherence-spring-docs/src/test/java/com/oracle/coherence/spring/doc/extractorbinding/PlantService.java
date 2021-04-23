@@ -9,6 +9,7 @@ package com.oracle.coherence.spring.doc.extractorbinding;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.View;
+import com.oracle.coherence.spring.configuration.annotation.NamedCache;
 import com.tangosol.net.NamedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,9 +26,8 @@ public class PlantService {
 // end::hide[]
 	@View                                                                    // <1>
 	@PlantNameExtractor                                                      // <2>
-	@Name("plants")                                                          // <3>
-	@Resource(name = "getCache")                                             // <4>
-	private NamedMap<Long, String> plants;                                   // <5>
+	@NamedCache("plants")                                                    // <3>
+	private NamedMap<Long, String> plants;                                   // <4>
 // tag::hide[]
 	public void getPalmTrees() {
 		assertThat(this.plants.size()).isEqualTo(5);

@@ -28,6 +28,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * Provides support for injecting Coherence Caches using {@link NamedCache}.
@@ -90,8 +93,8 @@ public class NamedCacheConfiguration {
 	 */
 	private <K, V> NamedCache<K, V> getCacheInternal(InjectionPoint injectionPoint, boolean isCQC) {
 
-		final SessionName sessionNameAnnotation = injectionPoint.getAnnotation(SessionName.class);
-		final View viewAnnotation = injectionPoint.getAnnotation(View.class);
+		final SessionName sessionNameAnnotation = AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), SessionName.class);
+		final View viewAnnotation =  AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), View.class);
 
 		final String sessionName;
 		final String cacheName = this.determineCacheName(injectionPoint);
@@ -138,12 +141,25 @@ public class NamedCacheConfiguration {
 
 	private String determineCacheName(InjectionPoint injectionPoint) {
 		final String cacheName;
-		final Name cacheNameAnnotation = injectionPoint.getAnnotation(Name.class);
-		if (cacheNameAnnotation == null) {
+		final Name cacheNameAnnotation = AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), Name.class);
+		if (cacheNameAnnotation == null || !StringUtils.hasText(cacheNameAnnotation.value())) {
+
 			final Field field = injectionPoint.getField();
 
 			if (field == null) {
-				throw new IllegalStateException("Not an annotated field.");
+				final MethodParameter methodParameter = injectionPoint.getMethodParameter();
+				if (methodParameter != null) {
+					final String parameterName = methodParameter.getParameterName();
+					if (parameterName != null) {
+						cacheName = parameterName;
+					}
+					else {
+						throw new IllegalStateException("Unable to retrieve the name of the method parameter");
+					}
+				}
+				else {
+					throw new IllegalStateException("Not an annotated field nor a method parameter");
+				}
 			}
 			else {
 				cacheName = field.getName();
