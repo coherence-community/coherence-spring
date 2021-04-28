@@ -21,6 +21,7 @@ import com.oracle.coherence.spring.annotation.PropertyExtractor;
 import com.oracle.coherence.spring.annotation.SessionName;
 import com.oracle.coherence.spring.annotation.View;
 import com.oracle.coherence.spring.annotation.WhereFilter;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
@@ -360,14 +361,13 @@ class CoherenceNamedCacheConfigurationViewTest {
 
 	static class CtorBean {
 
-		@Resource(name = COHERENCE_CACHE_BEAN_NAME)
 		private NamedCache<Integer, String> view;
 
 		private final ContinuousQueryCache<Integer, String, String> numbers;
 
-		CtorBean(// NamedCache<Integer, String> view,
+		CtorBean(NamedCache<Integer, String> view,
 				 ContinuousQueryCache<Integer, String, String> numbers) {
-			// this.view = view;
+			this.view = view;
 			this.numbers = numbers;
 		}
 
@@ -517,8 +517,10 @@ class CoherenceNamedCacheConfigurationViewTest {
 		}
 
 		@Bean
-		CtorBean ctorBean(@Name("numbers") ContinuousQueryCache<Integer, String, String> numbers) {
-			return new CtorBean(numbers); //FIXME
+		CtorBean ctorBean(
+				@CoherenceCache NamedCache<Integer, String> view,
+				@Name("numbers") ContinuousQueryCache<Integer, String, String> numbers) {
+			return new CtorBean(view, numbers);
 		}
 
 		@Bean

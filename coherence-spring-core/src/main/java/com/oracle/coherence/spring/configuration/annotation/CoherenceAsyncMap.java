@@ -21,27 +21,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- * Meta-annotation that marks Coherence Caches using {@link com.tangosol.net.NamedCache} for dependency-injection.
+ * Meta-annotation that marks the asynchronous wrapper implementation of Coherence Maps using
+ * {@link com.tangosol.net.AsyncNamedMap} for dependency-injection.
  *
  * @author Gunnar Hillert
  * @since 3.0
  *
- * @see com.oracle.coherence.spring.configuration.NamedCacheConfiguration
+ * @see NamedCacheConfiguration
  */
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Value("#{" + NamedCacheConfiguration.COHERENCE_CACHE_BEAN_NAME + "}")
-@Name
-@SessionName
-public @interface NamedCache {
+@CoherenceCache
+@Value("#{" + NamedCacheConfiguration.COHERENCE_ASYNC_CACHE_BEAN_NAME + "}")
+public @interface CoherenceAsyncMap {
 
 	@AliasFor(annotation = Name.class)
 	String value() default "";
 
 	@AliasFor(annotation = Name.class, attribute = "value")
-	String cacheName() default "";
+	String name() default "";
 
 	@AliasFor(annotation = SessionName.class, attribute = "value")
-	String sessionName() default Coherence.DEFAULT_NAME;
+	String session() default Coherence.DEFAULT_NAME;
 }
