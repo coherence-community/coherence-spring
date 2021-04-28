@@ -8,13 +8,15 @@ package com.oracle.coherence.spring.configuration;
 
 import java.util.List;
 
-import com.oracle.coherence.spring.configuration.annotation.AsyncNamedCache;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceAsyncMap;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.configuration.annotation.NamedCache;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
 import com.tangosol.net.AsyncNamedMap;
 import com.tangosol.net.Coherence;
+import com.tangosol.net.NamedCache;
 import com.tangosol.net.NamedMap;
 import com.tangosol.net.cache.CacheMap;
 import com.tangosol.util.ConcurrentMap;
@@ -43,37 +45,40 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 	@Autowired
 	ApplicationContext ctx;
 
+	@Autowired
+	Coherence coherence;
+
 	@Test
 	void shouldInjectAsyncNamedMapUsingFieldName() {
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean.class);
 		assertThat(bean.getNumbers(), is(notNullValue()));
 		assertThat(bean.getNumbers().getNamedMap().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectAsyncNamedMapWithGenericKeys() {
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean.class);
 		assertThat(bean.getGenericKeys(), is(notNullValue()));
 		assertThat(bean.getGenericKeys().getNamedMap().getName(), is("genericKeys"));
 	}
 
 	@Test
 	void shouldInjectAsyncNamedMapWithGenericValues() {
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean.class);
 		assertThat(bean.getGenericValues(), is(notNullValue()));
 		assertThat(bean.getGenericValues().getNamedMap().getName(), is("genericValues"));
 	}
 
 	@Test
 	void shouldInjectAsyncNamedMapWithGenerics() {
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean.class);
 		assertThat(bean.getGenericCache(), is(notNullValue()));
 		assertThat(bean.getGenericCache().getNamedMap().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectCachesFromDifferentSessions() {
-		CoherenceNamedCacheConfigurationNamedMapTests.DifferentSessionBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.DifferentSessionBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.DifferentSessionBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.DifferentSessionBean.class);
 
 		assertThat(bean.getDefaultCcfNumbers(), is(notNullValue()));
 		assertThat(bean.getDefaultCcfNumbers().getName(), is("numbers"));
@@ -92,49 +97,49 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void shouldInjectNamedMapUsingFieldName() {
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean.class);
 		assertThat(bean.getNumbers(), is(notNullValue()));
 		assertThat(bean.getNumbers().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectNamedMapWithGenericKeys() {
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean.class);
 		assertThat(bean.getGenericKeys(), is(notNullValue()));
 		assertThat(bean.getGenericKeys().getName(), is("genericKeys"));
 	}
 
 	@Test
 	void shouldInjectNamedMapWithGenericValues() {
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean.class);
 		assertThat(bean.getGenericValues(), is(notNullValue()));
 		assertThat(bean.getGenericValues().getName(), is("genericValues"));
 	}
 
 	@Test
 	void shouldInjectNamedMapWithGenerics() {
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean.class);
 		assertThat(bean.getGenericCache(), is(notNullValue()));
 		assertThat(bean.getGenericCache().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectQualifiedAsyncNamedMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean.class);
 		assertThat(bean.getNamedMap(), is(notNullValue()));
 		assertThat(bean.getNamedMap().getNamedMap().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectQualifiedNamedMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean.class);
 		assertThat(bean.getNamedMap(), is(notNullValue()));
 		assertThat(bean.getNamedMap().getName(), is("numbers"));
 	}
 
 	@Test
 	void shouldInjectSuperTypeCacheMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		CacheMap map = bean.getCacheMap();
 		assertThat(map, is(notNullValue()));
 		assertThat(map, is(sameInstance(bean.getNamedMap())));
@@ -142,7 +147,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void shouldInjectSuperTypeConcurrentMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		ConcurrentMap map = bean.getConcurrentMap();
 		assertThat(map, is(notNullValue()));
 		assertThat(map, is(sameInstance(bean.getNamedMap())));
@@ -150,7 +155,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void shouldInjectSuperTypeInvocableMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		InvocableMap map = bean.getInvocableMap();
 		assertThat(map, is(notNullValue()));
 		assertThat(map, is(sameInstance(bean.getNamedMap())));
@@ -158,7 +163,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void shouldInjectSuperTypeObservableMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		ObservableMap map = bean.getObservableMap();
 		assertThat(map, is(notNullValue()));
 		assertThat(map, is(sameInstance(bean.getNamedMap())));
@@ -166,7 +171,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void shouldInjectSuperTypeQueryMap() {
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		QueryMap map = bean.getQueryMap();
 		assertThat(map, is(notNullValue()));
 		assertThat(map, is(sameInstance(bean.getNamedMap())));
@@ -174,7 +179,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 
 	@Test
 	void testCtorInjection() {
-		CoherenceNamedCacheConfigurationNamedMapTests.CtorBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapTests.CtorBean.class);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.CtorBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.CtorBean.class);
 
 		assertThat(bean.getNumbers(), notNullValue());
 		assertThat(bean.getNumbers().getName(), is("numbers"));
@@ -182,22 +187,35 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		assertThat(bean.getLetters().getNamedMap().getName(), is("letters"));
 	}
 
+	@Test
+	void testAnotherConstructorBeanInjection() {
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AnotherConstructorBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AnotherConstructorBean.class);
+
+		assertThat(bean.getNumbers(), notNullValue());
+		assertThat(bean.getNumbers().getName(), is("numbers"));
+		assertThat(bean.getLetters(), notNullValue());
+		assertThat(bean.getLetters().getName(), is("letters"));
+
+		bean.getNumbers().put(1, "foo");
+		assertThat(this.coherence.getSession("test").getMap("numbers").size(), is(1));
+		assertThat(this.coherence.getSession().getMap("numbers").size(), is(0));
+	}
 	// ----- test beans -----------------------------------------------------
 
 	static class NamedMapFieldsBean {
-		@NamedCache
+		@CoherenceCache
 		private NamedMap numbers;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private NamedMap namedMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private NamedMap<Integer, String> genericCache;
 
-		@NamedCache
+		@CoherenceCache
 		private NamedMap<List<String>, String> genericKeys;
 
-		@NamedCache
+		@CoherenceCache
 		private NamedMap<String, List<String>> genericValues;
 
 		NamedMap<Integer, String> getGenericCache() {
@@ -222,19 +240,19 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 	}
 
 	static class AsyncNamedMapFieldsBean {
-		@AsyncNamedCache
+		@CoherenceAsyncMap
 		private AsyncNamedMap numbers;
 
-		@AsyncNamedCache("numbers")
+		@CoherenceAsyncMap("numbers")
 		private AsyncNamedMap namedMap;
 
-		@AsyncNamedCache("numbers")
+		@CoherenceAsyncMap("numbers")
 		private AsyncNamedMap<Integer, String> genericCache;
 
-		@AsyncNamedCache
+		@CoherenceAsyncMap
 		private AsyncNamedMap<List<String>, String> genericKeys;
 
-		@AsyncNamedCache
+		@CoherenceAsyncMap
 		private AsyncNamedMap<String, List<String>> genericValues;
 
 		AsyncNamedMap<Integer, String> getGenericCache() {
@@ -259,16 +277,16 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 	}
 
 	static class DifferentSessionBean {
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private NamedMap defaultCcfNumbers;
 
-		@AsyncNamedCache("numbers")
+		@CoherenceAsyncMap("numbers")
 		private AsyncNamedMap defaultCcfAsyncNumbers;
 
-		@NamedCache(cacheName = "numbers", sessionName = "test")
+		@CoherenceCache(name = "numbers", session = "test")
 		private NamedMap specificCcfNumbers;
 
-		@AsyncNamedCache(cacheName = "numbers", sessionName = "test")
+		@CoherenceAsyncMap(name = "numbers", session = "test")
 		private AsyncNamedMap specificCcfAsyncNumbers;
 
 		AsyncNamedMap getDefaultCcfAsyncNumbers() {
@@ -310,23 +328,46 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		}
 	}
 
+	static class AnotherConstructorBean {
+
+		private NamedMap<Integer, String> numbers;
+
+		private final NamedCache<String, String> letters;
+
+		AnotherConstructorBean(
+				NamedMap<Integer, String> numbers,
+				NamedCache<String, String> letters) {
+
+			this.numbers = numbers;
+			this.letters = letters;
+		}
+
+		NamedCache<String, String> getLetters() {
+			return this.letters;
+		}
+
+		NamedMap<Integer, String> getNumbers() {
+			return this.numbers;
+		}
+	}
+
 	static class SuperTypesBean {
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private NamedMap<Integer, String> namedMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private InvocableMap<Integer, String> invocableMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private ObservableMap<Integer, String> observableMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private ConcurrentMap<Integer, String> concurrentMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private QueryMap<Integer, String> queryMap;
 
-		@NamedCache("numbers")
+		@CoherenceCache("numbers")
 		private CacheMap<Integer, String> cacheMap;
 
 		CacheMap<Integer, String> getCacheMap() {
@@ -377,30 +418,37 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		}
 
 		@Bean
-		CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean namedMapFieldsBean() {
-			return new CoherenceNamedCacheConfigurationNamedMapTests.NamedMapFieldsBean();
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean namedMapFieldsBean() {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.NamedMapFieldsBean();
 		}
 
 		@Bean
-		CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean asyncNamedMapFieldsBean() {
-			return new CoherenceNamedCacheConfigurationNamedMapTests.AsyncNamedMapFieldsBean();
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean asyncNamedMapFieldsBean() {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AsyncNamedMapFieldsBean();
 		}
 
 		@Bean
-		CoherenceNamedCacheConfigurationNamedMapTests.DifferentSessionBean differentSessionBean() {
-			return new CoherenceNamedCacheConfigurationNamedMapTests.DifferentSessionBean();
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.DifferentSessionBean differentSessionBean() {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.DifferentSessionBean();
 		}
 
 		@Bean
-		CoherenceNamedCacheConfigurationNamedMapTests.CtorBean ctorBean(
-				@NamedCache("numbers") NamedMap<Integer, String> numbers,
-				@AsyncNamedCache("letters") AsyncNamedMap<String, String> letters) {
-			return new CoherenceNamedCacheConfigurationNamedMapTests.CtorBean(numbers, letters);
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.CtorBean ctorBean(
+				@CoherenceCache("numbers") NamedMap<Integer, String> numbers,
+				@CoherenceAsyncMap("letters") AsyncNamedMap<String, String> letters) {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.CtorBean(numbers, letters);
 		}
 
 		@Bean
-		CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean superTypesBean() {
-			return new CoherenceNamedCacheConfigurationNamedMapTests.SuperTypesBean();
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean superTypesBean() {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean();
+		}
+
+		@Bean
+		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AnotherConstructorBean anotherConstructorBean(
+				@CoherenceMap(name = "numbers", session = "test") NamedMap<Integer, String> numbers,
+				@CoherenceMap(name = "letters") NamedCache<String, String> letters) {
+			return new CoherenceNamedCacheConfigurationNamedMapAnnotationTests.AnotherConstructorBean(numbers, letters);
 		}
 
 	}

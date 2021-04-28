@@ -7,16 +7,14 @@
  */
 package com.oracle.coherence.spring.doc.extractorbinding;
 
-import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.View;
-import com.oracle.coherence.spring.configuration.annotation.NamedCache;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
 import com.tangosol.net.NamedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.assertj.core.api.Assertions;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import org.springframework.stereotype.Component;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +24,7 @@ public class PlantService {
 // end::hide[]
 	@View                                                                    // <1>
 	@PlantNameExtractor                                                      // <2>
-	@NamedCache("plants")                                                    // <3>
+	@CoherenceMap("plants")                                                  // <3>
 	private NamedMap<Long, String> plants;                                   // <4>
 // tag::hide[]
 	public void getPalmTrees() {

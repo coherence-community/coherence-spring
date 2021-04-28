@@ -29,7 +29,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.StringUtils;
 
 /**
@@ -93,17 +94,27 @@ public class NamedCacheConfiguration {
 	 */
 	private <K, V> NamedCache<K, V> getCacheInternal(InjectionPoint injectionPoint, boolean isCQC) {
 
-		final SessionName sessionNameAnnotation = AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), SessionName.class);
-		final View viewAnnotation =  AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), View.class);
+		final MergedAnnotations mergedAnnotations;
+
+		if (injectionPoint.getMethodParameter() != null) {
+			mergedAnnotations = MergedAnnotations.from(injectionPoint.getMethodParameter().getParameterAnnotations());
+		}
+		else {
+			mergedAnnotations = MergedAnnotations.from(injectionPoint.getAnnotatedElement());
+		}
+
+		final MergedAnnotation<Name> mergedNameAnnotation = mergedAnnotations.get(Name.class);
+		final MergedAnnotation<SessionName> mergedSessionNameAnnotation = mergedAnnotations.get(SessionName.class);
+		final MergedAnnotation<View> mergedViewAnnotation = mergedAnnotations.get(View.class);
 
 		final String sessionName;
-		final String cacheName = this.determineCacheName(injectionPoint);
+		final String cacheName = this.determineCacheName(injectionPoint, mergedNameAnnotation);
 
-		if (sessionNameAnnotation == null) {
+		if (!mergedSessionNameAnnotation.isPresent() || mergedSessionNameAnnotation.synthesize().value().trim().isEmpty()) {
 			sessionName = Coherence.DEFAULT_NAME;
 		}
 		else {
-			sessionName = sessionNameAnnotation.value();
+			sessionName = mergedSessionNameAnnotation.synthesize().value();
 		}
 
 		if (logger.isDebugEnabled()) {
@@ -120,8 +131,8 @@ public class NamedCacheConfiguration {
 
 		final NamedCache<K, V> cache = session.getCache(cacheName);
 
-		if (isCQC || viewAnnotation != null) {
-			boolean hasValues = (viewAnnotation == null) || viewAnnotation.cacheValues();
+		if (isCQC || mergedViewAnnotation.isPresent()) {
+			boolean hasValues = (!mergedViewAnnotation.isPresent()) || mergedViewAnnotation.synthesize().cacheValues();
 
 			final Filter filter = this.filterService.getFilter(injectionPoint);
 			final ValueExtractor extractor = this.extractorService.getExtractor(injectionPoint, true);
@@ -139,10 +150,10 @@ public class NamedCacheConfiguration {
 		return cache.async();
 	}
 
-	private String determineCacheName(InjectionPoint injectionPoint) {
+	private String determineCacheName(InjectionPoint injectionPoint, MergedAnnotation<Name> mergedNameAnnotation) {
 		final String cacheName;
-		final Name cacheNameAnnotation = AnnotatedElementUtils.getMergedAnnotation(injectionPoint.getAnnotatedElement(), Name.class);
-		if (cacheNameAnnotation == null || !StringUtils.hasText(cacheNameAnnotation.value())) {
+
+		if (!mergedNameAnnotation.isPresent() || !StringUtils.hasText(mergedNameAnnotation.synthesize().value())) {
 
 			final Field field = injectionPoint.getField();
 
@@ -166,7 +177,7 @@ public class NamedCacheConfiguration {
 			}
 		}
 		else {
-			cacheName = cacheNameAnnotation.value();
+			cacheName = mergedNameAnnotation.synthesize().value();
 		}
 		return cacheName;
 	}

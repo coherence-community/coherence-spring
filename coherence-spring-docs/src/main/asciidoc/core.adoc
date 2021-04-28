@@ -229,10 +229,10 @@ limitations, for instance, not being usable for constructor injection.
 [source,java]
 ----
     @Resource(name = COHERENCE_CACHE_BEAN_NAME)
-    private NamedCache numbers;                    <1>
+    private NamedCache numbers;                  <1>
 
     @Resource(name = COHERENCE_CACHE_BEAN_NAME)
-    @Name("numbers")                               <2>
+    @Name("numbers")                             <2>
     private NamedCache namedCache;
 ----
 <1> If not specified, the name of the field will be used to determine the cache name
@@ -241,28 +241,119 @@ limitations, for instance, not being usable for constructor injection.
 TIP: For more information, please see {spring-docs}html/core.html#beans-autowired-annotation-qualifiers[Fine-tuning
 Annotation-based Autowiring with Qualifiers] in the Spring Framework reference guide.
 
-In order to provide a better user-experience around the dependency injection of maps, Coherence Spring introduces its
-own annotation. Using the `@NamedCache` annotation, you can inject any Coherence maps in any situation including constructors.
+In order to provide a better user-experience around the dependency injection of maps and caches, Coherence Spring introduces its
+own set of annotations. The following annotations are available:
 
-Furthermore, `@NamedCache` also gives you some added conveniences such as the ability to specify the name of the cache or
+- @CoherenceCache
+- @CoherenceMap
+- @CoherenceAsyncCache
+- @CoherenceAsyncMap
+
+Using these annotations, you can inject any Coherence {coherence-api}com/tangosol/net/NamedMap.html[NamedMap] and
+{coherence-api}com/tangosol/net/NamedCache.html[NamedCache] in any situation including constructors.
+
+Furthermore, the annotations also give you some added conveniences such as the ability to specify the name of the cache, or
 the name of the Coherence session as part of the annotation. E.g., the above example can be simplified to:
 
-.Example of using the @NamedCache annotation
+.Example of using the  @CoherenceCache annotation
 [source,java]
 ----
-    @NamedCache
-    private NamedCache numbers;                    <1>
+    @CoherenceCache
+    private NamedCache numbers;                  <1>
 
-    @NamedCache("numbers")                         <2>
+    @CoherenceCache("numbers")                   <2>
     private NamedCache namedCache;
 ----
 <1> If not specified, the name of the field will be used to determine the cache name
 <2> Alternatively, you can specify the name of the cache using the `@Name` annotation
 
+==== Specify the Map/Cache Name
+
+As already mentioned above, you specify the name of the map/cache using the value-property of the annotation. Of course,
+the same applies when injecting a constructor or method parameter:
+
+.Example of constructor injection of a NamedMap
+[source,java]
+----
+@Service
+public class SomeService {
+
+    public SomeService(@CoherenceMap("people") NamedMap<String, Person> map) {
+        // TODO: initialize the service...
+    }
+}
+----
+
+IMPORTANT: If injecting a cache/map via the constructor AND you do not specify a cach/map name, then Coherence Spring
+ill try to derive the name of the cache/map from the parameter name. However, this only works if either the compiler flag
+`-parameters` (Java 8+) is enabled, or if the JVM generates debugging info. For more information see the
+article https://www.baeldung.com/java-parameter-reflection[Method Parameter Reflection in Java].
+
+If you prefer, you can also specify the name of the map/cache using the `@Name` annotation. The example below will inject a
+`NamedMap` that uses an underlying cache named people:
+
+.Example of using the @Name annotation
+[source,java]
+----
+@CoherenceMap
+@Name("people")
+private NamedMap<String, Person> map;
+----
+
+==== Specify the Owning Session Name
+
+Whilst most applications probably use a single Coherence Session, there are uses-cases where an application may have
+multiple sessions. In this case, when injecting for example a `NamedMap`, the specific session can be specified by
+annotating the injection point with either `@SessionName` or more concise with the `session` parameter available for the
+following annotations:
+
+- @CoherenceCache
+- @CoherenceMap
+- @CoherenceAsyncCache
+- @CoherenceAsyncMap
+
+In the previous examples where no separate `Session` name was specified, Coherence will use the default session to obtain the
+caches/maps. Assuming that the application has multiple sessions configured, one of which is named _Catalog_, the
+following example injects a `NamedMap` from an underlying cache named _products_ in the _Catalog_ session.
+
+.Example of using the @SessionName annotation
+[source,java]
+----
+@CoherenceMap
+@SessionName("Catalog")
+@Name("products")
+private NamedMap<String, Product> map;
+----
+
+This can be further streamlined to:
+
+.Example of using the @CoherenceMap annotation with the session parameter
+[source,java]
+----
+@CoherenceMap(name="products", session="Catalog")
+private NamedMap<String, Product> map;
+----
+
+The same annotation can be used on method parameter injection points as well:
+
+.Example of using @CoherenceMap with session parameter in a constructor
+[source,java]
+----
+@Controller
+public class CatalogController {
+
+    public CatalogController(@CoherenceMap(name="products", session="Catalog")
+                             NamedMap<String, Product> products) {
+        // TODO: initialize the bean...
+    }
+}
+----
+
 [[coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache]]
 === Injecting AsyncNamedMap & AsyncNamedCache
 
-TBD
+It is possible to inject the asynchronous classes AsyncNamedMap and AsyncNamedCache as beans in exactly the same way as
+described above. Just change the type of the injection point to be AsyncNamedMap or AsyncNamedCache.
 
 [[coherence-spring-dependency-injection-views]]
 === Injecting Views (CQC)
@@ -1336,7 +1427,7 @@ include::{include-source-code}filterbinding/PlantService.java[tags=!hide]
 <1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
 <2> The `@PalmTrees` annotation links to the custom filter factory which is used to create the filter for the view. The
 annotation value of `1` indicates that we are interested in all palm trees of at least 1 meter in height.
-<3> Due to Spring limitations regarding the injection of Maps, we use the `@NamedCache` annotation to inject the `NamedMap`,
+<3> Due to Spring limitations regarding the injection of Maps, we use the `@CoherenceMap` annotation to inject the `NamedMap`,
     which also has takes an optional value to specify the name of the cache.
 
 [[coherence-spring-extractor-binding-annotations]]
@@ -1408,7 +1499,7 @@ include::{include-source-code}extractorbinding/PlantService.java[tags=!hide]
 ----
 <1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
 <2> The `@PlantNameExtractor` annotation links to the custom extractor factory used to create the `ValueExtractor` for the view
-<3> Due to Spring limitations regarding the injection of Maps, we use the `@NamedCache` annotation to inject the `NamedMap`,
+<3> Due to Spring limitations regarding the injection of Maps, we use the `@CoherenceMap` annotation to inject the `NamedMap`,
 which also has takes an optional value to specify the underlying cache/map name to use for the view.
 <4> Note that the `NamedMap` generics are now `Long` and `String` instead of `Long` and `Plant` as the `Plant` values
 from the underlying cache are transformed into `String` values by extracting just the name property.
