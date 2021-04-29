@@ -72,7 +72,7 @@ public class CoherenceRepositoryFactoryBean<T extends Repository<S, ID>, S, ID e
 	 * the format of [Entity-Type]Repository (e.g., BookRepository), then the {@link NamedMap}
 	 * will be looked up using the lower-case name of the entity type.  Using the
 	 * {@code BookRepository} example, the {@link NamedMap} would be resolved to {@literal book}.
-	 * @return @inheritDoc
+	 * @return {@inheritDoc}
 	 * @throws IllegalStateException if the {@link NamedMap} name cannot be resolved
 	 */
 	@Override

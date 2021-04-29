@@ -89,7 +89,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 
 	/**
 	 * Return the value extracted from an entity with a given identifier.
-	 * <p/>
+	 * <p>
 	 * For example, you could extract {@code Person}'s {@code name} attribute by
 	 * calling a getter on a remote {@code Person} entity instance:
 	 * <pre>
@@ -100,20 +100,20 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * {@code name} and {@code age} attributes by calling corresponding getters
 	 * on the remote {@code Person} entity instance:
 	 * <pre>
-	 *     Fragment&lt;Person> person = people.get(ssn, Extractors.fragment(Person::getName, Person::getAge));
+	 *     Fragment&lt;Person&gt; person = people.get(ssn, Extractors.fragment(Person::getName, Person::getAge));
 	 *     System.out.println("name: " + person.get(Person::getName));
 	 *     System.out.println(" age: " + person.get(Person::getAge));
 	 * </pre>
 	 * <p>
 	 * Finally, you can also extract nested fragments:
 	 * <pre>
-	 *     Fragment&lt;Person> person = people.get(ssn,
+	 *     Fragment&lt;Person&gt; person = people.get(ssn,
 	 *           Extractors.fragment(Person::getName, Person::getAge,
 	 *                               Extractors.fragment(Person::getAddress, Address::getCity, Address::getState));
 	 *     System.out.println(" name: " + person.get(Person::getName));
 	 *     System.out.println("  age: " + person.get(Person::getAge));
 	 *
-	 *     Fragment&lt;Address> address = person.getFragment(Person::getAddress);
+	 *     Fragment&lt;Address&gt; address = person.getFragment(Person::getAddress);
 	 *     System.out.println(" city: " + address.get(Address::getCity));
 	 *     System.out.println("state: " + address.get(Address::getState));
 	 * </pre>
@@ -215,7 +215,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 
 	/**
 	 * Update an entity using specified updater and the new value.
-	 * <p/>
+	 * <p>
 	 * For example, you could update {@code Person}'s {@code age} attribute by
 	 * calling a setter on a remote {@code Person} entity instance:
 	 * <pre>
@@ -237,7 +237,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * Update an entity using specified updater and the new value, and optional
 	 * {@link EntityFactory} that will be used to create entity instance if it
 	 * doesn't already exist in the repository.
-	 * <p/>
+	 * <p>
 	 * For example, you could update {@code Person}'s {@code age} attribute by
 	 * calling a setter on a remote {@code Person} entity instance:
 	 * <pre>
@@ -247,7 +247,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * EntityFactory} will be used to create a new instance. In the example
 	 * above, it will invoke a constructor on the {@code Person} class that
 	 * takes identifier as an argument.
-	 * <p/>
+	 * <p>
 	 * Note that the actual update (via the invocation of the specified setter
 	 * method) will happen on the primary owner for the specified entity, and
 	 * the updater will have exclusive access to an entity during the
@@ -264,11 +264,11 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 
 	/**
 	 * Update an entity using specified updater function.
-	 * <p/>
+	 * <p>
 	 * For example, you could increment {@code Person}'s {@code age} attribute
 	 * and return the updated {@code Person} entity:
 	 * <pre>
-	 *    people.update(ssn, person ->
+	 *    people.update(ssn, person -&gt;
 	 *        {
 	 *        person.setAge(person.getAge() + 1);
 	 *        return person;
@@ -278,7 +278,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * it allows you to return any value you want as the result of the
 	 * invocation, at the cost of typically slightly more complex logic at the
 	 * call site.
-	 * <p/>
+	 * <p>
 	 * Note that the actual update (via the evaluation of the specified
 	 * function) will happen on the primary owner for the specified entity, and
 	 * the updater will have exclusive access to an entity during the
@@ -294,11 +294,11 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * Update an entity using specified updater function, and optional {@link
 	 * EntityFactory} that will be used to create entity instance if it doesn't
 	 * already exist in the repository.
-	 * <p/>
+	 * <p>
 	 * For example, you could increment {@code Person}'s {@code age} attribute
 	 * and return the updated {@code Person} entity:
 	 * <pre>
-	 *    people.update(ssn, person ->
+	 *    people.update(ssn, person -&gt;
 	 *        {
 	 *        person.setAge(person.getAge() + 1);
 	 *        return person;
@@ -308,12 +308,12 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * EntityFactory} will be used to create a new instance. In the example
 	 * above, it will invoke a constructor on the {@code Person} class that
 	 * takes identifier as an argument.
-	 * <p/>
+	 * <p>
 	 * This variant of the {@code update} method offers ultimate flexibility, as
 	 * it allows you to return any value you want as the result of the
 	 * invocation, at the cost of typically slightly more complex logic at the
 	 * call site.
-	 * <p/>
+	 * <p>
 	 * Note that the actual update (via the evaluation of the specified
 	 * function) will happen on the primary owner for the specified entity, and
 	 * the updater will have exclusive access to an entity during the
@@ -329,12 +329,12 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 
 	/**
 	 * Update an entity using specified updater and the new value.
-	 * <p/>
+	 * <p>
 	 * Unlike {@link #update(Object, ValueUpdater, Object)}, which doesn't
 	 * return anything, this method is typically used to invoke "fluent" methods
 	 * on the target entity that return entity itself (although they are free to
 	 * return any value they want).
-	 * <p/>
+	 * <p>
 	 * For example, you could use it to add an item to the {@code ShoppingCart}
 	 * entity and return the updated {@code ShoppingCart} instance in a single
 	 * call:
@@ -361,12 +361,12 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * Update an entity using specified updater function, and optional {@link
 	 * EntityFactory} that will be used to create entity instance if it doesn't
 	 * already exist in the repository.
-	 * <p/>
+	 * <p>
 	 * Unlike {@link #update(Object, ValueUpdater, Object)}, which doesn't
 	 * return anything, this method is typically used to invoke "fluent" methods
 	 * on the target entity that return entity itself (although they are free to
 	 * return any value they want).
-	 * <p/>
+	 * <p>
 	 * For example, you could use it to add an item to the {@code ShoppingCart}
 	 * entity and return the updated {@code ShoppingCart} instance in a single
 	 * call:
@@ -378,7 +378,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	 * {@link EntityFactory} will be used to create a new instance. In the
 	 * example above, it will invoke a constructor on the {@code ShoppingCart}
 	 * class that takes identifier as an argument.
-	 * <p/>
+	 * <p>
 	 * Note that the actual update (via the evaluation of the specified
 	 * function) will happen on the primary owner for the specified entity, and
 	 * the updater will have exclusive access to an entity during the
