@@ -20,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ParticipantName {
-    /**
-     * The participant name.
-     *
-     * @return the participant name
-     */
-    String value();
+	/**
+	 * The participant name.
+	 *
+	 * @return the participant name
+	 */
+	String value();
 }

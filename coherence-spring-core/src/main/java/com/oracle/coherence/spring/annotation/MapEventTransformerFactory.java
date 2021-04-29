@@ -40,11 +40,11 @@ import com.tangosol.util.MapEventTransformer;
  * @since 1.0
  */
 public interface MapEventTransformerFactory<A extends Annotation, K, V, U> {
-    /**
-     * Create a {@link MapEventTransformer} instance.
-     * @param annotation the {@link Annotation} that
-     *                   defines the MapEventTransformer
-     * @return a {@link MapEventTransformer} instance
-     */
-    MapEventTransformer<K, V, U> create(A annotation);
+	/**
+	 * Create a {@link MapEventTransformer} instance.
+	 * @param annotation the {@link Annotation} that
+	 *                   defines the MapEventTransformer
+	 * @return a {@link MapEventTransformer} instance
+	 */
+	MapEventTransformer<K, V, U> create(A annotation);
 }

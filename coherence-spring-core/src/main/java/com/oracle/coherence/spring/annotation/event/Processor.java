@@ -26,10 +26,10 @@ import com.tangosol.util.InvocableMap;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Processor {
-    /**
-     * The processor class.
-     *
-     * @return the processor class
-     */
-    Class<? extends InvocableMap.EntryProcessor> value();
+	/**
+	 * The processor class.
+	 *
+	 * @return the processor class
+	 */
+	Class<? extends InvocableMap.EntryProcessor> value();
 }

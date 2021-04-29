@@ -20,31 +20,31 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Backlog {
-    /**
-     * Obtain the type of backlog event.
-     *
-     * @return the type of backlog event
-     */
-    Type value();
+	/**
+	 * Obtain the type of backlog event.
+	 *
+	 * @return the type of backlog event
+	 */
+	Type value();
 
-    /**
-     * The backlog event type.
-     */
-    enum Type {
-        /**
-         * Indicates that a participant was previously
-         * backlogged but is no longer so.
-         */
-        NORMAL,
+	/**
+	 * The backlog event type.
+	 */
+	enum Type {
+		/**
+		 * Indicates that a participant was previously
+		 * backlogged but is no longer so.
+		 */
+		NORMAL,
 
-        /**
-         * Indicates that a participant is backlogged; if
-         * the participant is remote it indicates the
-         * remote participant has more work than it can handle;
-         * if the participant is local it indicates this
-         * participant has more work than it can handle.
-         */
-        EXCESSIVE
-    }
+		/**
+		 * Indicates that a participant is backlogged; if
+		 * the participant is remote it indicates the
+		 * remote participant has more work than it can handle;
+		 * if the participant is local it indicates this
+		 * participant has more work than it can handle.
+		 */
+		EXCESSIVE
+	}
 
 }

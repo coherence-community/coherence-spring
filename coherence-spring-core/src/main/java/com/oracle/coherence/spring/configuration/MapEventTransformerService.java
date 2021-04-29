@@ -78,9 +78,9 @@ public class MapEventTransformerService {
 
 		}
 		else if (optionalExtractor.isPresent()) {
-			 // there is one or more ExtractorBinding annotations
-			 ValueExtractor<Object, Object> extractor = this.extractorFactory.resolve(annotations);
-			 return new ExtractorEventTransformer(extractor);
+			// there is one or more ExtractorBinding annotations
+			ValueExtractor<Object, Object> extractor = this.extractorFactory.resolve(annotations);
+			return new ExtractorEventTransformer(extractor);
 		}
 
 		// there are no transformer or extractor annotations.
@@ -94,7 +94,7 @@ public class MapEventTransformerService {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	MapEventTransformer getMapEventTransformer(InjectionPoint injectionPoint) {
-	   final  List<Annotation> bindings = CoherenceAnnotationUtils.getAnnotationsMarkedWithMarkerAnnotation(injectionPoint, MapEventTransformerBinding.class);
+		final  List<Annotation> bindings = CoherenceAnnotationUtils.getAnnotationsMarkedWithMarkerAnnotation(injectionPoint, MapEventTransformerBinding.class);
 
 		for (Annotation annotation : bindings) {
 			final Class<? extends Annotation> annotationType = annotation.annotationType();

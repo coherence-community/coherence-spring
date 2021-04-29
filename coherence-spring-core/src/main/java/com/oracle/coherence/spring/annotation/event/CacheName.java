@@ -20,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CacheName {
-    /**
-     * Obtain the value used to identify a specific cache.
-     *
-     * @return value used to identify a specific cache
-     */
-    String value();
+	/**
+	 * Obtain the value used to identify a specific cache.
+	 *
+	 * @return value used to identify a specific cache
+	 */
+	String value();
 }

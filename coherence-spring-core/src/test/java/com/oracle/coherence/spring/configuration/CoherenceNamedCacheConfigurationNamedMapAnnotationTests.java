@@ -313,7 +313,7 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		private final AsyncNamedMap<String, String> letters;
 
 		CtorBean(NamedMap<Integer, String> numbers,
-		         AsyncNamedMap<String, String> letters) {
+				AsyncNamedMap<String, String> letters) {
 
 			this.numbers = numbers;
 			this.letters = letters;

@@ -101,7 +101,7 @@ class MapEventTransformerConfigurationTests {
 		@Bean
 		@TestTransformer
 		TestTransformerFactory testTransformerFactory() {
-		   return new TestTransformerFactory();
+			return new TestTransformerFactory();
 		}
 	}
 }
