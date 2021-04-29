@@ -123,7 +123,7 @@
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.18.1</assertj.version>
 		<awaitility.version>4.0.3</awaitility.version>
-		<coherence.version>21.06-M1</coherence.version>
+		<coherence.version>21.06-M2</coherence.version>
 		<classgraph.version>4.8.102</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<javaee-api.version>8.0.1</javaee-api.version>
@@ -450,6 +450,21 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>staging</id>
+			<repositories>
+				<repository>
+					<id>sonatype-staging</id>
+					<url>https://oss.sonatype.org/content/groups/staging/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
 		</profile>
 	</profiles>
 </project>

@@ -44,7 +44,7 @@ import com.tangosol.util.function.Remote;
  * @author Jonathan Knight
  * @since 1.0
  */
-class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable<AnnotatedMapListener<?, ?>> {
+public class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable<AnnotatedMapListener<?, ?>> {
 
 	/**
 	 * The wild-card value for cache and service names.
@@ -332,7 +332,7 @@ class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable<Annota
 	 * Return {@code true} if this is synchronous event listener.
 	 * @return {@code true} if this is synchronous event listener
 	 */
-	boolean isSynchronous() {
+	public boolean isSynchronous() {
 		return this.synchronousEvents;
 	}
 
