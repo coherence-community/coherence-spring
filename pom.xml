@@ -98,15 +98,15 @@
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<dependency-check-maven.version>6.1.0</dependency-check-maven.version>
-		<maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-		<maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
+		<maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-		<maven-release-plugin.version>2.5</maven-release-plugin.version>
+		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -114,9 +114,9 @@
 		<spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
 
 		<!-- Other plugin dependency versions -->
-		<asciidoctorj-pdf.version>1.5.0-alpha.18</asciidoctorj-pdf.version>
+		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
 		<checkstyle.version>8.32</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.27</spring-javaformat-checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.28</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.5.1</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
@@ -129,9 +129,9 @@
 		<javaee-api.version>8.0.1</javaee-api.version>
 		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
 		<junit.version>5.7.1</junit.version>
-		<log4j.version>2.13.2</log4j.version>
+		<log4j.version>2.14.1</log4j.version>
 		<mockito.version>1.10.19</mockito.version>
-		<org.springframework.version>5.3.5</org.springframework.version>
+		<org.springframework.version>5.3.6</org.springframework.version>
 		<spring-boot.version>2.4.5</spring-boot.version>
 	</properties>
 
@@ -465,6 +465,29 @@
 					</snapshots>
 				</repository>
 			</repositories>
+		</profile>
+		<profile>
+			<id>versions</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.8.1</version>
+						<configuration>
+							<rulesUri>file:///${session.executionRootDirectory}/rules.xml</rulesUri>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>display-property-updates</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>
