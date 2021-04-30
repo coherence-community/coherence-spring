@@ -181,7 +181,7 @@ public class QueryFinderTests extends AbstractDataTest {
 	@Test
 	void ensureLimitedCustomSort() {
 		List<Book> books = this.bookRepository.findTop3ByPagesGreaterThan(400, Sort.by("title")
-				j.ascending().and(Sort.by("author").descending()));
+				.ascending().and(Sort.by("author").descending()));
 		System.out.println(books);
 	}
 

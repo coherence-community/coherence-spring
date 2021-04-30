@@ -35,6 +35,8 @@ import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.stereotype.Repository;
 
+import static com.tangosol.util.function.Remote.comparator;
+
 /**
  * Coherence implementation of {@link RepositoryQuery}.
  *
@@ -88,7 +90,7 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 		this.queryMethod = new QueryMethod(method, metadata, factory);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public Object execute(Object[] parameters) {
 
@@ -110,13 +112,13 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 		if (sort.isSorted()) {
 			for (Sort.Order order : sort) {
 				if (comparator == null) {
-					comparator = Remote.comparator(new UniversalExtractor(order.getProperty()));
+					comparator = comparator(new UniversalExtractor(order.getProperty()));
 					if (order.isDescending()) {
 						comparator = comparator.reversed();
 					}
 				}
 				else {
-					Remote.Comparator temp = Remote.comparator(new UniversalExtractor(order.getProperty()));
+					Remote.Comparator temp = comparator(new UniversalExtractor(order.getProperty()));
 					if (order.isDescending()) {
 						temp = comparator.reversed();
 					}
@@ -124,13 +126,9 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 				}
 			}
 		}
-		Collection<?> result = null;
-		if (comparator == null) {
-			result = this.namedMap.values(q.getFilter());
-		}
-		else {
-			result = this.namedMap.values(q.getFilter(), comparator);
-		}
+		Collection<?> result = (comparator != null)
+				? this.namedMap.values(q.getFilter(), comparator)
+				: this.namedMap.values(q.getFilter());
 
 		if (partTree.isExistsProjection()) {
 			return !result.isEmpty(); // TODO - more optimal way to determine?
