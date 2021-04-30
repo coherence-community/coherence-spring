@@ -36,10 +36,10 @@ import org.springframework.util.StringUtils;
  */
 public class CoherenceGrpcClient implements AutoCloseable {
 
-    protected static final Log logger = LogFactory.getLog(CoherenceGrpcClient.class);
+	protected static final Log logger = LogFactory.getLog(CoherenceGrpcClient.class);
 
-    private final Session coherenceSession;
-    private final ManagedChannel grpcChannel;
+	private final Session coherenceSession;
+	private final ManagedChannel grpcChannel;
 
 	public CoherenceGrpcClient(CoherenceConfigClientProperties coherenceConfigClientProperties) {
 		this.grpcChannel = this.buildChannel(coherenceConfigClientProperties);

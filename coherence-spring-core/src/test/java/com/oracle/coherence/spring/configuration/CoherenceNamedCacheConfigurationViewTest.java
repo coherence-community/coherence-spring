@@ -115,7 +115,7 @@ class CoherenceNamedCacheConfigurationViewTest {
 		assertThat(bean.getSpecificCcfNumbers().getCache().getCacheName(), is("numbers"));
 
 		assertThat(bean.getDefaultCcfNumbers().getCache().getCacheService(),
-				   is(not(bean.getSpecificCcfNumbers().getCache().getCacheService())));
+				is(not(bean.getSpecificCcfNumbers().getCache().getCacheService())));
 	}
 
 	@Test
@@ -254,9 +254,9 @@ class CoherenceNamedCacheConfigurationViewTest {
 		for (int i = 0; i < 100; i++) {
 			String lastName = (i % 2 == 0) ? "foo" : "bar";
 			Person bean = new Person(String.valueOf(i),
-									 lastName,
-									 LocalDate.now(),
-									 new PhoneNumber(44, "12345" + i));
+									lastName,
+									LocalDate.now(),
+									new PhoneNumber(44, "12345" + i));
 
 			cache.put(lastName + "-" + i, bean);
 		}
@@ -366,7 +366,7 @@ class CoherenceNamedCacheConfigurationViewTest {
 		private final ContinuousQueryCache<Integer, String, String> numbers;
 
 		CtorBean(NamedCache<Integer, String> view,
-				 ContinuousQueryCache<Integer, String, String> numbers) {
+				ContinuousQueryCache<Integer, String, String> numbers) {
 			this.view = view;
 			this.numbers = numbers;
 		}

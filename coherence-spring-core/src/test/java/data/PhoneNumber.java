@@ -80,8 +80,8 @@ public class PhoneNumber
 
 	@Override
 	public void readExternal(PofReader in) throws IOException {
-        this.countryCode = in.readInt(0);
-        this.number = in.readString(1);
+		this.countryCode = in.readInt(0);
+		this.number = in.readString(1);
 	}
 
 	@Override

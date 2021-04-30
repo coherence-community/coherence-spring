@@ -352,13 +352,113 @@ public class CatalogController {
 [[coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache]]
 === Injecting AsyncNamedMap & AsyncNamedCache
 
-It is possible to inject the asynchronous classes AsyncNamedMap and AsyncNamedCache as beans in exactly the same way as
-described above. Just change the type of the injection point to be AsyncNamedMap or AsyncNamedCache.
+It is possible to inject the asynchronous classes `AsyncNamedMap` and `AsyncNamedCache` as beans in exactly the same way as
+described above. Just change the type of the injection point to be `AsyncNamedMap` or `AsyncNamedCache` using one of
+the following annotations:
+
+- @CoherenceAsyncCache
+- @CoherenceAsyncMap
+
+.Injecting an AsyncNamedMap
+[source,java]
+----
+@CoherenceMap("people")
+private AsyncNamedMap<String, Person> map;
+----
 
 [[coherence-spring-dependency-injection-views]]
 === Injecting Views (CQC)
 
-TBD
+View (or {coherence-api}com/tangosol/net/ContinuousQueryCache.html[ContinuousQueryCache]) beans can be injected by
+specifying the {coherence-spring-api}com/oracle/coherence/spring/annotation/View.html[@View] annotation at the injection
+point. A view is a sub-set of the data in an underlying cache, controlled by a
+{coherence-api}java//com/tangosol/util/Filter.html[Filter].
+
+.Injecting an AsyncNamedMap
+[source,java]
+----
+@CoherenceMap("people")
+@View                                            <1>
+private NamedMap<String, Person> map;
+----
+<1> The injection point has been annotated with `@View`, so the injected `NamedMap` will actually be an implementation
+of a `ContinuousQueryCache`.
+
+In the above example, no `Filter` has been specified, so the default behaviour is to use an
+{coherence-api}com/tangosol/util/filter/AlwaysFilter.html[AlwaysFilter]. This means that the view will contain all the
+entries from the underlying cache (typically a distributed cache). As a `ContinuousQueryCache` will hold keys and values
+locally in deserialized form, this can often be a better approach than using a replicated cache.
+
+[[coherence-spring-dependency-injection-views-filter]]
+==== Specify a View Filter
+
+Filters are specified for views using a special filter binding annotation. These are annotations that are themselves
+annotated with the meta-annotation {coherence-spring-api}com/oracle/coherence/spring/annotation/FilterBinding.html[@FilterBinding].
+The Micronaut Coherence framework comes with some built in implementations, for example
+{coherence-spring-api}com/oracle/coherence/spring/annotation/AlwaysFilter.html[@AlwaysFilter], and
+{coherence-spring-api}com/oracle/coherence/spring/annotation/WhereFilter.html[@WhereFilter], and it is simple to implement
+other as required by applications (see the <<create-the-filter-binding-annotation, Filter Binding Annotation section>>
+for more details).
+
+For example, if there was a cache named "people", containing `Person` instances, and the application required a view of
+that cache just containing `People` where the "lastName" attribute is equal to "Simpson" the `@WhereFilter` filter binding
+annotation could be used to specify the `Filter`. The `@WhereFilter` annotation produces a `Filter` created from a Coherence
+CohQL where clause, in this case `lastName == 'Simpson'`.
+
+.Injecting a @CoherenceMap with @WhereFilter
+[source,java]
+----
+include::{include-source-code}di/wherefilter/PeopleService.java[tags=simpleWhereFilter]
+----
+<1> The name of the underlying map for the view is "people".
+<2> The `@View` annotation specifies that a view will be injected rather than a raw`NamedMap`.
+<3> The `@Wherefilter` annotation specifies the CohQL expression.
+<4> The `NamedMap` contains only people with the last name `Simpson`.
+
+The above CohQL expression is still rather simple. Let's further restrict the results:
+
+.@WhereFilter with a more complex CohQL expression
+[source,java]
+----
+include::{include-source-code}di/wherefilter/PeopleService.java[tags=complexWhereFilter]
+----
+<1> The @Wherefilter also filters on the `age` property.
+
+The view injected above will be all People with a `lastName` attribute equal to `Simpson` and an `age` attribute
+greater than `10`.
+
+TIP: The Coherence reference guide has an in-depth chapter on CohQL and more details on the _WHERE_ clause under
+{oracle-coherence-docs}develop-applications/using-coherence-query-language.html#GUID-B671FDD9-386B-4719-BFC6-DCFF32C360BA[Filtering Entries in a Result Set]
+
+Other built-in or custom filter binding annotations can be used. Multiple filter-binding annotations can be added to the
+same injection point to build up more complex views. The Filter instances produced from each filter binding annotation
+will all be collected together in an {coherence-api}com/tangosol/util/filter/AllFilter.html[AllFilter], which will logically
+combine them together.
+
+[[coherence-spring-dependency-injection-views-transformer]]
+==== Specify a View Transformer
+
+The values in a view map do not have to be the same as the value sin the underlying cache, a ValueExtractor can be used to transform the actual cache value into a different value in the view. ValueExtractor are specified for views using a special extractor binding annotation. These are annotations that are themselves annotated with the meta-annotation @ExtractorBinding. The Micronaut Coherence framework comes with some built in implementations, for example @PropertyExtractor, and it is simple to implement other as required by applications (see the Extractor Binding Annotation section for more details).
+
+For example, if there was a cache named "people", containing Person instances, and the application required a view where the value was just the age attribute of each Person rather than the whole cache value. A @PropertyExtractor annotation could be used to specify that the values should be transformed using a property extractor.
+
+.Injecting a @CoherenceMap with multiple @WhereFilter
+[source,java]
+----
+include::{include-source-code}di/viewtransformer/PeopleService.java[tags=!hide]
+----
+<1> The name of the underlying map for the view is "people".
+<2> The `@View` annotation specifies that a view will be injected rather than a raw `NamedMap`.
+<3> The `@PropertyExtractor` annotation specifies that a `ValueExtractor` should be used to transform the underlying cache
+values into different values in the view. In this case the `@PropertyExtractor` annotation will produce a value extractor
+to extract the `age` property.
+<4> Note that the map injected is now a `NamedMap<String, Integer>` with generic types of `String` and `Integer` because
+the values have been transformed from `Person` to `Integer`.
+
+Multiple extractor bindings can be applied to the injection point, in which case the view value will be a `List` of the
+extracted attributes.
+
+Custom extractor binding annotations can be created to fulfil more complex transformations.
 
 [[coherence-spring-dependency-injection-named-topic]]
 === Injecting NamedTopic
@@ -373,7 +473,36 @@ TBD
 [[coherence-spring-dependency-injection-session]]
 === Injecting a Session
 
-TBD
+Sometimes it might not be possible to inject a Coherence resource, such as `NamedMap` or `NamedCache` directly because
+the name of the resource to be injected is not known until runtime. In this case it makes sense to inject a `Session`
+instance which can then be used to obtain other resources.
+
+The simplest way to inject a Session is just to annotate a field, method parameter, or other injection point:
+
+.Injecting a Coherence Session instance
+[source,java]
+----
+@RestController
+public class MyBean {
+    @Inject                                      <1>
+    private Session session;
+----
+<1> Other injection annotations such as `@Autowired` can be used as well
+
+.Injecting a Coherence Session using constructor injection
+[source,java]
+----
+@RestController
+public class MyBean {
+    @Autowired                                   <1>
+    public MyBean(Session session) {
+        // TODO...
+    }
+}
+----
+<1> If your class has only a single constructor, you can omit the `@Autowired` annotation
+
+Both examples above will inject the default `Session` instance into the injection point.
 
 [[coherence-spring-events]]
 == Events

@@ -21,7 +21,7 @@
 	<artifactId>coherence-spring-demo-classic</artifactId>
 
 	<name>Coherence Spring Demo - Classic Spring Framework</name>
-	<description>Classig Demo project for Coherence Spring (No Spring Boot)</description>
+	<description>Classic Demo project for Coherence Spring (No Spring Boot)</description>
 
 	<properties>
 		<maven.minimum.version>3.6.0</maven.minimum.version>
@@ -30,20 +30,20 @@
 		<mainClass>com.oracle.coherence.spring.demo.tomcat.Server</mainClass>
 
 		<java.version>8</java.version>
-		<coherence.version>21.06-SNAPSHOT</coherence.version>
-		<spring.version>5.3.1</spring.version>
-		<spring-data-bom.version>2020.0.2</spring-data-bom.version>
+		<coherence.version>21.06-M2</coherence.version>
+		<spring.version>5.3.6</spring.version>
+		<spring-data-bom.version>2020.0.8</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
-		<hibernate.version>5.4.27.Final</hibernate.version>
-		<jackson-datatype.version>2.11.3</jackson-datatype.version>
+		<hibernate.version>5.4.31.Final</hibernate.version>
+		<jackson-datatype.version>2.11.4</jackson-datatype.version>
 
-		<tomcat.version>9.0.43</tomcat.version>
+		<tomcat.version>9.0.45</tomcat.version>
 		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
-		<hsqldb.version>2.5.1</hsqldb.version>
-		<log4j.version>2.13.2</log4j.version>
+		<hsqldb.version>2.6.0</hsqldb.version>
+		<log4j.version>2.14.1</log4j.version>
 
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
+		<maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 	</properties>
 
@@ -56,7 +56,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
@@ -133,7 +132,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-bom</artifactId>
-				<version>2020.0.2</version>
+				<version>${spring-data-bom.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>

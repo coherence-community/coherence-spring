@@ -670,7 +670,7 @@ public class EventObserverSupport {
 		protected final Function<E, String> participantNameFunction;
 
 		FederationEventHandler(MethodEventObserver<E> observer, Class<T> type,
-		                       Function<E, String> participantNameFunction) {
+				Function<E, String> participantNameFunction) {
 			super(observer, type);
 
 			this.participantNameFunction = participantNameFunction;

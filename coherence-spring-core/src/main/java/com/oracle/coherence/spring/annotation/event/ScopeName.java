@@ -20,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScopeName {
-    /**
-     * Obtain the value used to identify a specific scope.
-     *
-     * @return value used to identify a specific scope
-     */
-    String value();
+	/**
+	 * Obtain the value used to identify a specific scope.
+	 *
+	 * @return value used to identify a specific scope
+	 */
+	String value();
 }

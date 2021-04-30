@@ -414,7 +414,7 @@ class CoherenceNamedCacheConfigurationNamedMapTests {
 		@Bean
 		CtorBean ctorBean(
 				@Value("#{getCache}") @Name("numbers") NamedMap<Integer, String> numbers,
-		                  @Name("letters") AsyncNamedMap<String, String> letters) {
+				@Name("letters") AsyncNamedMap<String, String> letters) {
 			return new CtorBean(numbers, letters);
 		}
 

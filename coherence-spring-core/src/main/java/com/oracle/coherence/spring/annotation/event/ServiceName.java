@@ -20,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceName {
-    /**
-     * The value used to identify a specific service.
-     *
-     * @return the value used to identify a specific service
-     */
-    String value();
+	/**
+	 * The value used to identify a specific service.
+	 *
+	 * @return the value used to identify a specific service
+	 */
+	String value();
 }

@@ -20,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MapName {
-    /**
-     * Obtain the value used to identify a specific map.
-     *
-     * @return value used to identify a specific map
-     */
-    String value();
+	/**
+	 * Obtain the value used to identify a specific map.
+	 *
+	 * @return value used to identify a specific map
+	 */
+	String value();
 }
