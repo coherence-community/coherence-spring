@@ -24,6 +24,7 @@ import com.tangosol.util.UUID;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 
 public interface BookRepository extends CrudRepository<Book, UUID> {
@@ -69,6 +70,8 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 	List<Book> findTop2ByPagesGreaterThanOrderByTitleDesc(int pageCount);
 
 	List<Book> findTop3ByPagesGreaterThan(int pageCount, Sort sort);
+
+	Streamable<Book> streamByAuthor(Author author);
 
 	int deleteByTitleStartingWith(String title);
 }

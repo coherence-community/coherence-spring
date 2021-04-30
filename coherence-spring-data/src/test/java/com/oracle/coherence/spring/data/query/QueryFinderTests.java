@@ -3,6 +3,7 @@ package com.oracle.coherence.spring.data.query;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -182,7 +184,15 @@ public class QueryFinderTests extends AbstractDataTest {
 	void ensureLimitedCustomSort() {
 		List<Book> books = this.bookRepository.findTop3ByPagesGreaterThan(400, Sort.by("title")
 				.ascending().and(Sort.by("author").descending()));
-		System.out.println(books);
+		assertThat(books.size()).isEqualTo(3);
+		assertThat(books).containsExactly(DUNE, DUNE_MESSIAH, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureStreamingQuery() {
+		Streamable<Book> stream = this.bookRepository.streamByAuthor(FRANK_HERBERT);
+		Collection<Book> books = stream.stream().collect(Collectors.toList());
+		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
 	}
 
 	@Configuration
