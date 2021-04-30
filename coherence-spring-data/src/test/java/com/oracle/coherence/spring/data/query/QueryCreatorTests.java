@@ -11,6 +11,7 @@ import com.tangosol.util.Filters;
 import com.tangosol.util.aggregator.Count;
 import com.tangosol.util.aggregator.DistinctValues;
 import com.tangosol.util.extractor.UniversalExtractor;
+import com.tangosol.util.filter.LimitFilter;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.data.domain.Pageable;
@@ -276,6 +277,91 @@ public class QueryCreatorTests {
 				Filters.equal(new UniversalExtractor<>("author.lastName"), "King"));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Test
+	void ensureFirstQuery() {
+		QueryResult result = getQuery("findFirstByAuthor", FRANK_HERBERT);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isInstanceOf(LimitFilter.class);
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+
+		LimitFilter limitFilter = (LimitFilter) result.getFilter();
+		assertThat(limitFilter.getFilter()).isEqualTo(
+				Filters.equal(new UniversalExtractor<>("author"), FRANK_HERBERT));
+		assertThat(limitFilter.getPageSize()).isEqualTo(1);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Test
+	void ensureFirstQueryWithValue() {
+		QueryResult result = getQuery("findFirst10ByAuthor", FRANK_HERBERT);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isInstanceOf(LimitFilter.class);
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+
+		LimitFilter limitFilter = (LimitFilter) result.getFilter();
+		assertThat(limitFilter.getFilter()).isEqualTo(
+				Filters.equal(new UniversalExtractor<>("author"), FRANK_HERBERT));
+		assertThat(limitFilter.getPageSize()).isEqualTo(10);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Test
+	void ensureTopQuery() {
+		QueryResult result = getQuery("findTopByPagesGreaterThan", 100);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isInstanceOf(LimitFilter.class);
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+
+		LimitFilter limitFilter = (LimitFilter) result.getFilter();
+		assertThat(limitFilter.getFilter()).isEqualTo(
+				Filters.greater(new UniversalExtractor<>("pages"), 100));
+		assertThat(limitFilter.getPageSize()).isEqualTo(1);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Test
+	void ensureTopQueryWithValue() {
+		QueryResult result = getQuery("findTop10ByPagesGreaterThan", 100);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isInstanceOf(LimitFilter.class);
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+
+		LimitFilter limitFilter = (LimitFilter) result.getFilter();
+		assertThat(limitFilter.getFilter()).isEqualTo(
+				Filters.greater(new UniversalExtractor<>("pages"), 100));
+		assertThat(limitFilter.getPageSize()).isEqualTo(10);
+
+	}
+
+	@Test
+	void ensureOrderedAscQuery() {
+		QueryResult result = getQuery("findByAuthorOrderByTitleAsc", FRANK_HERBERT);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(Filters.equal("author", FRANK_HERBERT));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.by(Sort.Direction.ASC, "title"));
+	}
+
+	@Test
+	void ensureOrderedDescQuery() {
+		QueryResult result = getQuery("findByAuthorOrderByTitleDesc", FRANK_HERBERT);
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(Filters.equal("author", FRANK_HERBERT));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.by(Sort.Direction.DESC, "title"));
 	}
 
 	// ----- helper methods -------------------------------------------------

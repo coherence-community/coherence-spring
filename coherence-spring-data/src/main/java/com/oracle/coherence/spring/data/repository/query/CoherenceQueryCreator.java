@@ -25,6 +25,7 @@ import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.filter.InFilter;
+import com.tangosol.util.filter.LimitFilter;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ParameterAccessor;
@@ -192,6 +193,11 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 			}
 			else if (this.partTree.isDistinct()) {
 				this.criteria.setAggregator(Aggregators.distinctValues());
+			}
+			Integer limit = this.partTree.getMaxResults();
+			if (limit != null) {
+				LimitFilter limitFilter = new LimitFilter(criteria.getFilter(), limit);
+				criteria.setFilter(limitFilter);
 			}
 		}
 		return new QueryResult(criteria, sort);

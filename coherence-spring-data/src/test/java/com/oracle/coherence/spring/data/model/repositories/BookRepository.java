@@ -22,6 +22,7 @@ import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 
@@ -58,6 +59,16 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 	List<Book> findByAuthorIsNull();
 
 	List<Book> findByAuthorIsNotNull();
+
+	List<Book> findByAuthorOrderByTitleAsc(Author author);
+
+	List<Book> findByAuthorOrderByTitleDesc(Author author);
+
+	List<Book> findTop2ByPagesGreaterThanOrderByTitleAsc(int pageCount);
+
+	List<Book> findTop2ByPagesGreaterThanOrderByTitleDesc(int pageCount);
+
+	List<Book> findTop3ByPagesGreaterThan(int pageCount, Sort sort);
 
 	int deleteByTitleStartingWith(String title);
 }

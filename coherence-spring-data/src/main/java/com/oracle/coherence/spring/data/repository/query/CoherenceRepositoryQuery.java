@@ -21,7 +21,10 @@ import java.util.Map;
 
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Processors;
+import com.tangosol.util.extractor.UniversalExtractor;
+import com.tangosol.util.function.Remote;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.DefaultParameters;
@@ -102,7 +105,31 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 			return result.size(); // TODO - more optimal way to get count?
 		}
 
-		Collection<?> result = this.namedMap.values(q.getFilter());
+		Sort sort = q.getSort();
+		Remote.Comparator comparator = null;
+		if (sort.isSorted()) {
+			for (Sort.Order order : sort) {
+				if (comparator == null) {
+					comparator = Remote.comparator(new UniversalExtractor(order.getProperty()));
+					if (order.isDescending()) {
+						comparator = comparator.reversed();
+					}
+				} else {
+					Remote.Comparator temp = Remote.comparator(new UniversalExtractor(order.getProperty()));
+					if (order.isDescending()) {
+						temp = comparator.reversed();
+					}
+					comparator.thenComparing(temp);
+				}
+			}
+		}
+		Collection<?> result = null;
+		if (comparator == null) {
+			result = this.namedMap.values(q.getFilter());
+		}
+		else {
+			result = this.namedMap.values(q.getFilter(), comparator);
+		}
 
 		if (partTree.isExistsProjection()) {
 			return !result.isEmpty(); // TODO - more optimal way to determine?

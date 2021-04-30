@@ -14,6 +14,7 @@ import com.oracle.coherence.spring.data.model.repositories.BookRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -147,6 +148,40 @@ public class QueryFinderTests extends AbstractDataTest {
 		assertThat(book.containsKey(DUNE_MESSIAH.getUuid())).isFalse();
 		assertThat(book.containsKey(HOBBIT.getUuid())).isTrue();
 		assertThat(book.containsKey(NAME_OF_THE_WIND.getUuid())).isTrue();
+	}
+
+	@Test
+	void ensureOrderedAscQuery() {
+		List<Book> books = this.bookRepository.findByAuthorOrderByTitleAsc(FRANK_HERBERT);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books).containsExactly(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureOrderedDescQuery() {
+		List<Book> books = this.bookRepository.findByAuthorOrderByTitleDesc(FRANK_HERBERT);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books).containsExactly(DUNE_MESSIAH, DUNE);
+	}
+
+	@Test
+	void ensureLimitedAscQuery() {
+		List<Book> books = this.bookRepository.findTop2ByPagesGreaterThanOrderByTitleAsc(400);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books).containsExactly(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureLimitedDescQuery() {
+		List<Book> books = this.bookRepository.findTop2ByPagesGreaterThanOrderByTitleDesc(400);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books).containsExactly(NAME_OF_THE_WIND, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureLimitedCustomSort() {
+		List<Book> books = this.bookRepository.findTop3ByPagesGreaterThan(400, Sort.by("title").ascending().and(Sort.by("author").descending()));
+		System.out.println(books);
 	}
 
 	@Configuration

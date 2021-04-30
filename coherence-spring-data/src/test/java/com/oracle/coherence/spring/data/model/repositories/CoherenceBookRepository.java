@@ -7,6 +7,4 @@ import com.tangosol.util.UUID;
 
 @CoherenceMap("book")
 public interface CoherenceBookRepository extends CoherenceRepository<Book, UUID> {
-
-
 }
