@@ -24,6 +24,8 @@ import com.tangosol.util.Processors;
 import com.tangosol.util.extractor.UniversalExtractor;
 import com.tangosol.util.function.Remote;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
@@ -94,6 +96,12 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	@Override
 	public Object execute(Object[] parameters) {
 
+		Class<?> returnType = this.method.getReturnType();
+		if (returnType == Page.class || returnType == Slice.class) {
+			throw new UnsupportedOperationException("The M1 release of spring-coherence-data doesn't" +
+					" support Slice or Page return types.");
+		}
+
 		PartTree partTree = new PartTree(this.method.getName(), this.metadata.getDomainType());
 		ParameterAccessor accessor = new ParametersParameterAccessor(new DefaultParameters(this.method), parameters);
 		CoherenceQueryCreator creator = new CoherenceQueryCreator(partTree, accessor);
@@ -104,7 +112,7 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 		}
 		if (partTree.isDelete()) {
 			Map result = this.namedMap.invokeAll(Processors.remove(q.getFilter(), true));
-			return result.size(); // TODO - more optimal way to get count?
+			return result.size();
 		}
 
 		Sort sort = q.getSort();
@@ -131,7 +139,7 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 				: this.namedMap.values(q.getFilter());
 
 		if (partTree.isExistsProjection()) {
-			return !result.isEmpty(); // TODO - more optimal way to determine?
+			return !result.isEmpty();
 		}
 
 		return result;

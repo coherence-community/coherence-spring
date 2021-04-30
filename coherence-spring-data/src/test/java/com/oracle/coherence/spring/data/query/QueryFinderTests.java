@@ -15,12 +15,14 @@ import com.oracle.coherence.spring.data.model.repositories.BookRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringJUnitConfig(QueryFinderTests.Config.class)
 @DirtiesContext
@@ -193,6 +195,20 @@ public class QueryFinderTests extends AbstractDataTest {
 		Streamable<Book> stream = this.bookRepository.streamByAuthor(FRANK_HERBERT);
 		Collection<Book> books = stream.stream().collect(Collectors.toList());
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensurePageReturnThrows() {
+		assertThatThrownBy(() -> this.bookRepository.findByAuthor(FRANK_HERBERT, Pageable.unpaged()))
+			.isInstanceOf(UnsupportedOperationException.class)
+			.hasMessageContaining("Slice or Page");
+	}
+
+	@Test
+	void ensureSliceReturnThrows() {
+		assertThatThrownBy(() -> this.bookRepository.findByTitle("Dune", Pageable.unpaged()))
+				.isInstanceOf(UnsupportedOperationException.class)
+				.hasMessageContaining("Slice or Page");
 	}
 
 	@Configuration

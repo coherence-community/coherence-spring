@@ -22,6 +22,9 @@ import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
@@ -74,4 +77,8 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 	Streamable<Book> streamByAuthor(Author author);
 
 	int deleteByTitleStartingWith(String title);
+
+	Page<Book> findByAuthor(Author author, Pageable pageable);
+
+	Slice<Book> findByTitle(String title, Pageable pageable);
 }
