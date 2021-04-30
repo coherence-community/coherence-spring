@@ -67,6 +67,7 @@
 
 	<modules>
 		<module>coherence-spring-core</module>
+		<module>coherence-spring-data</module>
 		<module>coherence-spring-boot-starter</module>
 		<module>coherence-spring-tests</module>
 		<module>coherence-spring-site</module>

@@ -54,7 +54,7 @@ public class QueryCreatorTests {
 		assertThat(result.getFilter()).isEqualTo(
 				Filters.equal("author", FRANK_HERBERT)
 						.and(Filters.greater(new UniversalExtractor<>("pages"), 300))
-		                .and(Filters.less(new UniversalExtractor<>("pages"), 500)));
+						.and(Filters.less(new UniversalExtractor<>("pages"), 500)));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}

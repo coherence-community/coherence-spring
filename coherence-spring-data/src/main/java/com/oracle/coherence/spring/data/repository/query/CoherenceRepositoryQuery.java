@@ -114,7 +114,8 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 					if (order.isDescending()) {
 						comparator = comparator.reversed();
 					}
-				} else {
+				}
+				else {
 					Remote.Comparator temp = Remote.comparator(new UniversalExtractor(order.getProperty()));
 					if (order.isDescending()) {
 						temp = comparator.reversed();
