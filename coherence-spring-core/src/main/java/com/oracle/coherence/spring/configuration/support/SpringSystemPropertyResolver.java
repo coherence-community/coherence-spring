@@ -25,6 +25,11 @@ public class SpringSystemPropertyResolver
 		implements SystemPropertyResolver, EnvironmentVariableResolver {
 
 	/**
+	 * By default empty, indicating that no Coherence property prefix is applied.
+	 */
+	public static final String DEFAULT_PROPERTY_PREFIX = "";
+
+	/**
 	 * The Spring {@link Environment}.
 	 */
 	private static volatile Environment env;
@@ -32,7 +37,7 @@ public class SpringSystemPropertyResolver
 	/**
 	 * An optional prefix. By default not used.
 	 */
-	private static String propertyPrefix = "";
+	private static String propertyPrefix = DEFAULT_PROPERTY_PREFIX;
 
 	/**
 	 * This constructor is required so that Coherence can discover
@@ -55,7 +60,7 @@ public class SpringSystemPropertyResolver
 	 * This constructor will be called by Spring to instantiate the
 	 * singleton bean and set the {@link Environment}.
 	 * @param environment the Spring {@link Environment}
-	 * @param propertyPrefix must not be null or empty
+	 * @param propertyPrefix must not be null. Empty String means no prefix is being used.
 	 */
 	public SpringSystemPropertyResolver(Environment environment, String propertyPrefix) {
 		Assert.notNull(environment, "environment must not be null.");

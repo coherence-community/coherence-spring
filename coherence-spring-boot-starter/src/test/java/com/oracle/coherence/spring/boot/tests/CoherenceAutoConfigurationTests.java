@@ -131,7 +131,7 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(context).hasSingleBean(SpringSystemPropertyResolver.class);
 					SpringSystemPropertyResolver springSystemPropertyResolver = context.getBean(SpringSystemPropertyResolver.class);
 					final String propertyPrefix = (String) ReflectionTestUtils.getField(springSystemPropertyResolver, "propertyPrefix");
-					assertThat(propertyPrefix).isEqualTo("coherence.properties.");
+					assertThat(propertyPrefix).isEqualTo("");
 				});
 	}
 

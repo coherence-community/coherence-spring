@@ -15,6 +15,7 @@ import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.CollectionUtils;
@@ -33,11 +34,6 @@ public class CoherenceProperties {
 	 * Configuration prefix for config properties.
 	 */
 	public static final String PREFIX = "coherence";
-
-	/**
-	 * Default service name prefix. Defaults recursively to ${code coherence.role}.
-	 */
-	private static final String SPRING_COHERENCE_PROPERTIES_PREFIX = "coherence.properties.";
 
 	/**
 	 * Default service name prefix. Defaults recursively to ${code coherence.role}.
@@ -83,6 +79,11 @@ public class CoherenceProperties {
 	private boolean configEnabled;
 
 	/**
+	 * Default prefix for Coherence properties. Defaults to {@link SpringSystemPropertyResolver#DEFAULT_PROPERTY_PREFIX}.
+	 */
+	private String propertyPrefix = SpringSystemPropertyResolver.DEFAULT_PROPERTY_PREFIX;
+
+	/**
 	 * Session configuration.
 	 */
 	private SessionProperties sessions = new SessionProperties();
@@ -119,6 +120,14 @@ public class CoherenceProperties {
 		this.configEnabled = configEnabled;
 	}
 
+	public String getPropertyPrefix() {
+		return this.propertyPrefix;
+	}
+
+	public void setPropertyPrefix(String propertyPrefix) {
+		this.propertyPrefix = propertyPrefix;
+	}
+
 	/**
 	 * Returns a {@link Map} of Coherence properties using the format {@code coherence.properties.*}.
 	 * @return the Coherence properties as a {@link Map}. Never returns null.
@@ -129,23 +138,23 @@ public class CoherenceProperties {
 		if (this.logging != null) {
 
 			if (this.logging.destination != null) {
-				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_DESTINATION, this.logging.destination.getKey());
+				coherenceProperties.put(this.propertyPrefix + this.LOG_DESTINATION, this.logging.destination.getKey());
 			}
 
 			if (StringUtils.hasText(this.logging.loggerName)) {
-				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LOGGER_NAME, this.logging.loggerName);
+				coherenceProperties.put(this.propertyPrefix + this.LOG_LOGGER_NAME, this.logging.loggerName);
 			}
 
 			if (this.logging.severityLevel != null) {
-				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LEVEL, this.logging.severityLevel);
+				coherenceProperties.put(this.propertyPrefix + this.LOG_LEVEL, this.logging.severityLevel);
 			}
 
 			if (StringUtils.hasText(this.logging.messageFormat)) {
-				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_MESSAGE_FORMAT, this.logging.messageFormat);
+				coherenceProperties.put(this.propertyPrefix + this.LOG_MESSAGE_FORMAT, this.logging.messageFormat);
 			}
 
 			if (this.logging.characterLimit != null) {
-				coherenceProperties.put(this.SPRING_COHERENCE_PROPERTIES_PREFIX + this.LOG_LIMIT, this.logging.characterLimit);
+				coherenceProperties.put(this.propertyPrefix + this.LOG_LIMIT, this.logging.characterLimit);
 			}
 		}
 		return coherenceProperties;

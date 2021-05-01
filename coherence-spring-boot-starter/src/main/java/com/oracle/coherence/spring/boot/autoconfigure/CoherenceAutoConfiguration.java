@@ -81,7 +81,7 @@ public class CoherenceAutoConfiguration {
 			registry.registerBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME,
 					BeanDefinitionBuilder.genericBeanDefinition(SpringSystemPropertyResolver.class)
 							.addConstructorArgValue(environment)
-							.addConstructorArgValue("coherence.properties.")
+							.addConstructorArgValue(coherenceProperties.getPropertyPrefix())
 							.getBeanDefinition());
 
 			final List<AbstractSessionConfigurationBean> sessionConfigurationBeans = coherenceProperties.getSessions().getAllSessionConfigurationBeans();
