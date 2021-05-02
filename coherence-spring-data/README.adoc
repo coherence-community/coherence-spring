@@ -1,0 +1,93 @@
+= Spring Data Coherence
+
+The primary goal of the https://projects.spring.io/spring-data[Spring Data] project is to make it easier to build Spring-powered applications that use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data services.
+
+The Spring Data Coherence project aims to provide a familiar and consistent Spring-based programming model for new
+data stores while retaining store-specific features and capabilities.
+The Spring Data Coherence project provides integration with the Oracle Coherence Data Grid.
+Key functional areas of Spring Data Coherence are a POJO centric model for interacting with an Oracle Coherence Data Grid
+and easily writing a repository style data access layer.
+
+== Getting Started
+
+Here is a simple example application using Spring Data Coherence Repositories in Java:
+
+[source,java]
+----
+public interface PersonRepository extends CrudRepository<Person, Long> { // <1>
+
+  List<Person> findByLastname(String lastname);
+
+  List<Person> findByFirstnameLike(String firstname);
+}
+
+// -- OR --
+
+@com.oracle.coherence.spring.data.config.CoherenceMap("people")
+public interface PersonRepository extends CrudRepository<Person, Long> { // <2>
+  List<Person> findByLastname(String lastname);
+
+  List<Person> findByFirstnameLike(String firstname);
+}
+
+@Service
+public class MyService {
+
+  private final PersonRepository repository;
+
+  public MyService(PersonRepository repository) {
+    this.repository = repository;
+  }
+
+  public void doWork() {
+
+    repository.deleteAll();
+
+    Person person = new Person();
+    person.setFirstname("Frank");
+    person.setLastname("Herbert");
+    repository.save(person);
+
+    List<Person> lastNameResults = repository.findByLastname("Herbert");
+    List<Person> firstNameResults = repository.findByFirstnameLike("Fra*");
+ }
+}
+
+@Configuration
+@EnableCoherence // <3>
+@EnableCoherenceRepositories // <4>
+public static class Config {
+}
+----
+<1> If the repository type is *not* annotated, then the Coherence Map name is derived from
+the repository type, e.g., `PersonRepository` would use a Coherence Map named `person`
+<2> Alternatively, you may define the name of the Coherence Map explicitly by using
+the `@com.oracle.coherence.spring.data.config.CoherenceMap` annotation
+<2> Enables/starts a Coherence cluster member,
+<3> Enables Coherence-based repositories
+
+=== Maven configuration
+
+Add the Maven dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>com.oracle.coherence.spring</groupId>
+  <artifactId>coherence-spring-data</artifactId>
+  <version>${version}.RELEASE</version>
+</dependency>
+----
+
+If you'd rather use the latest snapshots of the upcoming major version, reference the `SNAPSHOT` version:
+
+[source,xml]
+----
+<dependency>
+  <groupId>com.oracle.coherence.spring</groupId>
+  <artifactId>coherence-spring-data</artifactId>
+  <version>${version}.BUILD-SNAPSHOT</version>
+</dependency>
+----
+
+See project main project https://github.com/coherence-community/coherence-spring[README] for details on licensing, getting help, contributing, or logging issues.
