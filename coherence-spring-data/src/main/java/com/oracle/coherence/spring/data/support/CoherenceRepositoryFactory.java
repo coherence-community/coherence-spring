@@ -121,6 +121,11 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 			Coherence coherence = this.applicationContext.getBean("coherence", Coherence.class);
 			this.session = coherence.getSession(this.sessionName);
 		}
+
+		if (this.session == null) {
+			throw new IllegalStateException("Unable to obtain Coherence Session." +
+					"  Verify a Coherence cluster is available.");
+		}
 		return this.session;
 	}
 

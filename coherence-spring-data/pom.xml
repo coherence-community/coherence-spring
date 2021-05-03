@@ -40,6 +40,7 @@
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-core</artifactId>
 			<version>${project.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>
@@ -76,11 +77,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<scope>provided</scope>
 		</dependency>
@@ -89,11 +85,6 @@
 			<artifactId>javaee-api</artifactId>
 			<version>${javaee-api.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>${javax.annotation-api.version}</version>
 		</dependency>
 
 		<dependency>
@@ -138,12 +129,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.oracle.bedrock</groupId>
 			<artifactId>bedrock-testing-support</artifactId>
 			<version>5.1.1</version>
@@ -156,15 +141,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
-			<artifactId>coherence-grpc-proxy</artifactId>
-			<version>${coherence.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.awaitility</groupId>
-			<artifactId>awaitility</artifactId>
-			<version>${awaitility.version}</version>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>${javax.annotation-api.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
