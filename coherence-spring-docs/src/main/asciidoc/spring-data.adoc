@@ -2,10 +2,87 @@
 = Coherence Spring Data
 include::attributes.adoc[]
 
-This section dives into the Coherence Spring Data module. It explains how to use
-Coherence's support for {spring-docs-session}[Spring Data] repositories.
-
 [[spring-data-introduction]]
-== Getting Started
+== Introduction
 
-TBD
+The Spring Data Coherence module provides integration with Coherence data grids. Key functional areas of Spring Data Coherence are a POJO centric model for interacting with a Coherence data grid and easily writing a Repository style data access layer.
+
+== Features
+* Spring configuration support using Java-based @Configuration classes.
+* Automatic implementation of Repository interfaces
+* Rich query and event features of the Coherence data grid have been exposed by `CoherenceRepository` which users may implement if functionality beyond standard CRUD is desired.  See the {oracle-coherence-repository-docs}[Coherence Repository API] for details - the API exposed by this projects
+Repository interface is the same.
+
+=== Functionality Not Supported in the M1 Release
+* Paging will be supported by the next milestone release, however, this can still be done using a Coherence `LimitFilter` along with the `CoherenceRepository` implementation.
+* Exception translation into Spring’s portable Data Access Exception hierarchy
+
+== Defining Repositories
+
+Before proceeded, please be familiar with {spring-docs-data-commons}[Spring Data Commons], as this section will assume prior knowledge.
+
+Simple repositories such as:
+
+[source,java]
+----
+public interface PersonRepository extends CrudRepository<String, Person> {
+	// ...
+}
+----
+
+Will of course work as expected.  However, to fully utilize what Coherence can offer,
+it is recommended to extend `com.oracle.coherence.spring.data.repository.CoherenceRepository`
+interface:
+
+[source,java]
+----
+public interface PersonRepository extends CoherenceRepository<String, Person> {
+	// ...
+}
+----
+
+The Coherence `NamedMap` that will be used by the Repository implementation
+is based will be based on the type name in the Repository class assuming the Repository
+name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called `person`). If this is not desired, the name may instead be passed to the `@CoherenceRepository`
+annotation.  For example:
+
+[source,java]
+----
+@com.oracle.coherence.spring.data.config.CoherenceMap("people")
+public interface PersonRepository extends CoherenceRepository<String, Person> {
+	// ...
+}
+----
+
+== Using the Repository
+
+One of the benefits of Spring Data is the ability to define queries using Spring Data's
+finder query syntax.  Coherence Repositories have support for this functionality, however,
+as stated in the Features section, Paging queries are not supported and will throw an
+exception.  Support will be added before the final release.
+
+If your Repository extends `CoherenceRepository`, please review the {oracle-coherence-repository-docs}[documentation]
+for non-Spring Coherence Repositories.  The features exposed by the `CoherenceRepository`
+interface are the same.
+
+== Mapping Entities
+
+As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
+Repository is relatively simple.  It requires using the `javax.persistence.Entity` annotation
+to define the domain type that will be persisted, and the `javax.persistence.Id` annotation to
+define denote the entity's id.
+
+For example:
+
+[source,java]
+----
+@javax.persistence.Entity
+public class Person implements Serializable {
+	@javax.persistence.Id
+	protected String id;
+
+	// ---- person functionality ----
+}
+----
+
+Any other `javax.persistence` annotations will not be considered by the runtime.
