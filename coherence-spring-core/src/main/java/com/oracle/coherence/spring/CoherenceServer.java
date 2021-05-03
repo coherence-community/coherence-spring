@@ -10,10 +10,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.oracle.coherence.spring.configuration.DefaultCoherenceConfigurer;
 import com.tangosol.coherence.config.Config;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,6 +32,8 @@ import org.springframework.context.Lifecycle;
  * @since 3.0
  */
 public class CoherenceServer implements InitializingBean, DisposableBean, Lifecycle, ApplicationContextAware {
+
+	private static final Log logger = LogFactory.getLog(CoherenceServer.class);
 
 	/**
 	 * Start up default of 60 seconds.
@@ -124,9 +129,15 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 
 	@Override
 	public void stop() {
+		if (logger.isInfoEnabled()) {
+			logger.info("Stopping Coherence");
+		}
 		if (this.coherence != null) {
 			this.coherence.close();
 		}
 		Coherence.closeAll();
+		if (logger.isInfoEnabled()) {
+			logger.info("Stopped Coherence");
+		}
 	}
 }

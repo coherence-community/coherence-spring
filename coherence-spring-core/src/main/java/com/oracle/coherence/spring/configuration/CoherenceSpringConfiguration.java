@@ -114,6 +114,7 @@ public class CoherenceSpringConfiguration {
 	}
 
 	@Bean(COHERENCE_SERVER_BEAN_NAME)
+	@DependsOn(SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME)
 	public CoherenceServer getCoherenceServer() {
 		return this.coherenceServer;
 	}
