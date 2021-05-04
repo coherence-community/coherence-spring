@@ -1,17 +1,8 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.data.support;
 
@@ -26,7 +17,6 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedMap;
 import com.tangosol.net.Session;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.EntityInformation;
@@ -51,7 +41,7 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 	/**
 	 * The Spring {@code ApplicationContext}.
 	 */
-	private final ApplicationContext applicationContext;
+	private final Coherence coherence;
 
 	/**
 	 * The {@link MappingContext}.
@@ -81,16 +71,15 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 
 	/**
 	 * Creates a new {@code CoherenceRepositoryFactory}.
-	 * @param applicationContext the Spring {@link ApplicationContext}
+	 * @param coherence the {@link Coherence} instance
 	 * @param mappingContext the {@link MappingContext}
 	 * @param sessionName the {@link Session} name
 	 * @param mapName the {@link NamedMap} name
 	 */
-	public CoherenceRepositoryFactory(ApplicationContext applicationContext,
+	public CoherenceRepositoryFactory(Coherence coherence,
 			CoherenceMappingContext mappingContext,
 			String sessionName, String mapName) {
-
-		this.applicationContext = applicationContext;
+		this.coherence = coherence;
 		this.mappingContext = mappingContext;
 		this.sessionName = sessionName;
 		this.mapName = mapName;
@@ -116,10 +105,8 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 	 * @return a {@link Session} based on the {@link #sessionName}
 	 */
 	private Session ensureSession() {
-
 		if (this.session == null) {
-			Coherence coherence = this.applicationContext.getBean("coherence", Coherence.class);
-			this.session = coherence.getSession(this.sessionName);
+			this.session = this.coherence.getSession(this.sessionName);
 		}
 
 		if (this.session == null) {

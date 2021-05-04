@@ -1,17 +1,8 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.data.support;
 
@@ -24,13 +15,11 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedMap;
 import com.tangosol.net.Session;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
+import org.springframework.util.Assert;
 
 /**
  * Factory responsible for creating Repository instances for a specific repository
@@ -40,21 +29,21 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
  * @param <T>  the repository type
  * @param <S>  the entity type
  * @author Ryan Lubke
+ * @author Gunnar Hillert
  * @since 3.0.0
  */
 public class CoherenceRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
-		extends RepositoryFactoryBeanSupport<T, S, ID>
-		implements ApplicationContextAware {
+		extends RepositoryFactoryBeanSupport<T, S, ID> {
 
 	/**
-	 * The Spring {@code ApplicationContext}.
+	 * The {@link Coherence} instance.
 	 */
-	protected ApplicationContext applicationContext;
+	private Coherence coherence;
 
 	/**
 	 * The {@link MappingContext}.
 	 */
-	private final CoherenceMappingContext ctx = new CoherenceMappingContext();
+	private final CoherenceMappingContext coherenceMappingContext = new CoherenceMappingContext();
 
 	/**
 	 * Constructs a new {@code CoherenceRepositoryFactoryBean} for the provided repository interface.
@@ -62,7 +51,7 @@ public class CoherenceRepositoryFactoryBean<T extends Repository<S, ID>, S, ID e
 	 */
 	public CoherenceRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
 		super(repositoryInterface);
-		setMappingContext(this.ctx);
+		setMappingContext(this.coherenceMappingContext);
 	}
 
 	/**
@@ -97,11 +86,24 @@ public class CoherenceRepositoryFactoryBean<T extends Repository<S, ID>, S, ID e
 						" and specify the name and/or session the repository should use.", repoClass.getName()));
 			}
 		}
-		return new CoherenceRepositoryFactory(this.applicationContext, this.ctx, sessionName, mapName);
+		return new CoherenceRepositoryFactory(this.coherence, this.coherenceMappingContext, sessionName, mapName);
 	}
 
+	/**
+	 * Configures the {@link Coherence} instance to be used.
+	 * @param coherence the Coherence instance to set
+	 */
+	public void setCoherence(Coherence coherence) {
+		this.coherence = coherence;
+	}
+
+	/**
+	 * Ensure that {@link #coherence} is not null.
+	 * @see RepositoryFactoryBeanSupport#afterPropertiesSet()
+	 */
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
+	public void afterPropertiesSet() {
+		super.afterPropertiesSet();
+		Assert.notNull(this.coherence != null, "Coherence must not be null.");
 	}
 }
