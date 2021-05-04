@@ -61,9 +61,10 @@ public class CoherenceEventListenerCandidates implements ApplicationContextAware
 			for (Method method : methods) {
 				final Class<?> argumentClassType = method.getParameters()[0].getType();
 
-				logger.info(String.format("Handling Coherence %s - Bean: %s, method: %s",
-					argumentClassType.getName(), beanName, method.getName())); //TODO
-
+				if (logger.isDebugEnabled()) {
+					logger.debug(String.format("Handling Coherence %s - Bean: %s, method: %s",
+							argumentClassType.getName(), beanName, method.getName()));
+				}
 				if (Event.class.isAssignableFrom(argumentClassType)) {
 					final MethodEventObserver observer = new MethodEventObserver<>(beanName, method, this.applicationContext);
 					final EventObserverSupport.EventHandler handler = EventObserverSupport

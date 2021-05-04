@@ -107,15 +107,21 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		}
 
 		if (this.getCoherenceConfiguration() == null) {
-			logger.warn("No Coherence configuration was provided...using default.");
+			if (logger.isInfoEnabled()) {
+				logger.info("No Coherence configuration was provided...using default.");
+			}
 			this.coherenceConfiguration = this.createCoherenceConfiguration();
 		}
 		if (this.getCoherence() == null) {
-			logger.warn("No Coherence instance was provided...creating a default instance.");
+			if (logger.isInfoEnabled()) {
+				logger.info("No Coherence instance was provided...creating a default instance.");
+			}
 			this.coherence = this.createCoherence();
 		}
 		if (this.getCoherenceServer() == null) {
-			logger.warn("No Coherence server defined...creating default server.");
+			if (logger.isInfoEnabled()) {
+				logger.info("No Coherence server defined...creating default server.");
+			}
 			this.coherenceServer = this.createCoherenceServer();
 		}
 		this.initialized = true;

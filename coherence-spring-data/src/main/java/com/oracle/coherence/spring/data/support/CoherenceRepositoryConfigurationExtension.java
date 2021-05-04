@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import javax.persistence.Entity;
 
+import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.data.repository.CoherenceRepository;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -53,8 +54,8 @@ public class CoherenceRepositoryConfigurationExtension extends RepositoryConfigu
 
 	@Override
 	public void postProcess(BeanDefinitionBuilder builder, AnnotationRepositoryConfigurationSource config) {
-		builder.addDependsOn("coherence");
+		builder.addDependsOn(CoherenceSpringConfiguration.COHERENCE_SERVER_BEAN_NAME);
 		builder.setLazyInit(true);
-		builder.addPropertyReference("coherence", "coherence");
+		builder.addPropertyReference("coherence", CoherenceSpringConfiguration.COHERENCE_BEAN_NAME);
 	}
 }
