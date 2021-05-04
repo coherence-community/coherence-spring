@@ -100,7 +100,7 @@ public class QueryCreatorTests {
 
 		Filter<?> filter = result.getFilter();
 		assertThat(filter).isInstanceOf(LikeFilter.class);
-		assertThat(((LikeFilter<?,?>) filter).isIgnoreCase()).isTrue();
+		assertThat(((LikeFilter<?, ?>) filter).isIgnoreCase()).isTrue();
 		assertThat(result.getFilter()).isEqualTo(
 				Filters.like(new UniversalExtractor<>("title"), "dune messiah", true));
 		assertThat(result.getAggregator()).isNull();
