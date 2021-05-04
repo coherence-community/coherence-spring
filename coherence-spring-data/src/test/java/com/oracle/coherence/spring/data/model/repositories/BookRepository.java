@@ -36,11 +36,19 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	List<Book> findByAuthor(Author author);
 
+	List<Book> findByTitleIgnoreCase(String title);
+
 	List<Book> findByPagesGreaterThanEqual(int pages);
 
 	List<Book> findByPagesLessThanEqual(int pageCount);
 
 	List<Book> findByTitleLike(String like);
+
+	List<Book> findByTitleNotLike(String like);
+
+	List<Book> findByTitleLikeIgnoreCase(String like);
+
+	List<Book> findByTitleNotLikeIgnoreCase(String like);
 
 	List<Book> findByPagesGreaterThan(int pageCount);
 
@@ -54,7 +62,11 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	List<Book> findByTitleStartingWith(String keyword);
 
+	List<Book> findByTitleStartingWithIgnoreCase(String keyword);
+
 	List<Book> findByTitleEndingWith(String keyword);
+
+	List<Book> findByTitleEndingWithIgnoreCase(String keyword);
 
 	List<Book> findByTitleIn(Collection<String> titles);
 

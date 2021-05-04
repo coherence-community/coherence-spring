@@ -79,9 +79,13 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 		Objects.requireNonNull(iterator, "iterator must not be null");
 
 		String prop = part.getProperty().toDotPath();
+		boolean ignoreCase = isIgnoreCase(part);
+
 		switch (part.getType()) {
 			case SIMPLE_PROPERTY:
-				return setFilter(Filters.equal(prop, iterator.next()));
+				return setFilter(ignoreCase
+						? Filters.like(Extractors.extract(prop), iterator.next().toString(), true)
+						: Filters.equal(prop, iterator.next()));
 			case BETWEEN:
 				return setFilter(Filters.between(Extractors.extract(prop),
 						(Comparable) iterator.next(),    // lower bound
@@ -107,16 +111,16 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 						(Comparable) iterator.next()));
 			case NOT_LIKE:
 				return setFilter(Filters.not(Filters.like(Extractors.extract(prop),
-						iterator.next().toString())));
+						iterator.next().toString(), ignoreCase)));
 			case LIKE:
 				return setFilter(Filters.like(Extractors.extract(prop),
-						iterator.next().toString()));
+						iterator.next().toString(), ignoreCase));
 			case STARTING_WITH:
 				return setFilter(Filters.like(Extractors.extract(prop),
-						iterator.next().toString() + WILDCARD));
+						iterator.next().toString() + WILDCARD, ignoreCase));
 			case ENDING_WITH:
 				return setFilter(Filters.like(Extractors.extract(prop),
-						WILDCARD + iterator.next().toString()));
+						WILDCARD + iterator.next().toString(), ignoreCase));
 			case IS_NOT_EMPTY:
 			case IS_EMPTY:
 				// TODO
@@ -145,9 +149,22 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 			case FALSE:
 				return setFilter(Filters.isFalse(Extractors.extract(prop)));
 			case NEGATING_SIMPLE_PROPERTY:
-				return setFilter(Filters.not(Filters.equal(prop, iterator.next())));
+				return setFilter(Filters.not(
+						ignoreCase
+							? Filters.like(Extractors.extract(prop), iterator.next().toString(), true)
+							: Filters.equal(prop, iterator.next())));
 		}
 		return this.criteria;
+	}
+
+	private boolean isIgnoreCase(Part part) {
+		switch (part.shouldIgnoreCase()) {
+			case ALWAYS:
+			case WHEN_POSSIBLE:
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	private QueryState setFilter(Filter filter) {

@@ -7,11 +7,14 @@ import java.util.Optional;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.query.CoherenceQueryCreator;
 import com.oracle.coherence.spring.data.repository.query.QueryResult;
+import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.aggregator.Count;
 import com.tangosol.util.aggregator.DistinctValues;
 import com.tangosol.util.extractor.UniversalExtractor;
+import com.tangosol.util.filter.LikeFilter;
 import com.tangosol.util.filter.LimitFilter;
+import com.tangosol.util.filter.NotFilter;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.data.domain.Pageable;
@@ -80,6 +83,20 @@ public class QueryCreatorTests {
 				Filters.equal("author", FRANK_HERBERT)
 						.or(Filters.greater(new UniversalExtractor<>("pages"), 300))
 						.or(Filters.less(new UniversalExtractor<>("pages"), 500)));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureSimpleIgnoreCase() {
+		QueryResult result = getQuery("findByTitleIgnoreCase", "dune messiah");
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?,?>) filter).isIgnoreCase()).isTrue();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.like(new UniversalExtractor<>("title"), "dune messiah", true));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}
@@ -164,10 +181,58 @@ public class QueryCreatorTests {
 	@Test
 	void ensureLikeQuery() {
 		QueryResult result = getQuery("findByTitleLike", "%keyw%ord%");
-
 		assertThat(result).isNotNull();
-		assertThat(result.getFilter()).isEqualTo(
-				Filters.like(new UniversalExtractor<>("title"), "%keyw%ord%"));
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) filter).isIgnoreCase()).isFalse();
+		assertThat(filter).isEqualTo(Filters.like(new UniversalExtractor<>("title"), "%keyw%ord%"));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNotLikeQuery() {
+		QueryResult result = getQuery("findByTitleNotLike", "%keyw%ord%");
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(NotFilter.class);
+
+		Filter<?> inner = ((NotFilter<?>) filter).getFilter();
+		assertThat(inner).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) inner).isIgnoreCase()).isFalse();
+		assertThat(filter).isEqualTo(Filters.not(Filters.like(new UniversalExtractor<>("title"), "%keyw%ord%")));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureCaseInsensitiveLikeQuery() {
+		QueryResult result = getQuery("findByTitleLikeIgnoreCase", "%keyw%ord%");
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) filter).isIgnoreCase()).isTrue();
+		assertThat(filter).isEqualTo(
+				Filters.like(new UniversalExtractor<>("title"), "%keyw%ord%", true));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureCaseInsensitiveNotLikeQuery() {
+		QueryResult result = getQuery("findByTitleNotLikeIgnoreCase", "%keyw%ord%");
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(NotFilter.class);
+
+		Filter<?> inner = ((NotFilter<?>) filter).getFilter();
+		assertThat(inner).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) inner).isIgnoreCase()).isTrue();
+		assertThat(filter).isEqualTo(Filters.not(Filters.like(new UniversalExtractor<>("title"), "%keyw%ord%", true)));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}
@@ -184,23 +249,49 @@ public class QueryCreatorTests {
 	}
 
 	@Test
+	void ensureCaseInsensitiveStartingWithQuery() {
+		QueryResult result = getQuery("findByTitleStartingWithIgnoringCase", "keyword");
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) filter).isIgnoreCase()).isTrue();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.like(new UniversalExtractor<>("title"), "keyword%", true));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
 	void ensureEndingWithQuery() {
-		QueryResult result = getQuery("findByTitleIn", Arrays.asList("Dune", "Dune Messiah"));
+		QueryResult result = getQuery("findByTitleEndingWith", "keyword");
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
-				Filters.in(new UniversalExtractor<>("title"), "Dune", "Dune Messiah"));
+				Filters.like(new UniversalExtractor<>("title"), "%keyword"));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureCaseInsensitiveEndingWithQuery() {
+		QueryResult result = getQuery("findByTitleEndingWithIgnoringCase", "keyword");
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(LikeFilter.class);
+		assertThat(((LikeFilter<?, ?>) filter).isIgnoreCase()).isTrue();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.like(new UniversalExtractor<>("title"), "%keyword", true));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}
 
 	@Test
 	void ensureInQuery() {
-		QueryResult result = getQuery("findByTitleEndingWith", "keyword");
+		QueryResult result = getQuery("findByTitleIn", Arrays.asList("Dune", "Dune Messiah"));
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
-				Filters.like(new UniversalExtractor<>("title"), "%keyword"));
+				Filters.in(new UniversalExtractor<>("title"), "Dune", "Dune Messiah"));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}

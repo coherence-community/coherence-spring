@@ -39,6 +39,13 @@ public class QueryFinderTests extends AbstractDataTest {
 	}
 
 	@Test
+	public void ensureSimpleIgnoreCase() {
+		List<Book> books = this.bookRepository.findByTitleIgnoreCase(DUNE_MESSIAH.getTitle().toLowerCase());
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactly(DUNE_MESSIAH);
+	}
+
+	@Test
 	public void ensureGreaterThanEqualFinderQuery() {
 		List<Book> books = this.bookRepository.findByPagesGreaterThanEqual(468);
 		assertThat(books).isNotNull();
@@ -74,6 +81,41 @@ public class QueryFinderTests extends AbstractDataTest {
 	}
 
 	@Test
+	void ensureCaseSensitiveLikeFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleLike("%mess%");
+		assertThat(books).isNotNull();
+		assertThat(books).isEmpty();
+	}
+
+	@Test
+	void ensureNotLikeFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleNotLike("%Dune%");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureCaseSensitiveNotLikeFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleNotLike("%dune%");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureCaseInsensitiveLikeFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleLikeIgnoreCase("%mess%");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactly(DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureCaseInsensitiveNotLikeFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleNotLikeIgnoreCase("%dune%");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
 	void ensureAfterFinderQuery() {
 		List<Book> books = this.bookRepository.findByPublicationYearAfter(1980);
 		assertThat(books).isNotNull();
@@ -102,10 +144,38 @@ public class QueryFinderTests extends AbstractDataTest {
 	}
 
 	@Test
+	void ensureCaseSensitiveStartingWithFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleStartingWith("dune");
+		assertThat(books).isNotNull();
+		assertThat(books).isEmpty();
+	}
+
+	@Test
+	void ensureCaseInsensitiveStartingWithFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleStartingWithIgnoreCase("dune");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
 	void ensureEndingWithFinderQuery() {
 		List<Book> books = this.bookRepository.findByTitleEndingWith("Wind");
 		assertThat(books).isNotNull();
-		assertThat(books).containsExactlyInAnyOrder(NAME_OF_THE_WIND);
+		assertThat(books).containsOnly(NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureCaseSensitiveEndingWithFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleEndingWith("wind");
+		assertThat(books).isNotNull();
+		assertThat(books).isEmpty();
+	}
+
+	@Test
+	void ensureCaseInsensitiveEndingWithFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleEndingWithIgnoreCase("wind");
+		assertThat(books).isNotNull();
+		assertThat(books).containsOnly(NAME_OF_THE_WIND);
 	}
 
 	@Test
