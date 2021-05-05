@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -196,8 +197,8 @@ public class Book implements Cloneable, Serializable {
 	}
 
 	public Collection<String> getChapters() {
-		if (this.getTitle().length() % 2 == 0) {
-			return Collections.emptySet();
+		if (this.getPages() % 2 == 0) {
+			return new HashSet<>();
 		}
 		return Collections.singleton("A");
 	}

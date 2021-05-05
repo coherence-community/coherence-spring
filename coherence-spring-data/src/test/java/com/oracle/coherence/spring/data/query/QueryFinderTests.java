@@ -143,6 +143,13 @@ public class QueryFinderTests extends AbstractDataTest {
 	}
 
 	@Test
+	void ensureNotContainsFinderQuery() {
+		List<Book> books = this.bookRepository.findByTitleNotContains("Dune");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
 	void ensureStartingWithFinderQuery() {
 		List<Book> books = this.bookRepository.findByTitleStartingWith("Dune");
 		assertThat(books).isNotNull();
@@ -192,6 +199,16 @@ public class QueryFinderTests extends AbstractDataTest {
 		List<Book> books = this.bookRepository.findByTitleIn(titles);
 		assertThat(books).isNotNull();
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureNotInFinderQuery() {
+		Collection<String> titles = new ArrayList<>();
+		titles.add(DUNE.getTitle());
+		titles.add(DUNE_MESSIAH.getTitle());
+		List<Book> books = this.bookRepository.findByTitleNotIn(titles);
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT, NAME_OF_THE_WIND);
 	}
 
 	@Test
@@ -271,6 +288,48 @@ public class QueryFinderTests extends AbstractDataTest {
 		Streamable<Book> stream = this.bookRepository.streamByAuthor(FRANK_HERBERT);
 		Collection<Book> books = stream.stream().collect(Collectors.toList());
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureMatchesQuery() {
+		List<Book> books = this.bookRepository.findByTitleMatches(".+ .+");
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureIsTrueQuery() {
+		List<Book> books = this.bookRepository.findByLongBookIsTrue();
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureIsFalseQuery() {
+		List<Book> books = this.bookRepository.findByLongBookIsFalse();
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT);
+	}
+
+	@Test
+	void ensureNotQuery() {
+		List<Book> books = this.bookRepository.findByAuthorNot(FRANK_HERBERT);
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(HOBBIT, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureEmptyQuery() {
+		List<Book> books = this.bookRepository.findByChaptersEmpty();
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE_MESSIAH, NAME_OF_THE_WIND);
+	}
+
+	@Test
+	void ensureNotEmptyQuery() {
+		List<Book> books = this.bookRepository.findByChaptersNotEmpty();
+		assertThat(books).isNotNull();
+		assertThat(books).containsExactlyInAnyOrder(DUNE, HOBBIT);
 	}
 
 	@Test

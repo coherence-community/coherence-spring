@@ -113,9 +113,9 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 				return setFilter(Filters.like(Extractors.extract(prop),
 						WILDCARD + iterator.next().toString(), ignoreCase));
 			case IS_NOT_EMPTY:
-				return setFilter(Filters.isFalse(Extractors.chained(prop, "isEmpty")));
+				return setFilter(Filters.isFalse(Extractors.chained(prop, "isEmpty()")));
 			case IS_EMPTY:
-				return setFilter(Filters.isTrue(Extractors.chained(prop, "isEmpty")));
+				return setFilter(Filters.isTrue(Extractors.chained(prop, "isEmpty()")));
 			case NOT_CONTAINING:
 				return setFilter(Filters.not(Filters.like(Extractors.extract(prop),
 						WILDCARD + iterator.next().toString() + WILDCARD)));

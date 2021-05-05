@@ -81,10 +81,6 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	List<Book> findTop3ByPagesGreaterThan(int pageCount, Sort sort);
 
-	List<Book> findByTitleNear(String title);
-
-	List<Book> findByTitleWithin(String title);
-
 	List<Book> findByTitleMatches(String regex);
 
 	List<Book> findByLongBookIsTrue();
