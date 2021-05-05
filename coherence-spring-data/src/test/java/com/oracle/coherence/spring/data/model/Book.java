@@ -9,6 +9,8 @@ package com.oracle.coherence.spring.data.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -173,6 +175,31 @@ public class Book implements Cloneable, Serializable {
 	@SuppressWarnings("unused")
 	public Calendar getPublished() {
 		return this.published;
+	}
+
+	/**
+	 * Returns true if page count is greater than 400.
+	 *
+	 * @return true if page count is greater than 400
+	 */
+	public boolean isLongBook() {
+			return this.getPages() > 400;
+	}
+
+	/**
+	 * Returns true if page count is less than than 400.
+	 *
+	 * @return true if page count is less than than 400
+	 */
+	public boolean isShortBook() {
+		return !isLongBook();
+	}
+
+	public Collection<String> getChapters() {
+		if (this.getTitle().length() % 2 == 0) {
+			return Collections.emptySet();
+		}
+		return Collections.singleton("A");
 	}
 
 	@Override

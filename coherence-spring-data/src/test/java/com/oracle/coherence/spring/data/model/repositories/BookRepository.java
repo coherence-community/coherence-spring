@@ -51,6 +51,8 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	List<Book> findByTitleContains(String keyword);
 
+	List<Book> findByTitleNotContains(String keyword);
+
 	List<Book> findByTitleStartingWith(String keyword);
 
 	List<Book> findByTitleStartingWithIgnoreCase(String keyword);
@@ -60,6 +62,8 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 	List<Book> findByTitleEndingWithIgnoreCase(String keyword);
 
 	List<Book> findByTitleIn(Collection<String> titles);
+
+	List<Book> findByTitleNotIn(Collection<String> titles);
 
 	List<Book> findByPublicationYearBetween(int startYear, int endYear);
 
@@ -77,6 +81,21 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	List<Book> findTop3ByPagesGreaterThan(int pageCount, Sort sort);
 
+	List<Book> findByTitleNear(String title);
+
+	List<Book> findByTitleWithin(String title);
+
+	List<Book> findByTitleMatches(String regex);
+
+	List<Book> findByLongBookIsTrue();
+
+	List<Book> findByLongBookIsFalse();
+
+	List<Book> findByAuthorNot(Author author);
+
+	List<Book> findByChaptersEmpty();
+
+	List<Book> findByChaptersNotEmpty();
 	Streamable<Book> streamByAuthor(Author author);
 
 	int deleteByTitleStartingWith(String title);

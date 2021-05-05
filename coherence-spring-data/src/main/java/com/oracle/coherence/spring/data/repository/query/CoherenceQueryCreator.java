@@ -15,7 +15,6 @@ import com.tangosol.util.Aggregators;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
-import com.tangosol.util.filter.InFilter;
 import com.tangosol.util.filter.LimitFilter;
 
 import org.springframework.data.domain.Sort;
@@ -63,6 +62,7 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 		this.partTree = tree;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected QueryState create(Part part, Iterator<Object> iterator) {
 
@@ -113,20 +113,20 @@ public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, Que
 				return setFilter(Filters.like(Extractors.extract(prop),
 						WILDCARD + iterator.next().toString(), ignoreCase));
 			case IS_NOT_EMPTY:
+				return setFilter(Filters.isFalse(Extractors.chained(prop, "isEmpty")));
 			case IS_EMPTY:
-				// TODO
-				break;
+				return setFilter(Filters.isTrue(Extractors.chained(prop, "isEmpty")));
 			case NOT_CONTAINING:
-				return setFilter(Filters.not(Filters.contains(Extractors.extract(prop),
-						iterator.next())));
+				return setFilter(Filters.not(Filters.like(Extractors.extract(prop),
+						WILDCARD + iterator.next().toString() + WILDCARD)));
 			case CONTAINING:
 				return setFilter(Filters.like(Extractors.extract(prop),
 						WILDCARD + iterator.next().toString() + WILDCARD));
 			case NOT_IN:
 				return setFilter(Filters.not(Filters.in(Extractors.extract(prop),
-						iterator.next())));
+						new HashSet((Collection) iterator.next()))));
 			case IN:
-				return setFilter(new InFilter(Extractors.extract(prop),
+				return setFilter(Filters.in(Extractors.extract(prop),
 						new HashSet((Collection) iterator.next())));
 			case NEAR:
 			case WITHIN:

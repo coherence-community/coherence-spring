@@ -13,6 +13,7 @@ import java.util.Optional;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.query.CoherenceQueryCreator;
 import com.oracle.coherence.spring.data.repository.query.QueryResult;
+import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.aggregator.Count;
@@ -30,6 +31,7 @@ import org.springframework.data.repository.query.parser.PartTree;
 
 import static com.oracle.coherence.spring.data.AbstractDataTest.FRANK_HERBERT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QueryCreatorTests {
 
@@ -174,11 +176,26 @@ public class QueryCreatorTests {
 	}
 
 	@Test
-	void ensureContainsQuery() {
-		QueryResult result = getQuery("findByTitleContains", "keyword");
+	void ensureContainingQuery() {
+		QueryResult result = getQuery("findByTitleContaining", "keyword");
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
+				Filters.like(new UniversalExtractor<>("title"), "%keyword%"));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNotContainingQuery() {
+		QueryResult result = getQuery("findByTitleNotContaining", "keyword");
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(NotFilter.class);
+
+		Filter<?> inner = ((NotFilter<?>) filter).getFilter();
+		assertThat(inner).isEqualTo(
 				Filters.like(new UniversalExtractor<>("title"), "%keyword%"));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
@@ -297,6 +314,21 @@ public class QueryCreatorTests {
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
+				Filters.in(new UniversalExtractor<>("title"), "Dune", "Dune Messiah"));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNotInQuery() {
+		QueryResult result = getQuery("findByTitleNotIn", Arrays.asList("Dune", "Dune Messiah"));
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(NotFilter.class);
+
+		Filter<?> inner = ((NotFilter<?>) filter).getFilter();
+		assertThat(inner).isEqualTo(
 				Filters.in(new UniversalExtractor<>("title"), "Dune", "Dune Messiah"));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
@@ -438,7 +470,6 @@ public class QueryCreatorTests {
 		assertThat(limitFilter.getFilter()).isEqualTo(
 				Filters.greater(new UniversalExtractor<>("pages"), 100));
 		assertThat(limitFilter.getPageSize()).isEqualTo(10);
-
 	}
 
 	@Test
@@ -459,6 +490,90 @@ public class QueryCreatorTests {
 		assertThat(result.getFilter()).isEqualTo(Filters.equal("author", FRANK_HERBERT));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.by(Sort.Direction.DESC, "title"));
+	}
+
+	@Test
+	void ensureRegexQuery() {
+		QueryResult result = getQuery("findByTitleMatches", "regex");
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.regex(new UniversalExtractor<>("title"), "regex"));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureTrueQuery() {
+		QueryResult result = getQuery("findByLongBookIsTrue");
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.isTrue(new UniversalExtractor<>("longBook")));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureFalseQuery() {
+		QueryResult result = getQuery("findByLongBookIsFalse");
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.isFalse(new UniversalExtractor<>("longBook")));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNotQuery() {
+		QueryResult result = getQuery("findByAuthorNot", FRANK_HERBERT);
+		assertThat(result).isNotNull();
+
+		Filter<?> filter = result.getFilter();
+		assertThat(filter).isInstanceOf(NotFilter.class);
+
+		Filter<?> inner = ((NotFilter<?>) filter).getFilter();
+		assertThat(inner).isEqualTo(
+				Filters.equal("author", FRANK_HERBERT));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureEmptyQuery() {
+		QueryResult result = getQuery("findByChaptersEmpty");
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.isTrue(Extractors.chained("chapters", "isEmpty")));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNotEmptyQuery() {
+		QueryResult result = getQuery("findByChaptersNotEmpty");
+
+		assertThat(result).isNotNull();
+		assertThat(result.getFilter()).isEqualTo(
+				Filters.isFalse(Extractors.chained("chapters", "isEmpty")));
+		assertThat(result.getAggregator()).isNull();
+		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
+	}
+
+	@Test
+	void ensureNearQueryThrows() {
+		assertThatThrownBy(() -> getQuery("findByTitleNear"), "nope")
+				.isInstanceOf(UnsupportedOperationException.class)
+				.hasMessageContaining("Unsupported keyword: NEAR");
+	}
+
+	@Test
+	void ensureWithinQueryThrows() {
+		assertThatThrownBy(() -> getQuery("findByTitleWithin"), "nope")
+				.isInstanceOf(UnsupportedOperationException.class)
+				.hasMessageContaining("Unsupported keyword: WITHIN");
 	}
 
 	// ----- helper methods -------------------------------------------------
