@@ -6,11 +6,16 @@
  */
 package com.oracle.coherence.spring.data.model.repositories;
 
+import java.util.List;
+
 import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.CoherenceRepository;
 import com.tangosol.util.UUID;
 
 @CoherenceMap("book")
 public interface CoherenceBookRepository extends CoherenceRepository<Book, UUID> {
+
+	List<Book> findAllByAuthor(Author author);
 }

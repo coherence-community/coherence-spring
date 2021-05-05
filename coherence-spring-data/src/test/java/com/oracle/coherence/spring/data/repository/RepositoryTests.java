@@ -959,6 +959,13 @@ public class RepositoryTests extends AbstractDataTest {
 		assertThat(topPages).containsExactly(NAME_OF_THE_WIND, DUNE);
 	}
 
+	@Test
+	void ensureFinderQueries() {
+		List<Book> books = this.bookRepository.findAllByAuthor(FRANK_HERBERT);
+		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+
 	// ----- helper methods -------------------------------------------------
 
 	Filter<Author> author() {

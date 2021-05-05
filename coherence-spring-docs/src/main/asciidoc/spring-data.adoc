@@ -10,12 +10,36 @@ The Spring Data Coherence module provides integration with Coherence data grids.
 == Features
 * Spring configuration support using Java-based @Configuration classes.
 * Automatic implementation of Repository interfaces
-* Rich query and event features of the Coherence data grid have been exposed by `CoherenceRepository` which users may implement if functionality beyond standard CRUD is desired.  See the {oracle-coherence-repository-docs}[Coherence Repository API] for details - the API exposed by this projects
-Repository interface is the same.
+* Rich query and event features from Coherence
 
 === Functionality Not Supported in the M1 Release
-* Paging will be supported by the next milestone release, however, this can still be done using a Coherence `LimitFilter` along with the `CoherenceRepository` implementation.
+* Spring Data finder queries that use paging
+* Interface-based projection
 * Exception translation into Spring’s portable Data Access Exception hierarchy
+
+These will be supported in the next milestone release.  Another feature for the
+next milestone release will be a native asynchronous repository.
+
+== Getting Started
+
+.Coherence Spring Data Dependencies
+====
+.Maven
+[source,xml,role="primary",subs="verbatim,quotes,attributes"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-data</artifactId>
+    <version>{coherence-spring-version}</version>
+</dependency>
+----
+
+.Gradle
+[source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
+----
+implementation("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
+----
+====
 
 == Defining Repositories
 
@@ -30,40 +54,51 @@ public interface PersonRepository extends CrudRepository<String, Person> {
 }
 ----
 
-Will of course work as expected.  However, to fully utilize what Coherence can offer,
-it is recommended to extend `com.oracle.coherence.spring.data.repository.CoherenceRepository`
-interface:
+will, of course, work as expected.  However, to fully utilize what Coherence can offer:
+
+- Powerful projection features
+- Flexible in-place entity updates
+- First-class data aggregation support
+- Stream API support
+- Event listener support
+- Declarative acceleration and index creation
+
+it is recommended to extend `com.oracle.coherence.spring.data.repository.CoherenceRepository` interface.
+
+Please see the {oracle-coherence-repository-docs}[Coherence Repository] documentation for more details on these features.
 
 [source,java]
 ----
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
 public interface PersonRepository extends CoherenceRepository<String, Person> {
 	// ...
 }
 ----
+
+By extending this interface, you'll be able to
+
+=== Identifying the Coherence NamedMap
 
 The Coherence `NamedMap` that will be used by the Repository implementation
-is based will be based on the type name in the Repository class assuming the Repository
-name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called `person`). If this is not desired, the name may instead be passed to the `@CoherenceRepository`
-annotation.  For example:
+will be based on the type name in the Repository class assuming the Repository
+name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called `person`).
+If this is not desired, the name may instead be passed by the `@CoherenceRepository` annotation.  For example:
 
 [source,java]
 ----
-@com.oracle.coherence.spring.data.config.CoherenceMap("people")
+import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+@CoherenceMap("people")
 public interface PersonRepository extends CoherenceRepository<String, Person> {
 	// ...
 }
 ----
-
-== Using the Repository
-
-One of the benefits of Spring Data is the ability to define queries using Spring Data's
-finder query syntax.  Coherence Repositories have support for this functionality, however,
-as stated in the Features section, Paging queries are not supported and will throw an
-exception.  Support will be added before the final release.
-
-If your Repository extends `CoherenceRepository`, please review the {oracle-coherence-repository-docs}[documentation]
-for non-Spring Coherence Repositories.  The features exposed by the `CoherenceRepository`
-interface are the same.
 
 == Mapping Entities
 
@@ -86,3 +121,47 @@ public class Person implements Serializable {
 ----
 
 Any other `javax.persistence` annotations will not be considered by the runtime.
+
+== Using the Repository
+
+In order to enable Coherence-based Repositories, you must use the `@EnableCoherenceRepositories` annotation.
+A simple configuration example would be:
+
+[source,java]
+----
+import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+
+// ...
+
+@Configuration
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}
+----
+
+Similarly to other Spring Data implementations, the `@EnableCoherenceRepositories` annotation
+offers several configuration options to configure how Spring will search for repositories.
+Please see the {coherence-spring-api}[API docs] for details.
+
+=== Finder Queries
+
+One of the benefits of Spring Data is the ability to define queries on the Repository interface
+using Spring Data's https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details[finder query] syntax.
+For example:
+
+[source,java]
+----
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface BookRepository extends CoherenceRepository<Book, UUID> {
+	List<Book> findByAuthor(Author author);
+	// other finders
+}
+----
+
+As of the M1 release, however, finder queries using paging are not supported.  This functionality
+is targeted for the next milestone release.
