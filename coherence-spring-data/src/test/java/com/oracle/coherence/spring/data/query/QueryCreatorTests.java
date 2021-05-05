@@ -546,7 +546,7 @@ public class QueryCreatorTests {
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
-				Filters.isTrue(Extractors.chained("chapters", "isEmpty")));
+				Filters.isTrue(Extractors.chained("chapters", "empty")));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}
@@ -557,7 +557,7 @@ public class QueryCreatorTests {
 
 		assertThat(result).isNotNull();
 		assertThat(result.getFilter()).isEqualTo(
-				Filters.isFalse(Extractors.chained("chapters", "isEmpty")));
+				Filters.isFalse(Extractors.chained("chapters", "empty")));
 		assertThat(result.getAggregator()).isNull();
 		assertThat(result.getSort()).isEqualTo(Sort.unsorted());
 	}
