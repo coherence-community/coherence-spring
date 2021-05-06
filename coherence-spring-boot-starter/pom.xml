@@ -111,12 +111,18 @@
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
-			<version>1</version>
+			<version>${javax.inject.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>${javaee-api.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.bedrock</groupId>
+			<artifactId>bedrock-testing-support</artifactId>
+			<version>${bedrock.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

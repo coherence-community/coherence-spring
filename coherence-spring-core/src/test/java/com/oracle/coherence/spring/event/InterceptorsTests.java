@@ -93,6 +93,7 @@ class InterceptorsTests {
 	void testEventInterceptorMethods() {
 
 		NamedCache<String, Person> people = this.session.getCache("people");
+
 		people.put("homer", new Person("Homer", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));
 		people.put("marge", new Person("Marge", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));
 		people.put("bart", new Person("Bart", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));

@@ -21,7 +21,7 @@ import com.tangosol.net.NamedMap;
  * @author Gunnar Hillert
  * @since 3.0
  */
-final class EventsHelper {
+public final class EventsHelper {
 
 	/**
 	 * Private constructor for utility test.
@@ -29,17 +29,17 @@ final class EventsHelper {
 	private EventsHelper() {
 	}
 
-	static int getTotalListenerCount(NamedMap<?, ?> map) {
+	public static int getTotalListenerCount(NamedMap<?, ?> map) {
 		PartitionedCache$Storage storage = getStorage(map);
 		return getKeyListenerCount(storage) + getListenerCount(storage);
 	}
 
-	static int getListenerCount(NamedMap<?, ?> map) {
+	public static int getListenerCount(NamedMap<?, ?> map) {
 		PartitionedCache$Storage storage = getStorage(map);
 		return getListenerCount(storage);
 	}
 
-	static int getKeyListenerCount(NamedMap<?, ?> map) {
+	public static int getKeyListenerCount(NamedMap<?, ?> map) {
 		PartitionedCache$Storage storage = getStorage(map);
 		return getKeyListenerCount(storage);
 	}

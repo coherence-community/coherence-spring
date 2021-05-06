@@ -125,7 +125,7 @@
 		<dependency>
 			<groupId>com.oracle.bedrock</groupId>
 			<artifactId>bedrock-testing-support</artifactId>
-			<version>5.1.1</version>
+			<version>${bedrock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

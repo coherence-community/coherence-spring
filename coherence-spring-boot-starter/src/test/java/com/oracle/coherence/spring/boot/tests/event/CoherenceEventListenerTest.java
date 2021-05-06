@@ -8,7 +8,9 @@ package com.oracle.coherence.spring.boot.tests.event;
 
 import java.util.concurrent.TimeUnit;
 
+import com.oracle.bedrock.testsupport.deferred.Eventually;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.event.EventsHelper;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedMap;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 
 /**
 *
@@ -47,12 +51,19 @@ public class CoherenceEventListenerTest {
 	@DirtiesContext
 	public void testCoherenceEventListener() {
 		final NamedMap<String, String> namedMap = this.coherence.getSession().getMap("tasks");
-		namedMap.put("foo1", "bar1");
-		namedMap.put("foo2", "bar2");
-		namedMap.remove("foo1");
+
+		// Wait for the listener registration as it is async
+		Eventually.assertDeferred(() -> EventsHelper.getListenerCount(namedMap), is(greaterThanOrEqualTo(1)));
+
+		for (int i = 1; i <= 100; i++) {
+			System.out.println(i);
+			namedMap.put("foo_" + i, "bar" + i);
+		}
+
+		namedMap.remove("foo_1");
 
 		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->
-			assertThat(this.testService.getEventNames()).hasSize(3));
+			assertThat(this.testService.getEventNames()).hasSize(101));
 		assertThat(this.testService.getEventNames()).contains("insert", "insert", "delete");
 
 	}
