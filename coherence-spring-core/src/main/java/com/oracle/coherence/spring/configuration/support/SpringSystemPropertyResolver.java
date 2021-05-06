@@ -72,15 +72,21 @@ public class SpringSystemPropertyResolver
 
 	@Override
 	public String getProperty(String coherenceProperty) {
-		return (SpringSystemPropertyResolver.env != null)
-				? SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class)
-				: null;
+		if (SpringSystemPropertyResolver.env != null) {
+			return SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
+		}
+		else {
+			return System.getProperty(coherenceProperty);
+		}
 	}
 
 	@Override
 	public String getEnv(String coherenceProperty) {
-		return (SpringSystemPropertyResolver.env != null)
-				? SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class)
-				: null;
+		if (SpringSystemPropertyResolver.env != null) {
+			return SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
+		}
+		else {
+			return System.getenv(coherenceProperty);
+		}
 	}
 }

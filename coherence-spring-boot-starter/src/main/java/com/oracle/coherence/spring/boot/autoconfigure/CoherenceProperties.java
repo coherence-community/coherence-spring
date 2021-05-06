@@ -168,7 +168,7 @@ public class CoherenceProperties {
 		/**
 		 * The type of the logging destination. Default to "stderr" if not set.
 		 */
-		private LogType destination;
+		private LogType destination = LogType.SLF4J;
 
 		/**
 		 * Specifies which logged messages are emitted to the log destination. The legal values are -1 to 9.

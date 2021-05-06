@@ -17,11 +17,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.Lifecycle;
+import org.springframework.context.SmartLifecycle;
 
 /**
  * Responsible for starting the default
@@ -30,7 +29,7 @@ import org.springframework.context.Lifecycle;
  * @author Gunnar Hillert
  * @since 3.0
  */
-public class CoherenceServer implements InitializingBean, DisposableBean, Lifecycle, ApplicationContextAware {
+public class CoherenceServer implements InitializingBean, SmartLifecycle, ApplicationContextAware {
 
 	private static final Log logger = LogFactory.getLog(CoherenceServer.class);
 
@@ -85,12 +84,7 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		start();
-	}
-
-	@Override
-	public void destroy() throws Exception {
-		stop();
+		this.start();
 	}
 
 	public <K, V> NamedCache<K, V> getCache(String cacheName) {
@@ -117,6 +111,9 @@ public class CoherenceServer implements InitializingBean, DisposableBean, Lifecy
 
 	@Override
 	public void start() {
+		if (isRunning()) {
+			return;
+		}
 		try {
 			this.coherence.start().get(this.startupTimeout, TimeUnit.MILLISECONDS);
 		}

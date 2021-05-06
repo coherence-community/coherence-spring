@@ -4,5 +4,5 @@
     <logger name="Coherence" level="WARN" />
     <logger name="com.oracle.coherence.spring" level="INFO" />
     <logger name="org.springframework" level="WARN" />
-    <root level="INFO" />
+    <root level="WARN" />
 </configuration>

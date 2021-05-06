@@ -12,12 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.event.CacheName;
 import com.oracle.coherence.spring.annotation.event.Created;
@@ -35,7 +35,6 @@ import com.oracle.coherence.spring.annotation.event.Updated;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
-import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
 import com.tangosol.net.events.CoherenceLifecycleEvent;
@@ -73,7 +72,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 @SpringJUnitConfig(InterceptorsTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@DirtiesContext
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class InterceptorsTests {
 
@@ -88,15 +86,11 @@ class InterceptorsTests {
 	private TestObservers observers;
 
 	@Inject
-	private Coherence coherence;
+	private CoherenceServer coherenceServer;
 
 	@Test
+	@DirtiesContext
 	void testEventInterceptorMethods() {
-
-		CompletableFuture<Void> closeFuture = this.coherence.whenClosed();
-
-		// Ensure that Coherence has started before stating the test
-		this.coherence.whenStarted().join();
 
 		NamedCache<String, Person> people = this.session.getCache("people");
 		people.put("homer", new Person("Homer", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));
@@ -111,10 +105,7 @@ class InterceptorsTests {
 		people.truncate();
 		people.destroy();
 
-		this.coherence.close();
-
-		// ensure that Coherence is closed so that we should have the Stopped event
-		closeFuture.join();
+		this.coherenceServer.stop();
 
 		this.observers.getEvents().entrySet().forEach((entry) ->
 			System.out.println(entry.getKey() + " - "

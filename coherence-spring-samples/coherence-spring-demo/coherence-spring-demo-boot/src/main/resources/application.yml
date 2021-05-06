@@ -12,7 +12,7 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate.show_sql: true
+      hibernate.show_sql: false
       hibernate.use_sql_comments: false
       hibernate.format_sql: true
 
