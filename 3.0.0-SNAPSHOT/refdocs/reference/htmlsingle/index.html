@@ -180,44 +180,64 @@ window.onload = function() {
 <li><a href="#coherence-spring-botstrap-with-default-session">3.3. Using the Default Session</a></li>
 <li><a href="#coherence-spring-botstrap-with-multiple-session">3.4. Configure Multiple Sessions</a></li>
 <li><a href="#coherence-spring-bootstrap-session-config-properties">3.5. Session Configuration Bean Properties</a></li>
-<li><a href="#coherence-spring-events">3.6. Events</a>
+<li><a href="#coherence-spring-dependency-injection">3.6. Dependency Injection</a>
 <ul class="sectlevel3">
-<li><a href="#coherence-spring-events-mapevent-listeners">3.6.1. MapEvent Listeners</a>
+<li><a href="#coherence-spring-dependency-injection-namedmap-namedcache">3.6.1. Injecting NamedMap and NamedCache</a>
 <ul class="sectlevel4">
-<li><a href="#mapevent-observer-methods">3.6.1.1. MapEvent Observer Methods</a></li>
-<li><a href="#coherence-spring-events-mapevent-listeners-specific-events">3.6.1.2. Receive Specific Event Types</a></li>
-<li><a href="#coherence-spring-events-mapevent-listeners-filtering-events">3.6.1.3. Filtering Events</a></li>
-<li><a href="#coherence-spring-events-mapevent-listeners-transforming-events">3.6.1.4. Transforming Events</a></li>
+<li><a href="#specify-the-mapcache-name">3.6.1.1. Specify the Map/Cache Name</a></li>
+<li><a href="#specify-the-owning-session-name">3.6.1.2. Specify the Owning Session Name</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-events-event-interceptors">3.6.2. Coherence Event Interceptors</a>
+<li><a href="#coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache">3.6.2. Injecting AsyncNamedMap &amp; AsyncNamedCache</a></li>
+<li><a href="#coherence-spring-dependency-injection-views">3.6.3. Injecting Views (CQC)</a>
 <ul class="sectlevel4">
-<li><a href="#event-types">3.6.2.1. Event Types</a></li>
-<li><a href="#coherence-lifecycle-events">3.6.2.2. Coherence Lifecycle Events</a></li>
-<li><a href="#session-lifecycle-events">3.6.2.3. Session Lifecycle Events</a></li>
-<li><a href="#configurablecachefactory-lifecycle-events">3.6.2.4. ConfigurableCacheFactory Lifecycle Events</a></li>
-<li><a href="#cache-lifecycle-events">3.6.2.5. Cache Lifecycle Events</a></li>
-<li><a href="#entry-events">3.6.2.6. Entry Events</a></li>
-<li><a href="#entryprocessor-events">3.6.2.7. EntryProcessor Events</a></li>
-<li><a href="#partition-level-transaction-events">3.6.2.8. Partition Level Transaction Events</a></li>
-<li><a href="#partition-transfer-events">3.6.2.9. Partition Transfer Events</a></li>
-<li><a href="#unsolicited-commit-events">3.6.2.10. Unsolicited Commit Events</a></li>
+<li><a href="#coherence-spring-dependency-injection-views-filter">3.6.3.1. Specify a View Filter</a></li>
+<li><a href="#coherence-spring-dependency-injection-views-transformer">3.6.3.2. Specify a View Transformer</a></li>
 </ul>
 </li>
+<li><a href="#coherence-spring-dependency-injection-named-topic">3.6.4. Injecting NamedTopic</a></li>
+<li><a href="#coherence-spring-dependency-injection-named-topic-subscriber">3.6.5. Injecting a NamedTopic Subscriber</a></li>
+<li><a href="#coherence-spring-dependency-injection-session">3.6.6. Injecting a Session</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-filter-binding-annotations">3.7. Filter Binding Annotations</a>
+<li><a href="#coherence-spring-events">3.7. Events</a>
 <ul class="sectlevel3">
-<li><a href="#create-the-filter-binding-annotation">3.7.1. Create the filter binding annotation</a></li>
-<li><a href="#create-the-filterfactory">3.7.2. Create the <code>FilterFactory</code></a></li>
-<li><a href="#annotate-the-injection-point">3.7.3. Annotate the Injection Point</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners">3.7.1. MapEvent Listeners</a>
+<ul class="sectlevel4">
+<li><a href="#mapevent-observer-methods">3.7.1.1. MapEvent Observer Methods</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-specific-events">3.7.1.2. Receive Specific Event Types</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-filtering-events">3.7.1.3. Filtering Events</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-transforming-events">3.7.1.4. Transforming Events</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-extractor-binding-annotations">3.8. Extractor Binding Annotations</a>
+<li><a href="#coherence-spring-events-event-interceptors">3.7.2. Coherence Event Interceptors</a>
+<ul class="sectlevel4">
+<li><a href="#event-types">3.7.2.1. Event Types</a></li>
+<li><a href="#coherence-lifecycle-events">3.7.2.2. Coherence Lifecycle Events</a></li>
+<li><a href="#session-lifecycle-events">3.7.2.3. Session Lifecycle Events</a></li>
+<li><a href="#configurablecachefactory-lifecycle-events">3.7.2.4. ConfigurableCacheFactory Lifecycle Events</a></li>
+<li><a href="#cache-lifecycle-events">3.7.2.5. Cache Lifecycle Events</a></li>
+<li><a href="#entry-events">3.7.2.6. Entry Events</a></li>
+<li><a href="#entryprocessor-events">3.7.2.7. EntryProcessor Events</a></li>
+<li><a href="#partition-level-transaction-events">3.7.2.8. Partition Level Transaction Events</a></li>
+<li><a href="#partition-transfer-events">3.7.2.9. Partition Transfer Events</a></li>
+<li><a href="#unsolicited-commit-events">3.7.2.10. Unsolicited Commit Events</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#coherence-spring-filter-binding-annotations">3.8. Filter Binding Annotations</a>
 <ul class="sectlevel3">
-<li><a href="#create-the-extractor-binding-annotation">3.8.1. Create the extractor binding annotation</a></li>
-<li><a href="#create-the-extractorfactory">3.8.2. Create the <code>ExtractorFactory</code></a></li>
-<li><a href="#annotate-the-injection-point-2">3.8.3. Annotate the Injection Point</a></li>
+<li><a href="#create-the-filter-binding-annotation">3.8.1. Create the filter binding annotation</a></li>
+<li><a href="#create-the-filterfactory">3.8.2. Create the <code>FilterFactory</code></a></li>
+<li><a href="#annotate-the-injection-point">3.8.3. Annotate the Injection Point</a></li>
+</ul>
+</li>
+<li><a href="#coherence-spring-extractor-binding-annotations">3.9. Extractor Binding Annotations</a>
+<ul class="sectlevel3">
+<li><a href="#create-the-extractor-binding-annotation">3.9.1. Create the extractor binding annotation</a></li>
+<li><a href="#create-the-extractorfactory">3.9.2. Create the <code>ExtractorFactory</code></a></li>
+<li><a href="#annotate-the-injection-point-2">3.9.3. Annotate the Injection Point</a></li>
 </ul>
 </li>
 </ul>
@@ -235,7 +255,24 @@ window.onload = function() {
 </li>
 <li><a href="#spring-data">6. Coherence Spring Data</a>
 <ul class="sectlevel2">
-<li><a href="#spring-data-introduction">6.1. Getting Started</a></li>
+<li><a href="#spring-data-introduction">6.1. Introduction</a></li>
+<li><a href="#features">6.2. Features</a>
+<ul class="sectlevel3">
+<li><a href="#functionality-not-supported-in-the-m1-release">6.2.1. Functionality Not Supported in the M1 Release</a></li>
+</ul>
+</li>
+<li><a href="#getting-started">6.3. Getting Started</a></li>
+<li><a href="#defining-repositories">6.4. Defining Repositories</a>
+<ul class="sectlevel3">
+<li><a href="#identifying-the-coherence-namedmap">6.4.1. Identifying the Coherence NamedMap</a></li>
+</ul>
+</li>
+<li><a href="#mapping-entities">6.5. Mapping Entities</a></li>
+<li><a href="#using-the-repository">6.6. Using the Repository</a>
+<ul class="sectlevel3">
+<li><a href="#finder-queries">6.6.1. Finder Queries</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#spring-boot">7. Coherence Spring Boot</a>
@@ -725,7 +762,7 @@ dependency as well as the desired dependency for Coherence.</p>
  &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
      &lt;artifactId&gt;coherence&lt;/artifactId&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
-     &lt;version&gt;21.06-M1&lt;/version&gt;
+     &lt;version&gt;21.06-M2&lt;/version&gt;
  &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -839,14 +876,14 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-    &lt;version&gt;21.06-M1&lt;/version&gt;
+    &lt;version&gt;21.06-M2&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06-M1")</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06-M2")</code></pre>
 </div>
 </div>
 </div>
@@ -1071,7 +1108,489 @@ system property or Java serialization.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-events"><a class="anchor" href="#coherence-spring-events"></a>3.6. Events</h3>
+<h3 id="coherence-spring-dependency-injection"><a class="anchor" href="#coherence-spring-dependency-injection"></a>3.6. Dependency Injection</h3>
+<div class="paragraph">
+<p>Coherence Spring provides comprehensive support for the injection Coherence objects into your Spring beans including:
+<code>Session</code>, <code>NamedMap</code>, <code>NamedCache</code>, <code>ContinuousQueryCache</code>, <code>ConfigurableCacheFactory</code>, <code>Cluster</code>.</p>
+</div>
+<div class="paragraph">
+<p>For the most part, you can use the equivalent Coherence Spring annotation that match the annotations from Coherence&#8217;s CDI
+or Micronaut support.</p>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-namedmap-namedcache"><a class="anchor" href="#coherence-spring-dependency-injection-namedmap-namedcache"></a>3.6.1. Injecting NamedMap and NamedCache</h4>
+<div class="paragraph">
+<p>Coherence <code>NamedMap</code> and <code>NamedCache</code> instances can be injected as beans in Spring applications. The mechanics of injecting
+<code>NamedMap</code> or <code>NamedCache</code> beans is identical, so any use of <code>NamedCache</code> in the examples below can be replaced with <code>NamedMap</code>.
+Other more specialized forms of <code>NamedMap</code> and <code>NamedCache</code> can also be injected, for example the asynchronous forms of
+both classes and views.</p>
+</div>
+<div class="paragraph">
+<p>In Spring one caveat exists regarding the injection of Map-based classes that directly inherit from <code>java.util.Map</code>
+including <code>NamedCache</code> and <code>NamedMap</code> when using the <code>@Autowired</code> annotation. Instead of injecting actual instances of
+Beans representing a <code>java.util.Collection</code> or <code>java.util.Map</code>, Spring will inject a collection of all the beans that
+represent the specified bean type instead. As a work-around, you can use the <code>@Resource</code> annotation, but it has its own
+limitations, for instance, not being usable for constructor injection.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using the @Resource annotation</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @Resource(name = COHERENCE_CACHE_BEAN_NAME)
+    private NamedCache numbers;                  <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @Resource(name = COHERENCE_CACHE_BEAN_NAME)
+    @Name("numbers")                             <i class="conum" data-value="2"></i><b>(2)</b>
+    private NamedCache namedCache;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If not specified, the name of the field will be used to determine the cache name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Alternatively, you can specify the name of the cache using the <code>@Name</code> annotation</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more information, please see <a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/core.html#beans-autowired-annotation-qualifiers">Fine-tuning
+Annotation-based Autowiring with Qualifiers</a> in the Spring Framework reference guide.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In order to provide a better user-experience around the dependency injection of maps and caches, Coherence Spring introduces its
+own set of annotations. The following annotations are available:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>@CoherenceCache</p>
+</li>
+<li>
+<p>@CoherenceMap</p>
+</li>
+<li>
+<p>@CoherenceAsyncCache</p>
+</li>
+<li>
+<p>@CoherenceAsyncMap</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Using these annotations, you can inject any Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and
+<a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> in any situation including constructors.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, the annotations also give you some added conveniences such as the ability to specify the name of the cache, or
+the name of the Coherence session as part of the annotation. E.g., the above example can be simplified to:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using the  @CoherenceCache annotation</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceCache
+    private NamedCache numbers;                  <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @CoherenceCache("numbers")                   <i class="conum" data-value="2"></i><b>(2)</b>
+    private NamedCache namedCache;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If not specified, the name of the field will be used to determine the cache name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Alternatively, you can specify the name of the cache using the <code>@Name</code> annotation</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="specify-the-mapcache-name"><a class="anchor" href="#specify-the-mapcache-name"></a>3.6.1.1. Specify the Map/Cache Name</h5>
+<div class="paragraph">
+<p>As already mentioned above, you specify the name of the map/cache using the value-property of the annotation. Of course,
+the same applies when injecting a constructor or method parameter:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of constructor injection of a NamedMap</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class SomeService {
+
+    public SomeService(@CoherenceMap("people") NamedMap&lt;String, Person&gt; map) {
+        // TODO: initialize the service...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If injecting a cache/map via the constructor AND you do not specify a cach/map name, then Coherence Spring
+ill try to derive the name of the cache/map from the parameter name. However, this only works if either the compiler flag
+<code>-parameters</code> (Java 8+) is enabled, or if the JVM generates debugging info. For more information see the
+article <a href="https://www.baeldung.com/java-parameter-reflection">Method Parameter Reflection in Java</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you prefer, you can also specify the name of the map/cache using the <code>@Name</code> annotation. The example below will inject a
+<code>NamedMap</code> that uses an underlying cache named people:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using the @Name annotation</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap
+@Name("people")
+private NamedMap&lt;String, Person&gt; map;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="specify-the-owning-session-name"><a class="anchor" href="#specify-the-owning-session-name"></a>3.6.1.2. Specify the Owning Session Name</h5>
+<div class="paragraph">
+<p>Whilst most applications probably use a single Coherence Session, there are uses-cases where an application may have
+multiple sessions. In this case, when injecting for example a <code>NamedMap</code>, the specific session can be specified by
+annotating the injection point with either <code>@SessionName</code> or more concise with the <code>session</code> parameter available for the
+following annotations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>@CoherenceCache</p>
+</li>
+<li>
+<p>@CoherenceMap</p>
+</li>
+<li>
+<p>@CoherenceAsyncCache</p>
+</li>
+<li>
+<p>@CoherenceAsyncMap</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In the previous examples where no separate <code>Session</code> name was specified, Coherence will use the default session to obtain the
+caches/maps. Assuming that the application has multiple sessions configured, one of which is named <em>Catalog</em>, the
+following example injects a <code>NamedMap</code> from an underlying cache named <em>products</em> in the <em>Catalog</em> session.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using the @SessionName annotation</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap
+@SessionName("Catalog")
+@Name("products")
+private NamedMap&lt;String, Product&gt; map;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This can be further streamlined to:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using the @CoherenceMap annotation with the session parameter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap(name="products", session="Catalog")
+private NamedMap&lt;String, Product&gt; map;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same annotation can be used on method parameter injection points as well:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of using @CoherenceMap with session parameter in a constructor</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class CatalogController {
+
+    public CatalogController(@CoherenceMap(name="products", session="Catalog")
+                             NamedMap&lt;String, Product&gt; products) {
+        // TODO: initialize the bean...
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache"><a class="anchor" href="#coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache"></a>3.6.2. Injecting AsyncNamedMap &amp; AsyncNamedCache</h4>
+<div class="paragraph">
+<p>It is possible to inject the asynchronous classes <code>AsyncNamedMap</code> and <code>AsyncNamedCache</code> as beans in exactly the same way as
+described above. Just change the type of the injection point to be <code>AsyncNamedMap</code> or <code>AsyncNamedCache</code> using one of
+the following annotations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>@CoherenceAsyncCache</p>
+</li>
+<li>
+<p>@CoherenceAsyncMap</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Injecting an AsyncNamedMap</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap("people")
+private AsyncNamedMap&lt;String, Person&gt; map;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-views"><a class="anchor" href="#coherence-spring-dependency-injection-views"></a>3.6.3. Injecting Views (CQC)</h4>
+<div class="paragraph">
+<p>View (or <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/ContinuousQueryCache.html">ContinuousQueryCache</a>) beans can be injected by
+specifying the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/View.html">@View</a> annotation at the injection
+point. A view is a sub-set of the data in an underlying cache, controlled by a
+<a href="https://coherence.community/21.06-M2/api/java/java//com/tangosol/util/Filter.html">Filter</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Injecting an AsyncNamedMap</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap("people")
+@View                                            <i class="conum" data-value="1"></i><b>(1)</b>
+private NamedMap&lt;String, Person&gt; map;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The injection point has been annotated with <code>@View</code>, so the injected <code>NamedMap</code> will actually be an implementation
+of a <code>ContinuousQueryCache</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the above example, no <code>Filter</code> has been specified, so the default behaviour is to use an
+<a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/filter/AlwaysFilter.html">AlwaysFilter</a>. This means that the view will contain all the
+entries from the underlying cache (typically a distributed cache). As a <code>ContinuousQueryCache</code> will hold keys and values
+locally in deserialized form, this can often be a better approach than using a replicated cache.</p>
+</div>
+<div class="sect4">
+<h5 id="coherence-spring-dependency-injection-views-filter"><a class="anchor" href="#coherence-spring-dependency-injection-views-filter"></a>3.6.3.1. Specify a View Filter</h5>
+<div class="paragraph">
+<p>Filters are specified for views using a special filter binding annotation. These are annotations that are themselves
+annotated with the meta-annotation <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/FilterBinding.html">@FilterBinding</a>.
+The Micronaut Coherence framework comes with some built in implementations, for example
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/AlwaysFilter.html">@AlwaysFilter</a>, and
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/WhereFilter.html">@WhereFilter</a>, and it is simple to implement
+other as required by applications (see the <a href="#create-the-filter-binding-annotation">Filter Binding Annotation section</a>
+for more details).</p>
+</div>
+<div class="paragraph">
+<p>For example, if there was a cache named "people", containing <code>Person</code> instances, and the application required a view of
+that cache just containing <code>People</code> where the "lastName" attribute is equal to "Simpson" the <code>@WhereFilter</code> filter binding
+annotation could be used to specify the <code>Filter</code>. The <code>@WhereFilter</code> annotation produces a <code>Filter</code> created from a Coherence
+CohQL where clause, in this case <code>lastName == 'Simpson'</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Injecting a @CoherenceMap with @WhereFilter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                           <i class="conum" data-value="1"></i><b>(1)</b>
+    @View                                             <i class="conum" data-value="2"></i><b>(2)</b>
+    @WhereFilter("lastName = 'Simpson'")              <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;String, Person&gt; allSimpsons;     <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The name of the underlying map for the view is "people".</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>@View</code> annotation specifies that a view will be injected rather than a raw`NamedMap`.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>@Wherefilter</code> annotation specifies the CohQL expression.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The <code>NamedMap</code> contains only people with the last name <code>Simpson</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The above CohQL expression is still rather simple. Let&#8217;s further restrict the results:</p>
+</div>
+<div class="listingblock">
+<div class="title">@WhereFilter with a more complex CohQL expression</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")
+    @View
+    @WhereFilter("lastName = 'Simpson' and age &gt; 10") <i class="conum" data-value="1"></i><b>(1)</b>
+    private NamedMap&lt;String, Person&gt; simpsons;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The @Wherefilter also filters on the <code>age</code> property.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The view injected above will be all People with a <code>lastName</code> attribute equal to <code>Simpson</code> and an <code>age</code> attribute
+greater than <code>10</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The Coherence reference guide has an in-depth chapter on CohQL and more details on the <em>WHERE</em> clause under
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/using-coherence-query-language.html#GUID-B671FDD9-386B-4719-BFC6-DCFF32C360BA">Filtering Entries in a Result Set</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Other built-in or custom filter binding annotations can be used. Multiple filter-binding annotations can be added to the
+same injection point to build up more complex views. The Filter instances produced from each filter binding annotation
+will all be collected together in an <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/filter/AllFilter.html">AllFilter</a>, which will logically
+combine them together.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="coherence-spring-dependency-injection-views-transformer"><a class="anchor" href="#coherence-spring-dependency-injection-views-transformer"></a>3.6.3.2. Specify a View Transformer</h5>
+<div class="paragraph">
+<p>The values in a view map do not have to be the same as the value sin the underlying cache, a ValueExtractor can be used to transform the actual cache value into a different value in the view. ValueExtractor are specified for views using a special extractor binding annotation. These are annotations that are themselves annotated with the meta-annotation @ExtractorBinding. The Micronaut Coherence framework comes with some built in implementations, for example @PropertyExtractor, and it is simple to implement other as required by applications (see the Extractor Binding Annotation section for more details).</p>
+</div>
+<div class="paragraph">
+<p>For example, if there was a cache named "people", containing Person instances, and the application required a view where the value was just the age attribute of each Person rather than the whole cache value. A @PropertyExtractor annotation could be used to specify that the values should be transformed using a property extractor.</p>
+</div>
+<div class="listingblock">
+<div class="title">Injecting a @CoherenceMap with multiple @WhereFilter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                          <i class="conum" data-value="1"></i><b>(1)</b>
+    @View                                            <i class="conum" data-value="2"></i><b>(2)</b>
+    @PropertyExtractor("age")                        <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;String, Integer&gt; ages;          <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The name of the underlying map for the view is "people".</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>@View</code> annotation specifies that a view will be injected rather than a raw <code>NamedMap</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>@PropertyExtractor</code> annotation specifies that a <code>ValueExtractor</code> should be used to transform the underlying cache
+values into different values in the view. In this case the <code>@PropertyExtractor</code> annotation will produce a value extractor
+to extract the <code>age</code> property.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Note that the map injected is now a <code>NamedMap&lt;String, Integer&gt;</code> with generic types of <code>String</code> and <code>Integer</code> because
+the values have been transformed from <code>Person</code> to <code>Integer</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Multiple extractor bindings can be applied to the injection point, in which case the view value will be a <code>List</code> of the
+extracted attributes.</p>
+</div>
+<div class="paragraph">
+<p>Custom extractor binding annotations can be created to fulfil more complex transformations.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-named-topic"><a class="anchor" href="#coherence-spring-dependency-injection-named-topic"></a>3.6.4. Injecting NamedTopic</h4>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-named-topic-subscriber"><a class="anchor" href="#coherence-spring-dependency-injection-named-topic-subscriber"></a>3.6.5. Injecting a NamedTopic Subscriber</h4>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-session"><a class="anchor" href="#coherence-spring-dependency-injection-session"></a>3.6.6. Injecting a Session</h4>
+<div class="paragraph">
+<p>Sometimes it might not be possible to inject a Coherence resource, such as <code>NamedMap</code> or <code>NamedCache</code> directly because
+the name of the resource to be injected is not known until runtime. In this case it makes sense to inject a <code>Session</code>
+instance which can then be used to obtain other resources.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to inject a Session is just to annotate a field, method parameter, or other injection point:</p>
+</div>
+<div class="listingblock">
+<div class="title">Injecting a Coherence Session instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestController
+public class MyBean {
+    @Inject                                      <i class="conum" data-value="1"></i><b>(1)</b>
+    private Session session;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Other injection annotations such as <code>@Autowired</code> can be used as well</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Injecting a Coherence Session using constructor injection</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestController
+public class MyBean {
+    @Autowired                                   <i class="conum" data-value="1"></i><b>(1)</b>
+    public MyBean(Session session) {
+        // TODO...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If your class has only a single constructor, you can omit the <code>@Autowired</code> annotation</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Both examples above will inject the default <code>Session</code> instance into the injection point.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="coherence-spring-events"><a class="anchor" href="#coherence-spring-events"></a>3.7. Events</h3>
 <div class="paragraph">
 <p>Event driven patterns are a common way to build scalable applications and microservices. Coherence produces a number of
 events that can be used by applications to respond to data changes and other actions in Coherence.</p>
@@ -1082,10 +1601,10 @@ events that can be used by applications to respond to data changes and other act
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/util/MapEvent.html">MapEvents</a> which are subscribed to using a <a href="https://coherence.community/20.12/api/java/com/tangosol/util/MapListener.html">MapListener</a></p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/MapEvent.html">MapEvents</a> which are subscribed to using a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/MapListener.html">MapListener</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/Event.html">Events</a>, which are subscribed to using an <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a></p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/Event.html">Events</a>, which are subscribed to using an <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a></p>
 </li>
 </ul>
 </div>
@@ -1123,17 +1642,17 @@ interface. However, Coherence Spring follows that pattern conceptually in order 
 </table>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-events-mapevent-listeners"><a class="anchor" href="#coherence-spring-events-mapevent-listeners"></a>3.6.1. MapEvent Listeners</h4>
+<h4 id="coherence-spring-events-mapevent-listeners"><a class="anchor" href="#coherence-spring-events-mapevent-listeners"></a>3.7.1. MapEvent Listeners</h4>
 <div class="paragraph">
 <p>Listening for changes to data in Coherence is a common use case in applications. Typically, this involves creating an
-implementation of a <a href="https://coherence.community/20.12/api/java/com/tangosol/util/MapListener.html">MapListener</a> and adding that listener to a
+implementation of a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/MapListener.html">MapListener</a> and adding that listener to a
 <code>NamedMap</code> or <code>NamedCache</code>. Using Coherence Spring makes this much simpler by just using Spring beans with suitably
 annotated observer methods that will receive the respective events.</p>
 </div>
 <div class="sect4">
-<h5 id="mapevent-observer-methods"><a class="anchor" href="#mapevent-observer-methods"></a>3.6.1.1. MapEvent Observer Methods</h5>
+<h5 id="mapevent-observer-methods"><a class="anchor" href="#mapevent-observer-methods"></a>3.7.1.1. MapEvent Observer Methods</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/20.12/api/java/com/tangosol/util/MapEvent.html">MapEvent</a> observer method is a method on a Spring bean that is
+<p>A <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/MapEvent.html">MapEvent</a> observer method is a method on a Spring bean that is
 annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
 The annotated method must have a <code>void</code> return type and must take a single method parameter of type <code>MapEvent</code>, typically
 this has the generic types of the underlying map/cache key and value.</p>
@@ -1188,7 +1707,7 @@ public class PersonEventHandler {
 over what events are received from where.</p>
 </div>
 <div class="sect5">
-<h6 id="specify-the-mapcache-name"><a class="anchor" href="#specify-the-mapcache-name"></a>Specify the Map/Cache name</h6>
+<h6 id="specify-the-mapcache-name-2"><a class="anchor" href="#specify-the-mapcache-name-2"></a>Specify the Map/Cache name</h6>
 <div class="paragraph">
 <p>By default, a <code>MapEvent</code> observer method would receive events for all maps/caches. In practice though, this would not be
 a very common use case, and typically you would want an observer method to listen to events that are for specific caches.
@@ -1324,7 +1843,7 @@ services, the events can be restricted to just specific services using the
 </div>
 </div>
 <div class="sect5">
-<h6 id="specify-the-owning-session-name"><a class="anchor" href="#specify-the-owning-session-name"></a>Specify the Owning Session Name</h6>
+<h6 id="specify-the-owning-session-name-2"><a class="anchor" href="#specify-the-owning-session-name-2"></a>Specify the Owning Session Name</h6>
 <div class="paragraph">
 <p>In applications that use multiple <code>Sessions</code>, there may be a situation where more than one session has a map with
 the same name. In those cases an observer method may need to restrict the events it receives to a specific session.
@@ -1422,7 +1941,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 </div>
 </div>
 <div class="sect4">
-<h5 id="coherence-spring-events-mapevent-listeners-specific-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-specific-events"></a>3.6.1.2. Receive Specific Event Types</h5>
+<h5 id="coherence-spring-events-mapevent-listeners-specific-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-specific-events"></a>3.7.1.2. Receive Specific Event Types</h5>
 <div class="paragraph">
 <p>There are three types of event that a <code>MapEvent</code> observer method can receive:</p>
 </div>
@@ -1511,11 +2030,11 @@ the following annotations:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="coherence-spring-events-mapevent-listeners-filtering-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-filtering-events"></a>3.6.1.3. Filtering Events</h5>
+<h5 id="coherence-spring-events-mapevent-listeners-filtering-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-filtering-events"></a>3.7.1.3. Filtering Events</h5>
 <div class="paragraph">
 <p>The <code>MapEvents</code> received by an observer method can be further restricted by applying a filter. Filters are applied by
 annotating the method with a <a href="#coherence-spring-filter-binding-annotations">filter binding</a> annotation, which is a link
-to a factory that creates a specific instance of a <a href="https://coherence.community/20.12/api/java/com/tangosol/util/Filter.html">Filter</a>. Event
+to a factory that creates a specific instance of a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/Filter.html">Filter</a>. Event
 filters applied in this way are executed on the server, which can make receiving events more efficient for clients, as
 the event will not be sent from the server at all.</p>
 </div>
@@ -1567,7 +2086,7 @@ of the <code>age</code> property of the entry value is <code>&gt;= 18</code>.</p
 </div>
 </div>
 <div class="sect4">
-<h5 id="coherence-spring-events-mapevent-listeners-transforming-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-transforming-events"></a>3.6.1.4. Transforming Events</h5>
+<h5 id="coherence-spring-events-mapevent-listeners-transforming-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-transforming-events"></a>3.7.1.4. Transforming Events</h5>
 <div class="paragraph">
 <p>In some use-cases the <code>MapEvent</code> observer method does not require the whole map or cache value to process, it might only
 require one, or a few, properties of the value, or it might require some calculated value. This can be achieved by
@@ -1577,7 +2096,7 @@ the cache value is large, but the client only requires a small part of that valu
 sent over the wire to the client.</p>
 </div>
 <div class="paragraph">
-<p>In Coherence Spring, event values are transformed using a <a href="https://coherence.community/20.12/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>.
+<p>In Coherence Spring, event values are transformed using a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>.
 A <code>ValueExtractor</code> is a simple interface that takes in one value and transforms it into another value. The <code>ValueExtractor</code>
 is applied to the event value. As events contain both a new and old values, the extractor is applied to both as applicable.
 For <code>Insert</code> events there is only a new value, for <code>Update</code> events there will be both, a new and an old value, and for
@@ -1629,7 +2148,7 @@ property should be used to transform the event.</td>
 </div>
 <div class="paragraph">
 <p>It is possible to apply multiple filter binding annotations to a method. In this case the extractors are combined into a
-Coherence <a href="https://coherence.community/20.12/api/java/com/tangosol/util/extractor/ChainedExtractor.html">ChainedExtractor</a>, which will return the
+Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/extractor/ChainedExtractor.html">ChainedExtractor</a>, which will return the
 extracted values as a <code>java.util.List</code>.</p>
 </div>
 <div class="paragraph">
@@ -1680,13 +2199,13 @@ to the method.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-events-event-interceptors"><a class="anchor" href="#coherence-spring-events-event-interceptors"></a>3.6.2. Coherence Event Interceptors</h4>
+<h4 id="coherence-spring-events-event-interceptors"><a class="anchor" href="#coherence-spring-events-event-interceptors"></a>3.7.2. Coherence Event Interceptors</h4>
 <div class="paragraph">
 <p>Coherence produces many events in response to various server-side and client-side actions. For example, <em>Lifecycle events</em>
 for Coherence itself, maps and cache, <em>Entry events</em> when data in maps and caches changes, <em>Partition events</em> for
 partition lifecycle and distribution, <em>EntryProcessor events</em> when invoked on a map or cache, etc. In a stand-alone
 Coherence application these events are subscribed to using a
-<a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a> implementation registered to listen
+<a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a> implementation registered to listen
 to specific event types.</p>
 </div>
 <div class="paragraph">
@@ -1698,50 +2217,50 @@ can be further controlled by applying other annotations to the method or event p
 vary depending on the type of the event.</p>
 </div>
 <div class="sect4">
-<h5 id="event-types"><a class="anchor" href="#event-types"></a>3.6.2.1. Event Types</h5>
+<h5 id="event-types"><a class="anchor" href="#event-types"></a>3.7.2.1. Event Types</h5>
 <div class="paragraph">
 <p>The different types of event that can be observed are listed below:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvent</a> -
-lifecycle events for  <a href="https://coherence.community/20.12/api/java/com/tangosol/net/Coherence.html">Coherence</a> instances</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvent</a> -
+lifecycle events for  <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/Coherence.html">Coherence</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/20.12/api/java/com/tangosol/net/Session.html">Session</a> instances</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/Session.html">Session</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/20.12/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instances</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> instances</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> - events emitted by the
-mutation of entries in a <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedMap.html">NamedMap</a>
-or <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> - events emitted by the
+mutation of entries in a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedMap.html">NamedMap</a>
+or <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> - events emitted
-by the invocation of an <a href="https://coherence.community/20.12/api/java/com/tangosol/util/EntryProcessor.html">EntryProcessor</a> on entries in a
-<a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> - events emitted
+by the invocation of an <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/EntryProcessor.html">EntryProcessor</a> on entries in a
+<a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> - events pertaining to
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> - events pertaining to
 all mutations performed within the context of a single request in a partition of a
-<a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/20.12/api/java/com/tangosol/net/NamedCache.html">NamedCache</a>,
+<a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/NamedCache.html">NamedCache</a>,
 also referred to as "partition level transactions".</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> - captures information
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> - captures information
 concerning the transfer of a partition for a storage enabled member.</p>
 </li>
 <li>
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> - captures
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> - captures
 changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the
 partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers
 of the backing map causing changes.</p>
@@ -1760,9 +2279,9 @@ is created, truncated, or destroyed.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="coherence-lifecycle-events"><a class="anchor" href="#coherence-lifecycle-events"></a>3.6.2.2. Coherence Lifecycle Events</h5>
+<h5 id="coherence-lifecycle-events"><a class="anchor" href="#coherence-lifecycle-events"></a>3.7.2.2. Coherence Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> are emitted to indicate the lifecycle of a <a href="https://coherence.community/20.12/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instance.</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> are emitted to indicate the lifecycle of a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>LifecycleEvent</code> simply create a Spring bean with a listener method that is annotated with
@@ -1844,10 +2363,10 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 </div>
 </div>
 <div class="sect4">
-<h5 id="session-lifecycle-events"><a class="anchor" href="#session-lifecycle-events"></a>3.6.2.3. Session Lifecycle Events</h5>
+<h5 id="session-lifecycle-events"><a class="anchor" href="#session-lifecycle-events"></a>3.7.2.3. Session Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvents</a> are emitted to indicate
-the lifecycle event of a <a href="https://coherence.community/20.12/api/java/com/tangosol/net/Session.html">Session</a> instance.</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvents</a> are emitted to indicate
+the lifecycle event of a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/Session.html">Session</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>SessionLifecycleEvents</code> simply create a Spring bean with a listener method annotated with
@@ -1933,10 +2452,10 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) SessionLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="configurablecachefactory-lifecycle-events"><a class="anchor" href="#configurablecachefactory-lifecycle-events"></a>3.6.2.4. ConfigurableCacheFactory Lifecycle Events</h5>
+<h5 id="configurablecachefactory-lifecycle-events"><a class="anchor" href="#configurablecachefactory-lifecycle-events"></a>3.7.2.4. ConfigurableCacheFactory Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvents</a> are emitted to
-indicate the lifecycle of a <a href="https://coherence.community/20.12/api/java/com/tangosol/net/Coherence.html">Coherence</a> instance.</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvents</a> are emitted to
+indicate the lifecycle of a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/Coherence.html">Coherence</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>CoherenceLifecycleEvent</code> simply create a Spring bean with a listener method annotated with
@@ -2022,9 +2541,9 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 </div>
 </div>
 <div class="sect4">
-<h5 id="cache-lifecycle-events"><a class="anchor" href="#cache-lifecycle-events"></a>3.6.2.5. Cache Lifecycle Events</h5>
+<h5 id="cache-lifecycle-events"><a class="anchor" href="#cache-lifecycle-events"></a>3.7.2.5. Cache Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> are emitted to indicate the lifecycle of a cache instance.</p>
+<p><a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> are emitted to indicate the lifecycle of a cache instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>CacheLifecycleEvent</code> simply create a Spring bean with a listener method annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -2132,9 +2651,9 @@ public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="entry-events"><a class="anchor" href="#entry-events"></a>3.6.2.6. Entry Events</h5>
+<h5 id="entry-events"><a class="anchor" href="#entry-events"></a>3.7.2.6. Entry Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a <a href="https://coherence.community/20.12/api/java/com/tangosol/util/EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry that the <code>EntryProcessor</code> is invoked on.</p>
+<p>An <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry that the <code>EntryProcessor</code> is invoked on.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>EntryProcessorEvent</code> simply create a Spring bean with a listener method annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -2268,9 +2787,9 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="entryprocessor-events"><a class="anchor" href="#entryprocessor-events"></a>3.6.2.7. EntryProcessor Events</h5>
+<h5 id="entryprocessor-events"><a class="anchor" href="#entryprocessor-events"></a>3.7.2.7. EntryProcessor Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.</p>
+<p>An <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>EntryProcessorEvent</code> simply create a Spring bean with a listener method annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -2392,9 +2911,9 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="partition-level-transaction-events"><a class="anchor" href="#partition-level-transaction-events"></a>3.6.2.8. Partition Level Transaction Events</h5>
+<h5 id="partition-level-transaction-events"><a class="anchor" href="#partition-level-transaction-events"></a>3.7.2.8. Partition Level Transaction Events</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> is emitted in relation to all mutations in a single partition in response to executing a single request.
+<p>A <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> is emitted in relation to all mutations in a single partition in response to executing a single request.
 These are commonly referred to as partition level transactions.
 For example, an <code>EntryProcessor</code> that mutates more than one entry (which could be in multiple caches) as part of a single invocation will cause a partition level transaction to occur encompassing all of those cache entries.</p>
 </div>
@@ -2466,9 +2985,9 @@ public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="partition-transfer-events"><a class="anchor" href="#partition-transfer-events"></a>3.6.2.9. Partition Transfer Events</h5>
+<h5 id="partition-transfer-events"><a class="anchor" href="#partition-transfer-events"></a>3.7.2.9. Partition Transfer Events</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of <a href="https://coherence.community/20.12/api/java/com/tangosol/util/BinaryEntry.html">BinaryEntry</a> instances that are being transferred.</p>
+<p>A <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/BinaryEntry.html">BinaryEntry</a> instances that are being transferred.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2505,7 +3024,7 @@ public void onEvent(TransferEvent event) {
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Arrived</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been transferred to the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a> or restored from backup.The reason for the event (primary transfer from another member or restore from backup) can be derived as follows:</p>
+<p><strong>Arrived</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been transferred to the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a> or restored from backup.The reason for the event (primary transfer from another member or restore from backup) can be derived as follows:</p>
 </li>
 </ul>
 </div>
@@ -2521,23 +3040,23 @@ boolean restored = event.getRemoteMember() == event.getLocalMember();</code></pr
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Assigned</strong> -  This <code>TransferEvent</code> is dispatched when a partition has been assigned to the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event will only be emitted by the ownership senior during the initial partition assignment.
+<p><strong>Assigned</strong> -  This <code>TransferEvent</code> is dispatched when a partition has been assigned to the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event will only be emitted by the ownership senior during the initial partition assignment.
 Use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Assigned.html">@Assigned</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Departing</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> are being transferred from the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is followed by either a <code>Departed</code> or <code>Rollback</code> event to indicate the success or failure of the transfer.
+<p><strong>Departing</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> are being transferred from the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is followed by either a <code>Departed</code> or <code>Rollback</code> event to indicate the success or failure of the transfer.
 Use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Departing.html">@Departing</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Departed</strong> - This <code>TransferEvent</code> is dispatched when a partition has been successfully transferred from the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. To derive the <code>BinaryEntry</code> instances associated with the transfer, consumers should subscribe to the <code>Departing</code> event that would precede this event.
+<p><strong>Departed</strong> - This <code>TransferEvent</code> is dispatched when a partition has been successfully transferred from the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. To derive the <code>BinaryEntry</code> instances associated with the transfer, consumers should subscribe to the <code>Departing</code> event that would precede this event.
 Use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Departed.html">@Departed</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Lost</strong> - This <code>TransferEvent</code> is dispatched when a partition has been orphaned (data loss <em>may</em> have occurred), and the ownership is assumed by the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is only be emitted by the ownership senior.
+<p><strong>Lost</strong> - This <code>TransferEvent</code> is dispatched when a partition has been orphaned (data loss <em>may</em> have occurred), and the ownership is assumed by the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is only be emitted by the ownership senior.
 Use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Lost.html">@Lost</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Recovered</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been recovered from a persistent storage by the <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>.
+<p><strong>Recovered</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been recovered from a persistent storage by the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>.
 Use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Recovered.html">@Recovered</a> annotation to restrict received events.</p>
 </li>
 <li>
@@ -2581,9 +3100,9 @@ public void onEvent(@ServiceName("StorageService") TransferEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="unsolicited-commit-events"><a class="anchor" href="#unsolicited-commit-events"></a>3.6.2.10. Unsolicited Commit Events</h5>
+<h5 id="unsolicited-commit-events"><a class="anchor" href="#unsolicited-commit-events"></a>3.7.2.10. Unsolicited Commit Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/20.12/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.</p>
+<p>An <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.</p>
 </div>
 <div class="paragraph">
 <p>Unsolicited commit events are emitted by storage enabled cache services, they will only e received on the same member.</p>
@@ -2607,11 +3126,11 @@ public void onEvent(UnsolicitedCommitEvent event) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-filter-binding-annotations"><a class="anchor" href="#coherence-spring-filter-binding-annotations"></a>3.7. Filter Binding Annotations</h3>
+<h3 id="coherence-spring-filter-binding-annotations"><a class="anchor" href="#coherence-spring-filter-binding-annotations"></a>3.8. Filter Binding Annotations</h3>
 <div class="paragraph">
 <p>Filter binding annotations are normal annotations that are themselves annotated with the
 <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/FilterBinding.html">@FilterBinding</a> meta-annotation.
-A filter binding annotation represents a Coherence <a href="https://coherence.community/20.12/api/java/com/tangosol/util/Filter.html">Filter</a> and is used
+A filter binding annotation represents a Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/Filter.html">Filter</a> and is used
 to specify a <code>Filter</code> in certain injection points, for example a View (CQC), <code>NamedTopic</code> <code>Subscriber</code> beans,
 event listeners, etc.</p>
 </div>
@@ -2640,7 +3159,7 @@ large palm trees (any palm tree larger than 20 meters). We would need a <code>Fi
 <code>plantType == PlantType.PALM &amp;&amp; height &gt;= 20</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="create-the-filter-binding-annotation"><a class="anchor" href="#create-the-filter-binding-annotation"></a>3.7.1. Create the filter binding annotation</h4>
+<h4 id="create-the-filter-binding-annotation"><a class="anchor" href="#create-the-filter-binding-annotation"></a>3.8.1. Create the filter binding annotation</h4>
 <div class="paragraph">
 <p>First create a simple annotation, it could be called something like <code>PlantNameExtractor</code></p>
 </div>
@@ -2676,7 +3195,7 @@ public @interface LargePalmTrees {         <i class="conum" data-value="2"></i><
 </div>
 </div>
 <div class="sect3">
-<h4 id="create-the-filterfactory"><a class="anchor" href="#create-the-filterfactory"></a>3.7.2. Create the <code>FilterFactory</code></h4>
+<h4 id="create-the-filterfactory"><a class="anchor" href="#create-the-filterfactory"></a>3.8.2. Create the <code>FilterFactory</code></h4>
 <div class="paragraph">
 <p>Now create the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/FilterFactory.html">FilterFactory</a> implementation
 that will produce instances of the required <code>Filter</code>.</p>
@@ -2792,7 +3311,7 @@ up as a Spring bean</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="annotate-the-injection-point"><a class="anchor" href="#annotate-the-injection-point"></a>3.7.3. Annotate the Injection Point</h4>
+<h4 id="annotate-the-injection-point"><a class="anchor" href="#annotate-the-injection-point"></a>3.8.3. Annotate the Injection Point</h4>
 <div class="paragraph">
 <p>Now the application code where the view is to be injected can use the custom filter binding annotation.</p>
 </div>
@@ -2800,8 +3319,7 @@ up as a Spring bean</td>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @View                                                                    <i class="conum" data-value="1"></i><b>(1)</b>
     @PalmTrees(1)                                                            <i class="conum" data-value="2"></i><b>(2)</b>
-    @Name("plants")                                                          <i class="conum" data-value="3"></i><b>(3)</b>
-    @Resource(name = "getCache")                                             <i class="conum" data-value="4"></i><b>(4)</b>
+    @CoherenceCache("plants")                                                <i class="conum" data-value="3"></i><b>(3)</b>
     private NamedMap&lt;Long, Plant&gt; palmTrees;</code></pre>
 </div>
 </div>
@@ -2818,23 +3336,19 @@ annotation value of <code>1</code> indicates that we are interested in all palm 
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>@Name</code> annotation indicates the underlying cache/map name to use for the view</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Due to some Spring limitations, we have to use the <code>@Resource</code> annotation to inject the <code>NamedMap</code> as we need to match
-the underlying bean by name.</td>
+<td>Due to Spring limitations regarding the injection of Maps, we use the <code>@CoherenceMap</code> annotation to inject the <code>NamedMap</code>,
+which also has takes an optional value to specify the name of the cache.</td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-extractor-binding-annotations"><a class="anchor" href="#coherence-spring-extractor-binding-annotations"></a>3.8. Extractor Binding Annotations</h3>
+<h3 id="coherence-spring-extractor-binding-annotations"><a class="anchor" href="#coherence-spring-extractor-binding-annotations"></a>3.9. Extractor Binding Annotations</h3>
 <div class="paragraph">
 <p>ValueExtractor binding annotations are normal annotations that are themselves annotated with the
 <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/ExtractorBinding.html">@ExtractorBinding</a> meta-annotation.
-An extractor binding annotation represents a Coherence <a href="https://coherence.community/20.12/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>
+An extractor binding annotation represents a Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>
 and is used to specify a <code>ValueExtractor</code> in certain injection points, for example a View (CQC), <code>NamedTopic</code> <code>Subscriber</code>
 beans, <code>MapEvent</code> listeners, etc.</p>
 </div>
@@ -2861,7 +3375,7 @@ plant instances. Each plant has a <code>name</code> property that we will use fo
 extracts the <code>name</code> property and the resulting map of plant names can be injected into our Spring beans.</p>
 </div>
 <div class="sect3">
-<h4 id="create-the-extractor-binding-annotation"><a class="anchor" href="#create-the-extractor-binding-annotation"></a>3.8.1. Create the extractor binding annotation</h4>
+<h4 id="create-the-extractor-binding-annotation"><a class="anchor" href="#create-the-extractor-binding-annotation"></a>3.9.1. Create the extractor binding annotation</h4>
 <div class="paragraph">
 <p>First create a simple annotation called <code>PlantName</code></p>
 </div>
@@ -2904,7 +3418,7 @@ public @interface PlantNameExtractor {         <i class="conum" data-value="2"><
 </div>
 </div>
 <div class="sect3">
-<h4 id="create-the-extractorfactory"><a class="anchor" href="#create-the-extractorfactory"></a>3.8.2. Create the <code>ExtractorFactory</code></h4>
+<h4 id="create-the-extractorfactory"><a class="anchor" href="#create-the-extractorfactory"></a>3.9.2. Create the <code>ExtractorFactory</code></h4>
 <div class="paragraph">
 <p>Now create the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/ExtractorFactory.html">ExtractorFactory</a>
 implementation that will produce instances of the required <code>ValueExtractor</code>.</p>
@@ -2950,7 +3464,7 @@ In this case the annotation has no values, but if it did we could access those v
 </div>
 </div>
 <div class="sect3">
-<h4 id="annotate-the-injection-point-2"><a class="anchor" href="#annotate-the-injection-point-2"></a>3.8.3. Annotate the Injection Point</h4>
+<h4 id="annotate-the-injection-point-2"><a class="anchor" href="#annotate-the-injection-point-2"></a>3.9.3. Annotate the Injection Point</h4>
 <div class="paragraph">
 <p>Now the application code where the view is to be injected can use the custom extractor binding annotation.</p>
 </div>
@@ -2962,9 +3476,8 @@ In this case the annotation has no values, but if it did we could access those v
 private NamedMap&lt;String, Integer&gt; ages;   <i class="conum" data-value="4"></i><b>(4)</b>
     @View                                                                    <i class="conum" data-value="1"></i><b>(1)</b>
     @PlantNameExtractor                                                      <i class="conum" data-value="2"></i><b>(2)</b>
-    @Name("plants")                                                          <i class="conum" data-value="3"></i><b>(3)</b>
-    @Resource(name = "getCache")                                             <i class="conum" data-value="4"></i><b>(4)</b>
-    private NamedMap&lt;Long, String&gt; plants;                                   <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+    @CoherenceMap("plants")                                                  <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;Long, String&gt; plants;                                   <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2979,15 +3492,11 @@ private NamedMap&lt;String, Integer&gt; ages;   <i class="conum" data-value="4">
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>@Name</code> annotation indicates the underlying cache/map name to use for the view</td>
+<td>Due to Spring limitations regarding the injection of Maps, we use the <code>@CoherenceMap</code> annotation to inject the <code>NamedMap</code>,
+which also has takes an optional value to specify the underlying cache/map name to use for the view.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Due to some Spring limitations, we have to use the <code>@Resource</code> annotation to inject the <code>NamedMap</code> as we need to match
-the underlying bean by name.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Note that the <code>NamedMap</code> generics are now <code>Long</code> and <code>String</code> instead of <code>Long</code> and <code>Plant</code> as the <code>Plant</code> values
 from the underlying cache are transformed into <code>String</code> values by extracting just the name property.</td>
 </tr>
@@ -3129,14 +3638,229 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="sect1">
 <h2 id="spring-data"><a class="anchor" href="#spring-data"></a>6. Coherence Spring Data</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>6.1. Introduction</h3>
 <div class="paragraph">
-<p>This section dives into the Coherence Spring Data module. It explains how to use
-Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/docs/curent/reference/html5/">Spring Data</a> repositories.</p>
+<p>The Spring Data Coherence module provides integration with Coherence data grids. Key functional areas of Spring Data Coherence are a POJO centric model for interacting with a Coherence data grid and easily writing a Repository style data access layer.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>6.1. Getting Started</h3>
+<h3 id="features"><a class="anchor" href="#features"></a>6.2. Features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring configuration support using Java-based @Configuration classes.</p>
+</li>
+<li>
+<p>Automatic implementation of Repository interfaces</p>
+</li>
+<li>
+<p>Rich query and event features from Coherence</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="functionality-not-supported-in-the-m1-release"><a class="anchor" href="#functionality-not-supported-in-the-m1-release"></a>6.2.1. Functionality Not Supported in the M1 Release</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring Data finder queries that use paging</p>
+</li>
+<li>
+<p>Interface-based projection</p>
+</li>
+<li>
+<p>Exception translation into Spring’s portable Data Access Exception hierarchy</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
-<p>TBD</p>
+<p>These will be supported in the next milestone release.  Another feature for the
+next milestone release will be a native asynchronous repository.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-started"><a class="anchor" href="#getting-started"></a>6.3. Getting Started</h3>
+<div class="exampleblock">
+<div class="title">Example 5. Coherence Spring Data Dependencies</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:3.0.0-SNAPSHOT")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>6.4. Defining Repositories</h3>
+<div class="paragraph">
+<p>Before proceeded, please be familiar with <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#reference">Spring Data Commons</a>, as this section will assume prior knowledge.</p>
+</div>
+<div class="paragraph">
+<p>Simple repositories such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>will, of course, work as expected.  However, to fully utilize what Coherence can offer:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Powerful projection features</p>
+</li>
+<li>
+<p>Flexible in-place entity updates</p>
+</li>
+<li>
+<p>First-class data aggregation support</p>
+</li>
+<li>
+<p>Stream API support</p>
+</li>
+<li>
+<p>Event listener support</p>
+</li>
+<li>
+<p>Declarative acceleration and index creation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>it is recommended to extend <code>com.oracle.coherence.spring.data.repository.CoherenceRepository</code> interface.</p>
+</div>
+<div class="paragraph">
+<p>Please see the <a href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Coherence Repository</a> documentation for more details on these features.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By extending this interface, you&#8217;ll be able to</p>
+</div>
+<div class="sect3">
+<h4 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>6.4.1. Identifying the Coherence NamedMap</h4>
+<div class="paragraph">
+<p>The Coherence <code>NamedMap</code> that will be used by the Repository implementation
+will be based on the type name in the Repository class assuming the Repository
+name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called <code>person</code>).
+If this is not desired, the name may instead be passed by the <code>@CoherenceRepository</code> annotation.  For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+@CoherenceMap("people")
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>6.5. Mapping Entities</h3>
+<div class="paragraph">
+<p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
+Repository is relatively simple.  It requires using the <code>javax.persistence.Entity</code> annotation
+to define the domain type that will be persisted, and the <code>javax.persistence.Id</code> annotation to
+define denote the entity&#8217;s id.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@javax.persistence.Entity
+public class Person implements Serializable {
+    @javax.persistence.Id
+    protected String id;
+
+    // ---- person functionality ----
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Any other <code>javax.persistence</code> annotations will not be considered by the runtime.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>6.6. Using the Repository</h3>
+<div class="paragraph">
+<p>In order to enable Coherence-based Repositories, you must use the <code>@EnableCoherenceRepositories</code> annotation.
+A simple configuration example would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+
+// ...
+
+@Configuration
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly to other Spring Data implementations, the <code>@EnableCoherenceRepositories</code> annotation
+offers several configuration options to configure how Spring will search for repositories.
+Please see the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/">API docs</a> for details.</p>
+</div>
+<div class="sect3">
+<h4 id="finder-queries"><a class="anchor" href="#finder-queries"></a>6.6.1. Finder Queries</h4>
+<div class="paragraph">
+<p>One of the benefits of Spring Data is the ability to define queries on the Repository interface
+using Spring Data&#8217;s <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details">finder query</a> syntax.
+For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface BookRepository extends CoherenceRepository&lt;Book, UUID&gt; {
+    List&lt;Book&gt; findByAuthor(Author author);
+    // other finders
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As of the M1 release, however, finder queries using paging are not supported.  This functionality
+is targeted for the next milestone release.</p>
+</div>
 </div>
 </div>
 </div>
@@ -3155,7 +3879,7 @@ Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-b
 as the desired version of Coherence.</p>
 </div>
 <div class="exampleblock">
-<div class="title">Example 5. Adding the Coherence Spring Boot Starter Dependency</div>
+<div class="title">Example 6. Adding the Coherence Spring Boot Starter Dependency</div>
 <div class="content">
 <div class="listingblock primary">
 <div class="title">Maven</div>
@@ -3169,7 +3893,7 @@ as the desired version of Coherence.</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06-M1&lt;/version&gt;
+        &lt;version&gt;21.06-M2&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -3179,7 +3903,7 @@ as the desired version of Coherence.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06-M1")
+    compile("com.oracle.coherence.ce:coherence:21.06-M2")
 }</code></pre>
 </div>
 </div>
@@ -3625,7 +4349,7 @@ the configuration data.</p>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>You can control which reports are generated by specifying a different report group configuration file. The pre-defined
-reports are located at <code>coherence-21.06-M1.jar/reports</code></td>
+reports are located at <code>coherence-21.06-M2.jar/reports</code></td>
 </tr>
 </table>
 </div>
@@ -3751,7 +4475,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-20 23:59:17 UTC
+Last updated 2021-05-05 22:36:35 -1000
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
