@@ -18,7 +18,7 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
     - name: Build with Maven + Deploy Website + Snapshots
-      run: ./mvnw clean deploy -B -Pspring -Powasp -Pstaging --settings .mvn/settings.xml
+      run: ./mvnw clean deploy -B -Pspring -Powasp --settings .mvn/settings.xml
       env:
         MAVEN_GITHUB_TOKEN: "${{secrets.MAVEN_GITHUB}}"
         MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
