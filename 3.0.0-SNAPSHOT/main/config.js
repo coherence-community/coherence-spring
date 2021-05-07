@@ -267,6 +267,12 @@ function createNav(){
             href: 'refdocs/reference/pdf/coherence-spring-reference.pdf',
             target: '_blank'
         },
+        {
+            title: 'Javadocs',
+            action: 'code',
+            href: 'refdocs/api/index.html',
+            target: '_blank'
+        },
         { divider: true },
         { header: 'Additional Resources' },
         {

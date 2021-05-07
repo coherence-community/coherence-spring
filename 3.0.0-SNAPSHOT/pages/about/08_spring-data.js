@@ -5,8 +5,5 @@
 <p>The Spring Data integration allows you to use Coherence as a persistence store, providing among other things
 Spring Data repository support.</p>
 
-<div class="admonition important">
-<p class="admonition-inline">This feature is not available, yet.</p>
-</div>
 </div>
 </doc-view>
