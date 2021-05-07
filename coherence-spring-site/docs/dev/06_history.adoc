@@ -17,19 +17,52 @@
 The following sections outline Coherence Spring project changes in
 reverse chronological order.
 
-=== Version {version-coherence-spring} built on {timestamp}
+=== Version 3.0.0.M1 (May 2021)
 
 *Source and Documentation Contributors*
 
 * Gunnar Hillert
+* Ryan Lubke
 
-*Global and Cross-Module Changes*
+*Changes*
 
-* Change Licensing to UPL
-* Completely refactor bootstrapping mechanism using the new Coherence Bootstrap API
+* Change Licensing to UPL (https://www.apache.org/legal/resolved.html[Apache license compatible])
+* Completely refactor bootstrapping mechanism using the new Coherence
+https://coherence.community/21.06-M1/docs/#/docs/core/02_bootstrap[Bootstrap API] (Community Edition 20.12)
+* Add support for Spring Data repositories using the brand-new Coherence
+https://coherence.community/21.06-M2/docs/#/docs/core/05_repository[Repository API] which has been introduced with
+https://medium.com/oracle-coherence/coherence-ce-21-06-milestone-2-released-4467cc94f118[Coherence CE 21.06 M2]
 * Add Spring Cache abstraction support
+* Add Spring Boot Starter
+  - Provide AutoConfiguration support
+  - Add initial support for Spring Boot configuration properties
 * Add support for Coherence Event Listeners
-* Inject Coherence Filters
+* Add initial support for Spring Boot `2.4+` Config API for importing additional configuration data using Coherence as a store
+of configuration data
+* Add Dependency Injection (DI) support for various Coherence types:
+  - Coherence Filters
+  - Views
+  - Coherence Sessions
+* Inject Coherence Maps and Caches:
+  - @CoherenceCache
+  - @CoherenceMap
+  - @CoherenceAsyncCache
+  - @CoherenceAsyncMap
+* Add support for Filter Binding Annotations
+* Add support for Extractor Binding Annotations
+* Add https://asciidoctor.org/docs/asciidoc-writers-guide/[AsciiDoc-based] documentation (HTML + PDF)
+* Convert the Coherence Spring website to the Coherence CE theme
+* Add security vulnerability scans using the https://github.com/jeremylong/DependencyCheck[OWASP Dependency-Check Plugin]
+* Provide source-code consistency using the https://github.com/spring-io/spring-javaformat[Spring Java Format Maven Plugin]
+* Add Quickstart Sample (Classic Spring + Spring Boot) and reference guide chapter
+* Add Spring Cloud Config demo
+* Add CI workflow using GitHub Actions
+* Add Coherence https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server[To Do List Example Application]
+for Spring Boot (separate repository)
+* Update to the latest dependencies
+  - Oracle Coherence `21.06-M2`
+  - Spring Boot `2.4.5`
+  - Spring Framework `5.3.5`
 
 === Version 2.0.0-SNAPSHOT built on 2017-07-13 20:03
 
