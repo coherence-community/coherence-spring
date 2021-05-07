@@ -11,5 +11,3 @@
 
 The Spring Data integration allows you to use Coherence as a persistence store, providing among other things
 Spring Data repository support.
-
-IMPORTANT: This feature is not available, yet.

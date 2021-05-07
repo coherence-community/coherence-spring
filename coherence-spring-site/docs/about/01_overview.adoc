@@ -45,12 +45,12 @@ Autoconfiguration Support
 Spring's Caching Abstraction Support
 --
 
-[CARD]
-.Spring Session
-[icon=fa-database,link=about/06_spring-session.adoc]
---
-Spring's Session Abstraction
---
+//[CARD]
+//.Spring Session
+//[icon=fa-database,link=about/06_spring-session.adoc]
+//--
+//Spring's Session Abstraction
+//--
 
 [CARD]
 .Spring Config Server

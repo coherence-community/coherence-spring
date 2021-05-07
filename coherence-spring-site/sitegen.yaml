@@ -84,6 +84,11 @@ backend:
                 type: "icon"
                 value: "picture_as_pdf"
               href: "refdocs/reference/pdf/coherence-spring-reference.pdf"
+            - title: "Javadocs"
+              glyph:
+                type: "icon"
+                value: "code"
+              href: "refdocs/api/index.html"
         - title: "Additional Resources"
           items:
             - title: "Slack"

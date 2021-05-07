@@ -101,7 +101,7 @@ the following 3 session types:
 
 - *SERVER* - Join as Coherence cluster member. This is the default dession type.
 - *CLIENT* - Connect to Coherence as a Coherence*Extend client
-- *GRPC* Connect to Coherence as gRPC client
+- *GRPC* - Connect to Coherence as gRPC client
 
 If the application is a Coherence cluster member, or a Coherence*Extend client, then all that needs to be specified is
 the Coherence configuration file name. For instance, you may for example provide an implementation of

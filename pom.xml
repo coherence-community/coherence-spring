@@ -69,10 +69,10 @@
 		<module>coherence-spring-core</module>
 		<module>coherence-spring-data</module>
 		<module>coherence-spring-boot-starter</module>
-		<module>coherence-spring-tests</module>
-		<module>coherence-spring-site</module>
-		<module>coherence-spring-docs</module>
 		<module>coherence-spring-samples</module>
+		<module>coherence-spring-tests</module>
+		<module>coherence-spring-docs</module>
+		<module>coherence-spring-site</module>
 	</modules>
 
 	<properties>
