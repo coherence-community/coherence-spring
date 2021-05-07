@@ -30,6 +30,7 @@
 
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -38,7 +39,6 @@
 			<artifactId>coherence-spring-docs</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 			<type>zip</type>
-			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -48,9 +48,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>${maven-install-plugin.version}</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
+<!--				<configuration>-->
+<!--					<skip>true</skip>-->
+<!--				</configuration>-->
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -64,9 +64,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>${maven-jar-plugin.version}</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
+<!--				<configuration>-->
+<!--					<skip>true</skip>-->
+<!--				</configuration>-->
 			</plugin>
 			<plugin>
 				<groupId>io.helidon.build-tools</groupId>
@@ -137,6 +137,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -157,19 +158,25 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>unpack-doc-resources</id>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>unpack</goal>
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<includeGroupIds>com.oracle.coherence.spring</includeGroupIds>
-							<includeArtifactIds>coherence-spring-docs</includeArtifactIds>
-							<includeTypes>zip</includeTypes>
-							<excludeTransitive>true</excludeTransitive>
-							<outputDirectory>${project.build.directory}/site/refdocs/</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.oracle.coherence.spring</groupId>
+									<artifactId>coherence-spring-docs</artifactId>
+									<version>${project.version}</version>
+									<type>zip</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/site/refdocs/</outputDirectory>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>

@@ -56,7 +56,6 @@ public class CoherenceEventListenerTest {
 		Eventually.assertDeferred(() -> EventsHelper.getListenerCount(namedMap), is(greaterThanOrEqualTo(1)));
 
 		for (int i = 1; i <= 100; i++) {
-			System.out.println(i);
 			namedMap.put("foo_" + i, "bar" + i);
 		}
 
