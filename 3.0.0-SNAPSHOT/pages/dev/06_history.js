@@ -6,7 +6,7 @@
 reverse chronological order.</p>
 
 
-<h3 id="_version_3_0_0_snapshot_built_on_2021_05_07_0713">Version 3.0.0-SNAPSHOT built on 2021-05-07 07:13</h3>
+<h3 id="_version_3_0_0_m1_may_2021">Version 3.0.0.M1 (May 2021)</h3>
 <div class="section">
 <p><strong>Source and Documentation Contributors</strong></p>
 
@@ -15,16 +15,27 @@ reverse chronological order.</p>
 <p>Gunnar Hillert</p>
 
 </li>
+<li>
+<p>Ryan Lubke</p>
+
+</li>
 </ul>
-<p><strong>Global and Cross-Module Changes</strong></p>
+<p><strong>Changes</strong></p>
 
 <ul class="ulist">
 <li>
-<p>Change Licensing to UPL</p>
+<p>Change Licensing to UPL (<a id="" title="" target="_blank" href="https://www.apache.org/legal/resolved.html">Apache license compatible</a>)</p>
 
 </li>
 <li>
-<p>Completely refactor bootstrapping mechanism using the new Coherence Bootstrap API</p>
+<p>Completely refactor bootstrapping mechanism using the new Coherence
+<a id="" title="" target="_blank" href="https://coherence.community/21.06-M1/docs/#/docs/core/02_bootstrap">Bootstrap API</a> (Community Edition 20.12)</p>
+
+</li>
+<li>
+<p>Add support for Spring Data repositories using the brand-new Coherence
+<a id="" title="" target="_blank" href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Repository API</a> which has been introduced with
+<a id="" title="" target="_blank" href="https://medium.com/oracle-coherence/coherence-ce-21-06-milestone-2-released-4467cc94f118">Coherence CE 21.06 M2</a></p>
 
 </li>
 <li>
@@ -32,12 +43,122 @@ reverse chronological order.</p>
 
 </li>
 <li>
+<p>Add Spring Boot Starter</p>
+<ul class="ulist">
+<li>
+<p>Provide AutoConfiguration support</p>
+
+</li>
+<li>
+<p>Add initial support for Spring Boot configuration properties</p>
+
+</li>
+</ul>
+</li>
+<li>
 <p>Add support for Coherence Event Listeners</p>
 
 </li>
 <li>
-<p>Inject Coherence Filters</p>
+<p>Add initial support for Spring Boot <code>2.4+</code> Config API for importing additional configuration data using Coherence as a store
+of configuration data</p>
 
+</li>
+<li>
+<p>Add Dependency Injection (DI) support for various Coherence types:</p>
+<ul class="ulist">
+<li>
+<p>Coherence Filters</p>
+
+</li>
+<li>
+<p>Views</p>
+
+</li>
+<li>
+<p>Coherence Sessions</p>
+
+</li>
+</ul>
+</li>
+<li>
+<p>Inject Coherence Maps and Caches:</p>
+<ul class="ulist">
+<li>
+<p>@CoherenceCache</p>
+
+</li>
+<li>
+<p>@CoherenceMap</p>
+
+</li>
+<li>
+<p>@CoherenceAsyncCache</p>
+
+</li>
+<li>
+<p>@CoherenceAsyncMap</p>
+
+</li>
+</ul>
+</li>
+<li>
+<p>Add support for Filter Binding Annotations</p>
+
+</li>
+<li>
+<p>Add support for Extractor Binding Annotations</p>
+
+</li>
+<li>
+<p>Add <a id="" title="" target="_blank" href="https://asciidoctor.org/docs/asciidoc-writers-guide/">AsciiDoc-based</a> documentation (HTML + PDF)</p>
+
+</li>
+<li>
+<p>Convert the Coherence Spring website to the Coherence CE theme</p>
+
+</li>
+<li>
+<p>Add security vulnerability scans using the <a id="" title="" target="_blank" href="https://github.com/jeremylong/DependencyCheck">OWASP Dependency-Check Plugin</a></p>
+
+</li>
+<li>
+<p>Provide source-code consistency using the <a id="" title="" target="_blank" href="https://github.com/spring-io/spring-javaformat">Spring Java Format Maven Plugin</a></p>
+
+</li>
+<li>
+<p>Add Quickstart Sample (Classic Spring + Spring Boot) and reference guide chapter</p>
+
+</li>
+<li>
+<p>Add Spring Cloud Config demo</p>
+
+</li>
+<li>
+<p>Add CI workflow using GitHub Actions</p>
+
+</li>
+<li>
+<p>Add Coherence <a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server">To Do List Example Application</a>
+for Spring Boot (separate repository)</p>
+
+</li>
+<li>
+<p>Update to the latest dependencies</p>
+<ul class="ulist">
+<li>
+<p>Oracle Coherence <code>21.06-M2</code></p>
+
+</li>
+<li>
+<p>Spring Boot <code>2.4.5</code></p>
+
+</li>
+<li>
+<p>Spring Framework <code>5.3.5</code></p>
+
+</li>
+</ul>
 </li>
 </ul>
 </div>
