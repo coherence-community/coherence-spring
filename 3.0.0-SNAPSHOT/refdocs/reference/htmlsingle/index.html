@@ -248,56 +248,51 @@ window.onload = function() {
 <li><a href="#spring-cache-configuration">4.2. Configuring Coherence Cache for Spring</a></li>
 </ul>
 </li>
-<li><a href="#spring-session">5. Coherence Spring Session</a>
+<li><a href="#spring-data">5. Coherence Spring Data</a>
 <ul class="sectlevel2">
-<li><a href="#spring-session-introduction">5.1. Getting Started</a></li>
+<li><a href="#spring-data-introduction">5.1. Introduction</a></li>
+<li><a href="#features">5.2. Features</a>
+<ul class="sectlevel3">
+<li><a href="#functionality-not-supported-in-the-m1-release">5.2.1. Functionality Not Supported in the M1 Release</a></li>
 </ul>
 </li>
-<li><a href="#spring-data">6. Coherence Spring Data</a>
+<li><a href="#getting-started">5.3. Getting Started</a></li>
+<li><a href="#defining-repositories">5.4. Defining Repositories</a>
+<ul class="sectlevel3">
+<li><a href="#identifying-the-coherence-namedmap">5.4.1. Identifying the Coherence NamedMap</a></li>
+</ul>
+</li>
+<li><a href="#mapping-entities">5.5. Mapping Entities</a></li>
+<li><a href="#using-the-repository">5.6. Using the Repository</a>
+<ul class="sectlevel3">
+<li><a href="#finder-queries">5.6.1. Finder Queries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot">6. Coherence Spring Boot</a>
 <ul class="sectlevel2">
-<li><a href="#spring-data-introduction">6.1. Introduction</a></li>
-<li><a href="#features">6.2. Features</a>
-<ul class="sectlevel3">
-<li><a href="#functionality-not-supported-in-the-m1-release">6.2.1. Functionality Not Supported in the M1 Release</a></li>
+<li><a href="#spring-boot-getting-started">6.1. Getting Started</a></li>
+<li><a href="#spring-boot-using-coherence">6.2. Using Coherence with Spring Boot</a></li>
+<li><a href="#spring-boot-customize-coherence">6.3. Customize Coherence</a></li>
+<li><a href="#spring-boot-config-data-api">6.4. Coherence Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">6.5. Using Coherence as Spring Caching Provider</a></li>
 </ul>
 </li>
-<li><a href="#getting-started">6.3. Getting Started</a></li>
-<li><a href="#defining-repositories">6.4. Defining Repositories</a>
-<ul class="sectlevel3">
-<li><a href="#identifying-the-coherence-namedmap">6.4.1. Identifying the Coherence NamedMap</a></li>
-</ul>
-</li>
-<li><a href="#mapping-entities">6.5. Mapping Entities</a></li>
-<li><a href="#using-the-repository">6.6. Using the Repository</a>
-<ul class="sectlevel3">
-<li><a href="#finder-queries">6.6.1. Finder Queries</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#spring-boot">7. Coherence Spring Boot</a>
+<li><a href="#spring-cloud-config">7. Coherence Spring Cloud Config</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-getting-started">7.1. Getting Started</a></li>
-<li><a href="#spring-boot-using-coherence">7.2. Using Coherence with Spring Boot</a></li>
-<li><a href="#spring-boot-customize-coherence">7.3. Customize Coherence</a></li>
-<li><a href="#spring-boot-config-data-api">7.4. Coherence Support of the Spring Boot ConfigData API</a></li>
-<li><a href="#spring-boot-caching">7.5. Using Coherence as Spring Caching Provider</a></li>
-</ul>
-</li>
-<li><a href="#spring-cloud-config">8. Coherence Spring Cloud Config</a>
-<ul class="sectlevel2">
-<li><a href="#spring-cloud-config-overview">8.1. Overview</a></li>
-<li><a href="#spring-cloud-config-demo">8.2. Demo</a>
+<li><a href="#spring-cloud-config-overview">7.1. Overview</a></li>
+<li><a href="#spring-cloud-config-demo">7.2. Demo</a>
 <ul class="sectlevel3">
-<li><a href="#spring-cloud-config-demo-setup">8.2.1. Configure the Demo Application</a></li>
-<li><a href="#spring-cloud-config-demo-how-to-run">8.2.2. Run the Demo Application</a></li>
+<li><a href="#spring-cloud-config-demo-setup">7.2.1. Configure the Demo Application</a></li>
+<li><a href="#spring-cloud-config-demo-how-to-run">7.2.2. Run the Demo Application</a></li>
 </ul>
 </li>
-<li><a href="#spring-cloud-config-coherence">8.3. Use Spring Cloud Config Server to Configure Coherence</a></li>
-<li><a href="#spring-cloud-config-coherence-as-backend">8.4. Coherence as Spring Cloud Config Server Backend</a></li>
+<li><a href="#spring-cloud-config-coherence">7.3. Use Spring Cloud Config Server to Configure Coherence</a></li>
+<li><a href="#spring-cloud-config-coherence-as-backend">7.4. Coherence as Spring Cloud Config Server Backend</a></li>
 </ul>
 </li>
-<li><a href="#appendix">9. Appendices</a></li>
+<li><a href="#appendix">8. Appendices</a></li>
 </ul>
 </div>
 </div>
@@ -960,7 +955,7 @@ the following 3 session types:</p>
 <p><strong>CLIENT</strong> - Connect to Coherence as a Coherence*Extend client</p>
 </li>
 <li>
-<p><strong>GRPC</strong> Connect to Coherence as gRPC client</p>
+<p><strong>GRPC</strong> - Connect to Coherence as gRPC client</p>
 </li>
 </ul>
 </div>
@@ -3621,31 +3616,16 @@ public class CacheConfiguration {
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-session"><a class="anchor" href="#spring-session"></a>5. Coherence Spring Session</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This section dives into the Coherence Spring Session module. It explains how to use
-Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/docs/curent/reference/html5/">Spring Session</a>.</p>
-</div>
-<div class="sect2">
-<h3 id="spring-session-introduction"><a class="anchor" href="#spring-session-introduction"></a>5.1. Getting Started</h3>
-<div class="paragraph">
-<p>TBD</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="spring-data"><a class="anchor" href="#spring-data"></a>6. Coherence Spring Data</h2>
+<h2 id="spring-data"><a class="anchor" href="#spring-data"></a>5. Coherence Spring Data</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>6.1. Introduction</h3>
+<h3 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>5.1. Introduction</h3>
 <div class="paragraph">
 <p>The Spring Data Coherence module provides integration with Coherence data grids. Key functional areas of Spring Data Coherence are a POJO centric model for interacting with a Coherence data grid and easily writing a Repository style data access layer.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="features"><a class="anchor" href="#features"></a>6.2. Features</h3>
+<h3 id="features"><a class="anchor" href="#features"></a>5.2. Features</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -3660,7 +3640,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 </ul>
 </div>
 <div class="sect3">
-<h4 id="functionality-not-supported-in-the-m1-release"><a class="anchor" href="#functionality-not-supported-in-the-m1-release"></a>6.2.1. Functionality Not Supported in the M1 Release</h4>
+<h4 id="functionality-not-supported-in-the-m1-release"><a class="anchor" href="#functionality-not-supported-in-the-m1-release"></a>5.2.1. Functionality Not Supported in the M1 Release</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -3681,7 +3661,7 @@ next milestone release will be a native asynchronous repository.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="getting-started"><a class="anchor" href="#getting-started"></a>6.3. Getting Started</h3>
+<h3 id="getting-started"><a class="anchor" href="#getting-started"></a>5.3. Getting Started</h3>
 <div class="exampleblock">
 <div class="title">Example 5. Coherence Spring Data Dependencies</div>
 <div class="content">
@@ -3705,7 +3685,7 @@ next milestone release will be a native asynchronous repository.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>6.4. Defining Repositories</h3>
+<h3 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>5.4. Defining Repositories</h3>
 <div class="paragraph">
 <p>Before proceeded, please be familiar with <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#reference">Spring Data Commons</a>, as this section will assume prior knowledge.</p>
 </div>
@@ -3765,7 +3745,7 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 <p>By extending this interface, you&#8217;ll be able to</p>
 </div>
 <div class="sect3">
-<h4 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>6.4.1. Identifying the Coherence NamedMap</h4>
+<h4 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>5.4.1. Identifying the Coherence NamedMap</h4>
 <div class="paragraph">
 <p>The Coherence <code>NamedMap</code> that will be used by the Repository implementation
 will be based on the type name in the Repository class assuming the Repository
@@ -3788,7 +3768,7 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 </div>
 </div>
 <div class="sect2">
-<h3 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>6.5. Mapping Entities</h3>
+<h3 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>5.5. Mapping Entities</h3>
 <div class="paragraph">
 <p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
 Repository is relatively simple.  It requires using the <code>javax.persistence.Entity</code> annotation
@@ -3814,7 +3794,7 @@ public class Person implements Serializable {
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>6.6. Using the Repository</h3>
+<h3 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>5.6. Using the Repository</h3>
 <div class="paragraph">
 <p>In order to enable Coherence-based Repositories, you must use the <code>@EnableCoherenceRepositories</code> annotation.
 A simple configuration example would be:</p>
@@ -3839,7 +3819,7 @@ offers several configuration options to configure how Spring will search for rep
 Please see the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/">API docs</a> for details.</p>
 </div>
 <div class="sect3">
-<h4 id="finder-queries"><a class="anchor" href="#finder-queries"></a>6.6.1. Finder Queries</h4>
+<h4 id="finder-queries"><a class="anchor" href="#finder-queries"></a>5.6.1. Finder Queries</h4>
 <div class="paragraph">
 <p>One of the benefits of Spring Data is the ability to define queries on the Repository interface
 using Spring Data&#8217;s <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details">finder query</a> syntax.
@@ -3866,14 +3846,14 @@ is targeted for the next milestone release.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>7. Coherence Spring Boot</h2>
+<h2 id="spring-boot"><a class="anchor" href="#spring-boot"></a>6. Coherence Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section dives into the Coherence Spring Boot module. It explains how to use
 Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/">Spring Boot</a>, e.g. Autoconfiguration.</p>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-getting-started"><a class="anchor" href="#spring-boot-getting-started"></a>7.1. Getting Started</h3>
+<h3 id="spring-boot-getting-started"><a class="anchor" href="#spring-boot-getting-started"></a>6.1. Getting Started</h3>
 <div class="paragraph">
 <p>In order to start using Coherence with Spring Boot you have to add the <code>coherence-spring-boot-starter</code> dependency as well
 as the desired version of Coherence.</p>
@@ -3924,7 +3904,7 @@ As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requi
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-using-coherence"><a class="anchor" href="#spring-boot-using-coherence"></a>7.2. Using Coherence with Spring Boot</h3>
+<h3 id="spring-boot-using-coherence"><a class="anchor" href="#spring-boot-using-coherence"></a>6.2. Using Coherence with Spring Boot</h3>
 <div class="paragraph">
 <p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the <code>CoherenceAutoConfiguration</code>
 class. This will also bind the <code>CoherenceProperties</code> for further configuration. The configuration for Spring Boot&#8217;s
@@ -4044,11 +4024,11 @@ property is used.
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-customize-coherence"><a class="anchor" href="#spring-boot-customize-coherence"></a>7.3. Customize Coherence</h3>
+<h3 id="spring-boot-customize-coherence"><a class="anchor" href="#spring-boot-customize-coherence"></a>6.3. Customize Coherence</h3>
 
 </div>
 <div class="sect2">
-<h3 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>7.4. Coherence Support of the Spring Boot ConfigData API</h3>
+<h3 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>6.4. Coherence Support of the Spring Boot ConfigData API</h3>
 <div class="paragraph">
 <p>Starting with Spring Boot <code>2.4.x</code> you can define your own
 <a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
@@ -4082,7 +4062,7 @@ Please also see the chapter on <a href="#spring-cloud-config">Coherence Spring C
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>7.5. Using Coherence as Spring Caching Provider</h3>
+<h3 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>6.5. Using Coherence as Spring Caching Provider</h3>
 <div class="paragraph">
 <p>As long as <code>coherence-spring-boot-starter</code> is added to your project, and caching is enabled via <code>@EnableCaching</code>,
 Coherence Autoconfiguration will automatically provide a <code>CacheManager</code> to the ApplicationContext. However, the
@@ -4126,7 +4106,7 @@ chapter in the core Spring Framework reference guide</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-cloud-config"><a class="anchor" href="#spring-cloud-config"></a>8. Coherence Spring Cloud Config</h2>
+<h2 id="spring-cloud-config"><a class="anchor" href="#spring-cloud-config"></a>7. Coherence Spring Cloud Config</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section explains how to configure Coherence using <a href="https://spring.io/projects/spring-cloud-config/">Spring Cloud Config</a>. Furthermore,
@@ -4134,7 +4114,7 @@ this chapter also shows how to use <a href="https://coherence.community/">Cohere
 to set up Spring applications with configuration data stored in Coherence.</p>
 </div>
 <div class="sect2">
-<h3 id="spring-cloud-config-overview"><a class="anchor" href="#spring-cloud-config-overview"></a>8.1. Overview</h3>
+<h3 id="spring-cloud-config-overview"><a class="anchor" href="#spring-cloud-config-overview"></a>7.1. Overview</h3>
 <div class="paragraph">
 <p>Spring Cloud Config provides support for externalized configuration in distributed systems. It integrates seamlessly
 with Spring Boot applications and allows you to externalize / centralize critical application properties. Spring Cloud
@@ -4172,7 +4152,7 @@ Coherence cluster</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-cloud-config-demo"><a class="anchor" href="#spring-cloud-config-demo"></a>8.2. Demo</h3>
+<h3 id="spring-cloud-config-demo"><a class="anchor" href="#spring-cloud-config-demo"></a>7.2. Demo</h3>
 <div class="paragraph">
 <p>This demo is essentially the same as is used in the <a href="#quickstart">Quickstart</a> chapter. However, we externalize some
 Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
@@ -4280,7 +4260,7 @@ specify the version they need, either the Oracle Coherence CE (OSS) or the comme
 </table>
 </div>
 <div class="sect3">
-<h4 id="spring-cloud-config-demo-setup"><a class="anchor" href="#spring-cloud-config-demo-setup"></a>8.2.1. Configure the Demo Application</h4>
+<h4 id="spring-cloud-config-demo-setup"><a class="anchor" href="#spring-cloud-config-demo-setup"></a>7.2.1. Configure the Demo Application</h4>
 <div class="paragraph">
 <p>In order to run the demo, we first need to create a Git repository that will contain
 the configuration data.</p>
@@ -4371,7 +4351,7 @@ reports are located at <code>coherence-21.06-M2.jar/reports</code></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="spring-cloud-config-demo-how-to-run"><a class="anchor" href="#spring-cloud-config-demo-how-to-run"></a>8.2.2. Run the Demo Application</h4>
+<h4 id="spring-cloud-config-demo-how-to-run"><a class="anchor" href="#spring-cloud-config-demo-how-to-run"></a>7.2.2. Run the Demo Application</h4>
 <div class="paragraph">
 <p>Please execute the following:</p>
 </div>
@@ -4399,7 +4379,7 @@ changes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-cloud-config-coherence"><a class="anchor" href="#spring-cloud-config-coherence"></a>8.3. Use Spring Cloud Config Server to Configure Coherence</h3>
+<h3 id="spring-cloud-config-coherence"><a class="anchor" href="#spring-cloud-config-coherence"></a>7.3. Use Spring Cloud Config Server to Configure Coherence</h3>
 <div class="paragraph">
 <p>The previously discussed demo application illustrated the main concepts of using Spring Cloud Config Server as a
 configuration backend for Oracle Coherence. For a general understanding of Spring Cloud Config Server, please consult
@@ -4459,7 +4439,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-cloud-config-coherence-as-backend"><a class="anchor" href="#spring-cloud-config-coherence-as-backend"></a>8.4. Coherence as Spring Cloud Config Server Backend</h3>
+<h3 id="spring-cloud-config-coherence-as-backend"><a class="anchor" href="#spring-cloud-config-coherence-as-backend"></a>7.4. Coherence as Spring Cloud Config Server Backend</h3>
 <div class="paragraph">
 <p>TBD</p>
 </div>
@@ -4467,7 +4447,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 </div>
 <div class="sect1">
-<h2 id="appendix"><a class="anchor" href="#appendix"></a>9. Appendices</h2>
+<h2 id="appendix"><a class="anchor" href="#appendix"></a>8. Appendices</h2>
 <div class="sectionbody">
 
 </div>
@@ -4475,7 +4455,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-05 22:36:35 -1000
+Last updated 2021-05-07 06:38:15 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
