@@ -30,11 +30,11 @@
 
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 
-:spring-docs: https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/
-:spring-docs-caching: https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/integration.html#cache
+:spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/
+:spring-docs-caching: {spring-docs}html/integration.html#cache
 :spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
 :spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
-:spring-docs-data-commons: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#reference
+:spring-docs-data-commons: https://docs.spring.io/spring-data/commons/docs/current/reference/html/
 :spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
 :oracle-coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/
 :oracle-coherence-repository-docs: https://coherence.community/21.06-M2/docs/#/docs/core/05_repository

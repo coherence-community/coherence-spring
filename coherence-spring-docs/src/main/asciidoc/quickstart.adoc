@@ -7,7 +7,7 @@ Spring. This demo provides an example of using Coherence Spring's
 https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
 
 The demo application is basically a super-simple event manager. We can create `Events` and assign `People` to them using
-an exposed REST API. The data is saved in an embedded https://hsqldb.org/[HSQL database]. The caching is implemented at
+an exposed REST API. The data is saved in an embedded http://hsqldb.org/[HSQL database]. The caching is implemented at
 the service layer.
 
 When an `Event` is created, it is not only persisted to the database but also _put_ to the Coherence Cache.
