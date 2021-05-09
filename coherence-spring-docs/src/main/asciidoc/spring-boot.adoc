@@ -46,9 +46,10 @@ IMPORTANT: As Coherence Spring takes advantage of the new Coherence Bootstrap AP
 [[spring-boot-using-coherence]]
 == Using Coherence with Spring Boot
 
-By adding the `coherence-spring-boot-starter` dependency, AutoConfiguration will be activated via the `CoherenceAutoConfiguration`
-class. This will also bind the `CoherenceProperties` for further configuration. The configuration for Spring Boot's
-Coherence support may look like the following:
+By adding the `coherence-spring-boot-starter` dependency, AutoConfiguration will be activated via the
+{coherence-spring-api}com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html[CoherenceAutoConfiguration]
+class. This will also bind the {coherence-spring-api}com/oracle/coherence/spring/boot/autoconfigure/CoherenceProperties.html[CoherenceProperties]
+class for further configuration. The YAML configuration for Spring Boot's Coherence support may look like the following:
 
 [source,yaml]
 ----
@@ -75,8 +76,8 @@ The following configuration properties are available.
 |Key |Default Value |Description
 
 | coherence.logging.destination
-|
-| The type of the logging destination. Default to `slf4j` if not set.
+| `slf4j`
+| The type of the logging destination.
 
 | coherence.logging.severity-level
 |
@@ -84,71 +85,99 @@ The following configuration properties are available.
 No messages are emitted if `-1` is specified. More log messages are emitted as the log level is increased.
 
 | coherence.logging.logger-name
-|
-|
+| `Coherence`
+| Specifies a logger name within chosen logging system
 
 | coherence.logging.message-format
 |
-|
+| Specifies how messages that have a logging level specified are formatted before passing them to the log destination.
 
 | coherence.logging.character-limit
 |
-|
+| Specifies the maximum number of characters that the logger daemon processes from the message queue before discarding
+  all remaining messages in the queue
 
-| coherence.properties.*
-|
-| Any native Coherence properties
+| coherence.sessions.<type>
+| N/A
+| Indicates the type of the session. One of the following: `grpc`, `server`, `client`
 
-| coherence.sessions[0].name
+| coherence.sessions.<type>[0].name
 |
-|
+| Namee of the session.
 
-| coherence.sessions[0].type
-|
-| Represents the various session type that can be configured: CLIENT, SERVER, GRPC
-
-| coherence.sessions[0].config
+| coherence.sessions.<type>[0].config
 |
 | The Coherence cache configuration URI for the session
 
-| coherence.sessions[0].priority
-|
+| coherence.sessions.<type>[0].priority
+| `SessionConfiguration#DEFAULT_PRIORITY`
 | The priority order to be used when starting the session. Sessions will be started with the lowest priority first.
 
-| coherence.sessions[0].scope-name
+| coherence.sessions.<type>[0].scope-name
 |
 | The scope name for the session.
 
 |===
 
-IMPORTANT: All but the session property are translated into native Coherence properties. If both
+`Session`-related configuration properties are defined based on the session type in:
+
+- {coherence-spring-api}com/oracle/coherence/spring/configuration/session/AbstractSessionConfigurationBean.html[AbstractSessionConfigurationBean]
+- {coherence-spring-api}com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html[SessionConfigurationBean]
+- {coherence-spring-api}com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html[GrpcSessionConfigurationBean]
+
+IMPORTANT: All but the `Session` properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property `coherence.properties.*` are configured, the Spring Boot
 property is used.
 
-For a list of available native properties, please consult the reference guide chapter on
-https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E[System Property Overrides].
-
-[[spring-boot-customize-coherence]]
-== Customize Coherence
+If the provided Spring Boot configuration properties are not sufficient for your needs, you can also specify any of
+the native Coherence properties. For a list of available native properties, please consult the reference guide chapter on
+{oracle-coherence-docs}develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E[System Property Overrides].
 
 [[spring-boot-config-data-api]]
 == Coherence Support of the Spring Boot ConfigData API
 
-Starting with Spring Boot `2.4.x` you can define your own
+Since Spring Boot `2.4.x`, you can define your own
 https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[custom config locations]. This allows you to
-import these as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
 configuration data for your Spring Boot based applications.
 
-NOTE: Please also consult the Spring Boot reference guide on https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config[Externalized Configuration],
-especially the chapter on https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config-files-importing[Importing Additional Data].
+NOTE: Please also consult the Spring Boot reference guide on {spring-docs-boot}spring-boot-features.html#boot-features-external-config[Externalized Configuration],
+especially the chapter on {spring-docs-boot}spring-boot-features.html#boot-features-external-config-files-importing[Importing Additional Data].
 
 NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
 
-[[spring-boot-caching]]
-== Using Coherence as Spring Caching Provider
+You can trigger the import of remote configuration properties with the Spring Boot property
+`spring.config.import` using the value `coherence:`. You will also need the corresponding Coherence config-client
+configured to specify any remote connection settings for your Coherence cluster as well as settings specifying how
+properties will be applied, e.g. the name of the application used to fetch remote properties.
 
+[source,yaml]
+----
+spring:
+  config:
+    import: coherence:
+coherence:
+  config-client:
+    application-name: berlin
+    profile: kona
+----
+
+Many properties have sensible default value. Please see class
+{coherence-spring-api}com/oracle/coherence/spring/boot/config/CoherenceConfigClientProperties.html[CoherenceConfigClientProperties]
+for details.
+
+[[spring-boot-caching]]
+== Caching with Spring Boot
+
+If you have not already done so, please read the chapter
+<<spring-cache.adoc#spring-cache-configuration, Configuring Coherence Cache for Spring>> first.
+
+In this chapter, we see how we can use caching with Coherence in Spring Boot.
 As long as `coherence-spring-boot-starter` is added to your project, and caching is enabled via `@EnableCaching`,
-Coherence Autoconfiguration will automatically provide a `CacheManager` to the ApplicationContext. However, the
+{coherence-spring-api}com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html[Coherence Autoconfiguration]
+will automatically provide a
+{coherence-spring-api}com/oracle/coherence/spring/cache/CoherenceCacheManager.html[CoherenceCacheManager] (implementing
+Spring's {spring-api}org/springframework/cache/CacheManager.html[CacheManager]) to the ApplicationContext. However, the
 `CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
 
 Once that is in place, you can take advantage of
@@ -160,10 +189,10 @@ backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEv
 When learning about Coherence's Spring cache abstraction support, please familiarize yourself with the
 following resources:
 
-- <<spring-cache.adoc#quickstart,Coherence Core Spring Cache Support>>
+- <<quickstart.adoc#quickstart, Coherence Spring Quickstart chapter>>
+- <<spring-cache.adoc#spring-cache,Coherence Core Spring Cache Support>>
 - {spring-docs-boot}spring-boot-features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
-- https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching[The Cache Abstraction]
-chapter in the core Spring Framework reference guide
+- {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
 

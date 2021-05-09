@@ -31,7 +31,7 @@ applications configuration classes. In that case a `CoherenceCacheManager` bean 
 `CacheManager`. Of course, you can define your own `CacheManager` as well, but in that case auto-configuration will back-off.
 
 NOTE: The autoconfiguration logic is defined in class
-`com.oracle.coherence.spring.configuration.EnableCoherenceImportBeanDefinitionRegistrar`.
+{coherence-spring-api}com/oracle/coherence/spring/configuration/EnableCoherenceImportBeanDefinitionRegistrar.html[EnableCoherenceImportBeanDefinitionRegistrar].
 
 .Defining your own CacheManager
 ====
@@ -68,3 +68,12 @@ public class CacheConfiguration {
 ----
 ====
 
+Please consult the <<quickstart.adoc#quickstart, Quickstart chapter>> to see an example using Spring's cache abstraction support with
+Spring Boot. Coherence Spring also provides an example of using Spring Framework (without Spring Boot). The source code
+for the samples is part of the Coherence Spring projects:
+
+- {coherence-spring-code}tree/master/coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-classic[coherence-spring-demo-classic]
+- {coherence-spring-code}tree/master/coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot[coherence-spring-demo-boot]
+
+If you're using Spring Boot, please continue reading the <<spring-boot.adoc#spring-boot-caching, Spring Boot specific chapter>>
+on caching.

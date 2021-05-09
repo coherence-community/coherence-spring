@@ -577,6 +577,19 @@ part of its {spring-docs}html/core.html#context-functionality-events[event suppo
 Coherence Spring does *NOT* directly use Spring's `ApplicationEvent` class and the corresponding `ApplicationListener`
 interface. However, Coherence Spring follows that pattern conceptually in order to provide a similar user experience.
 
+IMPORTANT: By default, the handling of Coherence events is asynchronous. Use the `@Synchronous` annotation to make the
+event handler execution synchronous.
+
+.Example of making a Coherence Event Listener synchronous
+[source,java]
+----
+@CoherenceEventListener
+@Synchronous
+void onEvent(CoherenceLifecycleEvent event) {
+    // TODO: process event...
+}
+----
+
 [[coherence-spring-events-mapevent-listeners]]
 === MapEvent Listeners
 

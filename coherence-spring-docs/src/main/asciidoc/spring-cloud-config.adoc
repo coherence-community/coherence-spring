@@ -2,9 +2,9 @@
 = Coherence Spring Cloud Config
 include::attributes.adoc[]
 
-This section explains how to configure Coherence using {spring-cloud-config-website}[Spring Cloud Config]. Furthermore,
-this chapter also shows how to use {oracle-coherence}[Coherence] as a Spring Cloud Config storage backend, allowing you
-to set up Spring applications with configuration data stored in Coherence.
+This section explains how to configure Coherence using {spring-cloud-config-website}[Spring Cloud Config].
+//TODO Furthermore, this chapter also shows how to use {oracle-coherence}[Coherence] as a Spring Cloud Config storage backend, allowing you
+//TODO to set up Spring applications with configuration data stored in Coherence.
 
 [[spring-cloud-config-overview]]
 == Overview
@@ -19,16 +19,16 @@ IMPORTANT: Please familiarize yourself with the {spring-docs-cloud-config}[Sprin
 In this chapter we will cover two aspects of Coherence-specific support for Spring Cloud Config:
 
 - Configure Coherence and its Spring support using Spring Cloud Config
-- Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
-Coherence cluster
+//TODO - Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
+//TODO Coherence cluster
 
 Let's get started with an example to show the general functioning of Spring Cloud Config.
 
 [[spring-cloud-config-demo]]
 == Demo
 
-This demo is essentially the same as is used in the <<quickstart.adoc#quickstart, Quickstart>> chapter. However, we externalize some
-Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
+This demo is essentially the same as is used in the <<quickstart.adoc#quickstart, Quickstart>> chapter. However, we
+externalize some Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
 {coherence-spring-code}[Coherence Spring source code repository]. Therefore, to get started, please clone its repository:
 
 .Clone the Spring Cloud Config demo project
@@ -38,7 +38,7 @@ $ git clone {github-repo-clone-url}
 $ cd coherence-spring
 ----
 
-You now have checked out all the code for Coherence Spring. The relevant demo code for the Spring Cloud Config demo is
+You now have checked out all the code for Coherence Spring! The relevant demo code for the Spring Cloud Config demo is
 under `coherence-spring-samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
 
 - *coherence-spring-cloud-config-demo-server*: Spring Cloud Config Server implementation
@@ -171,8 +171,10 @@ the respective {spring-docs-cloud-config}[reference documentation].
 
 Coherence Spring is essentially unaware of Spring Cloud Config Server. Coherence Spring merely takes advantage of Spring
 Boot's configuration facilities. The main integration point for configuration between Spring and
-Oracle Coherence is the `SpringSystemPropertyResolver` class, which makes the properties of Spring's `Environment` available
-to Oracle Coherence.
+Oracle Coherence is the
+{coherence-spring-api}com/oracle/coherence/spring/configuration/support/SpringSystemPropertyResolver.html[SpringSystemPropertyResolver]
+class, which makes the properties of Spring's {spring-api}org/springframework/core/env/Environment.html[Environment]
+available to Oracle Coherence.
 
 When using Spring Boot (and not just plain Spring Framework), we also provide the `CoherenceProperties` class. It provides
 means to expose Coherence Spring configuration options in a type-safe manner, to provide code completion via your IDE etc.
@@ -181,7 +183,7 @@ NOTE: Providing dedicated CoherenceProperties support is work in progress.
 
 Behind the scenes using `CoherenceProperties.getCoherencePropertiesAsMap()` will translate the explicit Spring Boot properties
 into the property format used by Oracle Coherence. It is important to note that you can always provide ANY Oracle Coherence
-property via the `coherence.properties.*` prefix.
+property as well.
 
 For instance the following properties are equivalent:
 
@@ -191,13 +193,13 @@ For instance the following properties are equivalent:
 coherence.logging.severity-level=5
 coherence.logging.destination=log4j
 
-coherence.properties.coherence.log.level=5
-coherence.properties.coherence.log=log4j
+coherence.log.level=5
+coherence.log=log4j
 ----
 
 NOTE: Please also see xref:spring-boot.adoc#spring-boot-config-data-api[Coherence Support of the Spring Boot ConfigData API].
 
-[[spring-cloud-config-coherence-as-backend]]
-== Coherence as Spring Cloud Config Server Backend
-
-TBD
+//[[spring-cloud-config-coherence-as-backend]]
+//== Coherence as Spring Cloud Config Server Backend
+//
+//TBD

@@ -43,9 +43,10 @@ implementation("com.oracle.coherence.spring:coherence-spring-data:{coherence-spr
 
 == Defining Repositories
 
-Before proceeded, please be familiar with {spring-docs-data-commons}[Spring Data Commons], as this section will assume prior knowledge.
+Before proceeding, please be familiar with the {spring-docs-data-commons}[Spring Data Commons] documentation, as this
+section will assume some familiarity with Spring Data.
 
-Simple repositories such as:
+Simple repositories such as the following will, of course, work as expected:
 
 [source,java]
 ----
@@ -54,7 +55,9 @@ public interface PersonRepository extends CrudRepository<String, Person> {
 }
 ----
 
-will, of course, work as expected.  However, to fully utilize what Coherence can offer:
+However, it is recommended to extend the
+{coherence-spring-api}com/oracle/coherence/spring/data/repository/CoherenceRepository.html[CoherenceRepository] interface,
+to fully utilize the features Coherence for Spring Data has to offer such as:
 
 - Powerful projection features
 - Flexible in-place entity updates
@@ -63,9 +66,7 @@ will, of course, work as expected.  However, to fully utilize what Coherence can
 - Event listener support
 - Declarative acceleration and index creation
 
-it is recommended to extend `com.oracle.coherence.spring.data.repository.CoherenceRepository` interface.
-
-Please see the {oracle-coherence-repository-docs}[Coherence Repository] documentation for more details on these features.
+Please also see the {oracle-coherence-repository-docs}[Coherence Repository] documentation for more details on these features.
 
 [source,java]
 ----
@@ -77,8 +78,6 @@ public interface PersonRepository extends CoherenceRepository<String, Person> {
 	// ...
 }
 ----
-
-By extending this interface, you'll be able to
 
 === Identifying the Coherence NamedMap
 
@@ -104,8 +103,7 @@ public interface PersonRepository extends CoherenceRepository<String, Person> {
 
 As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
 Repository is relatively simple.  It requires using the `javax.persistence.Entity` annotation
-to define the domain type that will be persisted, and the `javax.persistence.Id` annotation to
-define denote the entity's id.
+to define the domain type that will be persisted, and the `javax.persistence.Id` annotation to denote the entity's id.
 
 For example:
 
@@ -124,8 +122,9 @@ Any other `javax.persistence` annotations will not be considered by the runtime.
 
 == Using the Repository
 
-In order to enable Coherence-based Repositories, you must use the `@EnableCoherenceRepositories` annotation.
-A simple configuration example would be:
+In order to enable Coherence-based Repositories, you must use the
+{coherence-spring-api}com/oracle/coherence/spring/data/config/EnableCoherenceRepositories.html[@EnableCoherenceRepositories]
+annotation. A simple configuration example would be:
 
 [source,java]
 ----
@@ -163,5 +162,5 @@ public interface BookRepository extends CoherenceRepository<Book, UUID> {
 }
 ----
 
-As of the M1 release, however, finder queries using paging are not supported.  This functionality
+As of the M1 release, however, finder queries using pagination are not supported. This functionality
 is targeted for the next milestone release.

@@ -31,6 +31,7 @@
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 
 :spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/
+:spring-api:  https://docs.spring.io/spring-framework/docs/current/javadoc-api/
 :spring-docs-caching: {spring-docs}html/integration.html#cache
 :spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
 :spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/

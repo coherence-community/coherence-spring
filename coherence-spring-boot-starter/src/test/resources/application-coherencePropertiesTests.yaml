@@ -16,7 +16,6 @@ coherence:
         priority: 1
         scope-name: fooscope
       - name: test
-        type: client
         config: "test-coherence-config.xml"
         priority: 2
         scope-name: barscope

@@ -39,7 +39,7 @@ public class CoherenceConfigClientProperties {
 	public static final String DEFAULT_PROFILE = "default";
 
 	/**
-	 * Are the facilities to retrieve remote Coherence configuration propertis enabled? Defaults to {@code true}.
+	 * Are the facilities to retrieve remote Coherence configuration properties enabled? Defaults to {@code true}.
 	 */
 	private boolean enabled = true;
 
@@ -74,6 +74,11 @@ public class CoherenceConfigClientProperties {
 	 */
 	private GrpcClientProperties client = new GrpcClientProperties();
 
+	/**
+	 * The default profile to use when fetching remote configuration (comma-separated).
+	 * Default is "default".
+	 * @return the specified Spring profile
+	 */
 	public String getProfile() {
 		return this.profile;
 	}
@@ -82,6 +87,10 @@ public class CoherenceConfigClientProperties {
 		this.profile = profile;
 	}
 
+	/**
+	 * Flag to indicate that failure to connect to the server is fatal (default false).
+	 * @return true if FailFast is enabled.
+	 */
 	public boolean isFailFast() {
 		return this.failFast;
 	}
@@ -90,6 +99,11 @@ public class CoherenceConfigClientProperties {
 		this.failFast = failFast;
 	}
 
+	/**
+	 * Returns {@code true} if the facilities to retrieve remote Coherence configuration properties are enabled?
+	 * Defaults to {@code true} if not set.
+	 * @return true if the retrieval of remote Coherence configuration properties is enabled
+	 */
 	public boolean isEnabled() {
 		return this.enabled;
 	}
@@ -98,6 +112,10 @@ public class CoherenceConfigClientProperties {
 		this.enabled = enabled;
 	}
 
+	/**
+	 * Contains gRPC-specific configuration.
+	 * @return the gRPC-specific configuration properties
+	 */
 	public GrpcClientProperties getClient() {
 		return this.client;
 	}
@@ -106,6 +124,10 @@ public class CoherenceConfigClientProperties {
 		this.client = client;
 	}
 
+	/**
+	 * Name of the application used to fetch remote properties.
+	 * @return the name of the application to retrieve remote properties for
+	 */
 	public String getApplicationName() {
 		return this.applicationName;
 	}
@@ -114,6 +136,10 @@ public class CoherenceConfigClientProperties {
 		this.applicationName = applicationName;
 	}
 
+	/**
+	 * Name of the Coherence session used to fetch remote properties from. If not set, the default session is used.
+	 * @return the name of the specified Coherence session
+	 */
 	public String getSessionName() {
 		return this.sessionName;
 	}
@@ -122,6 +148,10 @@ public class CoherenceConfigClientProperties {
 		this.sessionName = sessionName;
 	}
 
+	/**
+	 * Name of the Coherence scope used to fetch remote properties from. If not set, the default scope is used.
+	 * @return the scope name if set
+	 */
 	public String getScopeName() {
 		return this.scopeName;
 	}
