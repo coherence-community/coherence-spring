@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Coherence Spring Data</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body id="spring-data" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Data</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-data-introduction">1. Introduction</a></li>
+<li><a href="#features">2. Features</a>
+<ul class="sectlevel2">
+<li><a href="#functionality-not-supported-in-the-m1-release">2.1. Functionality Not Supported in the M1 Release</a></li>
+</ul>
+</li>
+<li><a href="#getting-started">3. Getting Started</a></li>
+<li><a href="#defining-repositories">4. Defining Repositories</a>
+<ul class="sectlevel2">
+<li><a href="#identifying-the-coherence-namedmap">4.1. Identifying the Coherence NamedMap</a></li>
+</ul>
+</li>
+<li><a href="#mapping-entities">5. Mapping Entities</a></li>
+<li><a href="#using-the-repository">6. Using the Repository</a>
+<ul class="sectlevel2">
+<li><a href="#finder-queries">6.1. Finder Queries</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring Data Coherence module provides integration with Coherence data grids. Key functional areas of Spring Data Coherence are a POJO centric model for interacting with a Coherence data grid and easily writing a Repository style data access layer.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="features"><a class="anchor" href="#features"></a>2. Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Spring configuration support using Java-based @Configuration classes.</p>
+</li>
+<li>
+<p>Automatic implementation of Repository interfaces</p>
+</li>
+<li>
+<p>Rich query and event features from Coherence</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="functionality-not-supported-in-the-m1-release"><a class="anchor" href="#functionality-not-supported-in-the-m1-release"></a>2.1. Functionality Not Supported in the M1 Release</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring Data finder queries that use paging</p>
+</li>
+<li>
+<p>Interface-based projection</p>
+</li>
+<li>
+<p>Exception translation into Spring’s portable Data Access Exception hierarchy</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These will be supported in the next milestone release.  Another feature for the
+next milestone release will be a native asynchronous repository.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-started"><a class="anchor" href="#getting-started"></a>3. Getting Started</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Example 1. Coherence Spring Data Dependencies</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
+    &lt;version&gt;3.0.0-M1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:3.0.0-M1")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>4. Defining Repositories</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before proceeding, please be familiar with the <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/">Spring Data Commons</a> documentation, as this
+section will assume some familiarity with Spring Data.</p>
+</div>
+<div class="paragraph">
+<p>Simple repositories such as the following will, of course, work as expected:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, it is recommended to extend the
+<a href="https://spring.coherence.community/3.0.0-M1/refdocs/api/com/oracle/coherence/spring/data/repository/CoherenceRepository.html">CoherenceRepository</a> interface,
+to fully utilize the features Coherence for Spring Data has to offer such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Powerful projection features</p>
+</li>
+<li>
+<p>Flexible in-place entity updates</p>
+</li>
+<li>
+<p>First-class data aggregation support</p>
+</li>
+<li>
+<p>Stream API support</p>
+</li>
+<li>
+<p>Event listener support</p>
+</li>
+<li>
+<p>Declarative acceleration and index creation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please also see the <a href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Coherence Repository</a> documentation for more details on these features.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>4.1. Identifying the Coherence NamedMap</h3>
+<div class="paragraph">
+<p>The Coherence <code>NamedMap</code> that will be used by the Repository implementation
+will be based on the type name in the Repository class assuming the Repository
+name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called <code>person</code>).
+If this is not desired, the name may instead be passed by the <code>@CoherenceRepository</code> annotation.  For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+@CoherenceMap("people")
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>5. Mapping Entities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
+Repository is relatively simple.  It requires using the <code>javax.persistence.Entity</code> annotation
+to define the domain type that will be persisted, and the <code>javax.persistence.Id</code> annotation to denote the entity&#8217;s id.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@javax.persistence.Entity
+public class Person implements Serializable {
+    @javax.persistence.Id
+    protected String id;
+
+    // ---- person functionality ----
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Any other <code>javax.persistence</code> annotations will not be considered by the runtime.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>6. Using the Repository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to enable Coherence-based Repositories, you must use the
+<a href="https://spring.coherence.community/3.0.0-M1/refdocs/api/com/oracle/coherence/spring/data/config/EnableCoherenceRepositories.html">@EnableCoherenceRepositories</a>
+annotation. A simple configuration example would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+
+// ...
+
+@Configuration
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly to other Spring Data implementations, the <code>@EnableCoherenceRepositories</code> annotation
+offers several configuration options to configure how Spring will search for repositories.
+Please see the <a href="https://spring.coherence.community/3.0.0-M1/refdocs/api/">API docs</a> for details.</p>
+</div>
+<div class="sect2">
+<h3 id="finder-queries"><a class="anchor" href="#finder-queries"></a>6.1. Finder Queries</h3>
+<div class="paragraph">
+<p>One of the benefits of Spring Data is the ability to define queries on the Repository interface
+using Spring Data&#8217;s <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details">finder query</a> syntax.
+For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface BookRepository extends CoherenceRepository&lt;Book, UUID&gt; {
+    List&lt;Book&gt; findByAuthor(Author author);
+    // other finders
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As of the M1 release, however, finder queries using pagination are not supported. This functionality
+is targeted for the next milestone release.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-05-09 18:39:38 UTC
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
