@@ -251,10 +251,11 @@ next milestone release will be a native asynchronous repository.</p>
 <h2 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>4. Defining Repositories</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before proceeded, please be familiar with <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/">Spring Data Commons</a>, as this section will assume prior knowledge.</p>
+<p>Before proceeding, please be familiar with the <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/">Spring Data Commons</a> documentation, as this
+section will assume some familiarity with Spring Data.</p>
 </div>
 <div class="paragraph">
-<p>Simple repositories such as:</p>
+<p>Simple repositories such as the following will, of course, work as expected:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -264,7 +265,9 @@ next milestone release will be a native asynchronous repository.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>will, of course, work as expected.  However, to fully utilize what Coherence can offer:</p>
+<p>However, it is recommended to extend the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/data/repository/CoherenceRepository.html">CoherenceRepository</a> interface,
+to fully utilize the features Coherence for Spring Data has to offer such as:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -289,10 +292,7 @@ next milestone release will be a native asynchronous repository.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>it is recommended to extend <code>com.oracle.coherence.spring.data.repository.CoherenceRepository</code> interface.</p>
-</div>
-<div class="paragraph">
-<p>Please see the <a href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Coherence Repository</a> documentation for more details on these features.</p>
+<p>Please also see the <a href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Coherence Repository</a> documentation for more details on these features.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -304,9 +304,6 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
     // ...
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>By extending this interface, you&#8217;ll be able to</p>
 </div>
 <div class="sect2">
 <h3 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>4.1. Identifying the Coherence NamedMap</h3>
@@ -338,8 +335,7 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 <div class="paragraph">
 <p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
 Repository is relatively simple.  It requires using the <code>javax.persistence.Entity</code> annotation
-to define the domain type that will be persisted, and the <code>javax.persistence.Id</code> annotation to
-define denote the entity&#8217;s id.</p>
+to define the domain type that will be persisted, and the <code>javax.persistence.Id</code> annotation to denote the entity&#8217;s id.</p>
 </div>
 <div class="paragraph">
 <p>For example:</p>
@@ -364,8 +360,9 @@ public class Person implements Serializable {
 <h2 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>6. Using the Repository</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In order to enable Coherence-based Repositories, you must use the <code>@EnableCoherenceRepositories</code> annotation.
-A simple configuration example would be:</p>
+<p>In order to enable Coherence-based Repositories, you must use the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/data/config/EnableCoherenceRepositories.html">@EnableCoherenceRepositories</a>
+annotation. A simple configuration example would be:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -406,7 +403,7 @@ public interface BookRepository extends CoherenceRepository&lt;Book, UUID&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>As of the M1 release, however, finder queries using paging are not supported.  This functionality
+<p>As of the M1 release, however, finder queries using pagination are not supported. This functionality
 is targeted for the next milestone release.</p>
 </div>
 </div>
@@ -415,7 +412,7 @@ is targeted for the next milestone release.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-09 05:14:39 UTC
+Last updated 2021-05-09 08:32:33 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

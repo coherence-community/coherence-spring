@@ -161,7 +161,6 @@ window.onload = function() {
 </ul>
 </li>
 <li><a href="#spring-cloud-config-coherence">3. Use Spring Cloud Config Server to Configure Coherence</a></li>
-<li><a href="#spring-cloud-config-coherence-as-backend">4. Coherence as Spring Cloud Config Server Backend</a></li>
 </ul>
 </div>
 </div>
@@ -169,9 +168,7 @@ window.onload = function() {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section explains how to configure Coherence using <a href="https://spring.io/projects/spring-cloud-config/">Spring Cloud Config</a>. Furthermore,
-this chapter also shows how to use <a href="https://coherence.community/">Coherence</a> as a Spring Cloud Config storage backend, allowing you
-to set up Spring applications with configuration data stored in Coherence.</p>
+<p>This section explains how to configure Coherence using <a href="https://spring.io/projects/spring-cloud-config/">Spring Cloud Config</a>.</p>
 </div>
 </div>
 </div>
@@ -204,10 +201,6 @@ Please familiarize yourself with the <a href="https://docs.spring.io/spring-clou
 <li>
 <p>Configure Coherence and its Spring support using Spring Cloud Config</p>
 </li>
-<li>
-<p>Use Oracle Coherence as a configuration backend for Spring Cloud Config and thus store your Configuration data in a
-Coherence cluster</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -219,8 +212,8 @@ Coherence cluster</p>
 <h2 id="spring-cloud-config-demo"><a class="anchor" href="#spring-cloud-config-demo"></a>2. Demo</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This demo is essentially the same as is used in the <a href="quickstart.html#quickstart">Quickstart</a> chapter. However, we externalize some
-Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
+<p>This demo is essentially the same as is used in the <a href="quickstart.html#quickstart">Quickstart</a> chapter. However, we
+externalize some Coherence configuration using Spring Cloud Config. The source code for the demo is part of the
 <a href="https://github.com/coherence-community/coherence-spring/">Coherence Spring source code repository</a>. Therefore, to get started, please clone its repository:</p>
 </div>
 <div class="listingblock">
@@ -231,7 +224,7 @@ Coherence configuration using Spring Cloud Config. The source code for the demo 
 </div>
 </div>
 <div class="paragraph">
-<p>You now have checked out all the code for Coherence Spring. The relevant demo code for the Spring Cloud Config demo is
+<p>You now have checked out all the code for Coherence Spring! The relevant demo code for the Spring Cloud Config demo is
 under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>. The demo consists of 2 Maven modules:</p>
 </div>
 <div class="ulist">
@@ -455,8 +448,10 @@ the respective <a href="https://docs.spring.io/spring-cloud-config/docs/current/
 <div class="paragraph">
 <p>Coherence Spring is essentially unaware of Spring Cloud Config Server. Coherence Spring merely takes advantage of Spring
 Boot&#8217;s configuration facilities. The main integration point for configuration between Spring and
-Oracle Coherence is the <code>SpringSystemPropertyResolver</code> class, which makes the properties of Spring&#8217;s <code>Environment</code> available
-to Oracle Coherence.</p>
+Oracle Coherence is the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/support/SpringSystemPropertyResolver.html">SpringSystemPropertyResolver</a>
+class, which makes the properties of Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/env/Environment.html">Environment</a>
+available to Oracle Coherence.</p>
 </div>
 <div class="paragraph">
 <p>When using Spring Boot (and not just plain Spring Framework), we also provide the <code>CoherenceProperties</code> class. It provides
@@ -477,7 +472,7 @@ Providing dedicated CoherenceProperties support is work in progress.
 <div class="paragraph">
 <p>Behind the scenes using <code>CoherenceProperties.getCoherencePropertiesAsMap()</code> will translate the explicit Spring Boot properties
 into the property format used by Oracle Coherence. It is important to note that you can always provide ANY Oracle Coherence
-property via the <code>coherence.properties.*</code> prefix.</p>
+property as well.</p>
 </div>
 <div class="paragraph">
 <p>For instance the following properties are equivalent:</p>
@@ -488,8 +483,8 @@ property via the <code>coherence.properties.*</code> prefix.</p>
 <pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=5
  coherence.logging.destination=log4j
 
- coherence.properties.coherence.log.level=5
- coherence.properties.coherence.log=log4j</code></pre>
+ coherence.log.level=5
+ coherence.log=log4j</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -506,18 +501,10 @@ Please also see <a href="spring-boot.html#spring-boot-config-data-api">Coherence
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="spring-cloud-config-coherence-as-backend"><a class="anchor" href="#spring-cloud-config-coherence-as-backend"></a>4. Coherence as Spring Cloud Config Server Backend</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>TBD</p>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-09 05:14:39 UTC
+Last updated 2021-05-09 08:32:33 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>

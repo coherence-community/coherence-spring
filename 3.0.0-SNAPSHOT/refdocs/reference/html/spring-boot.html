@@ -155,9 +155,8 @@ window.onload = function() {
 <ul class="sectlevel1">
 <li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
-<li><a href="#spring-boot-customize-coherence">3. Customize Coherence</a></li>
-<li><a href="#spring-boot-config-data-api">4. Coherence Support of the Spring Boot ConfigData API</a></li>
-<li><a href="#spring-boot-caching">5. Using Coherence as Spring Caching Provider</a></li>
+<li><a href="#spring-boot-config-data-api">3. Coherence Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">4. Caching with Spring Boot</a></li>
 </ul>
 </div>
 </div>
@@ -227,9 +226,10 @@ As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requi
 <h2 id="spring-boot-using-coherence"><a class="anchor" href="#spring-boot-using-coherence"></a>2. Using Coherence with Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the <code>CoherenceAutoConfiguration</code>
-class. This will also bind the <code>CoherenceProperties</code> for further configuration. The configuration for Spring Boot&#8217;s
-Coherence support may look like the following:</p>
+<p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html">CoherenceAutoConfiguration</a>
+class. This will also bind the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceProperties.html">CoherenceProperties</a>
+class for further configuration. The YAML configuration for Spring Boot&#8217;s Coherence support may look like the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -269,8 +269,8 @@ Coherence support may look like the following:</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.destination</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The type of the logging destination. Default to <code>slf4j</code> if not set.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>slf4j</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of the logging destination.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.severity-level</p></td>
@@ -280,51 +280,63 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.logger-name</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Coherence</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a logger name within chosen logging system</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.message-format</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how messages that have a logging level specified are formatted before passing them to the log destination.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.character-limit</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of characters that the logger daemon processes from the message queue before discarding
+  all remaining messages in the queue</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.properties.*</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Any native Coherence properties</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>grpc</code>, <code>server</code>, <code>client</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions[0].name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].name</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Namee of the session.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions[0].type</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Represents the various session type that can be configured: CLIENT, SERVER, GRPC</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions[0].config</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].config</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The Coherence cache configuration URI for the session</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions[0].priority</p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].priority</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SessionConfiguration#DEFAULT_PRIORITY</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The priority order to be used when starting the session. Sessions will be started with the lowest priority first.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions[0].scope-name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].scope-name</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The scope name for the session.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p><code>Session</code>-related configuration properties are defined based on the session type in:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/AbstractSessionConfigurationBean.html">AbstractSessionConfigurationBean</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html">SessionConfigurationBean</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html">GrpcSessionConfigurationBean</a></p>
+</li>
+</ul>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -332,7 +344,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-All but the session property are translated into native Coherence properties. If both
+All but the <code>Session</code> properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property <code>coherence.properties.*</code> are configured, the Spring Boot
 property is used.
 </td>
@@ -340,24 +352,19 @@ property is used.
 </table>
 </div>
 <div class="paragraph">
-<p>For a list of available native properties, please consult the reference guide chapter on
+<p>If the provided Spring Boot configuration properties are not sufficient for your needs, you can also specify any of
+the native Coherence properties. For a list of available native properties, please consult the reference guide chapter on
 <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E">System Property Overrides</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-customize-coherence"><a class="anchor" href="#spring-boot-customize-coherence"></a>3. Customize Coherence</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>4. Coherence Support of the Spring Boot ConfigData API</h2>
+<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>3. Coherence Support of the Spring Boot ConfigData API</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Starting with Spring Boot <code>2.4.x</code> you can define your own
+<p>Since Spring Boot <code>2.4.x</code>, you can define your own
 <a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
-import these as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
 configuration data for your Spring Boot based applications.</p>
 </div>
 <div class="admonitionblock note">
@@ -367,8 +374,8 @@ configuration data for your Spring Boot based applications.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">Externalized Configuration</a>,
-especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config-files-importing">Importing Additional Data</a>.
+Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config">Externalized Configuration</a>,
+especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-files-importing">Importing Additional Data</a>.
 </td>
 </tr>
 </table>
@@ -385,14 +392,44 @@ Please also see the chapter on <a href="spring-cloud-config.html#spring-cloud-co
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>You can trigger the import of remote configuration properties with the Spring Boot property
+<code>spring.config.import</code> using the value <code>coherence:</code>. You will also need the corresponding Coherence config-client
+configured to specify any remote connection settings for your Coherence cluster as well as settings specifying how
+properties will be applied, e.g. the name of the application used to fetch remote properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  config:
+    import: coherence:
+coherence:
+  config-client:
+    application-name: berlin
+    profile: kona</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Many properties have sensible default value. Please see class
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/config/CoherenceConfigClientProperties.html">CoherenceConfigClientProperties</a>
+for details.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>5. Using Coherence as Spring Caching Provider</h2>
+<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>4. Caching with Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As long as <code>coherence-spring-boot-starter</code> is added to your project, and caching is enabled via <code>@EnableCaching</code>,
-Coherence Autoconfiguration will automatically provide a <code>CacheManager</code> to the ApplicationContext. However, the
+<p>If you have not already done so, please read the chapter
+<a href="spring-cache.html#spring-cache-configuration">Configuring Coherence Cache for Spring</a> first.</p>
+</div>
+<div class="paragraph">
+<p>In this chapter, we see how we can use caching with Coherence in Spring Boot.
+As long as <code>coherence-spring-boot-starter</code> is added to your project, and caching is enabled via <code>@EnableCaching</code>,
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html">Coherence Autoconfiguration</a>
+will automatically provide a
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/cache/CoherenceCacheManager.html">CoherenceCacheManager</a> (implementing
+Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/cache/CacheManager.html">CacheManager</a>) to the ApplicationContext. However, the
 <code>CacheManager</code> is only added if no <code>CacheManager</code> was configured explicitly beforehand.</p>
 </div>
 <div class="paragraph">
@@ -414,14 +451,16 @@ following resources:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="spring-cache.html#quickstart">Coherence Core Spring Cache Support</a></p>
+<p><a href="quickstart.html#quickstart">Coherence Spring Quickstart chapter</a></p>
+</li>
+<li>
+<p><a href="spring-cache.html#spring-cache">Coherence Core Spring Cache Support</a></p>
 </li>
 <li>
 <p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">Spring Boot&#8217;s reference documentation&#8217;s support regarding caching</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">The Cache Abstraction</a>
-chapter in the core Spring Framework reference guide</p>
+<p><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">The Cache Abstraction</a> chapter in the core Spring Framework reference guide</p>
 </li>
 </ul>
 </div>
@@ -434,7 +473,7 @@ chapter in the core Spring Framework reference guide</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-09 05:14:39 UTC
+Last updated 2021-05-09 08:32:33 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
