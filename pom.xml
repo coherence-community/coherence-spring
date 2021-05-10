@@ -12,7 +12,7 @@
 
 	<groupId>com.oracle.coherence.spring</groupId>
 	<artifactId>coherence-spring-parent</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.0-M1</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Project</name>
@@ -63,7 +63,8 @@
 		<connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
 		<developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
 		<url>https://github.com/coherence-community/coherence-spring</url>
-	</scm>
+	  <tag>v3.0.0-M1</tag>
+  </scm>
 
 	<modules>
 		<module>coherence-spring-core</module>

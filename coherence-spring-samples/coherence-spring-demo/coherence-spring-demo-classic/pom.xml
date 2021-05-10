@@ -6,16 +6,14 @@
   https://oss.oracle.com/licenses/upl.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>coherence-spring-demo-parent</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.0.0-M1</version>
 	</parent>
 
 	<artifactId>coherence-spring-demo-classic</artifactId>
@@ -38,7 +36,7 @@
 		<jackson-datatype.version>2.11.4</jackson-datatype.version>
 
 		<tomcat.version>9.0.45</tomcat.version>
-		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
+		<coherence-spring.version>3.0.0-M1</coherence-spring.version>
 		<hsqldb.version>2.6.0</hsqldb.version>
 		<log4j.version>2.14.1</log4j.version>
 
@@ -211,8 +209,7 @@
 				<version>1.8</version>
 				<configuration>
 					<target>
-						<property name="runtime_classpath"
-							refid="maven.runtime.classpath" />
+						<property name="runtime_classpath" refid="maven.runtime.classpath" />
 						<java classname="${mainClass}" fork="true">
 							<classpath>
 								<pathelement path="${runtime_classpath}" />
@@ -227,8 +224,7 @@
 				<version>3.2.4</version>
 				<configuration>
 					<transformers>
-						<transformer
-							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<mainClass>${mainClass}</mainClass>
 						</transformer>
 					</transformers>
