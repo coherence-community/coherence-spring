@@ -400,6 +400,7 @@
 					<serverId>sonatype</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<skipLocalStaging>true</skipLocalStaging>
 					<stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
 				</configuration>
 			</plugin>
