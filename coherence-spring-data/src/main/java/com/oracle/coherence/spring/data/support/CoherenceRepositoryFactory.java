@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -11,7 +11,10 @@ import java.util.Optional;
 
 import com.oracle.coherence.spring.data.core.mapping.CoherenceMappingContext;
 import com.oracle.coherence.spring.data.core.mapping.CoherencePersistentEntity;
+import com.oracle.coherence.spring.data.repository.AsyncCrudRepository;
+import com.oracle.coherence.spring.data.repository.BackingAsyncRepository;
 import com.oracle.coherence.spring.data.repository.BackingRepository;
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
 import com.oracle.coherence.spring.data.repository.query.CoherenceRepositoryQuery;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedMap;
@@ -97,6 +100,11 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 	@Override
 	protected Object getTargetRepository(RepositoryInformation metadata) {
 
+		Class<?> repositoryInterface = metadata.getRepositoryInterface();
+		if (CoherenceAsyncRepository.class.isAssignableFrom(repositoryInterface) ||
+				AsyncCrudRepository.class.isAssignableFrom(repositoryInterface)) {
+			return new BackingAsyncRepository(ensureNamedMap(), this.mappingContext, metadata.getDomainType());
+		}
 		return new BackingRepository(ensureNamedMap(), this.mappingContext, metadata.getDomainType());
 	}
 

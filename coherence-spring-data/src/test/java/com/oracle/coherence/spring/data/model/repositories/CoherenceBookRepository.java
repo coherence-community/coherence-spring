@@ -17,5 +17,5 @@ import com.tangosol.util.UUID;
 @CoherenceMap("book")
 public interface CoherenceBookRepository extends CoherenceRepository<Book, UUID> {
 
-	List<Book> findAllByAuthor(Author author);
+	List<Book> findByAuthor(Author author);
 }

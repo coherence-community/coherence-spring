@@ -65,8 +65,11 @@ to fully utilize the features Coherence for Spring Data has to offer such as:
 - Stream API support
 - Event listener support
 - Declarative acceleration and index creation
+- Native asynchronous support
 
 Please also see the {oracle-coherence-repository-docs}[Coherence Repository] documentation for more details on these features.
+
+Example extending the blocking `CoherenceRepository` interface:
 
 [source,java]
 ----
@@ -75,6 +78,19 @@ import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 // ...
 
 public interface PersonRepository extends CoherenceRepository<String, Person> {
+	// ...
+}
+----
+
+or for the non-blocking flavor:
+
+[source,java]
+----
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceAsyncRepository<String, Person> {
 	// ...
 }
 ----

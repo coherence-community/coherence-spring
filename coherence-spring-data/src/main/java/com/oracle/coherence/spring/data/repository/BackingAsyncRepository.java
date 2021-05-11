@@ -10,13 +10,15 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.oracle.coherence.repository.AbstractRepository;
+import com.oracle.coherence.repository.AbstractAsyncRepository;
 import com.oracle.coherence.spring.data.core.mapping.CoherencePersistentEntity;
 import com.oracle.coherence.spring.data.core.mapping.CoherencePersistentProperty;
+import com.tangosol.net.AsyncNamedMap;
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Base;
 import com.tangosol.util.Filter;
@@ -25,35 +27,18 @@ import com.tangosol.util.filter.InKeySetFilter;
 
 import org.springframework.data.mapping.context.MappingContext;
 
-/**
- * The BackingRepository is a Coherence Repository backing Coherence-based Spring repositories.
- *
- * @param <T> the entity type
- * @param <ID> the id type
- *
- * @author Ryan Lubke
- * @since 3.0.0
- *
- * @see CoherenceRepository
- */
-@SuppressWarnings("unused")
-public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
+public class BackingAsyncRepository<T, ID> extends AbstractAsyncRepository<ID, T> {
 
-	private final NamedMap<ID, T> namedMap;
+	private final AsyncNamedMap<ID, T> namedMap;
 	private final MappingContext<CoherencePersistentEntity<T>, CoherencePersistentProperty> mappingContext;
 	private final Class<? extends T> domainType;
 
-	public BackingRepository(NamedMap<ID, T> namedMap,
+	public BackingAsyncRepository(NamedMap<ID, T> namedMap,
 			MappingContext<CoherencePersistentEntity<T>, CoherencePersistentProperty> mappingContext,
 			Class<? extends T> domainType) {
-		this.namedMap = namedMap;
+		this.namedMap = namedMap.async();
 		this.mappingContext = mappingContext;
 		this.domainType = domainType;
-	}
-
-	@Override
-	protected NamedMap<ID, T> getMap() {
-		return this.namedMap;
 	}
 
 	@SuppressWarnings({"unchecked", "DuplicatedCode"})
@@ -84,35 +69,43 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 		return this.domainType;
 	}
 
-	// We can't implement CrudRepository due to signature conflicts in save(), therefore
-	// to prevent spring from passing crud repository methods to the query runtime,
-	// we provide the crud implementations here.
+	@Override
+	protected AsyncNamedMap<ID, T> getMap() {
+		return this.namedMap;
+	}
+
+	public CompletableFuture<Long> count() {
+		return this.namedMap.size().thenApply(Integer::longValue);
+	}
 
 	/**
 	 * Deletes a given entity.
 	 * @param entity must not be {@literal null}
+	 * @return a {@link CompletableFuture}
 	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
 	 */
-	public void delete(T entity) {
-		remove(entity);
+	public CompletableFuture<Void> delete(T entity) {
+		return this.remove(entity).thenApply((unused) -> null);
 	}
 
 	/**
 	 * Deletes the entity with the given id.
 	 * @param id must not be {@literal null}
+	 * @return a {@link CompletableFuture}
 	 * @throws IllegalArgumentException in case the given {@literal id} is {@literal null}
 	 */
-	public void deleteById(ID id) {
-		removeById(id, false);
+	public CompletableFuture<Void> deleteById(ID id) {
+		return this.removeById(id).thenApply((unused) -> null);
 	}
 
 	/**
 	 * Deletes the given entities.
 	 * @param entities must not be {@literal null}. Must not contain {@literal null} elements
+	 * @return a {@link CompletableFuture}
 	 * @throws IllegalArgumentException in case the given {@literal entities} or one of its entities is {@literal null}.
 	 */
-	public void deleteAll(Iterable<? extends T> entities) {
-		removeAll(StreamSupport.stream(entities.spliterator(), false));
+	public CompletableFuture<Boolean> deleteAll(Iterable<? extends T> entities) {
+		return this.removeAll(StreamSupport.stream(entities.spliterator(), false));
 	}
 
 	/**
@@ -124,9 +117,8 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @throws IllegalArgumentException in case the given {@link Iterable entities} or one of its entities is
 	 *           {@literal null}.
 	 */
-	public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
-		saveAll(StreamSupport.stream(entities.spliterator(), false));
-		return entities;
+	public <S extends T> CompletableFuture<Iterable<S>> saveAll(Iterable<S> entities) {
+		return this.saveAll(StreamSupport.stream(entities.spliterator(), false)).thenApply((unused) -> entities);
 	}
 
 	/**
@@ -135,17 +127,16 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return the entity with the given id or {@literal Optional#empty()} if none found.
 	 * @throws IllegalArgumentException if {@literal id} is {@literal null}.
 	 */
-	public Optional<T> findById(ID id) {
-		T result = get(id);
-		return Optional.ofNullable(get(id));
+	public CompletableFuture<Optional<T>> findById(ID id) {
+		return this.get(id).thenApply(Optional::ofNullable);
 	}
 
 	/**
 	 * Returns all instances of the type.
 	 * @return all entities
 	 */
-	public Iterable<T> findAll() {
-		return getAll();
+	public CompletableFuture<Iterable<T>> findAll() {
+		return this.getAll().thenApply((ts) -> (Iterable<T>) ts);
 	}
 
 	/**
@@ -159,10 +150,11 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 *         {@literal ids}.
 	 * @throws IllegalArgumentException in case the given {@link Iterable ids} or one of its items is {@literal null}.
 	 */
-	public Iterable<T> findAllById(Iterable<ID> ids) {
+	public CompletableFuture<Iterable<T>> findAllById(Iterable<ID> ids) {
 		return getAll(new InKeySetFilter<>(
 				Filters.always(),
-				StreamSupport.stream(ids.spliterator(), false).collect(Collectors.toSet())));
+				StreamSupport.stream(ids.spliterator(), false).collect(Collectors.toSet())))
+				.thenApply((ts) -> (Iterable<T>) ts);
 	}
 
 	/**
@@ -171,15 +163,16 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
 	 * @throws IllegalArgumentException if {@literal id} is {@literal null}.
 	 */
-	public boolean existsById(ID id) {
+	public CompletableFuture<Boolean> existsById(ID id) {
 		return getMap().containsKey(id);
 	}
 
 	/**
 	 * Deletes all entities managed by the repository.
+	 * @return a {@link CompletableFuture}
 	 */
-	public void deleteAll() {
-		getMap().truncate();
+	public CompletableFuture<Void> deleteAll() {
+		return this.getMap().clear();
 	}
 
 	/**
@@ -189,7 +182,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return deleted entity, iff {@code fReturn == true}; {@code null}
 	 * otherwise
 	 */
-	public T delete(T entity, boolean fReturn) {
+	public CompletableFuture<T> delete(T entity, boolean fReturn) {
 		return remove(entity, fReturn);
 	}
 
@@ -198,7 +191,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @param colIds the identifiers of the entities to remove
 	 * @return {@code true} if this repository changed as a result of the call
 	 */
-	public boolean deleteAllById(Collection<? extends ID> colIds) {
+	public CompletableFuture<Boolean> deleteAllById(Collection<? extends ID> colIds) {
 		return removeAllById(colIds);
 	}
 
@@ -209,7 +202,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return the map of removed entity identifiers as keys, and the removed
 	 * entities as values iff {@code fReturn == true}; {@code null} otherwise
 	 */
-	public Map<ID, T> deleteAllById(Collection<? extends ID> colIds, boolean fReturn) {
+	public CompletableFuture<Map<ID, T>> deleteAllById(Collection<? extends ID> colIds, boolean fReturn) {
 		return removeAllById(colIds, fReturn);
 	}
 
@@ -218,7 +211,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @param colEntities the entities to remove
 	 * @return {@code true} if this repository changed as a result of the call
 	 */
-	public boolean deleteAll(Collection<? extends T> colEntities) {
+	public CompletableFuture<Boolean> deleteAll(Collection<? extends T> colEntities) {
 		return removeAll(colEntities);
 	}
 
@@ -229,7 +222,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return the map of removed entity identifiers as keys, and the removed
 	 * entities as values iff {@code fReturn == true}; {@code null} otherwise
 	 */
-	public Map<ID, T> deleteAll(Collection<? extends T> colEntities, boolean fReturn) {
+	public CompletableFuture<Map<ID, T>> deleteAll(Collection<? extends T> colEntities, boolean fReturn) {
 		return removeAll(colEntities, fReturn);
 	}
 
@@ -238,7 +231,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @param strEntities the entities to remove
 	 * @return {@code true} if this repository changed as a result of the call
 	 */
-	public boolean deleteAll(Stream<? extends T> strEntities) {
+	public CompletableFuture<Boolean> deleteAll(Stream<? extends T> strEntities) {
 		return removeAll(strEntities);
 	}
 
@@ -249,7 +242,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return the map of removed entity identifiers as keys, and the removed
 	 * entities as values iff {@code fReturn == true}; {@code null} otherwise
 	 */
-	public Map<ID, T> deleteAll(Stream<? extends T> strEntities, boolean fReturn) {
+	public CompletableFuture<Map<ID, T>> deleteAll(Stream<? extends T> strEntities, boolean fReturn) {
 		return removeAll(strEntities, fReturn);
 	}
 
@@ -259,7 +252,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 *               remove
 	 * @return {@code true} if this repository changed as a result of the call
 	 */
-	public boolean deleteAll(Filter<?> filter) {
+	public CompletableFuture<Boolean> deleteAll(Filter<?> filter) {
 		return removeAll(filter);
 	}
 
@@ -271,7 +264,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @return the map of removed entity identifiers as keys, and the removed
 	 * entities as values iff {@code fReturn == true}; {@code null} otherwise
 	 */
-	public Map<ID, T> deleteAll(Filter<?> filter, boolean fReturn) {
+	public CompletableFuture<Map<ID, T>> deleteAll(Filter<?> filter, boolean fReturn) {
 		return removeAll(filter, fReturn);
 	}
 }

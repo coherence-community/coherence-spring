@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -37,16 +37,109 @@ import org.springframework.data.repository.CrudRepository;
  * @author Ryan Lubke
  * @since 3.0.0
  */
-public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
+public interface CoherenceRepository<T, ID>
+		extends CrudRepository<T, ID>, ListenerSupport<T, ID> {
+
+	// ----- CRUD support ---------------------------------------------------
 
 	@Override
-	<S extends T> S save(S entity);
+	long count();
+
+	/**
+	 * Return the number of entities in this repository that satisfy specified
+	 * filter.
+	 * @param filter  the filter to evaluate
+	 * @return the number of entities in this repository that satisfy specified
+	 *         filter
+	 */
+	long count(Filter<?> filter);
 
 	@Override
-	<S extends T> Iterable<S> saveAll(Iterable<S> entities);
+	void delete(T entity);
+
+	/**
+	 * Delete specified entity.
+	 * @param entity  the entity to remove
+	 * @param fReturn the flag specifying whether to return removed entity
+	 * @return removed entity, iff {@code fReturn == true}; {@code null}
+	 *         otherwise
+	 */
+	T delete(T entity, boolean fReturn);
 
 	@Override
-	Optional<T> findById(ID id);
+	void deleteAll();
+
+	/**
+	 * Delete specified entities.
+	 * @param colEntities the entities to remove
+	 * @return {@code true} if this repository changed as a result of the call
+	 */
+	boolean deleteAll(Collection<? extends T> colEntities);
+
+	/**
+	 * Delete specified entities.
+	 * @param colEntities the entities to remove
+	 * @param fReturn     the flag specifying whether to return removed entity
+	 * @return the map of removed entity identifiers as keys, and the removed
+	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
+	 */
+	Map<ID, T> deleteAll(Collection<? extends T> colEntities, boolean fReturn);
+
+	@Override
+	void deleteAll(Iterable<? extends T> entities);
+
+	/**
+	 * Delete all entities based on the specified criteria.
+	 * @param filter the criteria that should be used to select entities to
+	 *               remove
+	 * @return {@code true} if this repository changed as a result of the call
+	 */
+	boolean deleteAll(Filter<?> filter);
+
+	/**
+	 * Remove all entities based on the specified criteria.
+	 * @param filter  the criteria that should be used to select entities to
+	 *                remove
+	 * @param fReturn the flag specifying whether to return removed entity
+	 * @return the map of removed entity identifiers as keys, and the removed
+	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
+	 */
+	Map<ID, T> deleteAll(Filter<?> filter, boolean fReturn);
+
+	/**
+	 * Delete specified entities.
+	 * @param strEntities the entities to remove
+	 * @return {@code true} if this repository changed as a result of the call
+	 */
+	boolean deleteAll(Stream<? extends T> strEntities);
+
+	/**
+	 * Delete specified entities.
+	 * @param strEntities the entities to remove
+	 * @param fReturn     the flag specifying whether to return removed entity
+	 * @return the map of removed entity identifiers as keys, and the removed
+	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
+	 */
+	Map<ID, T> deleteAll(Stream<? extends T> strEntities, boolean fReturn);
+
+	/**
+	 * Delete entities with the specified identifiers.
+	 * @param colIds the identifiers of the entities to remove
+	 * @return {@code true} if this repository changed as a result of the call
+	 */
+	boolean deleteAllById(Collection<? extends ID> colIds);
+
+	/**
+	 * Delete entities with the specified identifiers.
+	 * @param colIds  the identifiers of the entities to remove
+	 * @param fReturn the flag specifying whether to return removed entity
+	 * @return the map of removed entity identifiers as keys, and the removed
+	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
+	 */
+	Map<ID, T> deleteAllById(Collection<? extends ID> colIds, boolean fReturn);
+
+	@Override
+	void deleteById(ID id);
 
 	@Override
 	boolean existsById(ID id);
@@ -58,25 +151,7 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	Iterable<T> findAllById(Iterable<ID> ids);
 
 	@Override
-	long count();
-
-	@Override
-	void deleteById(ID id);
-
-	@Override
-	void delete(T entity);
-
-	@Override
-	void deleteAll(Iterable<? extends T> entities);
-
-	@Override
-	void deleteAll();
-
-	/**
-	 * Store all specified entities as a batch.
-	 * @param strEntities  the entities to store
-	 */
-	void saveAll(Stream<? extends T> strEntities);
+	Optional<T> findById(ID id);
 
 	/**
 	 * Return the value extracted from an entity with a given identifier.
@@ -120,22 +195,6 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	<R> R get(ID id, ValueExtractor<? super T, ? extends R> extractor);
 
 	/**
-	 * Return a map of values extracted from all entities in the repository.
-	 * @param extractor  the {@link ValueExtractor} to extract values with
-	 * @param <R>        the type of the extracted values
-	 * @return the map of extracted values, keyed by entity id
-	 * @see #get(Object, ValueExtractor)
-	 */
-	<R> Map<ID, R> getAll(ValueExtractor<? super T, ? extends R> extractor);
-
-	/**
-	 * Return the entities with the specified identifiers.
-	 * @param colIds  the entity identifiers
-	 * @return the entities with the specified identifiers
-	 */
-	Collection<T> getAll(Collection<? extends ID> colIds);
-
-	/**
 	 * Return a map of values extracted from a set of entities with the given
 	 * identifiers.
 	 * @param colIds     the entity identifiers
@@ -165,14 +224,23 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	<R> Map<ID, R> getAll(Filter<?> filter, ValueExtractor<? super T, ? extends R> extractor);
 
 	/**
-	 * Return all entities in this repository, sorted using
-	 * specified {@link Comparable} attribute.
-	 * @param orderBy  the {@link Comparable} attribute to sort the results by
-	 * @param <R>      the type of the extracted values
-	 * @return all entities in this repository, sorted using
-	 *         specified {@link Comparable} attribute.
+	 * Return a map of values extracted from all entities in the repository.
+	 * @param extractor  the {@link ValueExtractor} to extract values with
+	 * @param <R>        the type of the extracted values
+	 * @return the map of extracted values, keyed by entity id
+	 * @see #get(Object, ValueExtractor)
 	 */
-	<R extends Comparable<? super R>> Collection<T> getAllOrderedBy(ValueExtractor<? super T, ? extends R> orderBy);
+	<R> Map<ID, R> getAll(ValueExtractor<? super T, ? extends R> extractor);
+
+	/**
+	 * Return all entities that satisfy the specified criteria, sorted using
+	 * specified {@link Remote.Comparator}.
+	 * @param filter   the criteria to evaluate
+	 * @param orderBy  the comparator to sort the results with
+	 * @return all entities that satisfy specified criteria, sorted using
+	 * specified {@link Remote.Comparator}.
+	 */
+	Collection<T> getAllOrderedBy(Filter<?> filter, Remote.Comparator<? super T> orderBy);
 
 	/**
 	 * Return all entities that satisfy the specified criteria, sorted using
@@ -195,14 +263,26 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	Collection<T> getAllOrderedBy(Remote.Comparator<? super T> orderBy);
 
 	/**
-	 * Return all entities that satisfy the specified criteria, sorted using
-	 * specified {@link Remote.Comparator}.
-	 * @param filter   the criteria to evaluate
-	 * @param orderBy  the comparator to sort the results with
-	 * @return all entities that satisfy specified criteria, sorted using
-	 * specified {@link Remote.Comparator}.
+	 * Return all entities in this repository, sorted using
+	 * specified {@link Comparable} attribute.
+	 * @param orderBy  the {@link Comparable} attribute to sort the results by
+	 * @param <R>      the type of the extracted values
+	 * @return all entities in this repository, sorted using
+	 *         specified {@link Comparable} attribute.
 	 */
-	Collection<T> getAllOrderedBy(Filter<?> filter, Remote.Comparator<? super T> orderBy);
+	<R extends Comparable<? super R>> Collection<T> getAllOrderedBy(ValueExtractor<? super T, ? extends R> orderBy);
+
+	@Override
+	<S extends T> S save(S entity);
+
+	@Override
+	<S extends T> Iterable<S> saveAll(Iterable<S> entities);
+
+	/**
+	 * Store all specified entities as a batch.
+	 * @param strEntities  the entities to store
+	 */
+	void saveAll(Stream<? extends T> strEntities);
 
 	/**
 	 * Update an entity using specified updater and the new value.
@@ -418,81 +498,6 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	<U, R> Map<ID, R> updateAll(Filter<?> filter,
 			Remote.BiFunction<? super T, ? super U, ? extends R> updater, U value);
 
-	/**
-	 * Delete specified entity.
-	 * @param entity  the entity to remove
-	 * @param fReturn the flag specifying whether to return removed entity
-	 * @return removed entity, iff {@code fReturn == true}; {@code null}
-	 *         otherwise
-	 */
-	T delete(T entity, boolean fReturn);
-
-	/**
-	 * Delete entities with the specified identifiers.
-	 * @param colIds the identifiers of the entities to remove
-	 * @return {@code true} if this repository changed as a result of the call
-	 */
-	boolean deleteAllById(Collection<? extends ID> colIds);
-
-	/**
-	 * Delete entities with the specified identifiers.
-	 * @param colIds  the identifiers of the entities to remove
-	 * @param fReturn the flag specifying whether to return removed entity
-	 * @return the map of removed entity identifiers as keys, and the removed
-	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
-	 */
-	Map<ID, T> deleteAllById(Collection<? extends ID> colIds, boolean fReturn);
-
-	/**
-	 * Delete specified entities.
-	 * @param colEntities the entities to remove
-	 * @return {@code true} if this repository changed as a result of the call
-	 */
-	boolean deleteAll(Collection<? extends T> colEntities);
-
-	/**
-	 * Delete specified entities.
-	 * @param colEntities the entities to remove
-	 * @param fReturn     the flag specifying whether to return removed entity
-	 * @return the map of removed entity identifiers as keys, and the removed
-	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
-	 */
-	Map<ID, T> deleteAll(Collection<? extends T> colEntities, boolean fReturn);
-
-	/**
-	 * Delete specified entities.
-	 * @param strEntities the entities to remove
-	 * @return {@code true} if this repository changed as a result of the call
-	 */
-	boolean deleteAll(Stream<? extends T> strEntities);
-
-	/**
-	 * Delete specified entities.
-	 * @param strEntities the entities to remove
-	 * @param fReturn     the flag specifying whether to return removed entity
-	 * @return the map of removed entity identifiers as keys, and the removed
-	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
-	 */
-	Map<ID, T> deleteAll(Stream<? extends T> strEntities, boolean fReturn);
-
-	/**
-	 * Delete all entities based on the specified criteria.
-	 * @param filter the criteria that should be used to select entities to
-	 *               remove
-	 * @return {@code true} if this repository changed as a result of the call
-	 */
-	boolean deleteAll(Filter<?> filter);
-
-	/**
-	 * Remove all entities based on the specified criteria.
-	 * @param filter  the criteria that should be used to select entities to
-	 *                remove
-	 * @param fReturn the flag specifying whether to return removed entity
-	 * @return the map of removed entity identifiers as keys, and the removed
-	 *         entities as values iff {@code fReturn == true}; {@code null} otherwise
-	 */
-	Map<ID, T> deleteAll(Filter<?> filter, boolean fReturn);
-
 	// ---- Stream API support ----------------------------------------------
 
 	/**
@@ -521,13 +526,241 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	// ---- aggregation support ---------------------------------------------
 
 	/**
-	 * Return the number of entities in this repository that satisfy specified
-	 * filter.
-	 * @param filter  the filter to evaluate
-	 * @return the number of entities in this repository that satisfy specified
-	 *         filter
+	 * Return the average of the specified function.
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getAge}
+	 * @return the average of the specified function
 	 */
-	long count(Filter<?> filter);
+	double average(Remote.ToIntFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getAge}
+	 * @return the average of the specified function
+	 */
+	double average(Filter<?> filter, Remote.ToIntFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getAge}
+	 * @return the average of the specified function
+	 */
+	double average(Remote.ToLongFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getAge}
+	 * @return the average of the specified function
+	 */
+	double average(Filter<?> filter, Remote.ToLongFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getWeight}
+	 * @return the average of the specified function
+	 */
+	double average(Remote.ToDoubleFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getWeight}
+	 * @return the average of the specified function
+	 */
+	double average(Filter<?> filter, Remote.ToDoubleFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getSalary}
+	 * @return the average of the specified function
+	 */
+	BigDecimal average(Remote.ToBigDecimalFunction<? super T> extractor);
+
+	/**
+	 * Return the average of the specified function.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the function to average;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getSalary}
+	 * @return the average of the specified function
+	 */
+	BigDecimal average(Filter<?> filter, Remote.ToBigDecimalFunction<? super T> extractor);
+
+	/**
+	 * Return the set of distinct values for the specified extractor.
+	 * @param extractor  the extractor to get a value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getName}
+	 * @param <R>        the type of extracted values
+	 * @return the set of distinct values for the specified extractor
+	 */
+	<R> Collection<? extends R> distinct(ValueExtractor<? super T, ? extends R> extractor);
+
+	/**
+	 * Return the set of distinct values for the specified extractor.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the extractor to get a value from;
+	 * @param <R>        the type of extracted values
+	 * @return the set of distinct values for the specified extractor
+	 */
+	<R> Collection<? extends R> distinct(Filter<?> filter,
+			ValueExtractor<? super T, ? extends R> extractor);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param <K>        the type of extracted grouping keys
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be sets of entities
+	 *         that match each extracted key
+	 */
+	<K> Map<K, Set<T>> groupBy(ValueExtractor<? super T, ? extends K> extractor);
+
+	/**
+	 * Return the grouping of entities by the specified extractor, ordered by
+	 * the specified attribute within each group.
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param orderBy    the {@link Remote.Comparator} to sort the results
+	 *                   within each group by
+	 * @param <K>        the type of extracted grouping keys
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be sorted sets
+	 *         of entities that match each extracted key
+	 */
+	<K> Map<K, SortedSet<T>> groupBy(ValueExtractor<? super T, ? extends K> extractor,
+			Remote.Comparator<? super T> orderBy);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param <K>        the type of extracted grouping keys
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be sets of entities
+	 *         that match each extracted key
+	 */
+	<K> Map<K, Set<T>> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor);
+
+	/**
+	 * Return the grouping of entities by the specified extractor, ordered by
+	 * the specified attribute within each group.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param orderBy    the {@link Remote.Comparator} to sort the results
+	 *                   within each group by
+	 * @param <K>        the type of extracted grouping keys
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be sorted sets
+	 *         of entities that match each extracted key
+	 */
+	<K> Map<K, SortedSet<T>> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor,
+			Remote.Comparator<? super T> orderBy);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
+	 * @param <K>        the type of extracted grouping keys
+	 * @param <A>        the type of collector's accumulator
+	 * @param <R>        the type of collector's result
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be results of
+	 *         the specified {@code collector} for each group
+	 * @see RemoteCollectors
+	 */
+	<K, A, R> Map<K, R> groupBy(ValueExtractor<? super T, ? extends K> extractor,
+			RemoteCollector<? super T, A, R> collector);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
+	 * @param <K>        the type of extracted grouping keys
+	 * @param <A>        the type of collector's accumulator
+	 * @param <R>        the type of collector's result
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be results of
+	 *         the specified {@code collector} for each group
+	 * @see RemoteCollectors
+	 */
+	<K, A, R> Map<K, R> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor,
+			RemoteCollector<? super T, A, R> collector);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param mapFactory the supplier to use to create result {@code Map}
+	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
+	 * @param <K>        the type of extracted grouping keys
+	 * @param <A>        the type of collector's accumulator
+	 * @param <R>        the type of collector's result
+	 * @param <M>        the type of result {@code Map}
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be results of
+	 *         the specified {@code collector} for each group
+	 * @see RemoteCollectors
+	 */
+	<K, A, R, M extends Map<K, R>> M groupBy(ValueExtractor<? super T, ? extends K> extractor,
+			Remote.Supplier<M> mapFactory, RemoteCollector<? super T, A, R> collector);
+
+	/**
+	 * Return the grouping of entities by the specified extractor.
+	 * @param filter     the entity selection criteria
+	 * @param extractor  the extractor to get a grouping value from;
+	 *                   typically a method reference on the entity class,
+	 *                   such as {@code Person::getGender}
+	 * @param mapFactory the supplier to use to create result {@code Map}
+	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
+	 * @param <K>        the type of extracted grouping keys
+	 * @param <A>        the type of collector's accumulator
+	 * @param <R>        the type of collector's result
+	 * @param <M>        the type of result {@code Map}
+	 * @return the the grouping of entities by the specified extractor; the keys
+	 *         in the returned map will be distinct values extracted by the
+	 *         specified {@code extractor}, and the values will be results of
+	 *         the specified {@code collector} for each group
+	 * @see RemoteCollectors
+	 */
+	<K, A, R, M extends Map<K, R>> M groupBy(Filter<?> filter,
+			ValueExtractor<? super T, ? extends K> extractor, Remote.Supplier<M> mapFactory,
+			RemoteCollector<? super T, A, R> collector);
 
 	/**
 	 * Return the maximum value of the specified function.
@@ -842,243 +1075,6 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 	BigDecimal sum(Filter<?> filter, Remote.ToBigDecimalFunction<? super T> extractor);
 
 	/**
-	 * Return the average of the specified function.
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getAge}
-	 * @return the average of the specified function
-	 */
-	double average(Remote.ToIntFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getAge}
-	 * @return the average of the specified function
-	 */
-	double average(Filter<?> filter, Remote.ToIntFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getAge}
-	 * @return the average of the specified function
-	 */
-	double average(Remote.ToLongFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getAge}
-	 * @return the average of the specified function
-	 */
-	double average(Filter<?> filter, Remote.ToLongFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getWeight}
-	 * @return the average of the specified function
-	 */
-	double average(Remote.ToDoubleFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getWeight}
-	 * @return the average of the specified function
-	 */
-	double average(Filter<?> filter, Remote.ToDoubleFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getSalary}
-	 * @return the average of the specified function
-	 */
-	BigDecimal average(Remote.ToBigDecimalFunction<? super T> extractor);
-
-	/**
-	 * Return the average of the specified function.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the function to average;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getSalary}
-	 * @return the average of the specified function
-	 */
-	BigDecimal average(Filter<?> filter, Remote.ToBigDecimalFunction<? super T> extractor);
-
-	/**
-	 * Return the set of distinct values for the specified extractor.
-	 * @param extractor  the extractor to get a value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getName}
-	 * @param <R>        the type of extracted values
-	 * @return the set of distinct values for the specified extractor
-	 */
-	<R> Collection<? extends R> distinct(ValueExtractor<? super T, ? extends R> extractor);
-
-	/**
-	 * Return the set of distinct values for the specified extractor.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the extractor to get a value from;
-	 * @param <R>        the type of extracted values
-	 * @return the set of distinct values for the specified extractor
-	 */
-	<R> Collection<? extends R> distinct(Filter<?> filter,
-			ValueExtractor<? super T, ? extends R> extractor);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param <K>        the type of extracted grouping keys
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be sets of entities
-	 *         that match each extracted key
-	 */
-	<K> Map<K, Set<T>> groupBy(ValueExtractor<? super T, ? extends K> extractor);
-
-	/**
-	 * Return the grouping of entities by the specified extractor, ordered by
-	 * the specified attribute within each group.
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param orderBy    the {@link Remote.Comparator} to sort the results
-	 *                   within each group by
-	 * @param <K>        the type of extracted grouping keys
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be sorted sets
-	 *         of entities that match each extracted key
-	 */
-	<K> Map<K, SortedSet<T>> groupBy(ValueExtractor<? super T, ? extends K> extractor,
-			Remote.Comparator<? super T> orderBy);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param <K>        the type of extracted grouping keys
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be sets of entities
-	 *         that match each extracted key
-	 */
-	<K> Map<K, Set<T>> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor);
-
-	/**
-	 * Return the grouping of entities by the specified extractor, ordered by
-	 * the specified attribute within each group.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param orderBy    the {@link Remote.Comparator} to sort the results
-	 *                   within each group by
-	 * @param <K>        the type of extracted grouping keys
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be sorted sets
-	 *         of entities that match each extracted key
-	 */
-	<K> Map<K, SortedSet<T>> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor,
-			Remote.Comparator<? super T> orderBy);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
-	 * @param <K>        the type of extracted grouping keys
-	 * @param <A>        the type of collector's accumulator
-	 * @param <R>        the type of collector's result
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be results of
-	 *         the specified {@code collector} for each group
-	 * @see RemoteCollectors
-	 */
-	<K, A, R> Map<K, R> groupBy(ValueExtractor<? super T, ? extends K> extractor,
-			RemoteCollector<? super T, A, R> collector);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
-	 * @param <K>        the type of extracted grouping keys
-	 * @param <A>        the type of collector's accumulator
-	 * @param <R>        the type of collector's result
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be results of
-	 *         the specified {@code collector} for each group
-	 * @see RemoteCollectors
-	 */
-	<K, A, R> Map<K, R> groupBy(Filter<?> filter, ValueExtractor<? super T, ? extends K> extractor,
-			RemoteCollector<? super T, A, R> collector);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param mapFactory the supplier to use to create result {@code Map}
-	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
-	 * @param <K>        the type of extracted grouping keys
-	 * @param <A>        the type of collector's accumulator
-	 * @param <R>        the type of collector's result
-	 * @param <M>        the type of result {@code Map}
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be results of
-	 *         the specified {@code collector} for each group
-	 * @see RemoteCollectors
-	 */
-	<K, A, R, M extends Map<K, R>> M groupBy(ValueExtractor<? super T, ? extends K> extractor,
-			Remote.Supplier<M> mapFactory, RemoteCollector<? super T, A, R> collector);
-
-	/**
-	 * Return the grouping of entities by the specified extractor.
-	 * @param filter     the entity selection criteria
-	 * @param extractor  the extractor to get a grouping value from;
-	 *                   typically a method reference on the entity class,
-	 *                   such as {@code Person::getGender}
-	 * @param mapFactory the supplier to use to create result {@code Map}
-	 * @param collector  the {@link RemoteCollector} to apply to grouped entities
-	 * @param <K>        the type of extracted grouping keys
-	 * @param <A>        the type of collector's accumulator
-	 * @param <R>        the type of collector's result
-	 * @param <M>        the type of result {@code Map}
-	 * @return the the grouping of entities by the specified extractor; the keys
-	 *         in the returned map will be distinct values extracted by the
-	 *         specified {@code extractor}, and the values will be results of
-	 *         the specified {@code collector} for each group
-	 * @see RemoteCollectors
-	 */
-	<K, A, R, M extends Map<K, R>> M groupBy(Filter<?> filter,
-			ValueExtractor<? super T, ? extends K> extractor, Remote.Supplier<M> mapFactory,
-			RemoteCollector<? super T, A, R> collector);
-
-	/**
 	 * Return the top N highest values for the specified extractor.
 	 * @param extractor  the extractor to get the values to compare with
 	 * @param cResults   the number of highest values to return
@@ -1156,51 +1152,24 @@ public interface CoherenceRepository<T, ID> extends CrudRepository<T, ID> {
 
 	// ----- listener support -----------------------------------------------
 
-	/**
-	 * Register a listener that will observe all repository events.
-	 * @param listener the event listener to register
-	 */
+	@Override
 	void addListener(AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Unregister a listener that observes all repository events.
-	 * @param listener the event listener to unregister
-	 */
+	@Override
 	void removeListener(AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Register a listener that will observe all events for a specific entity.
-	 * @param id       the identifier of the entity to observe
-	 * @param listener the event listener to register
-	 */
+	@Override
 	void addListener(ID id, AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Unregister a listener that observes all events for a specific entity.
-	 * @param id       the identifier of the entity to observe
-	 * @param listener the event listener to unregister
-	 */
+	@Override
 	void removeListener(ID id, AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Register a listener that will observe all events for entities that
-	 * satisfy the specified criteria.
-	 * @param filter   the criteria to use to select entities to observe
-	 * @param listener the event listener to register
-	 */
+	@Override
 	void addListener(Filter<?> filter, AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Unregister a listener that observes all events for entities that satisfy
-	 * the specified criteria.
-	 * @param filter   the criteria to use to select entities to observe
-	 * @param listener the event listener to unregister
-	 */
+	@Override
 	void removeListener(Filter<?> filter, AbstractRepository.Listener<? super T> listener);
 
-	/**
-	 * Create new {@link AbstractRepository.Listener.Builder} instance.
-	 * @return a new {@link AbstractRepository.Listener.Builder} instance
-	 */
+	@Override
 	AbstractRepository.Listener.Builder<T> listener();
 }

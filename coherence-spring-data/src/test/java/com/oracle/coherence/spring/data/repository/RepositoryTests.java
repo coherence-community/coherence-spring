@@ -43,7 +43,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static com.tangosol.util.Extractors.extract;
 import static com.tangosol.util.Extractors.fragment;
 import static com.tangosol.util.Filters.equal;
 import static java.util.stream.Collectors.toCollection;
@@ -54,6 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext
 public class RepositoryTests extends AbstractDataTest {
 
+	@SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection", "CdiInjectionPointsInspection"})
 	@Inject
 	protected CoherenceBookRepository bookRepository;
 
@@ -142,13 +142,13 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureFindAllOrdered() {
-		Collection<Book> result = this.bookRepository.getAllOrderedBy(extract("title"));
+		Collection<Book> result = this.bookRepository.getAllOrderedBy(Book::getTitle);
 		assertThat(result).containsExactly(DUNE, DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
 	}
 
 	@Test
 	void ensureFindAllWithFilterOrdered() {
-		Collection<Book> result = this.bookRepository.getAllOrderedBy(author(), extract("title"));
+		Collection<Book> result = this.bookRepository.getAllOrderedBy(author(), Book::getTitle);
 		assertThat(result).containsExactly(DUNE, DUNE_MESSIAH);
 	}
 
@@ -187,7 +187,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	public void ensureGetWithIdAndValueExtractor() {
-		Author author = this.bookRepository.get(DUNE.getUuid(), extract("author"));
+		Author author = this.bookRepository.get(DUNE.getUuid(), Book::getAuthor);
 		assertThat(author).isEqualTo(DUNE.getAuthor());
 	}
 
@@ -408,6 +408,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureRemoteWithNoReturn() {
+		//noinspection ConstantConditions
 		assertThat(this.bookRepository.delete(DUNE, false)).isNull();
 		assertThat(this.book.containsKey(DUNE.getUuid())).isFalse();
 	}
@@ -422,7 +423,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureDeleteAllByIdNoMatch() {
-		boolean result = this.bookRepository.deleteAllById(Arrays.asList(IT.getUuid()));
+		boolean result = this.bookRepository.deleteAllById(Collections.singletonList(IT.getUuid()));
 		assertThat(result).isFalse();
 		assertThat(this.book.size()).isEqualTo(4);
 		assertThat(this.book.values(author())).isNotEmpty();
@@ -777,78 +778,82 @@ public class RepositoryTests extends AbstractDataTest {
 	@Test
 	void ensureAverage() {
 		assertThat(this.bookRepository.average(Book::getPages))
-				.isEqualTo(books.stream().mapToInt(Book::getPages).average().getAsDouble());
+				.isEqualTo(books.stream().mapToInt(Book::getPages).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageWithFilter() {
 		assertThat(this.bookRepository.average(author(),
 				Book::getPages)).isEqualTo(books.stream().filter((bk) ->
-				bk.getAuthor().equals(FRANK_HERBERT)).mapToInt(Book::getPages).average().getAsDouble());
+				bk.getAuthor().equals(FRANK_HERBERT)).mapToInt(Book::getPages).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageLong() {
 		assertThat(this.bookRepository.average(Book::getPagesAsLong))
-				.isEqualTo(books.stream().mapToLong(Book::getPagesAsLong).average().getAsDouble());
+				.isEqualTo(books.stream().mapToLong(Book::getPagesAsLong).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageLongWithFilter() {
 		assertThat(this.bookRepository.average(author(), Book::getPagesAsLong))
 				.isEqualTo(books.stream().filter((bk) ->
-						bk.getAuthor().equals(FRANK_HERBERT)).mapToLong(Book::getPagesAsLong).average().getAsDouble());
+						bk.getAuthor().equals(FRANK_HERBERT)).mapToLong(Book::getPagesAsLong).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageDouble() {
 		assertThat(this.bookRepository.average(Book::getPagesAsDouble))
-				.isEqualTo(books.stream().mapToDouble(Book::getPagesAsDouble).average().getAsDouble());
+				.isEqualTo(books.stream().mapToDouble(Book::getPagesAsDouble).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageDoubleWithFilter() {
 		assertThat(this.bookRepository.average(author(), Book::getPagesAsDouble))
 				.isEqualTo(books.stream().filter((bk) ->
-						bk.getAuthor().equals(FRANK_HERBERT)).mapToDouble(Book::getPagesAsDouble).average().getAsDouble());
+						bk.getAuthor().equals(FRANK_HERBERT)).mapToDouble(Book::getPagesAsDouble).average().orElse(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
 	void ensureAverageBigDecimal() {
 		assertThat(this.bookRepository.average(Book::getPagesAsBigDecimal))
-				.isCloseTo(BigDecimal.valueOf(books.stream().mapToLong(Book::getPagesAsLong).average().getAsDouble()), Percentage.withPercentage(.1));
+				.isCloseTo(BigDecimal.valueOf(books.stream().mapToLong(Book::getPagesAsLong).average().orElse(Double.NEGATIVE_INFINITY)), Percentage.withPercentage(.1));
 	}
 
 	@Test
 	void ensureAverageBigDecimalWithFilter() {
 		assertThat(this.bookRepository.average(author(), Book::getPagesAsBigDecimal))
 				.isCloseTo(BigDecimal.valueOf(books.stream().filter((bk) ->
-						bk.getAuthor().equals(FRANK_HERBERT)).mapToLong(Book::getPages).average().getAsDouble()), Percentage.withPercentage(.1));
+						bk.getAuthor().equals(FRANK_HERBERT)).mapToLong(Book::getPages).average().orElse(Double.NEGATIVE_INFINITY)), Percentage.withPercentage(.1));
 	}
 
+	@SuppressWarnings({"rawtypes"})
 	@Test
 	void ensureDistinct() {
+		// intentional lack of typing on list
 		List authors = Arrays.asList(FRANK_HERBERT, JOHN_TOLKIEN, PATRICK_ROTHFUSS);
-		assertThat(this.bookRepository.distinct(extract("author"))).containsExactlyInAnyOrderElementsOf(authors);
+		assertThat(this.bookRepository.distinct(Book::getAuthor)).containsExactlyInAnyOrderElementsOf(authors);
 	}
 
+	@SuppressWarnings({"rawtypes"})
 	@Test
 	void ensureDistinctFilter() {
+		// intentional lack of typing on list
 		List authors = Arrays.asList(FRANK_HERBERT, JOHN_TOLKIEN, PATRICK_ROTHFUSS);
-		assertThat(this.bookRepository.distinct(Filters.greater(Book::getPages, 100), extract("author")))
+		assertThat(this.bookRepository.distinct(Filters.greater(Book::getPages, 100), Book::getAuthor))
 				.containsExactlyInAnyOrderElementsOf(authors);
 	}
 
 	@Test
 	void ensureGroupBy() {
-		Map<Author, Set<Book>> result = this.bookRepository.groupBy(extract("author"));
+		Map<Author, Set<Book>> result = this.bookRepository.groupBy(Book::getAuthor);
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.collect(Collectors.groupingBy(Book::getAuthor, toSet())));
 	}
 
 	@Test
 	void ensureGroupByWithSort() {
-		Map<Author, SortedSet<Book>> result = this.bookRepository.groupBy(extract("author"),
+		Map<Author, SortedSet<Book>> result = this.bookRepository.groupBy(Book::getAuthor,
 				Remote.comparator((Remote.Comparator<Book>) (o1, o2) -> o1.getTitle().compareTo(o2.getTitle())));
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.collect(Collectors.groupingBy(Book::getAuthor, toCollection(() -> (SortedSet<Book>) new TreeSet<>(Comparator.comparing(Book::getTitle))))));
@@ -857,7 +862,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureGroupByWithFilter() {
-		Map<Author, Set<Book>> result = this.bookRepository.groupBy(Filters.greater(extract("pages"), 500), extract("author"));
+		Map<Author, Set<Book>> result = this.bookRepository.groupBy(Filters.greater(Book::getPages, 500), Book::getAuthor);
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.filter((bk) -> bk.getPages() > 500)
 				.collect(Collectors.groupingBy(Book::getAuthor, toSet())));
@@ -865,7 +870,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureGroupByWithFilterAndSort() {
-		Map<Author, SortedSet<Book>> result = this.bookRepository.groupBy(Filters.greater(extract("pages"), 500), extract("author"),
+		Map<Author, SortedSet<Book>> result = this.bookRepository.groupBy(Filters.greater(Book::getPages, 500), Book::getAuthor,
 				Remote.comparator((Remote.Comparator<Book>) (o1, o2) -> o1.getTitle().compareTo(o2.getTitle())));
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.filter((bk) -> bk.getPages() > 500)
@@ -875,14 +880,14 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureGroupByWithRemoteCollector() {
-		Map<Author, Integer> result = this.bookRepository.groupBy(extract("author"), RemoteCollectors.summingInt(Book::getPages));
+		Map<Author, Integer> result = this.bookRepository.groupBy(Book::getAuthor, RemoteCollectors.summingInt(Book::getPages));
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.collect(Collectors.groupingBy(Book::getAuthor, Collectors.summingInt(Book::getPages))));
 	}
 
 	@Test
 	void ensureGroupByWithFilterAndRemoteCollector() {
-		Map<Author, Integer> result = this.bookRepository.groupBy(author(), extract("author"), RemoteCollectors.summingInt(Book::getPages));
+		Map<Author, Integer> result = this.bookRepository.groupBy(author(), Book::getAuthor, RemoteCollectors.summingInt(Book::getPages));
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.filter((bk) -> bk.getAuthor().equals(FRANK_HERBERT))
 				.collect(Collectors.groupingBy(Book::getAuthor,  Collectors.summingInt(Book::getPages))));
@@ -890,7 +895,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureGroupByWithRemoteCollectorAndMapFactory() {
-		Map<Author, Integer> result = this.bookRepository.groupBy(extract("author"), Remote.supplier(TreeMap::new), RemoteCollectors.summingInt(Book::getPages));
+		Map<Author, Integer> result = this.bookRepository.groupBy(Book::getAuthor, Remote.supplier(TreeMap::new), RemoteCollectors.summingInt(Book::getPages));
 		assertThat(result).isInstanceOf(TreeMap.class);
 		assertThat(result).containsAllEntriesOf(this.books.stream()
 				.collect(Collectors.groupingBy(Book::getAuthor, Collectors.summingInt(Book::getPages))));
@@ -898,8 +903,8 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureGroupByWithFilterRemoteCollectorAndMapFactory() {
-		Map<Author, Integer> result = this.bookRepository.groupBy(Filters.greater(extract("pages"), 500),
-				extract("author"), Remote.supplier(TreeMap::new),
+		Map<Author, Integer> result = this.bookRepository.groupBy(Filters.greater(Book::getPages, 500),
+				Book::getAuthor, Remote.supplier(TreeMap::new),
 				RemoteCollectors.summingInt(Book::getPages));
 		assertThat(result).isInstanceOf(TreeMap.class);
 		assertThat(result).containsAllEntriesOf(this.books.stream()
@@ -961,7 +966,7 @@ public class RepositoryTests extends AbstractDataTest {
 
 	@Test
 	void ensureFinderQueries() {
-		List<Book> books = this.bookRepository.findAllByAuthor(FRANK_HERBERT);
+		List<Book> books = this.bookRepository.findByAuthor(FRANK_HERBERT);
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
 	}
 
