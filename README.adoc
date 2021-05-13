@@ -1,4 +1,6 @@
 :snapshot-version: 3.0.0-SNAPSHOT
+:website: https://spring.coherence.community/
+:milestone: 3.0.0-M1
 
 = Welcome to the Oracle Coherence Spring Project
 
@@ -18,15 +20,14 @@ Coherence Spring also provides a set of components to aid in the integration of 
 
 == Documentation
 
-Detailed project documentation for the latest snapshot release ({snapshot-version}) is available
-in the Reference Guide which is provided in various formats:
+Detailed project documentation is available on the Coherence Spring website. This includes the reference documentation in various formats (Multi-page/Single-page HTML, PDF), as well as
+extensive JavaDoc for the Coherence Spring source code.
 
-- https://spring.coherence.community/{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML]
-- https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]
-- https://spring.coherence.community/{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]
-
-Extensive JavaDoc for the Coherence Spring code is also available in the
-https://spring.coherence.community/{snapshot-version}/refdocs/api/index.html[Coherence Spring API Documentation].
+[width="75%"]
+|=======
+|*{milestone}* | {website}{milestone}[Website] |{website}{milestone}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{milestone}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{milestone}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{milestone}/refdocs/api/index.html[API Doc.]
+|*{snapshot-version}* | {website}{snapshot-version}[Website] |{website}{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{snapshot-version}/refdocs/api/index.html[API Doc.]
+|=======
 
 NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
 http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
