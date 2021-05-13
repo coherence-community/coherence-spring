@@ -13,15 +13,14 @@ The Coherence Spring project provides bootstrapping support of https://coherence
 https://spring.io/projects/spring-framework[Spring Framework] and https://spring.io/projects/spring-boot[Spring Boot].
 Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring eco-system:
 
+- Spring Data
 - Spring's Cache Abstraction
-- Spring Cloud Config Server (In-process)
+- Spring Boot Config API + Spring Cloud Config Server (In-process)
 - Spring Session (TBD)
-- Spring Data (TBD)
 
 == Documentation
 
-Detailed project documentation is available on the Coherence Spring website. This includes the reference documentation in various formats (Multi-page/Single-page HTML, PDF), as well as
-extensive JavaDoc for the Coherence Spring source code.
+Detailed project documentation is available on the Coherence Spring website. This includes the reference documentation in various formats (Multi-page/Single-page HTML, PDF), as well as extensive JavaDoc for the Coherence Spring source code.
 
 [width="75%"]
 |=======
