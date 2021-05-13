@@ -187,6 +187,17 @@ public class BackingAsyncRepository<T, ID> extends AbstractAsyncRepository<ID, T
 	}
 
 	/**
+	 * Deletes all instances of the type {@code T} with the given IDs.
+	 * @param ids must not be {@literal null}. Must not contain {@literal null} elements
+	 * @return a {@link CompletableFuture} that can be used to determine whether
+	 *         the operation completed
+	 */
+	public CompletableFuture<Void> deleteAllById(Iterable<? extends ID> ids) {
+		return removeAllById(StreamSupport.stream(ids.spliterator(), false)
+				.collect(Collectors.toList())).thenApply((unused) -> null);
+	}
+
+	/**
 	 * Alias for {@link #removeAllById(Collection)}.
 	 * @param colIds the identifiers of the entities to remove
 	 * @return {@code true} if this repository changed as a result of the call

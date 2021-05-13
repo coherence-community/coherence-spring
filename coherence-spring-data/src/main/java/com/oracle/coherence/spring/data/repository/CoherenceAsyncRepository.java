@@ -29,10 +29,17 @@ import com.tangosol.util.function.Remote;
 import com.tangosol.util.stream.RemoteCollector;
 import com.tangosol.util.stream.RemoteCollectors;
 
+/**
+ * Coherence-specific asynchronous repository interface.
+ *
+ * @param <T> the domain type the repository manages
+ * @param <ID> the type of the id of the entity the repository manages
+ *
+ * @author Ryan Lubke
+ * @since 3.0.0
+ */
 public interface CoherenceAsyncRepository<T, ID>
 		extends AsyncCrudRepository<T, ID>, ListenerSupport<T, ID> {
-
-	// ----- CRUD support ---------------------------------------------------
 
 	@Override
 	CompletableFuture<Long> count();
@@ -119,6 +126,9 @@ public interface CoherenceAsyncRepository<T, ID>
 	 *         and the removed entities as values iff {@code fReturn == true}; {@code null} otherwise
 	 */
 	CompletableFuture<Map<ID, T>> deleteAll(Stream<? extends T> strEntities, boolean fReturn);
+
+	@Override
+	CompletableFuture<Void> deleteAllById(Iterable<? extends ID> ids);
 
 	/**
 	 * Remove entities with the specified identifiers.

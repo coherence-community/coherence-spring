@@ -9,8 +9,11 @@ import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
 import com.tangosol.util.UUID;
 
+import org.springframework.scheduling.annotation.Async;
+
 @CoherenceMap("book")
 public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository<Book, UUID> {
 
+	@Async
 	CompletableFuture<List<Book>> findByAuthor(Author author);
 }

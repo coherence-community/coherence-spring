@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.data.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -17,12 +18,18 @@ import java.util.stream.StreamSupport;
 import com.oracle.coherence.repository.AbstractRepository;
 import com.oracle.coherence.spring.data.core.mapping.CoherencePersistentEntity;
 import com.oracle.coherence.spring.data.core.mapping.CoherencePersistentProperty;
+import com.oracle.coherence.spring.data.support.Utils;
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Base;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.filter.InKeySetFilter;
+import com.tangosol.util.filter.LimitFilter;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.MappingContext;
 
 /**
@@ -149,6 +156,28 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	}
 
 	/**
+	 * Returns all entities sorted by the given options.
+	 * @param sort the sort configuration
+	 * @return all entities sorted by the given options
+	 */
+	public Iterable<T> findAll(Sort sort) {
+		return getAllOrderedBy(Filters.always(), Utils.toComparator(sort));
+	}
+
+	/**
+	 * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code Pageable} object.
+	 * @param pageable paging metadata
+	 * @return a page of entities
+	 */
+	@SuppressWarnings("unchecked")
+	public Page<T> findAll(Pageable pageable) {
+		LimitFilter<T> filter = Utils.configureLimitFilter(pageable, Filters.always());
+		return new PageImpl<>(
+				new ArrayList<>(
+						getAll((filter != null) ? filter : Filters.always())), pageable, count());
+	}
+
+	/**
 	 * Returns all instances of the type {@code T} with the given IDs.
 	 * <p>
 	 * If some or all ids are not found, no entities are returned for these IDs.
@@ -191,6 +220,15 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 */
 	public T delete(T entity, boolean fReturn) {
 		return remove(entity, fReturn);
+	}
+
+	/**
+	 * Deletes all instances of the type {@code T} with the given IDs.
+	 * @param ids must not be {@literal null}. Must not contain {@literal null} elements.
+	 */
+	public void deleteAllById(Iterable<? extends ID> ids) {
+		removeAllById(StreamSupport.stream(ids.spliterator(), false)
+				.collect(Collectors.toList()));
 	}
 
 	/**

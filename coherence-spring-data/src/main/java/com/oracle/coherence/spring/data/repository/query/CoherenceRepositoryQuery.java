@@ -7,16 +7,20 @@
 package com.oracle.coherence.spring.data.repository.query;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
 import com.tangosol.net.NamedMap;
+import com.tangosol.util.Aggregators;
+import com.tangosol.util.Filter;
+import com.tangosol.util.InvocableMap;
 import com.tangosol.util.Processors;
-import com.tangosol.util.extractor.UniversalExtractor;
-import com.tangosol.util.function.Remote;
+import com.tangosol.util.filter.LimitFilter;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
@@ -28,7 +32,8 @@ import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.stereotype.Repository;
 
-import static com.tangosol.util.function.Remote.comparator;
+import static com.oracle.coherence.spring.data.support.Utils.configureLimitFilter;
+import static com.oracle.coherence.spring.data.support.Utils.toComparator;
 
 /**
  * Coherence implementation of {@link RepositoryQuery}.
@@ -83,54 +88,59 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 		this.queryMethod = new QueryMethod(method, metadata, factory);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings({"unchecked", "rawtypes", "ConstantConditions"})
 	@Override
 	public Object execute(Object[] parameters) {
-
-		Class<?> returnType = this.method.getReturnType();
-		if (returnType == Page.class || returnType == Slice.class) {
-			throw new UnsupportedOperationException("The M1 release of spring-coherence-data doesn't" +
-					" support Slice or Page return types.");
-		}
 
 		PartTree partTree = new PartTree(this.method.getName(), this.metadata.getDomainType());
 		ParameterAccessor accessor = new ParametersParameterAccessor(new DefaultParameters(this.method), parameters);
 		CoherenceQueryCreator creator = new CoherenceQueryCreator(partTree, accessor);
-		QueryResult q = creator.createQuery();
+		QueryResult queryResult = creator.createQuery();
 
-		if (q.getAggregator() != null) {
-			return this.namedMap.aggregate(q.getFilter(), q.getAggregator());
-		}
+		Filter filter = queryResult.getFilter();
+
 		if (partTree.isDelete()) {
-			Map result = this.namedMap.invokeAll(Processors.remove(q.getFilter(), true));
+			Map result = this.namedMap.invokeAll(Processors.remove(filter, true));
 			return result.size();
 		}
 
-		Sort sort = q.getSort();
-		Remote.Comparator comparator = null;
-		if (sort.isSorted()) {
-			for (Sort.Order order : sort) {
-				if (comparator == null) {
-					comparator = comparator(new UniversalExtractor(order.getProperty()));
-					if (order.isDescending()) {
-						comparator = comparator.reversed();
-					}
-				}
-				else {
-					Remote.Comparator temp = comparator(new UniversalExtractor(order.getProperty()));
-					if (order.isDescending()) {
-						temp = comparator.reversed();
-					}
-					comparator.thenComparing(temp);
-				}
+		Pageable pageable = accessor.getPageable();
+		boolean pagingQuery = pageable != null && pageable.isPaged();
+		LimitFilter limitFilter = null;
+		InvocableMap.EntryAggregator aggregator = queryResult.getAggregator();
+
+		// paging query; setup LimitFilter
+		if (pagingQuery) {
+			limitFilter = configureLimitFilter(pageable, filter);
+			if (limitFilter != null) {
+				filter = limitFilter;
 			}
 		}
-		Collection<?> result = (comparator != null)
-				? this.namedMap.values(q.getFilter(), comparator)
-				: this.namedMap.values(q.getFilter());
+
+		if (aggregator != null) {
+			if (pagingQuery) {
+				throw new IllegalStateException("Not possible to paginate aggregated results.");
+			}
+			return this.namedMap.aggregate(filter, aggregator);
+		}
+
+		Sort sort = queryResult.getSort();
+		Collection<?> result = (sort.isSorted())
+				? this.namedMap.values(filter, toComparator(sort))
+				: this.namedMap.values(filter);
 
 		if (partTree.isExistsProjection()) {
 			return !result.isEmpty();
+		}
+
+		if (pagingQuery) {
+			if (this.queryMethod.isPageQuery()) {
+				int count = (int) this.namedMap.aggregate(limitFilter.getFilter(), Aggregators.count());
+				return new PageImpl(Arrays.asList(result.toArray()), pageable, count);
+			}
+			else if (this.queryMethod.isSliceQuery()) {
+				return new SliceImpl(Arrays.asList(result.toArray()), pageable, result.size() == pageable.getPageSize());
+			}
 		}
 
 		return result;
