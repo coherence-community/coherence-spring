@@ -40,6 +40,10 @@ import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -98,6 +102,56 @@ public class RepositoryTests extends AbstractDataTest {
 	@Test
 	void ensureFindAll() {
 		assertThat(this.bookRepository.findAll()).containsExactlyInAnyOrderElementsOf(this.books);
+	}
+
+	@Test
+	void ensureFindAllWithSort() {
+		assertThat(this.bookRepository.findAll(Sort.by(Sort.Order.desc("title"))))
+				.containsExactly(NAME_OF_THE_WIND, HOBBIT, DUNE_MESSIAH, DUNE);
+	}
+
+	@Test
+	void ensureFindAllWithPageable() {
+		// first page (1 of 2)
+		Pageable pageable = PageRequest.ofSize(1);
+		Page<Book> page = this.bookRepository.findAll(pageable);
+		assertThat(page).isNotNull();
+		assertThat(page.hasNext()).isTrue();
+		assertThat(page.hasPrevious()).isFalse();
+		assertThat(page.hasContent()).isTrue();
+		assertThat(page.getTotalPages()).isEqualTo(4);
+		assertThat(page.getTotalElements()).isEqualTo(4);
+		List<Book> content = page.getContent();
+		assertThat(content).isNotNull();
+		assertThat(content.size()).isEqualTo(1);
+		assertThat(content).containsAnyOf(DUNE, DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
+
+		// next page (2 of 2)
+		pageable = page.nextPageable();
+		page = this.bookRepository.findAll(pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(page.hasNext()).isTrue();
+		assertThat(page.hasPrevious()).isTrue();
+		assertThat(page.hasContent()).isTrue();
+		List<Book> content2 = page.getContent();
+		assertThat(content2).isNotNull();
+		assertThat(content2.size()).isEqualTo(1);
+		assertThat(content2).containsAnyOf(DUNE, DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
+		assertThat(content2).isNotEqualTo(content);
+
+		// go back one page (1 of 2)
+		pageable = page.previousPageable();
+		page = this.bookRepository.findAll(pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(page.hasNext()).isTrue();
+		assertThat(page.hasPrevious()).isFalse();
+		assertThat(page.hasContent()).isTrue();
+		List<Book> contentPrev = page.getContent();
+		assertThat(contentPrev).isNotNull();
+		assertThat(contentPrev.size()).isEqualTo(1);
+		assertThat(contentPrev).containsAnyOf(DUNE, DUNE_MESSIAH, HOBBIT, NAME_OF_THE_WIND);
+		assertThat(contentPrev).isEqualTo(content);
+		assertThat(contentPrev).isNotEqualTo(content2);
 	}
 
 	@Test
@@ -411,6 +465,14 @@ public class RepositoryTests extends AbstractDataTest {
 		//noinspection ConstantConditions
 		assertThat(this.bookRepository.delete(DUNE, false)).isNull();
 		assertThat(this.book.containsKey(DUNE.getUuid())).isFalse();
+	}
+
+	@Test
+	void ensureDeleteAllByIdWithIterable() {
+		Iterable<UUID> iterable = Arrays.asList(DUNE.getUuid(), DUNE_MESSIAH.getUuid());
+		this.bookRepository.deleteAllById(iterable);
+		assertThat(this.book.size()).isEqualTo(2);
+		assertThat(this.book.values(author())).isEmpty();
 	}
 
 	@Test
@@ -969,7 +1031,6 @@ public class RepositoryTests extends AbstractDataTest {
 		List<Book> books = this.bookRepository.findByAuthor(FRANK_HERBERT);
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
 	}
-
 
 	// ----- helper methods -------------------------------------------------
 

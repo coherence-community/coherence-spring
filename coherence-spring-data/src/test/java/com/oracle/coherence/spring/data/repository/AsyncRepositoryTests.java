@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.data.repository;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,6 +40,7 @@ import com.tangosol.util.stream.RemoteCollectors;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -414,6 +416,14 @@ public class AsyncRepositoryTests extends AbstractDataTest {
 	void ensureRemoteWithNoReturn() throws Exception {
 		assertThat(this.bookRepository.delete(DUNE, false).get(5, TimeUnit.SECONDS)).isNull();
 		assertThat(this.book.containsKey(DUNE.getUuid())).isFalse();
+	}
+
+	@Test
+	void ensureDeleteAllByIdWithIterable() {
+		Iterable<UUID> iterable = Arrays.asList(DUNE.getUuid(), DUNE_MESSIAH.getUuid());
+		this.bookRepository.deleteAllById(iterable).join();
+		assertThat(this.book.size()).isEqualTo(2);
+		assertThat(this.book.values(author())).isEmpty();
 	}
 
 	@Test
@@ -956,7 +966,6 @@ public class AsyncRepositoryTests extends AbstractDataTest {
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
 	}
 
-
 	// ----- helper methods -------------------------------------------------
 
 	Filter<Author> author() {
@@ -964,6 +973,7 @@ public class AsyncRepositoryTests extends AbstractDataTest {
 	}
 
 	@Configuration
+	@EnableAsync
 	@EnableCoherence
 	@EnableCoherenceRepositories("com.oracle.coherence.spring.data.model.repositories")
 	public static class Config {

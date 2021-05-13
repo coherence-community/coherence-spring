@@ -11,14 +11,10 @@ The Spring Data Coherence module provides integration with Coherence data grids.
 * Spring configuration support using Java-based @Configuration classes.
 * Automatic implementation of Repository interfaces
 * Rich query and event features from Coherence
+* Native asynchronous repository support
 
 === Functionality Not Supported in the M1 Release
-* Spring Data finder queries that use paging
-* Interface-based projection
 * Exception translation into Spring’s portable Data Access Exception hierarchy
-
-These will be supported in the next milestone release.  Another feature for the
-next milestone release will be a native asynchronous repository.
 
 == Getting Started
 
@@ -169,6 +165,9 @@ For example:
 [source,java]
 ----
 import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.tangosol.util.UUID;
 
 // ...
 
@@ -178,5 +177,44 @@ public interface BookRepository extends CoherenceRepository<Book, UUID> {
 }
 ----
 
-As of the M1 release, however, finder queries using pagination are not supported. This functionality
-is targeted for the next milestone release.
+It should be noted that finder queries defined on either the blocking or non-blocking
+Coherence repository will always execute in a blocking manner.  For asynchronous versions
+of these methods, please use Spring's https://spring.io/guides/gs/async-method/[Async Method] support.
+
+[source,java]
+----
+import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
+import com.tangosol.util.UUID;
+
+import org.springframework.scheduling.annotation.Async;
+
+// ...
+
+@CoherenceMap("book")
+public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository<Book, UUID> {
+
+	@Async
+	CompletableFuture<List<Book>> findByAuthor(Author author);
+}
+----
+
+Don't forget to include the `@EnableAsync` annotation on the configuration:
+
+[source, java]
+----
+import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+// ...
+
+@Configuration
+@EnableAsync
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}
+----

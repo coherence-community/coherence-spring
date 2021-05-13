@@ -98,5 +98,5 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
 
 	Page<Book> findByAuthor(Author author, Pageable pageable);
 
-	Slice<Book> findByTitle(String title, Pageable pageable);
+	Slice<Book> findByTitleStartingWith(String title, Pageable pageable);
 }

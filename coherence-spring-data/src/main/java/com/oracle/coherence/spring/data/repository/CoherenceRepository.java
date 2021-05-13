@@ -26,7 +26,10 @@ import com.tangosol.util.stream.RemoteCollector;
 import com.tangosol.util.stream.RemoteCollectors;
 import com.tangosol.util.stream.RemoteStream;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Coherence-specific {@link org.springframework.data.repository.Repository} interface.
@@ -38,9 +41,7 @@ import org.springframework.data.repository.CrudRepository;
  * @since 3.0.0
  */
 public interface CoherenceRepository<T, ID>
-		extends CrudRepository<T, ID>, ListenerSupport<T, ID> {
-
-	// ----- CRUD support ---------------------------------------------------
+		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID> {
 
 	@Override
 	long count();
@@ -122,6 +123,9 @@ public interface CoherenceRepository<T, ID>
 	 */
 	Map<ID, T> deleteAll(Stream<? extends T> strEntities, boolean fReturn);
 
+	@Override
+	void deleteAllById(Iterable<? extends ID> ids);
+
 	/**
 	 * Delete entities with the specified identifiers.
 	 * @param colIds the identifiers of the entities to remove
@@ -146,6 +150,12 @@ public interface CoherenceRepository<T, ID>
 
 	@Override
 	Iterable<T> findAll();
+
+	@Override
+	Iterable<T> findAll(Sort sort);
+
+	@Override
+	Page<T> findAll(Pageable pageable);
 
 	@Override
 	Iterable<T> findAllById(Iterable<ID> ids);

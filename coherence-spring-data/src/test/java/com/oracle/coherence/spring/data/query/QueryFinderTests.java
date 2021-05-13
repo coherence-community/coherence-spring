@@ -21,14 +21,16 @@ import com.oracle.coherence.spring.data.model.repositories.BookRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringJUnitConfig(QueryFinderTests.Config.class)
 @DirtiesContext
@@ -333,17 +335,115 @@ public class QueryFinderTests extends AbstractDataTest {
 	}
 
 	@Test
-	void ensurePageReturnThrows() {
-		assertThatThrownBy(() -> this.bookRepository.findByAuthor(FRANK_HERBERT, Pageable.unpaged()))
-			.isInstanceOf(UnsupportedOperationException.class)
-			.hasMessageContaining("Slice or Page");
+	void ensureSimplePageQueryWithSliceReturn() {
+		// first page (1 of 2)
+		Pageable pageable = PageRequest.ofSize(1);
+		Slice<Book> slice = this.bookRepository.findByTitleStartingWith("Dune", pageable);
+		assertThat(slice).isNotNull();
+		assertThat(slice.hasNext()).isTrue();
+		assertThat(slice.hasPrevious()).isFalse();
+		assertThat(slice.hasContent()).isTrue();
+		List<Book> content = slice.getContent();
+		assertThat(content).isNotNull();
+		assertThat(content.size()).isEqualTo(1);
+		assertThat(content).containsAnyOf(DUNE, DUNE_MESSIAH);
+
+		// next page (2 of 2)
+		pageable = slice.nextPageable();
+		slice = this.bookRepository.findByTitleStartingWith("Dune", pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(slice.hasNext()).isTrue();
+		assertThat(slice.hasPrevious()).isTrue();
+		assertThat(slice.hasContent()).isTrue();
+		List<Book> content2 = slice.getContent();
+		assertThat(content2).isNotNull();
+		assertThat(content2.size()).isEqualTo(1);
+		assertThat(content2).containsAnyOf(DUNE, DUNE_MESSIAH);
+		assertThat(content2).isNotEqualTo(content);
+
+		// empty page
+		pageable = slice.nextPageable();
+		slice = this.bookRepository.findByTitleStartingWith("Dune", pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(slice.hasNext()).isFalse();
+		assertThat(slice.hasPrevious()).isTrue();
+		assertThat(slice.hasContent()).isFalse();
+
+		List<Book> content3 = slice.getContent();
+		assertThat(content3).isNotNull();
+		assertThat(content3.isEmpty()).isTrue();
+
+		// go back one page (2 of 2)
+		pageable = slice.previousPageable();
+		slice = this.bookRepository.findByTitleStartingWith("Dune", pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(slice.hasNext()).isTrue();
+		assertThat(slice.hasPrevious()).isTrue();
+		assertThat(slice.hasContent()).isTrue();
+		List<Book> content2prev = slice.getContent();
+		assertThat(content2prev).isNotNull();
+		assertThat(content2prev.size()).isEqualTo(1);
+		assertThat(content2prev).containsAnyOf(DUNE, DUNE_MESSIAH);
+		assertThat(content2prev).isEqualTo(content2);
+		assertThat(content2prev).isNotEqualTo(content);
+
+		// go back one page (1 of 2)
+		pageable = slice.previousPageable();
+		slice = this.bookRepository.findByTitleStartingWith("Dune", pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(slice.hasNext()).isTrue();
+		assertThat(slice.hasPrevious()).isFalse();
+		assertThat(slice.hasContent()).isTrue();
+		List<Book> contentPrev = slice.getContent();
+		assertThat(contentPrev).isNotNull();
+		assertThat(contentPrev.size()).isEqualTo(1);
+		assertThat(contentPrev).containsAnyOf(DUNE, DUNE_MESSIAH);
+		assertThat(contentPrev).isEqualTo(content);
+		assertThat(contentPrev).isNotEqualTo(content2);
 	}
 
 	@Test
-	void ensureSliceReturnThrows() {
-		assertThatThrownBy(() -> this.bookRepository.findByTitle("Dune", Pageable.unpaged()))
-				.isInstanceOf(UnsupportedOperationException.class)
-				.hasMessageContaining("Slice or Page");
+	void ensureSimplePageQueryWithPageReturn() {
+		// first page (1 of 2)
+		Pageable pageable = PageRequest.ofSize(1);
+		Page<Book> page = this.bookRepository.findByAuthor(FRANK_HERBERT, pageable);
+		assertThat(page).isNotNull();
+		assertThat(page.hasNext()).isTrue();
+		assertThat(page.hasPrevious()).isFalse();
+		assertThat(page.hasContent()).isTrue();
+		assertThat(page.getTotalPages()).isEqualTo(2);
+		assertThat(page.getTotalElements()).isEqualTo(2);
+		List<Book> content = page.getContent();
+		assertThat(content).isNotNull();
+		assertThat(content.size()).isEqualTo(1);
+		assertThat(content).containsAnyOf(DUNE, DUNE_MESSIAH);
+
+		// next page (2 of 2)
+		pageable = page.nextPageable();
+		page = this.bookRepository.findByAuthor(FRANK_HERBERT, pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(page.hasNext()).isFalse();
+		assertThat(page.hasPrevious()).isTrue();
+		assertThat(page.hasContent()).isTrue();
+		List<Book> content2 = page.getContent();
+		assertThat(content2).isNotNull();
+		assertThat(content2.size()).isEqualTo(1);
+		assertThat(content2).containsAnyOf(DUNE, DUNE_MESSIAH);
+		assertThat(content2).isNotEqualTo(content);
+
+		// go back one page (1 of 2)
+		pageable = page.previousPageable();
+		page =  this.bookRepository.findByAuthor(FRANK_HERBERT, pageable);
+		assertThat(pageable).isNotNull();
+		assertThat(page.hasNext()).isTrue();
+		assertThat(page.hasPrevious()).isFalse();
+		assertThat(page.hasContent()).isTrue();
+		List<Book> contentPrev = page.getContent();
+		assertThat(contentPrev).isNotNull();
+		assertThat(contentPrev.size()).isEqualTo(1);
+		assertThat(contentPrev).containsAnyOf(DUNE, DUNE_MESSIAH);
+		assertThat(contentPrev).isEqualTo(content);
+		assertThat(contentPrev).isNotEqualTo(content2);
 	}
 
 	@Configuration
