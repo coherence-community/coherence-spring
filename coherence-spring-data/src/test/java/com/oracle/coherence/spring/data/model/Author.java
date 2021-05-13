@@ -71,16 +71,6 @@ public class Author implements Serializable, Comparable<Author> {
 	}
 
 	/**
-	 * Return the {@code Author}'s lowercase first name.
-	 *
-	 * @return the {@code Author}'s lowercase first name
-	 */
-	public CharSequence getLowerFirstName() {
-		return this.firstName.toLowerCase(Locale.ROOT);
-	}
-
-
-	/**
 	 * Return the {@code Author}'s last name.
 	 *
 	 * @return the {@code Author}'s last name

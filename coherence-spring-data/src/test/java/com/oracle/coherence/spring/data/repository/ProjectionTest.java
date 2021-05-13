@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 Oracle and/or its affiliates.
+ *
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
+ */
 package com.oracle.coherence.spring.data.repository;
 
 import java.util.Collection;
@@ -19,6 +25,7 @@ import com.oracle.coherence.spring.data.query.QueryFinderTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -35,17 +42,13 @@ public class ProjectionTest extends AbstractDataTest {
 		List<BookProjection> books = this.bookRepository.findByPages(468);
 		assertThat(books.size()).isEqualTo(1);
 		BookProjection book = books.get(0);
+		assertThat(BookProjection.class.isAssignableFrom(book.getClass())).isTrue();
 		assertThat(book.getTitle()).isEqualTo("Dune Messiah");
 		assertThat(book.getTitleSequence()).isEqualTo("Dune Messiah");
 		assertThat(book.getPages()).isEqualTo(468);
 		BookProjection.AuthorSummary author = book.getAuthor();
 		assertThat(author).isNotNull();
 		assertThat(author.getFirstName()).isEqualTo("Frank");
-		// fails as Author::getLowerFirstName returns CharSequence while
-		// BookProjection.AuthorSummary::getLowerFirstName returns Serializable
-		// it isn't assignable and Serializable interface has no methods
-		// so fragment can't be created
-//        assertThat(author.getLowerFirstName()).isEqualTo("frank");
 		BookProjection.AddressProjection address = author.getAddress();
 		assertThat(address).isNotNull();
 		assertThat(address.getStreet()).isEqualTo("Shirley Road");
@@ -57,6 +60,7 @@ public class ProjectionTest extends AbstractDataTest {
 		List<NestedBookProjection> books = this.bookRepository.findByTitleContains("Hobbit");
 		assertThat(books.size()).isEqualTo(1);
 		NestedBookProjection book = books.get(0);
+		assertThat(book).isInstanceOf(NestedBookProjection.class);
 		assertThat(book.getTitle()).isEqualTo("The Hobbit");
 		NestedBookProjection.AuthorSummary author = book.getAuthor();
 		assertThat(author.getFirstName()).isEqualTo("John");
@@ -70,6 +74,7 @@ public class ProjectionTest extends AbstractDataTest {
 		List<NestedOpenBookProjection> books = this.bookRepository.findByTitleEndingWith("Wind");
 		assertThat(books.size()).isEqualTo(1);
 		NestedOpenBookProjection book = books.get(0);
+		assertThat(book).isInstanceOf(NestedOpenBookProjection.class);
 		assertThat(book.getTitle()).isEqualTo("The Name of the Wind");
 		NestedOpenBookProjection.AuthorSummary author = book.getAuthor();
 		assertThat(author.getFirstName()).isEqualTo("Patrick");
@@ -83,6 +88,7 @@ public class ProjectionTest extends AbstractDataTest {
 		List<OpenBookProjection> books = this.bookRepository.findByTitle("Dune");
 		assertThat(books.size()).isEqualTo(1);
 		OpenBookProjection book = books.get(0);
+		assertThat(book).isInstanceOf(OpenBookProjection.class);
 		assertThat(book.getBasics()).hasValue("Author: Frank, Title: Dune, Pages: 677");
 		assertThat(book.getTitle()).isEqualTo("Dune");
 		OpenBookProjection.AuthorSummary author = book.getAuthor();
@@ -125,9 +131,11 @@ public class ProjectionTest extends AbstractDataTest {
 		Collection<OpenBookProjection> openBookProjections = this.bookRepository.findByTitle("Dune", OpenBookProjection.class);
 		assertThat(openBookProjections.size()).isEqualTo(1);
 		OpenBookProjection openBookProjection = openBookProjections.iterator().next();
+		assertThat(openBookProjection).isInstanceOf(OpenBookProjection.class);
 		assertThat(openBookProjection.getBasics()).hasValue("Author: Frank, Title: Dune, Pages: 677");
 		assertThat(openBookProjection.getTitle()).isEqualTo("Dune");
 		OpenBookProjection.AuthorSummary openBookProjectionAuthor = openBookProjection.getAuthor();
+		assertThat(openBookProjectionAuthor).isInstanceOf(OpenBookProjection.AuthorSummary.class);
 		assertThat(openBookProjectionAuthor.getFullName()).hasValue("Frank Herbert");
 		OpenBookProjection.AuthorSummary.AddressProjection openBookProjectionAuthorAddress = openBookProjectionAuthor.getAddress();
 		assertThat(openBookProjectionAuthorAddress.getStreet()).isEqualTo("Shirley Road");
@@ -135,6 +143,7 @@ public class ProjectionTest extends AbstractDataTest {
 		Collection<NestedBookProjection> nestedBookProjections = this.bookRepository.findByTitle("The Name of the Wind", NestedBookProjection.class);
 		assertThat(nestedBookProjections.size()).isEqualTo(1);
 		NestedBookProjection nestedBookProjection = nestedBookProjections.iterator().next();
+		assertThat(nestedBookProjection).isInstanceOf(NestedBookProjection.class);
 		assertThat(nestedBookProjection.getTitle()).isEqualTo("The Name of the Wind");
 		NestedBookProjection.AuthorSummary nestedBookProjectionAuthor = nestedBookProjection.getAuthor();
 		assertThat(nestedBookProjectionAuthor.getFirstName()).isEqualTo("Patrick");
@@ -144,12 +153,70 @@ public class ProjectionTest extends AbstractDataTest {
 		Collection<NestedOpenBookProjection> nestedOpenBookProjections = this.bookRepository.findByTitle("Dune Messiah", NestedOpenBookProjection.class);
 		assertThat(nestedOpenBookProjections.size()).isEqualTo(1);
 		NestedOpenBookProjection nestedOpenBook = nestedOpenBookProjections.iterator().next();
+		assertThat(nestedOpenBook).isInstanceOf(NestedOpenBookProjection.class);
 		assertThat(nestedOpenBook.getTitle()).isEqualTo("Dune Messiah");
 		NestedOpenBookProjection.AuthorSummary nestedOpenBookAuthor = nestedOpenBook.getAuthor();
 		assertThat(nestedOpenBookAuthor.getFirstName()).isEqualTo("Frank");
 		assertThat(nestedOpenBookAuthor.getFullName()).hasValue("Frank Herbert");
 		NestedOpenBookProjection.AuthorSummary.AddressProjection nestedOpenBookAuthorAddress = nestedOpenBookAuthor.getAddress();
 		assertThat(nestedOpenBookAuthorAddress.getStreet()).isEqualTo("Shirley Road");
+	}
+
+	@Test
+	void ensureFindAllOrdered() {
+		List<BookProjection> books = this.bookRepository.findBy(Sort.by(Sort.Direction.DESC, "pages"));
+		assertThat(books.size()).isEqualTo(4);
+		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.NAME_OF_THE_WIND.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTest.HOBBIT.getTitle());
+
+		books = this.bookRepository.findByOrderByPagesAsc();
+		assertThat(books.size()).isEqualTo(4);
+		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.HOBBIT.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTest.NAME_OF_THE_WIND.getTitle());
+	}
+
+	@Test
+	void ensureOrderedAscQuery() {
+		List<BookProjection> books = this.bookRepository.findByAuthorOrderByPagesAsc(FRANK_HERBERT);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+
+		List<NestedBookProjection> nestedBooks = this.bookRepository.findByAuthor(FRANK_HERBERT, Sort.by(Sort.Direction.ASC, "pages"));
+		assertThat(nestedBooks.size()).isEqualTo(2);
+		assertThat(nestedBooks.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(nestedBooks.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+	}
+
+	@Test
+	void ensureOrderedDescQuery() {
+		List<NestedBookProjection> books = this.bookRepository.findByAuthorOrderByPagesDesc(FRANK_HERBERT);
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books.get(0)).isInstanceOf(NestedBookProjection.class);
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+
+		books = this.bookRepository.findByAuthor(FRANK_HERBERT, Sort.by(Sort.Direction.DESC, "pages"));
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books.get(0)).isInstanceOf(NestedBookProjection.class);
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+	}
+
+	@Test
+	void ensureStartingWithOrder() {
+		List<OpenBookProjection> books = this.bookRepository.findByTitleStartingWithOrderByPagesDesc("The");
+		assertThat(books.size()).isEqualTo(2);
+		assertThat(books.get(0)).isInstanceOf(OpenBookProjection.class);
+		assertThat(books.get(0).getAuthor().getFullName()).hasValue("Patrick Rothfuss");
+		assertThat(books.get(1).getAuthor().getFullName()).hasValue("John Tolkien");
 	}
 
 	@Configuration

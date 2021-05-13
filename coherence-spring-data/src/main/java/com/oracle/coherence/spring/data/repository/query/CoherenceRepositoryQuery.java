@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.data.repository.query;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,9 +14,12 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Aggregators;
@@ -30,6 +34,7 @@ import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.extractor.UniversalExtractor;
 import com.tangosol.util.filter.LimitFilter;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +52,7 @@ import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.comparator.Comparators;
 
 import static com.oracle.coherence.spring.data.support.Utils.configureLimitFilter;
 import static com.oracle.coherence.spring.data.support.Utils.toComparator;
@@ -117,13 +123,8 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 
 		ResultProcessor processor = this.queryMethod.getResultProcessor().withDynamicProjection(accessor);
 		ReturnedType returnedType = processor.getReturnedType();
-
 		if (returnedType.isProjecting()) {
-			Class<?> resultType = returnedType.getReturnedType();
-			List result = resultType.isInterface()
-					? fetchWithInterfaceProjection(queryResult.getFilter(), resultType, returnedType.getDomainType())
-					: fetchWithClassProjection(queryResult.getFilter(), resultType);
-			return processor.processResult(result);
+			return executeProjectingQuery(returnedType, queryResult, processor);
 		}
 
 		if (queryResult.getAggregator() != null) {
@@ -176,10 +177,45 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Nullable
+	private Object executeProjectingQuery(ReturnedType returnedType, QueryResult q, ResultProcessor processor) {
+		Class<?> resultType = returnedType.getReturnedType();
+		List result = resultType.isInterface()
+				? fetchWithInterfaceProjection(q.getFilter(), resultType, returnedType.getDomainType())
+				: fetchWithClassProjection(q.getFilter(), resultType);
+
+		Sort sort = q.getSort();
+		Comparator comparator = null;
+		if (sort.isSorted()) {
+			for (Sort.Order order : sort) {
+				String property = order.getProperty();
+				if (comparator == null) {
+					comparator = new BeanComparator(property);
+					if (order.isDescending()) {
+						comparator = comparator.reversed();
+					}
+				}
+				else {
+					Comparator temp = new BeanComparator(property);
+					if (order.isDescending()) {
+						temp = comparator.reversed();
+					}
+					comparator.thenComparing(temp);
+				}
+			}
+		}
+		Object processedResult = processor.processResult(result);
+		if (comparator != null && processedResult instanceof List) {
+			((List) processedResult).sort(comparator);
+		}
+		return processedResult;
+	}
+
+	@SuppressWarnings("unchecked")
 	private List fetchWithClassProjection(Filter filter, Class<?> resultType) {
 		Constructor<?>[] constructors = resultType.getConstructors();
 		if (constructors.length == 0) {
-			throw new IllegalArgumentException("Type " + resultType.getName() + " has no public constructor.");
+			throw new IllegalArgumentException(String.format("Type %s has no public constructor.", resultType.getName()));
 		}
 		Constructor constructor = constructors[0];
 		String[] ctorParameterNames = Arrays.stream(constructor.getParameters())
@@ -235,7 +271,7 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 			ValueExtractor from = new ReflectionExtractor<>(m.getName());
 			Method domainMethod = ReflectionUtils.findMethod(domainType, m.getName());
 			if (domainMethod == null) {
-				throw new IllegalArgumentException("Method " + m.getName() + " not found in " + domainType);
+				throw new IllegalArgumentException(String.format("Method '%s' not found in ", m.getName(), domainType));
 			}
 
 			if (returnType.isAssignableFrom(domainMethod.getReturnType())) {
@@ -260,5 +296,33 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	public QueryMethod getQueryMethod() {
 
 		return this.queryMethod;
+	}
+
+	static class BeanComparator implements Comparator<Object> {
+		private final String property;
+
+		BeanComparator(String property) {
+			this.property = property;
+		}
+
+		@Override
+		public int compare(Object o1, Object o2) {
+			PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(o1.getClass(), this.property);
+			if (pd == null) {
+				throw new IllegalArgumentException(String.format("Missing property '%s' in %s", this.property, o1.getClass()));
+			}
+			Method readMethod = pd.getReadMethod();
+			if (readMethod == null) {
+				throw new IllegalArgumentException(String.format("Property '%s' in %s can't be read", this.property, o1.getClass()));
+			}
+			try {
+				Object val1 = readMethod.invoke(o1);
+				Object val2 = readMethod.invoke(o2);
+				return Comparators.comparable().compare(val1, val2);
+			}
+			catch (InvocationTargetException | IllegalAccessException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 	}
 }

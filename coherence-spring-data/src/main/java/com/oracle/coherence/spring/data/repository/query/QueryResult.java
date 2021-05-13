@@ -48,7 +48,9 @@ public class QueryResult {
 	 * @return the {@link Filter} criteria for the query
 	 */
 	public Filter getFilter() {
-
+		if (this.state == null) {
+			return null;
+		}
 		return this.state.getFilter();
 	}
 
