@@ -3820,10 +3820,16 @@ to fully utilize the features Coherence for Spring Data has to offer such as:</p
 <li>
 <p>Declarative acceleration and index creation</p>
 </li>
+<li>
+<p>Native asynchronous support</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
 <p>Please also see the <a href="https://coherence.community/21.06-M2/docs/#/docs/core/05_repository">Coherence Repository</a> documentation for more details on these features.</p>
+</div>
+<div class="paragraph">
+<p>Example extending the blocking <code>CoherenceRepository</code> interface:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3832,6 +3838,20 @@ to fully utilize the features Coherence for Spring Data has to offer such as:</p
 // ...
 
 public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or for the non-blocking flavor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceAsyncRepository&lt;String, Person&gt; {
     // ...
 }</code></pre>
 </div>
@@ -4579,7 +4599,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-12 05:20:20 UTC
+Last updated 2021-05-13 16:10:47 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
