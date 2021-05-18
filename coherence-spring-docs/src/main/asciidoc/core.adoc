@@ -544,6 +544,213 @@ public class MyBean {
 ----
 <1> If your class has only a single constructor, you can even omit the `@Autowired` annotation
 
+[[coherence-spring-dependency-injection-namedtopic]]
+=== Injecting NamedTopic
+
+Coherence link:{coherence-api}com/tangosol/net/topic/NamedTopic.html[NamedTopic]
+instances can be injected as beans in Spring applications.
+
+An alternative way to write message driven applications instead of directly injecting `NamedTopic`, `Publisher` or `Subscriber` beans is to use <<coherence-spring-messaging-with-coherence-topics, Messaging with Coherence Topics>>.
+
+==== Injecting NamedTopic
+
+The simplest way to inject a `NamedTopic` is to just annotate the injection point with `@javax.inject.Inject`.
+
+.Inject NamedTopic
+[source,java]
+----
+@Inject
+private NamedTopic<Person> people;
+----
+
+In this example the injection point field name is used to determine the topic name to inject,
+so a `NamedTopic` bean with an underlying topic name of `people` will be injected.
+
+As an alternative to using a `NamedTopic` directly in code, Coherence Spring also supports annotating methods directly as publishers and subscribers. See the <<coherence-spring-messaging-with-coherence-topics,Messaging with Coherence Topics>> section of the documentation.
+
+
+===== Specify the Topic Name
+
+Sometimes the name of the topic being injected needs to be different to the injection point name.
+This is always the case when injecting into method parameters as the parameter names are lost by the time the injection point is processed. In this case we can use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name]
+annotation to specify the underlying cache name.
+
+The example below will inject a `NamedTopic` that uses an underlying topic named `orders`.
+
+.Use @Name to specify topic name
+[source,java]
+----
+@Inject
+@Name("people")
+private NamedTopic<Order> orders;
+----
+
+The same applies when injecting a constructor or method parameter:
+
+.Use @Name to specify topic name on a parameter
+[source,java]
+----
+@Singleton
+public class SomeBean {
+    @Inject
+    public SomeBean(@Name("orders") NamedTopic<Order> topic) {
+    // ToDo:
+    }
+}
+----
+
+===== Specify the Session Name
+
+Whilst most applications probably use a single Coherence link:{coherence-api}com/tangosol/net/Session.html[Session] there are uses-cases where an application may
+have multiple sessions. In this case, when injecting a `NamedTopic` the specific session can be specified
+by annotating the injection point with link:{coherence-spring-api}com/oracle/coherence/spring/SessionName.html[@SessionName].
+
+In the previous examples where no `@SessionName` was specified Coherence will use the default session to obtain the caches.
+
+For example, assume the application has multiple sessions configured, one of which is named `Customers`.
+The following code snippet injects a `NamedTopic` using an underlying topic named `orders` in the `Customers` session.
+
+.Use @SessionName to specify session
+[source,java]
+----
+@Inject
+@SessionName("Customers")
+@Name("orders")
+private NamedTopic<Order> topic;
+----
+
+Again, the same annotation can be used on method parameter injection points.
+
+.Use @SessionName to specify session on a method parameter
+[source,java]
+----
+@Controller
+public class OrderProcessor {
+    @Inject
+    public OrderProcessor(@SessionName("Customers") @Name("orders")
+                          NamedTopic<Order> orders) {
+        // ToDo:
+    }
+}
+----
+
+==== Injecting a NamedTopic Publisher
+
+If application code only needs to publish messages to a Coherence `NamedTopic` then instead of injecting a
+`NamedTopic` bean, a link:{coherence-api}com/tangosol/net/topic/Publisher.html[Publisher] bean can be injected.
+
+The simplest way to inject a `Publisher` is just to annotate the injection point of type `Publisher` with `@Inject`,
+for example:
+
+.Inject a Publisher
+[source,java]
+----
+@Inject
+private Publisher<Order> orders;
+----
+
+The example above will inject a `Publisher` bean, the name of the underlying `NamedTopic` will be taken from the
+name of the injection point, in this case `orders`.
+
+===== Specify the Topic Name
+
+If the name of the injection point cannot be used as the `NamedTopic` name, which is always the case with injection points that are method or constructor parameters, then the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name] annotation can be used to specify the topic name.
+
+For example, both of the code snippets below inject a `Publisher` that published to the `orders` topic:
+
+.Inject a Publisher that publishes on the `orders` topic
+[source,java]
+----
+@Inject
+@Name("orders")
+private Publisher<Order> orders;
+----
+
+.Inject a Publisher that publishes on the `orders` topic
+[source,java]
+----
+@Controller
+public class OrderController {
+    @Inject
+    public OrderController(@Name("orders") Publisher<Order> topic) {
+        // ToDo:
+    }
+}
+----
+
+===== Specify the Owning Session
+
+As with injection of `NamedTopics`, in applications using multiple `Session` instances, the name of the `Session` that
+owns the underlying `NamedTopic` can be specified when injecting a `Publisher` by adding the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+.Inject a Publisher while specifying the owning session
+[source,java]
+----
+@Inject
+@Name("orders")
+@SessionName("Customers")
+private Publisher<Order> orders;
+----
+
+==== Injecting a NamedTopic Subscriber
+
+If application code only needs to subscribe to messages from a Coherence `NamedTopic` then instead of injecting a
+`NamedTopic` bean, a link:{coherence-api}com/tangosol/net/topic/Subscriber.html[Subscriber] bean can be injected.
+
+The simplest way to inject a `Subscriber` is just to annotate the injection point of type `Subscriber` with `@Inject`,
+for example:
+
+.Inject Subscriber
+[source,java]
+----
+@Inject
+private Subscriber<Order> orders;
+----
+
+The example above will inject a `Subscriber` bean, the name of the underlying `NamedTopic` will be taken from the
+name of the injection point, in this case `orders`.
+
+===== Specify the Topic Name
+
+If the name of the injection point cannot be used as the `NamedTopic` name, which is always the case with injection points that are method or constructor parameters, then the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Name.html[@Name] annotation can be used to specify the topic name.
+
+For example, both of the code snippets below inject a `Subscriber` that subscribe to the `orders` topic:
+
+.Inject subscriber into field
+[source,java]
+----
+@Inject
+@Name("orders")
+private Subscriber<Order> orders;
+----
+
+.Inject subscriber into method parameter
+[source,java]
+----
+@Controller
+public class OrderController {
+    @Inject
+    public OrderController(@Name("orders") Subscriber<Order> topic) {
+        // ToDo:
+    }
+}
+----
+
+===== Specify the Owning Session
+
+As with injection of `NamedTopics`, in applications using multiple `Session` instances, the name of the `Session` that
+owns the underlying `NamedTopic` can be specified when injecting a `Subscriber` by adding the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName] annotation.
+
+[source,java]
+----
+@Inject
+@Name("orders")
+@SessionName("Customers")
+private Subscriber<Order> orders;
+----
+
 [[coherence-spring-events]]
 == Events
 
@@ -1694,3 +1901,249 @@ include::{include-source-code}extractorbinding/PlantService.java[tags=!hide]
 which also has takes an optional value to specify the underlying cache/map name to use for the view.
 <4> Note that the `NamedMap` generics are now `Long` and `String` instead of `Long` and `Plant` as the `Plant` values
 from the underlying cache are transformed into `String` values by extracting just the name property.
+
+[[coherence-spring-messaging-with-coherence-topics]]
+== Messaging with Coherence Topics
+
+Spring Coherence integration provides support for message driven applications by virtue of Coherence topics.
+
+A Coherence link:{coherence-api}com/tangosol/net/topic/NamedTopic.html[NamedTopic] is analogous to a queue or pub/sub topic, depending on the configuration and application code. Messages published to the topic are stored in Coherence caches, so topics are scalable and performant.
+
+A typical stand-alone Coherence application would create a `NamedTopic` along with `Publisher` or `Subscriber` instances to publish to or subscribe to topics. Injection of topics into Spring applications is already covered in <<injecting-namedtopic,Injecting NamedTopics>>. With Spring messaging this becomes much simpler.
+
+With Spring Coherence Messaging publishers and subscribers beans are created by writing suitably annotated interfaces.
+
+=== Define Publishers - @CoherencePublisher
+
+To create a topic Publisher that sends messages you can simply define an interface that is annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]. Also configuration class has to be annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan] annotation in order to specify base packages for scanning for `@CoherencePublisher` annotated interfaces.
+
+[source,java]
+.Config.java
+----
+@Configuration
+@CoherencePublisherScan("com.example.app.services")
+public class Config {
+}
+----
+
+For example the following is a trivial `@CoherencePublisher` interface:
+
+[source,java]
+.ProductClient.java
+----
+import com.oracle.coherence.spring.annotation.CoherencePublisher;
+import com.oracle.coherence.spring.annotation.Topic;
+
+@CoherencePublisher  // <1>
+public interface ProductClient {
+
+    @Topic("my-products") // <2>
+    void sendProduct(String message); // <3>
+
+    void sendProduct(@Topic String topic, String message); // <4>
+}
+----
+
+<1> The `@CoherencePublisher` annotation is used to designate this interface as a message publisher.
+<2> The link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Topic.html[@Topic] annotation indicates which topics the message should be published to
+<3> The method defines a single parameter, which is the message value. In this case the values being published are String instances but they could be any type that can be serialized by Coherence.
+<4> It is also possible for the topic to be dynamic by making it a method argument annotated with `@Topic`.
+
+At run time Spring will produce an implementation of the above interface. You can retrieve an instance of `ProductClient` either by looking up the bean from the `ApplicationContext` or by injecting the bean with `@Inject`:
+
+[source,java]
+.Using ProductClient
+----
+ProductClient client = applicationContext.getBean(ProductClient.class);
+client.sendProduct("Blue Trainers");
+----
+
+=== Reactive and Non-Blocking Method Definitions
+
+The `@CoherencePublisher` annotation supports the definition of reactive return types (such as Reactor `Flux`) as well as Futures.
+
+The following sections cover possible method signatures and behaviour:
+
+==== Mono Value and Return Type
+
+[source,java]
+----
+Mono<Publisher.Status> sendBook(Mono<Book> book);
+----
+
+The implementation will return a link:https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html[Mono] that when subscribed to will subscribe to the passed link:https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html[Mono] and send a message emitting the resulting link:{coherence-api}com/tangosol/net/topic/Publisher.Status.html[Publisher.Status].
+
+==== Reactor Flux Value and Return Type
+
+[source,java]
+----
+Flux<Publisher.Status> sendBooks(Flux<Book> book);
+----
+
+The implementation will return a Reactor link:https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html[Flux] that when subscribed to will subscribe to the passed `Flux` and for each emitted item will send a message emitting the resulting link:{coherence-api}com/tangosol/net/topic/Publisher.Status.html[Publisher.Status].
+
+==== Future Return Type
+
+[source,java]
+----
+Future<Publisher.Status> sendBooks(Mono<Book> book);
+----
+
+The implementation will return a Future with publisher's status.
+
+=== Define Subscribers - @CoherenceTopicListener
+
+To listen to Coherence topic messages you can use the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] annotation to define a message listener.
+
+The following example will listen for messages published by the `ProductClient` in the previous section:
+
+[source,java]
+.ProductListener.java
+----
+import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
+import com.oracle.coherence.spring.annotation.Topic;
+
+@CoherenceTopicListener   // <1>
+public class ProductListener {
+
+    @Topic("my-products")   // <2>
+    public void receive(String product) { // <3>
+        System.out.println("Got Product - " + product);
+    }
+}
+----
+
+<1> The link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] annotation to indicate that this bean is a Coherence topic listener.
+<2> The link:{coherence-spring-api}com/oracle/coherence/spring/annotation/Topic.html[@Topic] annotation is again used to indicate which topic to subscribe to.
+<3> The receive method defines single arguments that will receive the message value, in this case the message is of type `String`.
+
+=== Method Parameter Bindings
+
+When using a Coherence topic link:{coherence-api}com/tangosol/net/topic/Subscriber.html[Subscriber] directly in application code, the `receive` method returns an link:{coherence-api}com/tangosol/net/topic/Subscriber.Element.html[Element], which contains the message value and metadata. The annotated subscriber method can take various parameter types that will bind to the element itself or to the message.
+
+For example
+[source,java]
+----
+@CoherenceTopicListener
+@Topic("my-products")
+public void receive(Element<Product> product) {
+    // ... process message ...
+}
+----
+
+The method above will be passed the link:{coherence-api}com/tangosol/net/topic/Subscriber.Element.html[Element] received from the topic. By receiving the element, the method has access to the message value and all the metadata stored with the message.
+
+=== Committing Messages
+
+An important part of Coherence topic subscribers is committing messages to notify the server that they have been processed and guaranteeing at least once delivery. When using Micronaut Coherence messaging every message will be committed after the handler method has successfully processed the message. This behaviour can be controlled by adding a commit strategy to the link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] annotation.
+
+==== Default Commit Behaviour
+
+If no `commitStrategy` field has been provided to the `@CoherenceTopicListener` annotation the default behaviour is to synchronously call `Element.commit()` for every message received.
+
+[source,java]
+----
+@CoherenceTopicListener
+@Topic("my-products")
+public void receive(Element<Product> product) {
+    // ... process message ...
+}
+----
+No `commitStrategy` field has been supplied to the `@CoherenceTopicListener` annotation.
+
+==== Setting Commit Strategy
+
+The link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] `commitStrategy` field is an enumeration of type link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CommitStrategy.html[CommitStrategy] with three values, `SYNC`, `ASYNC` and `MANUAL`.
+
+* CommitStrategy.SYNC - This strategy is the default, and will synchronously commit every message upon successful completion of the handler method, by calling `Element.commit()`.
+
+[source,java]
+----
+@CoherenceTopicListener(commitStrategy = CommitStrategy.SYNC)
+@Topic("my-products")
+public void receive(Product product) {
+    // ... process message ...
+}
+----
+
+* CommitStrategy.ASYNC - This strategy will asynchronously commit every message upon successful completion of the handler method, by calling `Element.commitAsync()`.
+
+[source,java]
+----
+@CoherenceTopicListener(commitStrategy = CommitStrategy.ASYNC)
+@Topic("my-products")
+public void receive(Product product) {
+    // ... process message ...
+}
+----
+
+* CommitStrategy.MANUAL - This strategy will not automatically commit messages, all handling of commits must be done as part of the handler method or by some external process.
+
+[source,java]
+----
+@CoherenceTopicListener(commitStrategy = CommitStrategy.MANUAL)
+@Topic("my-products")
+public void receive(Element<Product> product) {
+    // ... process message ...
+
+    // manually commit the element
+    element.commit();
+}
+----
+
+In the example above a `MANUAL` commit strategy has used. The element will be committed by the application code at the end of the handler method. To be able to manually commit a message the method must take the `Element` as a parameter so that application code can access the commit methods.
+
+==== Forwarding Messages with @SendTo
+
+On any @link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.
+
+The key of the original ConsumerRecord will be used as the key when forwarding the message.
+
+[source,java]
+.ProductListener.java
+----
+import com.oracle.coherence.spring.*;
+import org.springframework.messaging.handler.annotation.SendTo;
+
+@CoherenceTopicListener
+public class ProductListener {
+
+    @Topic("awesome-products")      // <1>
+    @SendTo("product-quantities")   // <2>
+    public int receive(Product product) {
+        System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
+        return product.getQuantity(); // <3>
+    }
+}
+----
+
+<1> The topic subscribed to is `awesome-products`
+<2> The topic to send the result to is `product-quantities`
+<3> The return value is used to indicate the value to forward
+
+You can also do the same using Reactive programming:
+
+[source,java]
+.ProductListener.java
+----
+import com.oracle.coherence.spring.*;
+import org.springframework.messaging.handler.annotation.SendTo;
+import reactor.core.publisher.Mono;
+
+@CoherenceTopicListener
+public class ProductListener {
+
+    @Topic("awesome-products")       // <1>
+    @SendTo("product-quantities")    // <2>
+    public Mono<Integer> receiveProduct(Mono<Product> productSingle) {
+        return productSingle.map(product -> {
+            System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
+            return product.getQuantity();  // <3>
+        });
+    }
+}
+----
+
+<1> The topic subscribed to is `awesome-products`
+<2> The topic to send the result to is `product-quantities`
+<3> The return is mapped from the single to the value of the quantity

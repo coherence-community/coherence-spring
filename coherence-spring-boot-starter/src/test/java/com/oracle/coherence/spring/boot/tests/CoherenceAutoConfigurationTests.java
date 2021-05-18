@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.boot.tests;
 
 import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
@@ -212,5 +213,9 @@ public class CoherenceAutoConfigurationTests {
 			sessionConfigurationBean.setScopeName("fooscope");
 			return sessionConfigurationBean;
 		}
+	}
+
+	@CoherencePublisher
+	interface TestPublisher {
 	}
 }

@@ -396,3 +396,12 @@ The following Coherence-specific configuration properties are available:
 | The session save mode determines how session changes are tracked and saved to the session store.
 
 |===
+
+[[spring-boot-messaging]]
+== Coherence Messaging Support
+
+Support for injecting Coherence Publishers is enabled automatically by adding the `coherence-spring-boot-starter` dependency.
+By default, base package to scan for link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]
+annotated interfaces is derived from the main class anotated with `@SpringBootApplication`. Base package can be overriden
+by annotating configuration class with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan]
+as described at <<coherence-spring-messaging-with-coherence-topics, Messaging with Coherence Topics>>.
