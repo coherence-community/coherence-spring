@@ -13,6 +13,8 @@ import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
 import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
+import com.oracle.coherence.spring.messaging.CoherenceTopicListenerPostProcessor;
+import com.oracle.coherence.spring.messaging.CoherenceTopicListenerSubscribers;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
@@ -47,7 +49,9 @@ import org.springframework.context.annotation.Scope;
 		FilterService.class,
 		MapEventTransformerService.class,
 		MapEventTransformerConfiguration.class,
-		SerializerConfiguration.class
+		SerializerConfiguration.class,
+		NamedTopicConfiguration.class,
+		CoherenceTopicListenerSubscribers.class
 })
 @PropertySource("classpath:coherence-spring.properties")
 public class CoherenceSpringConfiguration {
@@ -214,4 +218,10 @@ public class CoherenceSpringConfiguration {
 	public void setCoherenceEventListenerCandidates(CoherenceEventListenerCandidates coherenceEventListenerCandidates) {
 		this.coherenceEventListenerCandidates = coherenceEventListenerCandidates;
 	}
+
+	@Bean
+	public static CoherenceTopicListenerPostProcessor coherenceTopicListenerPostProcessor() {
+		return new CoherenceTopicListenerPostProcessor();
+	}
+
 }

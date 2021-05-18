@@ -9,12 +9,14 @@ package com.oracle.coherence.spring.boot.autoconfigure;
 import java.util.List;
 
 import com.oracle.coherence.spring.CoherenceServer;
+import com.oracle.coherence.spring.boot.autoconfigure.messaging.CoherencePublisherAutoConfigurationScanRegistrar;
 import com.oracle.coherence.spring.boot.config.CoherenceConfigClientProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
+import com.oracle.coherence.spring.messaging.CoherencePublisherProxyFactoryBean;
 import com.tangosol.net.Coherence;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -30,6 +32,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.CollectionUtils;
@@ -95,4 +98,9 @@ public class CoherenceAutoConfiguration {
 		};
 	}
 
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnMissingBean(CoherencePublisherProxyFactoryBean.class)
+	@Import(CoherencePublisherAutoConfigurationScanRegistrar.class)
+	public static class CoherencePublisherScanRegistrarConfiguration {
+	}
 }
