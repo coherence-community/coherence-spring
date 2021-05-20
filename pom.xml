@@ -69,6 +69,7 @@
 	<modules>
 		<module>coherence-spring-core</module>
 		<module>coherence-spring-data</module>
+		<module>coherence-spring-session</module>
 		<module>coherence-spring-boot-starter</module>
 		<module>coherence-spring-samples</module>
 		<module>coherence-spring-tests</module>
@@ -139,6 +140,7 @@
 		<mockito.version>1.10.19</mockito.version>
 		<org.springframework.version>5.3.6</org.springframework.version>
 		<spring-boot.version>2.4.5</spring-boot.version>
+		<spring-session.version>2.4.3</spring-session.version>
 	</properties>
 
 	<distributionManagement>

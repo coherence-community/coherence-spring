@@ -156,8 +156,8 @@ public class CoherenceSpringConfiguration {
 	}
 
 	@Bean
-	MapListenerRegistrationBean mapListenerRegistrationBean(ApplicationContext applicationContext) {
-		return new MapListenerRegistrationBean(applicationContext);
+	MapListenerRegistrationBean mapListenerRegistrationBean(ApplicationContext applicationContext, FilterService filterService) {
+		return new MapListenerRegistrationBean(applicationContext, filterService);
 	}
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the

@@ -62,6 +62,7 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 				.getMethod("builder")
 				.invoke(null);
 		final SessionConfiguration sessionConfiguration = sessionConfigurationBuilder
+				.withConfigUri("coherence-cache-config.xml")
 				.build();
 
 		final CoherenceConfiguration.Builder coherenceBuilder = (CoherenceConfiguration.Builder) getFromTestClassloader(CoherenceConfiguration.class)

@@ -8,4 +8,87 @@ Coherence's support for {spring-docs-session}[Spring Session].
 [[spring-session-introduction]]
 == Getting Started
 
-TBD
+In this chapter you will learn how to configure {oracle-coherence}[Coherence] as an HTTP session store using
+{spring-docs-session}[Spring Session].
+
+First you need to add the coherence-spring-session dependency:
+
+.Adding the Coherence Spring Session Dependency
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-session</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
+----
+====
+
+NOTE: Coherence Spring support for Spring Session can be used for either the free Coherence Community Edition (CE)
+or the commercial version. Coherence Spring does not bring in the Coherence dependency automatically but users
+must specify the Coherence dependency explicitly.
+
+In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
+Session using the `@EnableCoherenceHttpSession` annotation.
+
+.Enabling Coherence Spring Sessions
+[source,java,indent=0]
+----
+@Configuration
+@EnableCoherence
+@EnableCoherenceHttpSession(                     <1>
+        session = "coherence_session",           <2>
+        cache = "spring:session:sessions",       <3>
+        flushMode = FlushMode.ON_SAVE,           <4>
+        sessionTimeoutInSeconds = 1800           <5>
+)
+static class CoherenceSessionConfig {
+}
+----
+<1> Enables Spring Session support for Coherence
+<2> Specify the name of the Coherence Session. Optional. Defaults to Coherence' default session.
+<3> The name of the cache to use. Optional. Defaults to `spring:session:sessions`.
+<4> The FlushMode to use. Optional. Defaults to `FlushMode.ON_SAVE`.
+<5> The session timeout. Optional. Defaults to `1800` seconds (`30` minutes)
+
+[[spring-session-pof]]
+== POF Serialization
+
+In case that you configured the cache using
+{oracle-coherence-docs}develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913[POF serialization],
+additional POF configuration for the class `MapSession` is necessary:
+
+.POF Configuration
+[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+----
+<user-type>
+    <type-id>2001</type-id>
+    <class-name>org.springframework.session.MapSession</class-name>
+    <serializer>
+        <class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
+    </serializer>
+</user-type>
+----
+
+IMPORTANT: Depending on your serialization requirements and your session data, additional POF configuration
+may be necessary.
+
+
