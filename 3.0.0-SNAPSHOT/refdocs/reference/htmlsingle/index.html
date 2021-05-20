@@ -3732,6 +3732,9 @@ on caching.</p>
 <li>
 <p>Rich query and event features from Coherence</p>
 </li>
+<li>
+<p>Native asynchronous repository support</p>
+</li>
 </ul>
 </div>
 <div class="sect3">
@@ -3739,19 +3742,9 @@ on caching.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Spring Data finder queries that use paging</p>
-</li>
-<li>
-<p>Interface-based projection</p>
-</li>
-<li>
 <p>Exception translation into Spring’s portable Data Access Exception hierarchy</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>These will be supported in the next milestone release.  Another feature for the
-next milestone release will be a native asynchronous repository.</p>
 </div>
 </div>
 </div>
@@ -3940,6 +3933,9 @@ For example:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.tangosol.util.UUID;
 
 // ...
 
@@ -3950,8 +3946,48 @@ public interface BookRepository extends CoherenceRepository&lt;Book, UUID&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>As of the M1 release, however, finder queries using pagination are not supported. This functionality
-is targeted for the next milestone release.</p>
+<p>It should be noted that finder queries defined on either the blocking or non-blocking
+Coherence repository will always execute in a blocking manner.  For asynchronous versions
+of these methods, please use Spring&#8217;s <a href="https://spring.io/guides/gs/async-method/">Async Method</a> support.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
+import com.tangosol.util.UUID;
+
+import org.springframework.scheduling.annotation.Async;
+
+// ...
+
+@CoherenceMap("book")
+public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository&lt;Book, UUID&gt; {
+
+    @Async
+    CompletableFuture&lt;List&lt;Book&gt;&gt; findByAuthor(Author author);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to include the <code>@EnableAsync</code> annotation on the configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+// ...
+
+@Configuration
+@EnableAsync
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -4599,7 +4635,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-20 05:22:57 UTC
+Last updated 2021-05-20 09:44:32 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
