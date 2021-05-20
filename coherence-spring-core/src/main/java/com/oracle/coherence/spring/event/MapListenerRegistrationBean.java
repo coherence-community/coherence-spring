@@ -40,14 +40,17 @@ public class MapListenerRegistrationBean {
 
 	private final ApplicationContext applicationContext;
 
+	private FilterService filterService;
+
 	/**
 	 * A list of event interceptors for all discovered observer methods.
 	 */
 	private final Map<String, Map<String, Set<AnnotatedMapListener<?, ?>>>> mapListeners = new HashMap<>();
 
-	public MapListenerRegistrationBean(ApplicationContext applicationContext) {
+	public MapListenerRegistrationBean(ApplicationContext applicationContext, FilterService filterService) {
 		super();
 		this.applicationContext = applicationContext;
+		this.filterService = filterService;
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class MapListenerRegistrationBean {
 			if (listener.hasFilterAnnotation()) {
 				// ensure that the listener's filter has been resolved as this
 				// was not possible as discovery time.
-				listener.resolveFilter(this.applicationContext.getBean(FilterService.class));
+				listener.setFilter(this.filterService.resolve(listener.getFilterAnnotations()));
 			}
 
 			if (listener.hasTransformerAnnotation()) {

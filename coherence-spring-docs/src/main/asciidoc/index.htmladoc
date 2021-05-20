@@ -16,11 +16,11 @@ http://coherence-community.github.io/coherence-spring[*Website*].
 <<core.adoc#spring-core, Coherence Spring Core>> :: Use Coherence with the Spring Framework
 <<spring-boot.adoc#spring-boot, Spring Boot>> :: Coherence for Spring Boot users
 <<spring-cache.adoc#spring-cache, Spring Cache>> :: Coherence Spring Cache
-// <<spring-session.adoc#spring-session, Spring Session>> :: Coherence Spring Session
+<<spring-session.adoc#spring-session, Spring Session>> :: Coherence Spring Session
 <<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data
 <<spring-cloud-config.adoc#spring-cloud-config, Spring Cloud Config>> :: Use Coherence with Spring Cloud Config
 
-Gunnar Hillert
+Gunnar Hillert, Ryan Lubke
 
 Copyright (c) 2013, 2021, Oracle and/or its affiliates. +
 Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.

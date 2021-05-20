@@ -27,6 +27,7 @@ import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.annotation.event.Updated;
 import com.oracle.coherence.spring.configuration.FilterService;
 import com.oracle.coherence.spring.configuration.MapEventTransformerService;
+import com.tangosol.net.events.partition.cache.CacheLifecycleEvent;
 import com.tangosol.util.Filter;
 import com.tangosol.util.MapEvent;
 import com.tangosol.util.MapEventTransformer;
@@ -42,7 +43,9 @@ import com.tangosol.util.function.Remote;
  * @param <K> the type of the cache key
  * @param <V> the type of the cache value
  * @author Jonathan Knight
- * @since 1.0
+ * @since 3.0
+ *
+ * @see MapListenerRegistrationBean#registerMapListeners(CacheLifecycleEvent)
  */
 public class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable<AnnotatedMapListener<?, ?>> {
 
@@ -127,35 +130,35 @@ public class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable
 		String serviceName = WILD_CARD;
 		String scopeName = null;
 
-		for (Annotation a : observer.getObservedQualifiers()) {
-			if (a instanceof CacheName) {
-				cacheName = ((CacheName) a).value();
+		for (Annotation annotation : observer.getObservedQualifiers()) {
+			if (annotation instanceof CacheName) {
+				cacheName = ((CacheName) annotation).value();
 			}
-			else if (a instanceof MapName) {
-				cacheName = ((MapName) a).value();
+			else if (annotation instanceof MapName) {
+				cacheName = ((MapName) annotation).value();
 			}
-			else if (a instanceof ServiceName) {
-				serviceName = ((ServiceName) a).value();
+			else if (annotation instanceof ServiceName) {
+				serviceName = ((ServiceName) annotation).value();
 			}
-			else if (a instanceof ScopeName) {
-				scopeName = ((ScopeName) a).value();
+			else if (annotation instanceof ScopeName) {
+				scopeName = ((ScopeName) annotation).value();
 			}
-			else if (a instanceof Inserted) {
+			else if (annotation instanceof Inserted) {
 				addType(Type.INSERTED);
 			}
-			else if (a instanceof Updated) {
+			else if (annotation instanceof Updated) {
 				addType(Type.UPDATED);
 			}
-			else if (a instanceof Deleted) {
+			else if (annotation instanceof Deleted) {
 				addType(Type.DELETED);
 			}
-			else if (a instanceof SessionName) {
-				this.session = ((SessionName) a).value();
+			else if (annotation instanceof SessionName) {
+				this.session = ((SessionName) annotation).value();
 			}
-			else if (a instanceof Lite) {
+			else if (annotation instanceof Lite) {
 				this.liteEvents = true;
 			}
-			else if (a instanceof Synchronous) {
+			else if (annotation instanceof Synchronous) {
 				this.synchronousEvents = true;
 			}
 		}
@@ -218,6 +221,14 @@ public class AnnotatedMapListener<K, V> implements MapListener<K, V>, Comparable
 	 */
 	boolean hasFilterAnnotation() {
 		return this.filterAnnotations != null && !this.filterAnnotations.isEmpty();
+	}
+
+	public Set<Annotation> getFilterAnnotations() {
+		return this.filterAnnotations;
+	}
+
+	public void setFilter(Filter<?> filter) {
+		this.filter = filter;
 	}
 
 	/**

@@ -76,6 +76,7 @@ public class CoherenceEventListenerCandidates implements ApplicationContextAware
 					// type is MapEvent
 					final MethodMapListener listener = new MethodMapListener(beanName, method, this.applicationContext);
 					final AnnotatedMapListener mapListener = new AnnotatedMapListener(listener, listener.getObservedQualifiers());
+
 					mapListenerRegistrationBean.addMapListener(mapListener);
 				}
 			}

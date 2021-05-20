@@ -23,6 +23,9 @@ import org.springframework.util.Assert;
  *
  * @author Gunnar Hillert
  * @since 3.0
+ *
+ * @see MethodEventObserver
+ * @see MethodMapListener
  */
 abstract class BaseMethodObserver {
 

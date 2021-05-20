@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) 2021, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  http://oss.oracle.com/licenses/upl.
+-->
+
+<pof-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns="http://xmlns.oracle.com/coherence/coherence-pof-config"
+			xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-pof-config coherence-pof-config.xsd">
+	<user-type-list>
+		<include>coherence-pof-config.xml</include>
+		<user-type>
+			<type-id>2001</type-id>
+			<class-name>org.springframework.session.MapSession</class-name>
+			<serializer>
+				<class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		<user-type>
+			<type-id>3000</type-id>
+			<class-name>org.springframework.security.authentication.UsernamePasswordAuthenticationToken</class-name>
+			<serializer>
+				<class-name>com.oracle.coherence.spring.session.serialization.pof.AuthenticationPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		<user-type>
+			<type-id>3001</type-id>
+			<class-name>org.springframework.security.core.context.SecurityContextImpl</class-name>
+			<serializer>
+				<class-name>com.oracle.coherence.spring.session.serialization.pof.SecurityContextPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		<user-type>
+			<type-id>3002</type-id>
+			<class-name>org.springframework.security.core.authority.SimpleGrantedAuthority</class-name>
+			<serializer>
+				<class-name>com.oracle.coherence.spring.session.serialization.pof.GrantedAuthorityPofSerializer</class-name>
+			</serializer>
+		</user-type>
+		<user-type>
+			<type-id>4000</type-id>
+			<class-name>com.oracle.coherence.spring.session.SessionUpdateEntryProcessor</class-name>
+		</user-type>
+		<user-type>
+			<type-id>4010</type-id>
+			<class-name>com.oracle.coherence.spring.session.support.PrincipalNameExtractor</class-name>
+		</user-type>
+	</user-type-list>
+</pof-config>
