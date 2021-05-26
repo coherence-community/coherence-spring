@@ -6,7 +6,6 @@
  */
 package com.oracle.coherence.spring.data.repository.query;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.oracle.coherence.spring.data.support.Utils;
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Aggregators;
 import com.tangosol.util.Extractors;
@@ -34,7 +34,6 @@ import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.extractor.UniversalExtractor;
 import com.tangosol.util.filter.LimitFilter;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +51,6 @@ import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.data.repository.query.parser.PartTree;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.comparator.Comparators;
 
 import static com.oracle.coherence.spring.data.support.Utils.configureLimitFilter;
 import static com.oracle.coherence.spring.data.support.Utils.toComparator;
@@ -178,32 +176,14 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 
 	@SuppressWarnings("unchecked")
 	@Nullable
-	private Object executeProjectingQuery(ReturnedType returnedType, QueryResult q, ResultProcessor processor) {
+	private Object executeProjectingQuery(ReturnedType returnedType, QueryResult queryResult, ResultProcessor processor) {
 		Class<?> resultType = returnedType.getReturnedType();
 		List result = resultType.isInterface()
-				? fetchWithInterfaceProjection(q.getFilter(), resultType, returnedType.getDomainType())
-				: fetchWithClassProjection(q.getFilter(), resultType);
+				? fetchWithInterfaceProjection(queryResult.getFilter(), resultType, returnedType.getDomainType())
+				: fetchWithClassProjection(queryResult.getFilter(), resultType);
 
-		Sort sort = q.getSort();
-		Comparator comparator = null;
-		if (sort.isSorted()) {
-			for (Sort.Order order : sort) {
-				String property = order.getProperty();
-				if (comparator == null) {
-					comparator = new BeanComparator(property);
-					if (order.isDescending()) {
-						comparator = comparator.reversed();
-					}
-				}
-				else {
-					Comparator temp = new BeanComparator(property);
-					if (order.isDescending()) {
-						temp = comparator.reversed();
-					}
-					comparator.thenComparing(temp);
-				}
-			}
-		}
+		Sort sort = queryResult.getSort();
+		Comparator comparator = Utils.toComparator(sort);
 		Object processedResult = processor.processResult(result);
 		if (comparator != null && processedResult instanceof List) {
 			((List) processedResult).sort(comparator);
@@ -296,33 +276,5 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	public QueryMethod getQueryMethod() {
 
 		return this.queryMethod;
-	}
-
-	static class BeanComparator implements Comparator<Object> {
-		private final String property;
-
-		BeanComparator(String property) {
-			this.property = property;
-		}
-
-		@Override
-		public int compare(Object o1, Object o2) {
-			PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(o1.getClass(), this.property);
-			if (pd == null) {
-				throw new IllegalArgumentException(String.format("Missing property '%s' in %s", this.property, o1.getClass()));
-			}
-			Method readMethod = pd.getReadMethod();
-			if (readMethod == null) {
-				throw new IllegalArgumentException(String.format("Property '%s' in %s can't be read", this.property, o1.getClass()));
-			}
-			try {
-				Object val1 = readMethod.invoke(o1);
-				Object val2 = readMethod.invoke(o2);
-				return Comparators.comparable().compare(val1, val2);
-			}
-			catch (InvocationTargetException | IllegalAccessException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
 	}
 }
