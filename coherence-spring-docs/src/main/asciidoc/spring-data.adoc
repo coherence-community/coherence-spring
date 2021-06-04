@@ -222,8 +222,8 @@ public static class Config {
 
 == Projections
 
-Spring Data Coherence module supports projections as defined in {spring-docs-data-projections}[Spring Data Projections] documentation. This allows us
-(among other things) to transfer over network just requested properties.
+Spring Data Coherence module supports projections as defined in {spring-docs-data-projections}[Spring Data Projections] documentation. This allows us,
+among other things, to transfer a subset of the entities properties when `closed` projections are used.
 
 Imagine a repository and aggregate root type such as the following example:
 
@@ -249,7 +249,7 @@ interface BookRepository extends CrudRepository<Book, UUID> {
 ----
 
 === Interface-based Projections
-The easiest way to limit the result of the queries to only the name attributes is by declaring an interface that exposes accessor methods for the properties to be read, as shown in the following example:
+The simplest way to simplify the result is to declare an interface that exposes methods reading the desired properties, as shown in the following example:
 
 .A projection interface to retrieve a subset of attributes
 [source,java]
@@ -303,9 +303,6 @@ interface BookTitleAndPages {
 }
 ----
 
-For closed projections Coherence can optimize the query execution as all attributes that are
-needed to back the projection proxy are already known so EntryProcessor can be used to fetch just required data.
-
 === Open Projections
 
 Accessor methods in projection interfaces can also be used to compute new values by using the @Value annotation, as shown in the following example:
@@ -335,7 +332,7 @@ interface BookTitleAndAuthor {
 }
 ----
 
-More flexible option is to implement the custom logic in a Spring bean:
+A more flexible option is to implement the custom logic in a Spring bean:
 
 .A projection interface using a default method for custom logic
 [source,java]
