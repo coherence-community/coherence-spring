@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.data.model;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -25,14 +26,30 @@ public class Author implements Serializable, Comparable<Author> {
 	final String lastName;
 
 	/**
+	 * The {@code Author}'s address.
+	 */
+	final Address address;
+
+	/**
 	 * Creates a new Author.
 	 *
 	 * @param firstName author's first name
-	 * @param lastName  author's last name
+	 * @param lastName author's last name
+	 * @param address author's address
 	 */
-	public Author(final String firstName, final String lastName) {
+	public Author(final String firstName, final String lastName, final Address address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.address = address;
+	}
+
+	/**
+	 * Return the {@code Author}'s address.
+	 *
+	 * @return the {@code Author}'s address
+	 */
+	public Address getAddress() {
+		return this.address;
 	}
 
 	/**
@@ -42,6 +59,15 @@ public class Author implements Serializable, Comparable<Author> {
 	 */
 	public String getFirstName() {
 		return this.firstName;
+	}
+
+	/**
+	 * Return the {@code Author}'s uppercase first name.
+	 *
+	 * @return the {@code Author}'s uppercase first name
+	 */
+	public String getUpperFirstName() {
+		return this.firstName.toUpperCase(Locale.ROOT);
 	}
 
 	/**
@@ -61,13 +87,17 @@ public class Author implements Serializable, Comparable<Author> {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		final Author author = (Author) o;
-		return getFirstName().equals(author.getFirstName()) && getLastName().equals(author.getLastName());
+
+		Author author = (Author) o;
+
+		return getFirstName().equals(author.getFirstName())
+				&& getLastName().equals(author.getLastName())
+				&& getAddress().equals(author.getAddress());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getFirstName(), getLastName());
+		return Objects.hash(getFirstName(), getLastName(), getAddress());
 	}
 
 	@Override
@@ -75,6 +105,7 @@ public class Author implements Serializable, Comparable<Author> {
 		return "Author{" +
 				"firstName='" + this.firstName + '\'' +
 				", lastName='" + this.lastName + '\'' +
+				", address='" + this.address + '\'' +
 				'}';
 	}
 

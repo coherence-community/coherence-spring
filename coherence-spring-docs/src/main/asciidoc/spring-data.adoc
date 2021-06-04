@@ -12,6 +12,7 @@ The Spring Data Coherence module provides integration with Coherence data grids.
 * Automatic implementation of Repository interfaces
 * Rich query and event features from Coherence
 * Native asynchronous repository support
+* Projections
 
 === Functionality Not Supported in the M1 Release
 * Exception translation into Spring’s portable Data Access Exception hierarchy
@@ -217,4 +218,221 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCoherenceRepositories
 public static class Config {
 }
+----
+
+== Projections
+
+Spring Data Coherence module supports projections as defined in {spring-docs-data-projections}[Spring Data Projections] documentation. This allows us,
+among other things, to transfer a subset of the entities properties when `closed` projections are used.
+
+Imagine a repository and aggregate root type such as the following example:
+
+[source,java]
+----
+@Entity
+public class Book implements Cloneable, Serializable {
+	@Id
+	protected final UUID uuid;
+	protected String title;
+	protected Author author;
+	protected int pages;
+	protected Calendar published;
+}
+
+@CoherenceMap("book")
+interface BookRepository extends CrudRepository<Book, UUID> {
+
+	List<BookProjection> findByTitle(String title);
+
+	// ...
+}
+----
+
+=== Interface-based Projections
+The simplest way to simplify the result is to declare an interface that exposes methods reading the desired properties, as shown in the following example:
+
+.A projection interface to retrieve a subset of attributes
+[source,java]
+----
+interface BookTitleAndPages {
+
+	String getTitle();
+	int getPages();
+}
+----
+
+.A repository using an interface based projection with a query method
+[source,java]
+----
+interface BookRepository extends CrudRepository<Book, UUID> {
+
+	List<BookTitleAndPages> findByTitle(String title);
+}
+----
+
+The query execution engine creates proxy instances of that interface at runtime for each element returned and forwards calls to the exposed methods to the target object.
+
+Projections can be used recursively as shown in the following example:
+
+.A projection interface to retrieve a subset of attributes
+[source,java]
+----
+interface BookSummary {
+
+	String getTitle();
+	int getPages();
+	AuthorSummary getAuthor();
+
+	interface AuthorSummary {
+		String getFirstName();
+	}
+}
+----
+
+=== Closed Projections
+
+A projection interface whose accessor methods all match properties of the target aggregate is considered to be a closed projection. The following example is a closed projection:
+
+.A closed projection
+[source,java]
+----
+interface BookTitleAndPages {
+
+	String getTitle();
+	int getPages();
+}
+----
+
+=== Open Projections
+
+Accessor methods in projection interfaces can also be used to compute new values by using the @Value annotation, as shown in the following example:
+
+.An open projection
+[source,java]
+----
+interface BookTitleAndAuthor {
+
+	@Value("#{target.author.firstName + ' - ' + target.title}")
+	String getTitleAndAuthor();
+}
+----
+
+A projection interface using `@Value` is an open projection. Spring Data cannot apply query execution optimizations in this case, because the SpEL expression could use any attribute of the aggregate root.
+
+Default methods also can be used for open projection interfaces:
+
+.A projection interface using a default method for custom logic
+[source,java]
+----
+interface BookTitleAndAuthor {
+
+	default String getTitleAndAuthor() {
+		return getAuthor().getFirstName().concat(' - ').concat(getTitle());
+	}
+}
+----
+
+A more flexible option is to implement the custom logic in a Spring bean:
+
+.A projection interface using a default method for custom logic
+[source,java]
+----
+@Component
+class MyBean {
+
+	String getTitleAndAuthor(Book book) {
+		return book.getAuthor().getFirstName().concat(' - ').concat(book.getTitle());
+	}
+}
+
+interface BookTitleAndAuthor {
+
+	@Value("#{@myBean.getTitleAndAuthor(target)}")
+	String getTitleAndAuthor();
+}
+----
+
+Methods backed by SpEL expression evaluation can also use method parameters, which can then be referred to from the expression. The method parameters are available through an Object array named args. The following example shows how to get a method parameter from the args array:
+
+.A sample Book object
+[source,java]
+----
+interface NameOnly {
+
+	@Value("args[0] + ' ' + #{target.author.firstName}")
+	String getHonorificName(String honorific);
+}
+----
+
+=== Nullable Wrappers
+
+Getters in projection interfaces can make use of nullable wrappers for improved null-safety.
+Currently supported wrapper types are:
+
+- java.util.Optional
+- com.google.common.base.Optional
+- scala.Option
+- io.vavr.control.Option
+
+.A projection interface using nullable wrappers
+[source,java]
+----
+interface TitleOnly {
+
+	Optional<String> getTitle();
+}
+----
+
+=== Class-based Projections (DTOs)
+
+Another way of defining projections is by using value type DTOs (Data Transfer Objects) that hold properties for the fields that are supposed to be retrieved - similar to the projection interfaces except that no proxying happens and no nested projections can be applied.
+
+The fields to be loaded are determined from the parameter names of the constructor that is exposed.
+
+The following example shows a projecting DTO:
+
+.A projecting DTO
+[source,java]
+----
+class BookTitleAndPages {
+	private final String title;
+	private final int pages;
+
+	BookTitleAndPages(String title, int pages) {
+		this.title = title;
+		this.pages = pages;
+	}
+
+	String getTitle() {
+		return this.title;
+	}
+
+	int getPages() {
+		return this.pages;
+	}
+
+	// equals(…) and hashCode() implementations
+}
+----
+
+=== Dynamic Projections
+
+It's possible to select the return type to be used at invocation time (up to now all examples shown exact projection type to be used as a return type). To apply dynamic projections, use a query method such as the one shown in the following example:
+
+.A repository using a dynamic projection parameter
+[source,java]
+----
+@CoherenceMap("book")
+interface BookRepository extends CrudRepository<Book, UUID> {
+
+	<T> Collection<T> findByTitle(String title, Class<T> type);
+}
+----
+
+.Using a repository with dynamic projections
+[source,java]
+----
+Collection<BookSummary> aggregates = books.findByTitle("Shadow", BookSummary.class);
+
+Collection<BookTitleAndPages> aggregates = books.findByTitle("Remember", BookTitleAndPages.class);
 ----

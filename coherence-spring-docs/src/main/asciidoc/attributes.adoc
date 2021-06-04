@@ -36,6 +36,7 @@
 :spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
 :spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
 :spring-docs-data-commons: https://docs.spring.io/spring-data/commons/docs/current/reference/html/
+:spring-docs-data-projections: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#projections
 :spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
 :oracle-coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/
 :oracle-coherence-repository-docs: https://coherence.community/21.06-M2/docs/#/docs/core/05_repository
