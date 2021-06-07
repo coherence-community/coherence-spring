@@ -154,6 +154,7 @@ window.onload = function() {
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#spring-session-introduction">1. Getting Started</a></li>
+<li><a href="#spring-session-pof">2. POF Serialization</a></li>
 </ul>
 </div>
 </div>
@@ -170,14 +171,141 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <h2 id="spring-session-introduction"><a class="anchor" href="#spring-session-introduction"></a>1. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TBD</p>
+<p>In this chapter you will learn how to configure <a href="https://coherence.community/">Coherence</a> as an HTTP session store using
+<a href="https://docs.spring.io/spring-session/docs/curent/reference/html5/">Spring Session</a>.</p>
+</div>
+<div class="paragraph">
+<p>First you need to add the coherence-spring-session dependency:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Adding the Coherence Spring Session Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.06-M2&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-session:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.06-M2")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Coherence Spring support for Spring Session can be used for either the free Coherence Community Edition (CE)
+or the commercial version. Coherence Spring does not bring in the Coherence dependency automatically but users
+must specify the Coherence dependency explicitly.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
+Session using the <code>@EnableCoherenceHttpSession</code> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="title">Enabling Coherence Spring Sessions</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+@EnableCoherence
+@EnableCoherenceHttpSession(                     <i class="conum" data-value="1"></i><b>(1)</b>
+        session = "coherence_session",           <i class="conum" data-value="2"></i><b>(2)</b>
+        cache = "spring:session:sessions",       <i class="conum" data-value="3"></i><b>(3)</b>
+        flushMode = FlushMode.ON_SAVE,           <i class="conum" data-value="4"></i><b>(4)</b>
+        sessionTimeoutInSeconds = 1800           <i class="conum" data-value="5"></i><b>(5)</b>
+)
+static class CoherenceSessionConfig {
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables Spring Session support for Coherence</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Specify the name of the Coherence Session. Optional. Defaults to Coherence' default session.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The name of the cache to use. Optional. Defaults to <code>spring:session:sessions</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The FlushMode to use. Optional. Defaults to <code>FlushMode.ON_SAVE</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The session timeout. Optional. Defaults to <code>1800</code> seconds (<code>30</code> minutes)</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session-pof"><a class="anchor" href="#spring-session-pof"></a>2. POF Serialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In case that you configured the cache using
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913">POF serialization</a>,
+additional POF configuration for the class <code>MapSession</code> is necessary:</p>
+</div>
+<div class="listingblock">
+<div class="title">POF Configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml"> &lt;user-type&gt;
+     &lt;type-id&gt;2001&lt;/type-id&gt;
+     &lt;class-name&gt;org.springframework.session.MapSession&lt;/class-name&gt;
+     &lt;serializer&gt;
+         &lt;class-name&gt;com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer&lt;/class-name&gt;
+     &lt;/serializer&gt;
+ &lt;/user-type&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Depending on your serialization requirements and your session data, additional POF configuration
+may be necessary.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-07 06:48:21 UTC
+Last updated 2021-06-07 08:59:28 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
