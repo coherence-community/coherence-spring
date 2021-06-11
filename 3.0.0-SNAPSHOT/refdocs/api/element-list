@@ -15,4 +15,7 @@ com.oracle.coherence.spring.data.repository
 com.oracle.coherence.spring.data.repository.query
 com.oracle.coherence.spring.data.support
 com.oracle.coherence.spring.event
+com.oracle.coherence.spring.event.liveevent
+com.oracle.coherence.spring.event.liveevent.handler
+com.oracle.coherence.spring.event.mapevent
 com.oracle.coherence.spring.namespace
