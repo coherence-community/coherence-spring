@@ -12,7 +12,7 @@ import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
-import com.oracle.coherence.spring.event.MapListenerRegistrationBean;
+import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
@@ -24,7 +24,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -156,8 +155,10 @@ public class CoherenceSpringConfiguration {
 	}
 
 	@Bean
-	MapListenerRegistrationBean mapListenerRegistrationBean(ApplicationContext applicationContext, FilterService filterService) {
-		return new MapListenerRegistrationBean(applicationContext, filterService);
+	MapListenerRegistrationBean mapListenerRegistrationBean(
+			FilterService filterService,
+			MapEventTransformerService mapEventTransformerService) {
+		return new MapListenerRegistrationBean(filterService, mapEventTransformerService);
 	}
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the

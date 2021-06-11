@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import com.oracle.coherence.spring.session.config.annotation.SpringSessionCoherenceInstance;
-import com.oracle.coherence.spring.session.events.CoherenceSessionEventHandler;
 import com.tangosol.net.Coherence;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -70,11 +69,6 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		return createCoherenceIndexedSessionRepository();
 	}
 
-	@Bean
-	CoherenceSessionEventHandler coherenceSessionEventHandler() {
-		return new CoherenceSessionEventHandler();
-	}
-
 	@Autowired
 	public void setCoherence(
 			@SpringSessionCoherenceInstance ObjectProvider<Coherence> springSessionCoherenceInstance,
@@ -128,9 +122,8 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		else {
 			coherenceSession = this.coherence.getSession();
 		}
-		final CoherenceIndexedSessionRepository sessionRepository = new CoherenceIndexedSessionRepository(
-				coherenceSession);
-		sessionRepository.setApplicationEventPublisher(this.applicationEventPublisher);
+		final CoherenceIndexedSessionRepository sessionRepository = new CoherenceIndexedSessionRepository(coherenceSession);
+
 		if (this.indexResolver != null) {
 			sessionRepository.setIndexResolver(this.indexResolver);
 		}

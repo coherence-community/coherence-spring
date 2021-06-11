@@ -50,6 +50,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private boolean initialized = false;
 
+	private CoherenceEventListenerCandidates coherenceEventListenerCandidates;
+
 	public DefaultCoherenceConfigurer(ConfigurableApplicationContext context,
 			CoherenceEventListenerCandidates coherenceEventListenerCandidates) {
 		this.applicationContext = context;
@@ -70,8 +72,6 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	public CoherenceConfiguration getCoherenceConfiguration() {
 		return this.coherenceConfiguration;
 	}
-
-	CoherenceEventListenerCandidates coherenceEventListenerCandidates;
 
 	@PostConstruct
 	public void initialize() {

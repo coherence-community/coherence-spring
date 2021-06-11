@@ -4,7 +4,7 @@
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
-package com.oracle.coherence.spring.event;
+package com.oracle.coherence.spring.event.mapevent;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import com.oracle.coherence.spring.annotation.event.Created;
 import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.configuration.FilterService;
 import com.oracle.coherence.spring.configuration.MapEventTransformerService;
+import com.oracle.coherence.spring.event.CoherenceEventListener;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
@@ -27,8 +28,6 @@ import com.tangosol.util.MapListener;
 import com.tangosol.util.filter.MapEventFilter;
 import com.tangosol.util.filter.MapEventTransformerFilter;
 
-import org.springframework.context.ApplicationContext;
-
 /**
  * {@link CoherenceEventListener} responsible for the registration of {@link MapListener}s.
  *
@@ -38,19 +37,20 @@ import org.springframework.context.ApplicationContext;
  */
 public class MapListenerRegistrationBean {
 
-	private final ApplicationContext applicationContext;
-
 	private FilterService filterService;
+	private MapEventTransformerService mapEventTransformerService;
 
 	/**
 	 * A list of event interceptors for all discovered observer methods.
 	 */
 	private final Map<String, Map<String, Set<AnnotatedMapListener<?, ?>>>> mapListeners = new HashMap<>();
 
-	public MapListenerRegistrationBean(ApplicationContext applicationContext, FilterService filterService) {
+	public MapListenerRegistrationBean(
+			FilterService filterService,
+			MapEventTransformerService mapEventTransformerService) {
 		super();
-		this.applicationContext = applicationContext;
 		this.filterService = filterService;
+		this.mapEventTransformerService = mapEventTransformerService;
 	}
 
 	/**
@@ -83,13 +83,13 @@ public class MapListenerRegistrationBean {
 
 			if (listener.hasTransformerAnnotation()) {
 				// ensure that the listener's transformer has been resolved as this
-				// was not possible as discovery time.
-				listener.resolveTransformer(this.applicationContext.getBean(MapEventTransformerService.class));
+				// was not possible at discovery time.
+				listener.resolveTransformer(this.mapEventTransformerService);
 			}
 
 			String sScope = listener.getScopeName();
 			boolean fScopeOK = sScope == null || sScope.equals(eventScope);
-			String sSession = listener.getSessionName();
+			String sSession = listener.getSession();
 			boolean fSessionOK = sSession == null || sSession.equals(eventSession);
 
 			if (fScopeOK && fSessionOK) {
@@ -104,7 +104,7 @@ public class MapListenerRegistrationBean {
 				}
 
 				try {
-					boolean fLite = listener.isLite();
+					boolean fLite = listener.isLiteEvent();
 					if (listener.isSynchronous()) {
 						cache.addMapListener(listener.synchronous(), filter, fLite);
 					}
@@ -169,11 +169,11 @@ public class MapListenerRegistrationBean {
 	 * @param listener the listener to add
 	 */
 	public void addMapListener(AnnotatedMapListener<?, ?> listener) {
-		String svc = listener.getServiceName();
-		String cache = listener.getCacheName();
+		final String serviceName = listener.getServiceName();
+		final String cacheName = listener.getCacheName();
 
-		Map<String, Set<AnnotatedMapListener<?, ?>>> mapByCache = this.mapListeners.computeIfAbsent(svc, (s) -> new HashMap<>());
-		Set<AnnotatedMapListener<?, ?>> setListeners = mapByCache.computeIfAbsent(cache, (c) -> new HashSet<>());
+		final Map<String, Set<AnnotatedMapListener<?, ?>>> mapByCache = this.mapListeners.computeIfAbsent(serviceName, (s) -> new HashMap<>());
+		final Set<AnnotatedMapListener<?, ?>> setListeners = mapByCache.computeIfAbsent(cacheName, (c) -> new HashSet<>());
 		setListeners.add(listener);
 	}
 }

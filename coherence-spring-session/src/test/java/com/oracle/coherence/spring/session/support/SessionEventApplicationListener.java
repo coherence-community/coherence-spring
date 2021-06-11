@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import com.oracle.coherence.spring.session.DefaultSessionEventTests;
 import org.awaitility.core.ConditionTimeoutException;
 
 import org.springframework.context.ApplicationListener;
@@ -20,7 +21,7 @@ import static org.awaitility.Awaitility.await;
 
 /**
  * Implementation of an {@link ApplicationListener} that handles {@link AbstractSessionEvent}s in support for
- * the {@link com.oracle.coherence.spring.session.SessionEventCoherenceIndexedSessionRepositoryTests}.
+ * the {@link DefaultSessionEventTests}.
  *
  * @author Gunnar Hillert
  */

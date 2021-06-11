@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
-package com.oracle.coherence.spring.event;
+package com.oracle.coherence.spring.event.liveevent;
 
 import java.lang.reflect.Method;
 
+import com.oracle.coherence.spring.event.BaseMethodObserver;
 import com.tangosol.net.events.Event;
 
 import org.springframework.context.ApplicationContext;
@@ -33,7 +34,7 @@ public class MethodEventObserver<E extends Event<?>> extends BaseMethodObserver 
 		super(beanName, method, applicationContext);
 	}
 
-	void notify(E event) {
+	public void notify(E event) {
 		ReflectionUtils.makeAccessible(this.method); //TODO
 		ReflectionUtils.invokeMethod(this.method, this.getTargetBean(), event);
 	}

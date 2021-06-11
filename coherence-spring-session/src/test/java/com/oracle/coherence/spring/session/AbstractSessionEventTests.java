@@ -12,6 +12,8 @@ import java.time.Instant;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
 import com.oracle.coherence.spring.session.support.SessionEventApplicationListener;
+import com.tangosol.net.Coherence;
+import com.tangosol.net.NamedCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +33,6 @@ import org.springframework.session.SessionRepository;
 import org.springframework.session.events.SessionCreatedEvent;
 import org.springframework.session.events.SessionDeletedEvent;
 import org.springframework.session.events.SessionExpiredEvent;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,13 +41,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Gunnar Hillert
  */
-@DirtiesContext
-@SpringJUnitWebConfig
-public class SessionEventCoherenceIndexedSessionRepositoryTests {
+public abstract class AbstractSessionEventTests {
 
-	private static final Log logger = LogFactory.getLog(CoherenceIndexedSessionRepository.class);
+	private static final Log logger = LogFactory.getLog(AbstractSessionEventTests.class);
 
-	private static final int DEFAULT_SESSION_TIMEOUT_IN_SECONDS = 1;
+	protected static final int DEFAULT_SESSION_TIMEOUT_IN_SECONDS = 1;
+
+	protected String expectedCacheName;
+
+	@Autowired
+	private Coherence coherence;
 
 	@Autowired
 	private SessionRepository<Session> repository;
@@ -62,6 +65,10 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 
 	@Test
 	void saveSessionTest() throws InterruptedException {
+		final NamedCache sessionCache = this.coherence.getSession().getCache(this.expectedCacheName);
+		assertThat(sessionCache.isActive());
+		assertThat(sessionCache.size()).isEqualTo(0);
+
 		final String username = "coherence_rocks";
 
 		final Session sessionToSave = this.repository.createSession();
@@ -88,6 +95,10 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 		assertThat(sessionFromRepository.getAttributeNames()).isEqualTo(sessionToSave.getAttributeNames());
 		assertThat(sessionFromRepository.<String>getAttribute(expectedAttributeName))
 				.isEqualTo(sessionToSave.getAttribute(expectedAttributeName));
+
+		assertThat(sessionCache.size()).isEqualTo(1);
+
+		this.repository.deleteById(sessionToSave.getId());
 	}
 
 	@Test
@@ -107,6 +118,9 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 		assertThat(this.sessionEventApplicationListener.<SessionExpiredEvent>getEvent(sessionToSave.getId()))
 				.isInstanceOf(SessionExpiredEvent.class);
 		assertThat(this.repository.findById(sessionToSave.getId())).isNull();
+
+		this.repository.deleteById(sessionToSave.getId());
+
 	}
 
 	@Test
@@ -139,6 +153,9 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 		sessionToUpdate.setLastAccessedTime(Instant.now());
 		this.repository.save(sessionToUpdate);
 		assertThat(this.repository.findById(sessionToUpdate.getId())).isNotNull();
+
+		this.repository.deleteById(sessionToUpdate.getId());
+
 	}
 
 	@Test
@@ -156,6 +173,8 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 		this.repository.save(sessionToSave);
 
 		assertThat(this.sessionEventApplicationListener.receivedEvent(sessionToSave.getId())).isFalse();
+
+		this.repository.deleteById(sessionToSave.getId());
 	}
 
 	@Test
@@ -178,6 +197,8 @@ public class SessionEventCoherenceIndexedSessionRepositoryTests {
 		assertThat(this.sessionEventApplicationListener.<SessionExpiredEvent>getEvent(sessionToUpdate.getId()))
 				.isInstanceOf(SessionExpiredEvent.class);
 		assertThat(this.repository.findById(sessionToUpdate.getId())).isNull();
+
+		this.repository.deleteById(sessionToSave.getId());
 	}
 
 	@Configuration

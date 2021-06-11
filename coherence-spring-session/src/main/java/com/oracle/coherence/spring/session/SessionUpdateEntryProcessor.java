@@ -16,6 +16,7 @@ import com.tangosol.coherence.memcached.server.MemcachedHelper;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 import com.tangosol.io.pof.PortableObject;
+import com.tangosol.net.cache.CacheMap;
 import com.tangosol.util.BinaryEntry;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
@@ -26,7 +27,7 @@ import org.springframework.session.MapSession;
  * Coherence {@link com.tangosol.util.InvocableMap.EntryProcessor} responsible for handling updates to session.
  *
  * @author Gunnar Hillert
- * @since 3.0.0
+ * @since 3.0
  * @see com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository#save(CoherenceSpringSession)
  */
 public class SessionUpdateEntryProcessor extends AbstractProcessor<String, MapSession, Object>
@@ -50,8 +51,15 @@ public class SessionUpdateEntryProcessor extends AbstractProcessor<String, MapSe
 		}
 		if (this.maxInactiveInterval != null) {
 			value.setMaxInactiveInterval(this.maxInactiveInterval);
-			BinaryEntry binaryEntry = MemcachedHelper.getBinaryEntry(entry);
-			binaryEntry.expire(this.maxInactiveInterval.toMillis());
+			final BinaryEntry binaryEntry = MemcachedHelper.getBinaryEntry(entry);
+			final long maxInactiveIntervalMillis = this.maxInactiveInterval.toMillis();
+
+			if (maxInactiveIntervalMillis > 0) {
+				binaryEntry.expire(maxInactiveIntervalMillis);
+			}
+			else {
+				binaryEntry.expire(CacheMap.EXPIRY_NEVER);
+			}
 		}
 		if (this.delta != null) {
 			for (final Map.Entry<String, Object> attribute : this.delta.entrySet()) {

@@ -36,7 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
-	private static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
+	protected static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
+
+	protected static final int DEFAULT_SESSION_TIMEOUT_IN_SECONDS = 1;
+
+	protected String expectedCacheName;
 
 	@Autowired
 	private Coherence coherenceInstance;

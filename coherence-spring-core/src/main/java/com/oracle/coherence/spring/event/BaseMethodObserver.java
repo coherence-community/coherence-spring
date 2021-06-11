@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.oracle.coherence.spring.annotation.event.Synchronous;
+import com.oracle.coherence.spring.event.liveevent.MethodEventObserver;
+import com.oracle.coherence.spring.event.mapevent.MethodMapListener;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
@@ -27,7 +29,7 @@ import org.springframework.util.Assert;
  * @see MethodEventObserver
  * @see MethodMapListener
  */
-abstract class BaseMethodObserver {
+public abstract class BaseMethodObserver {
 
 	protected final String beanName;
 	protected final Method method;
@@ -54,17 +56,17 @@ abstract class BaseMethodObserver {
 		return this.applicationContext.getBean(this.beanName);
 	}
 
-	protected String getId() {
+	public String getId() {
 		return this.method.toString();
 	}
 
-	protected Set<Annotation> getObservedQualifiers() {
+	public Set<Annotation> getObservedQualifiers() {
 		return Stream.concat(Arrays.stream(this.method.getParameterAnnotations()[0]),
 				Arrays.stream(this.method.getAnnotations()))
 				.collect(Collectors.toSet());
 	}
 
-	boolean isAsync() {
+	public boolean isAsync() {
 		return !this.method.isAnnotationPresent(Synchronous.class);
 	}
 }

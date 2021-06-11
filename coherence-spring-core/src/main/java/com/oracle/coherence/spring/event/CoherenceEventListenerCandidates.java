@@ -7,14 +7,19 @@
 package com.oracle.coherence.spring.event;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.oracle.coherence.spring.configuration.DefaultCoherenceConfigurer;
+import com.oracle.coherence.spring.event.liveevent.EventHandlerFactory;
+import com.oracle.coherence.spring.event.liveevent.handler.EventHandler;
+import com.oracle.coherence.spring.event.mapevent.AnnotatedMapListener;
+import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
+import com.oracle.coherence.spring.event.mapevent.MethodMapListener;
 import com.tangosol.net.events.Event;
 import com.tangosol.net.events.internal.NamedEventInterceptor;
-import com.tangosol.util.SafeLinkedList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,8 +40,7 @@ public class CoherenceEventListenerCandidates implements ApplicationContextAware
 
 	private final Map<String, List<Method>> coherenceEventListenerCandidateMethods;
 
-	@SuppressWarnings("unchecked")
-	private final List<NamedEventInterceptor<?>> interceptors = new SafeLinkedList();
+	private final List<NamedEventInterceptor<?>> interceptors = new ArrayList<>();
 
 	private ApplicationContext applicationContext;
 
@@ -66,17 +70,15 @@ public class CoherenceEventListenerCandidates implements ApplicationContextAware
 							argumentClassType.getName(), beanName, method.getName()));
 				}
 				if (Event.class.isAssignableFrom(argumentClassType)) {
-					final MethodEventObserver observer = new MethodEventObserver<>(beanName, method, this.applicationContext);
-					final EventObserverSupport.EventHandler handler = EventObserverSupport
-							.createObserver((Class<? extends Event>) argumentClassType, observer);
-					final NamedEventInterceptor interceptor = new NamedEventInterceptor(observer.getId(), handler);
+					final Class<? extends Event> eventClassType = (Class<? extends Event>) argumentClassType;
+					final EventHandler handler = EventHandlerFactory.create(eventClassType, beanName, method, this.applicationContext);
+					final NamedEventInterceptor interceptor = new NamedEventInterceptor(handler.getId(), handler);
 					this.interceptors.add(interceptor);
 				}
 				else {
 					// type is MapEvent
 					final MethodMapListener listener = new MethodMapListener(beanName, method, this.applicationContext);
 					final AnnotatedMapListener mapListener = new AnnotatedMapListener(listener, listener.getObservedQualifiers());
-
 					mapListenerRegistrationBean.addMapListener(mapListener);
 				}
 			}
