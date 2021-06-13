@@ -29,7 +29,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
-import org.springframework.session.SessionRepository;
 import org.springframework.session.events.SessionCreatedEvent;
 import org.springframework.session.events.SessionDeletedEvent;
 import org.springframework.session.events.SessionExpiredEvent;
@@ -53,7 +52,7 @@ public abstract class AbstractSessionEventTests {
 	private Coherence coherence;
 
 	@Autowired
-	private SessionRepository<Session> repository;
+	private FindByIndexNameSessionRepository<Session> repository;
 
 	@Autowired
 	private SessionEventApplicationListener sessionEventApplicationListener;

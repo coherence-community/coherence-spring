@@ -195,4 +195,35 @@ following resources:
 - {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
+[[spring-boot-sessions]]
+== Spring Session Support
 
+If you have not already done so, please read the chapter on
+<<spring-session.adoc#spring-session, Coherence Spring Session>> first.
+
+Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
+Coherence-specific configuration properties.
+
+The following Coherence-specific configuration properties are available:
+
+.Coherence Configuration Properties
+|===
+|Key |Default Value |Description
+
+| coherence.spring.session.enabled
+| `false`
+| Set to `true` to enable Spring Session support
+
+| coherence.spring.session.map-name
+| `spring:session:sessions`
+| Name of the map used to store sessions
+
+| coherence.spring.session.flush-mode
+| `ON_SAVE`
+| Sessions flush mode. Determines when session changes are written to the session store.
+
+| coherence.spring.session.save-mode
+| `ON_SET_ATTRIBUTE`
+| The session save mode determines how session changes are tracked and saved to the session store.
+
+|===

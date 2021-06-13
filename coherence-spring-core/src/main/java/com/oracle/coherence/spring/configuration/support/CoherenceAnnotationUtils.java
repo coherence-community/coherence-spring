@@ -23,7 +23,11 @@ import org.springframework.util.StringUtils;
  * @author Gunnar Hillert
  * @since 3.0
  */
-public class CoherenceAnnotationUtils {
+public final class CoherenceAnnotationUtils {
+
+	private CoherenceAnnotationUtils() {
+		throw new AssertionError("Utility Class.");
+	}
 
 	public static List<Annotation> getAnnotationsMarkedWithMarkerAnnotation(InjectionPoint injectionPoint, Class markerAnnotation) {
 		Assert.notNull(injectionPoint, "injectionPoint must not be null.");

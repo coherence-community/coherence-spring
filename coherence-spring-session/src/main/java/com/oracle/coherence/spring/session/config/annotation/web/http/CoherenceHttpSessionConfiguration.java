@@ -17,19 +17,18 @@ import com.tangosol.net.Coherence;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.FlushMode;
 import org.springframework.session.IndexResolver;
 import org.springframework.session.MapSession;
 import org.springframework.session.SaveMode;
 import org.springframework.session.Session;
-import org.springframework.session.SessionRepository;
 import org.springframework.session.config.SessionRepositoryCustomizer;
 import org.springframework.session.config.annotation.web.http.SpringHttpSessionConfiguration;
 import org.springframework.session.web.http.SessionRepositoryFilter;
@@ -58,14 +57,12 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 
 	private Coherence coherence;
 
-	private ApplicationEventPublisher applicationEventPublisher;
-
 	private IndexResolver<Session> indexResolver;
 	private List<SessionRepositoryCustomizer<CoherenceIndexedSessionRepository>> sessionRepositoryCustomizers;
 
 	@Bean
 	@DependsOn(CoherenceSpringConfiguration.COHERENCE_SERVER_BEAN_NAME)
-	public SessionRepository<?> sessionRepository() {
+	public FindByIndexNameSessionRepository<?> sessionRepository() {
 		return createCoherenceIndexedSessionRepository();
 	}
 
@@ -78,11 +75,6 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 			coherenceInstanceToUse = coherenceInstance.getObject();
 		}
 		this.coherence = coherenceInstanceToUse;
-	}
-
-	@Autowired
-	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@Override
@@ -112,6 +104,22 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	public void setSessionRepositoryCustomizer(
 			ObjectProvider<SessionRepositoryCustomizer<CoherenceIndexedSessionRepository>> sessionRepositoryCustomizers) {
 		this.sessionRepositoryCustomizers = sessionRepositoryCustomizers.orderedStream().collect(Collectors.toList());
+	}
+
+	public void setMaxInactiveIntervalInSeconds(int maxInactiveIntervalInSeconds) {
+		this.maxInactiveIntervalInSeconds = maxInactiveIntervalInSeconds;
+	}
+
+	public void setSessionMapName(String sessionMapName) {
+		this.sessionMapName = sessionMapName;
+	}
+
+	public void setFlushMode(FlushMode flushMode) {
+		this.flushMode = flushMode;
+	}
+
+	public void setSaveMode(SaveMode saveMode) {
+		this.saveMode = saveMode;
 	}
 
 	private CoherenceIndexedSessionRepository createCoherenceIndexedSessionRepository() {

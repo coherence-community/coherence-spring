@@ -28,7 +28,7 @@ $ cd coherence-spring
 ----
 
 You now have checked out all the code for Coherence Spring. The relevant demo code for this Quickstart demo is under
-`coherence-spring-samples/coherence-spring-demo/`.
+`samples/coherence-spring-demo/`.
 
 There you will find 3 Maven sub-modules:
 
@@ -56,7 +56,7 @@ In this chapter we will focus on the *Spring Boot* version. Since we checked out
 .Build the project
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot
+$ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot
 ----
 
 Now we are ready to run the application:
@@ -64,7 +64,7 @@ Now we are ready to run the application:
 .Run the Spring Boot application
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ java -jar coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-{coherence-spring-version}.jar
+$ java -jar samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-{coherence-spring-version}.jar
 ----
 
 == Interacting with the Cache

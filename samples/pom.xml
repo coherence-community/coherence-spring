@@ -16,7 +16,7 @@
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>coherence-spring-samples</artifactId>
+	<artifactId>samples</artifactId>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Samples</name>
@@ -29,6 +29,7 @@
 	<modules>
 		<module>coherence-spring-cloud-config-demo</module>
 		<module>coherence-spring-demo</module>
+		<module>spring-session-demo</module>
 	</modules>
 
 	<build>

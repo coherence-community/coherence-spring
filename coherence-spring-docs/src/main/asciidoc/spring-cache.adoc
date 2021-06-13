@@ -72,8 +72,8 @@ Please consult the <<quickstart.adoc#quickstart, Quickstart chapter>> to see an 
 Spring Boot. Coherence Spring also provides an example of using Spring Framework (without Spring Boot). The source code
 for the samples is part of the Coherence Spring projects:
 
-- {coherence-spring-code}tree/master/coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-classic[coherence-spring-demo-classic]
-- {coherence-spring-code}tree/master/coherence-spring-samples/coherence-spring-demo/coherence-spring-demo-boot[coherence-spring-demo-boot]
+- {coherence-spring-code}tree/master/samples/coherence-spring-demo/coherence-spring-demo-classic[coherence-spring-demo-classic]
+- {coherence-spring-code}tree/master/samples/coherence-spring-demo/coherence-spring-demo-boot[coherence-spring-demo-boot]
 
 If you're using Spring Boot, please continue reading the <<spring-boot.adoc#spring-boot-caching, Spring Boot specific chapter>>
 on caching.

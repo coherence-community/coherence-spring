@@ -1,0 +1,39 @@
+spring:
+  session:
+    timeout: 15m
+  application:
+    name: Spring Session Demo
+  security:
+    user:
+      name: coherence
+      password: rocks
+debug: false
+management:
+  endpoint:
+    sessions:
+      enabled: true
+    loggers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+coherence:
+  spring:
+    session:
+      enabled: true
+  sessions:
+    server:
+      - name: default
+        config: "coherence-cache-config.xml"
+logging:
+  level:
+    root: info
+    "Coherence": info
+    org.springframework.security: debug
+    org.springframework.web: info
+    com.oracle.coherence.spring: info
+    com.oracle.coherence.spring.samples.session: info
+    com.oracle.coherence.spring.session: debug
+server:
+  port: 8090
