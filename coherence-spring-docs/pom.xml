@@ -45,6 +45,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-session</artifactId>
+			<version>3.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>
 			<artifactId>coherence-java-client</artifactId>
 			<version>${coherence.version}</version>

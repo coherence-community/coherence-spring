@@ -98,14 +98,18 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 		final CoherenceSessionCreatedEventHandler coherenceSessionEventHandler = new CoherenceSessionCreatedEventHandler(this.eventPublisher);
 		final SessionRemovedMapListener sessionRemovedMapListener = new SessionRemovedMapListener(this.eventPublisher);
 
-		coherenceSessionEventHandler.setSessionName(this.coherenceSession.getName());
 		coherenceSessionEventHandler.setScopeName(this.coherenceSession.getScopeName());
 		coherenceSessionEventHandler.setCacheName(this.sessionCache.getCacheName());
 
 		this.sessionCache.addMapListener(sessionRemovedMapListener);
-		final NamedEventInterceptor interceptor = new NamedEventInterceptor(CoherenceSessionCreatedEventHandler.class.getName(), coherenceSessionEventHandler);
-		//interceptor.
+		final NamedEventInterceptor<?> interceptor = new NamedEventInterceptor<>(CoherenceSessionCreatedEventHandler.class.getName(), coherenceSessionEventHandler);
 		this.coherenceSession.getInterceptorRegistry().registerEventInterceptor(interceptor);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("CoherenceIndexedSessionRepository initialized with "
+					+ "[Scope: %s; cache: %s; defaultMaxInactiveInterval: %ssec]",
+					this.coherenceSession.getScopeName(), this.sessionCache.getCacheName(), this.defaultMaxInactiveInterval));
+		}
 	}
 
 	@PreDestroy
@@ -173,12 +177,12 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 
 	@Override
 	public void save(CoherenceSpringSession session) {
-		final long maxInactiveInterval = session.getMaxInactiveInterval().getSeconds() * 1000;
-		final boolean expireCacheEntry = maxInactiveInterval > 0;
+		final long maxInactiveIntervalMillis = session.getMaxInactiveInterval().toMillis();
+		final boolean expireCacheEntry = maxInactiveIntervalMillis > 0;
 
 		if (session.isNew()) {
 			if (expireCacheEntry) {
-				this.sessionCache.put(session.getId(), session.getDelegate(), maxInactiveInterval);
+				this.sessionCache.put(session.getId(), session.getDelegate(), maxInactiveIntervalMillis);
 			}
 			else {
 				this.sessionCache.put(session.getId(), session.getDelegate());
@@ -189,7 +193,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 			session.setOriginalId(session.getId());
 
 			if (expireCacheEntry) {
-				this.sessionCache.put(session.getId(), session.getDelegate(), maxInactiveInterval);
+				this.sessionCache.put(session.getId(), session.getDelegate(), maxInactiveIntervalMillis);
 			}
 			else {
 				this.sessionCache.put(session.getId(), session.getDelegate());
@@ -209,6 +213,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 			this.sessionCache.invoke(session.getId(), entryProcessor);
 		}
 		session.clearChangeFlags();
+
 	}
 
 	@Override
@@ -234,7 +239,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 		if (!PRINCIPAL_NAME_INDEX_NAME.equals(indexName)) {
 			return Collections.emptyMap();
 		}
-		final Filter filter = new EqualsFilter(new PrincipalNameExtractor(), indexValue);
+		final Filter<?> filter = new EqualsFilter<>(new PrincipalNameExtractor(), indexValue);
 		final Set<Map.Entry<String, MapSession>> sessions = this.sessionCache.entrySet(filter);
 
 		final Map<String, CoherenceSpringSession> sessionMap = new HashMap<>(sessions.size());

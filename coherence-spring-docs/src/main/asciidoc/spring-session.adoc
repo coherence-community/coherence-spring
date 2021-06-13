@@ -69,6 +69,11 @@ static class CoherenceSessionConfig {
 <4> The FlushMode to use. Optional. Defaults to `FlushMode.ON_SAVE`.
 <5> The session timeout. Optional. Defaults to `1800` seconds (`30` minutes)
 
+Are you running Coherence as a dedicated server instance? Then you need to make sure that your Coherence
+server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
+you may need `Coherence Spring Session`, `Spring Security Core`, `Spring Security Web`. Please also ensure that dependency
+version between Coherence server and application clients matches exactly.
+
 [[spring-session-pof]]
 == POF Serialization
 
@@ -91,4 +96,154 @@ additional POF configuration for the class `MapSession` is necessary:
 IMPORTANT: Depending on your serialization requirements and your session data, additional POF configuration
 may be necessary.
 
+[[spring-session-sample]]
+== Spring Session Sample
 
+This Coherence Spring source code repository provides a dedicated example application, illustrating the usage of
+Spring Session and https://spring.io/projects/spring-security[Spring Security] using
+https://spring.io/projects/spring-boot[Spring Boot].
+
+The example application show-cases 2 use-cases:
+
+- Use Spring Session with embedded Coherence instances and Java serialization
+- Use Spring Session with remote Coherence instances (Coherence*Extends) and Java serialization
+
+Even though this demo is targetting Spring Session, we use Spring Security as well, since the authentication details are
+stored in the session as well. In regard to authentication, users have 2 choices:
+
+- A user can POST a JSON request containing the  username and password in the body of the request.
+- Use basic authentication
+
+The username is `coherence`, and the password `rocks`.
+
+.Example Authentication Request
+[source,json,indent=1,subs="verbatim,quotes,attributes"]
+----
+{ "username": "coherence", "password": "rocks" }
+----
+
+Once successfully authenticated, the application will return a `2xx` HTTP status with an empty body and a session cookie.
+An Authentication failure, on the other hand, produces a non-2xx HTTP status with an empty body. The application has an
+endpoint that responds to a `GET` request to the URL `/hello` that returns the string `Hello Coherence`. All endpoints
+require an authenticated user using the session cookie or the `username` and `password`.
+
+[[spring-session-sample-start-embedded-coherence]]
+=== Start Spring Session with Embedded Coherence Instances
+
+.Build the Coherence Server instance
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+----
+
+Now we are ready to run the application. Let's launch 2 instances, one listening on the pre-configured port
+`8090`, and the other one on port `8091`.
+
+.Run the Spring Boot application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-{coherence-spring-version}.jar
+$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-{coherence-spring-version}.jar --server.port=8091
+----
+
+[[spring-session-sample-start-remote-coherence]]
+=== Spring Session with Remote Coherence Instances
+
+.Build the Coherence Server instance
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+----
+
+.Build the Application instance
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+----
+
+Now we are ready to run the application. We will activate the `coherence-client` Spring Boot profile as well:
+
+.Run the Spring Boot application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-server-{coherence-spring-version}.jar
+$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-{coherence-spring-version}.jar
+----
+
+[[spring-session-sample-rest-endpoints]]
+=== Accessing the REST Endpoints
+
+.Log into the application using https://curl.se/[CURL]
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ curl -i -c cookie.txt \
+-H "Accept: application/json" \
+-H "Content-Type:application/json" \
+-X POST --data '{"username": "coherence", "password": "rocks"}' \
+"http://localhost:8090/login"
+----
+
+.Let's access the HelloController
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ curl -i -b cookie.txt \
+-H "Accept: application/json" \
+-H "Content-Type:application/json" \
+-X GET "http://localhost:8090/hello"
+----
+
+[[spring-session-sample-actuator]]
+=== Spring Session Actuator
+
+Using Spring Boot's Actuator endpoints, we can introspect the session using the
+https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#sessions[Sessions actuator] at
+`http://localhost:8090/actuator/sessions?username=coherence`.
+
+.Retrieving session information for user `coherence`
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ curl -i -b cookie.txt \
+-H "Accept: application/json" \
+-H "Content-Type:application/json" \
+-X GET "http://localhost:8090/actuator/sessions?username=coherence"
+----
+
+[[spring-session-sample-docker]]
+=== Generate Docker Image
+
+If you prefer to use Docker, you can create an image using:
+
+.Generate a Docker image
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo
+----
+
+[[spring-session-expiration-strategies]]
+== Session Expiration Strategies
+
+When dealing with the expiration of cache entries, you generally have 2 options in Coherence:
+
+- Set the expiration time for each put operation explicitly
+- Configure caches in your `coherence-cache-config.xml` file
+
+When you define a session timeout via the application, for example `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 1000)`,
+the session expiration will be set for each put-operation in `CoherenceIndexedSessionRepository`.
+
+NOTE: If not set in the application, Coherence Spring will expire HTTP session caches in `1800` seconds (`30` minutes).
+
+If you rather prefer defining the session expiration timeouts in your `coherence-cache-config.xml` file, you
+should set the session timeout in the application to `0`, for instance `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 0)`.
+That way, put operations will never to set an expiration value for the cache entry. You can then set the `expiry-delay`
+cache configuration element for your cache in the `coherence-cache-config.xml` file.
+
+In regard to the question, whether one strategy or the other strategy is preferable: It is mostly a
+matter of preference. You do have, however, a bit more control when configuring expiration logic via the
+`coherence-cache-config.xml` file, as you have the ability to define custom eviction policies.
+
+For more information, please consult the {oracle-coherence-docs}develop-applications/configuring-caches.html#GUID-B57A0E9B-23F2-4099-86D7-6DDD54BBC45C[respective chapter]
+on _Controlling the Growth of a Local Cache_ in the Coherence reference guide.
+
+IMPORTANT: The underlying expiry delay parameter in Coherence is defined as an integer and is expressed in milliseconds.
+Therefore, the maximum amount of time can never exceed Integer.MAX_VALUE (2147483647) milliseconds or approximately 24
+days.

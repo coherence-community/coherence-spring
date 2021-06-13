@@ -6,6 +6,8 @@
  */
 package com.oracle.coherence.spring.session.events;
 
+import com.oracle.coherence.spring.session.support.SessionDebugMessageUtils;
+import com.oracle.coherence.spring.session.support.SessionEvent;
 import com.tangosol.net.cache.CacheEvent;
 import com.tangosol.util.MapEvent;
 import com.tangosol.util.MapListener;
@@ -50,13 +52,13 @@ public class SessionRemovedMapListener implements MapListener<String, MapSession
 		if (session != null) {
 			if (event instanceof CacheEvent && ((CacheEvent) event).isSynthetic()) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Session expired with id: " + session.getId());
+					logger.debug(SessionDebugMessageUtils.createSessionEventMessage(SessionEvent.EXPIRED, session));
 				}
 				this.eventPublisher.publishEvent(new SessionExpiredEvent(this, event.getOldValue()));
 			}
 			else {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Session deleted with id: " + session.getId());
+					logger.debug(SessionDebugMessageUtils.createSessionEventMessage(SessionEvent.DELETED, session));
 				}
 				this.eventPublisher.publishEvent(new SessionDeletedEvent(this, session));
 			}

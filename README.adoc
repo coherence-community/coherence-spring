@@ -38,7 +38,7 @@ https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsing
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
-https://github.com/coherence-community/coherence-spring/tree/master/coherence-spring-samples[coherence-spring-samples] module.
+https://github.com/coherence-community/coherence-spring/tree/master/samples[samples] module.
 
 == Building from Source
 

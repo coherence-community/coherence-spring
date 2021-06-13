@@ -1,0 +1,5 @@
+sessions:
+  client:
+    - name: default
+logback-test:
+  xml:

@@ -11,21 +11,31 @@
 
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
-		<artifactId>coherence-spring-samples</artifactId>
+		<artifactId>samples</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>coherence-spring-demo-parent</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<artifactId>spring-session-demo-parent</artifactId>
 
 	<packaging>pom</packaging>
 
-	<name>Coherence Spring Demo - Parent</name>
-	<description>Demo project for Coherence Spring</description>
+	<name>Spring Session Demo</name>
+	<description>Demo project for Spring Session</description>
 
 	<modules>
-			<module>coherence-spring-demo-core</module>
-			<module>coherence-spring-demo-classic</module>
-			<module>coherence-spring-demo-boot</module>
+		<module>spring-session-demo-server</module>
+		<module>spring-session-demo-app</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

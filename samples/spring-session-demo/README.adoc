@@ -1,0 +1,15 @@
+= Spring Session Sample
+
+This example provides a basic https://spring.io/projects/spring-session[Spring Session] and
+https://spring.io/projects/spring-security[Spring Security] demo using https://spring.io/projects/spring-boot[Spring Boot].
+
+Please check out the **Spring Session chapter** of the http://spring.coherence.community/[Coherence Spring Reference documentation]
+for further details.
+
+== Additional Options
+
+.Generate a Docker image
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo
+----

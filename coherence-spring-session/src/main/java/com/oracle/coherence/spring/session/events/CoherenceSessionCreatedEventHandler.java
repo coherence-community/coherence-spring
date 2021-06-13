@@ -9,6 +9,8 @@ package com.oracle.coherence.spring.session.events;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.oracle.coherence.spring.session.support.SessionDebugMessageUtils;
+import com.oracle.coherence.spring.session.support.SessionEvent;
 import com.tangosol.net.events.EventDispatcher;
 import com.tangosol.net.events.EventDispatcherAwareInterceptor;
 import com.tangosol.net.events.partition.cache.CacheLifecycleEventDispatcher;
@@ -36,7 +38,6 @@ public class CoherenceSessionCreatedEventHandler implements EventDispatcherAware
 
 	private String cacheName;
 	private String serviceName;
-	private String sessionName;
 	private String scopeName;
 
 	public CoherenceSessionCreatedEventHandler(ApplicationEventPublisher eventPublisher) {
@@ -47,6 +48,10 @@ public class CoherenceSessionCreatedEventHandler implements EventDispatcherAware
 	@Override
 	public void introduceEventDispatcher(String sIdentifier, EventDispatcher dispatcher) {
 		if (isApplicable(dispatcher, this.scopeName)) {
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format("Adding Session EventInterceptor to EventDispatcher "
+						+ "[Service: %s; scope: %s; cache: %s]", this.serviceName, this.scopeName, this.cacheName));
+			}
 			dispatcher.addEventInterceptor(sIdentifier, this,
 					new HashSet<>(Arrays.asList(EntryEvent.Type.INSERTING)), true);
 		}
@@ -54,10 +59,10 @@ public class CoherenceSessionCreatedEventHandler implements EventDispatcherAware
 
 	@Override
 	public void onEvent(EntryEvent<String, MapSession> event) {
-		MapSession session = event.getValue();
+		final MapSession session = event.getValue();
 		if (session.getId().equals(session.getOriginalId())) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("Session created with id: " + session.getId());
+				logger.debug(SessionDebugMessageUtils.createSessionEventMessage(SessionEvent.CREATED, session));
 			}
 			this.eventPublisher.publishEvent(new SessionCreatedEvent(this, session));
 		}
@@ -82,16 +87,12 @@ public class CoherenceSessionCreatedEventHandler implements EventDispatcherAware
 	 * @return service name with scope prefix removed
 	 */
 	protected String removeScope(String serviceName) {
-		int index = serviceName.indexOf(':');
+		final int index = serviceName.indexOf(':');
 		return (index > -1) ? serviceName.substring(index + 1) : serviceName;
 	}
 
 	public void setCacheName(String cacheName) {
 		this.cacheName = cacheName;
-	}
-
-	public void setSessionName(String sessionName) {
-		this.sessionName = sessionName;
 	}
 
 	public void setScopeName(String scopeName) {
