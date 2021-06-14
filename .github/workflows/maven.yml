@@ -24,9 +24,12 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Build with Maven + Deploy Website + Snapshots
-        run: ./mvnw clean deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          ./mvnw clean deploy -B -Pspring -Powasp --settings .mvn/settings.xml
         env:
-          MAVEN_GITHUB_TOKEN: "${{secrets.MAVEN_GITHUB}}"
+          MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
 

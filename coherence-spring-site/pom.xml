@@ -42,6 +42,12 @@
 		</dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<site>
+			<id>github-pages</id>
+			<url>scm:git:https://github.com/coherence-community/coherence-spring.git</url>
+		</site>
+	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -99,7 +105,17 @@
 					<skipDeploy>true</skipDeploy>
 					<skip>false</skip>
 					<siteDirectory>docs</siteDirectory>
+					<stagingDirectory>${build.directory}/staging</stagingDirectory>
 				</configuration>
+				<executions>
+					<execution>
+						<id>site</id>
+						<goals>
+							<goal>stage</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
 				<dependencies>
 					<dependency>
 						<groupId>io.helidon.build-tools</groupId>
@@ -181,31 +197,24 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<version>${github.site-maven-plugin.version}</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-scm-publish-plugin</artifactId>
+						<version>3.1.0</version>
 						<configuration>
-							<server>github-pages</server>
-							<message>${project.version} Site</message>
-							<path>${project.version}</path>
-							<merge>true</merge>
-							<repositoryName>coherence-spring</repositoryName>
-							<repositoryOwner>coherence-community</repositoryOwner>
+							<serverId>github-pages</serverId>
+							<checkinComment>${project.version} Site</checkinComment>
+							<subDirectory>${project.version}</subDirectory>
+							<scmBranch>gh-pages</scmBranch>
+							<content>${build.directory}/staging</content>
+							<pubScmUrl>${project.distributionManagement.site.url}</pubScmUrl>
 						</configuration>
 						<executions>
 							<execution>
-								<id>deploy</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>site</goal>
-								</goals>
-							</execution>
-							<execution>
 								<id>site</id>
 								<goals>
-									<goal>site:deploy</goal>
+									<goal>publish-scm</goal>
 								</goals>
-								<phase>site-deploy</phase>
+								<phase>deploy</phase>
 							</execution>
 						</executions>
 					</plugin>

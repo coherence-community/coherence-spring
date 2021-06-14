@@ -3,6 +3,7 @@
 	<servers>
 		<server>
 			<id>github-pages</id>
+			<username>GitHub Action</username>
 			<password>${env.MAVEN_GITHUB_TOKEN}</password>
 		</server>
 		<server>
