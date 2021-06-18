@@ -157,6 +157,7 @@ window.onload = function() {
 <li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
 <li><a href="#spring-boot-config-data-api">3. Coherence Support of the Spring Boot ConfigData API</a></li>
 <li><a href="#spring-boot-caching">4. Caching with Spring Boot</a></li>
+<li><a href="#spring-boot-sessions">5. Spring Session Support</a></li>
 </ul>
 </div>
 </div>
@@ -470,10 +471,63 @@ following resources:</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>5. Spring Session Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have not already done so, please read the chapter on
+<a href="spring-session.html#spring-session">Coherence Spring Session</a> first.</p>
+</div>
+<div class="paragraph">
+<p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
+Coherence-specific configuration properties.</p>
+</div>
+<div class="paragraph">
+<p>The following Coherence-specific configuration properties are available:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Coherence Configuration Properties</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to <code>true</code> to enable Spring Session support</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.map-name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring:session:sessions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the map used to store sessions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.flush-mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ON_SAVE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sessions flush mode. Determines when session changes are written to the session store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.save-mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ON_SET_ATTRIBUTE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The session save mode determines how session changes are tracked and saved to the session store.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-18 05:16:42 UTC
+Last updated 2021-06-18 10:27:15 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
