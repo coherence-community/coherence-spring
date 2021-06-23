@@ -19,8 +19,12 @@
 
 	<packaging>pom</packaging>
 
-	<name>Spring Session Demo</name>
+	<name>Spring Session Demo - Parent</name>
 	<description>Demo project for Spring Session</description>
+
+	<properties>
+		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
+	</properties>
 
 	<modules>
 		<module>spring-session-demo-server</module>

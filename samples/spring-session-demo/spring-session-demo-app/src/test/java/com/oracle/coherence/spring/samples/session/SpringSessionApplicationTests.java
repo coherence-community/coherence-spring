@@ -14,12 +14,12 @@ import org.springframework.test.annotation.DirtiesContext;
 /**
  * @author Gunnar Hillert
  */
-//@SpringBootTest
-//@DirtiesContext
+@SpringBootTest
+@DirtiesContext
 class SpringSessionApplicationTests {
 
-//	@Test
-//	void contextLoads() {
-//	}
+	@Test
+	void contextLoads() {
+	}
 
 }

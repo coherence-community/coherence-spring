@@ -6,9 +6,6 @@
  */
 package com.oracle.coherence.spring.samples.session.config;
 
-import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.CookieSerializer;
@@ -20,7 +17,6 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
  * @author Gunnar Hillert
  */
 @Configuration
-//@EnableCoherence
 public class SpringSessionConfig {
 
 	/**

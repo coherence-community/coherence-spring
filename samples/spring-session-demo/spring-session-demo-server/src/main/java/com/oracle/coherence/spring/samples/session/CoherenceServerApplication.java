@@ -6,10 +6,10 @@
  */
 package com.oracle.coherence.spring.samples.session;
 
+import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 
 /**
  * Main entry to the application.

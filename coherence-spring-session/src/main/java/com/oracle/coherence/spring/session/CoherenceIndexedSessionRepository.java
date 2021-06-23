@@ -70,7 +70,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	 * If non-null, this value is used to override
 	 * {@link MapSession#setMaxInactiveInterval(Duration)}.
 	 */
-	private Integer defaultMaxInactiveInterval;
+	private Duration defaultMaxInactiveInterval;
 
 	private IndexResolver<Session> indexResolver = new DelegatingIndexResolver<>(new PrincipalNameIndexResolver<>());
 
@@ -118,13 +118,14 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	}
 
 	/**
-	 * Set the maximum inactive interval in seconds between requests before newly created sessions will be invalidated.
-	 * A value of {@code 0} means that the session will never time out. The default is 1800 (30 minutes).
+	 * Set the maximum inactive interval between requests before newly created sessions will be invalidated.
+	 * A value of {@code 0} means that the session will never time out unless the cache is configured otherwise in the
+	 * {@code coherence-cache-config.xml}. The default is 1800s (30 minutes).
 	 * @param defaultMaxInactiveInterval the maximum inactive interval in seconds must not be negative or null
 	 */
-	public void setDefaultMaxInactiveInterval(Integer defaultMaxInactiveInterval) {
+	public void setDefaultMaxInactiveInterval(Duration defaultMaxInactiveInterval) {
 		Assert.notNull(defaultMaxInactiveInterval, "defaultMaxInactiveInterval must not be null");
-		Assert.isTrue(defaultMaxInactiveInterval.intValue() >= 0, "defaultMaxInactiveInterval must not be negative");
+		Assert.isTrue(defaultMaxInactiveInterval.toMillis() >= 0, "defaultMaxInactiveInterval must not be negative");
 		this.defaultMaxInactiveInterval = defaultMaxInactiveInterval;
 	}
 
@@ -168,7 +169,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	public CoherenceSpringSession createSession() {
 		MapSession cached = new MapSession();
 		if (this.defaultMaxInactiveInterval != null) {
-			cached.setMaxInactiveInterval(Duration.ofSeconds(this.defaultMaxInactiveInterval));
+			cached.setMaxInactiveInterval(this.defaultMaxInactiveInterval);
 		}
 		final CoherenceSpringSession session = new CoherenceSpringSession(this, cached, true);
 		session.flushIfNeeded();
@@ -201,6 +202,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 		}
 		else if (session.hasChanges()) {
 			final SessionUpdateEntryProcessor entryProcessor = new SessionUpdateEntryProcessor();
+			entryProcessor.setDefaultMaxInactiveInterval(this.defaultMaxInactiveInterval);
 			if (session.isLastAccessedTimeChanged()) {
 				entryProcessor.setLastAccessedTime(session.getLastAccessedTime());
 			}

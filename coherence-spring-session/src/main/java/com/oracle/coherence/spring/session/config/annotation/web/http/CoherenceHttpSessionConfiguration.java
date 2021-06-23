@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.session.config.annotation.web.http;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -138,7 +139,7 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		if (StringUtils.hasText(this.sessionMapName)) {
 			sessionRepository.setSessionMapName(this.sessionMapName);
 		}
-		sessionRepository.setDefaultMaxInactiveInterval(this.maxInactiveIntervalInSeconds);
+		sessionRepository.setDefaultMaxInactiveInterval(Duration.ofSeconds(this.maxInactiveIntervalInSeconds));
 		sessionRepository.setFlushMode(this.flushMode);
 		sessionRepository.setSaveMode(this.saveMode);
 		this.sessionRepositoryCustomizers

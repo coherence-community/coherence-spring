@@ -40,7 +40,7 @@ final class CoherenceSpringSession implements Session {
 
 	private String originalId;
 
-	private Map<String, Object> delta = new HashMap<>();
+	private final Map<String, Object> delta = new HashMap<>();
 
 	CoherenceSpringSession(CoherenceIndexedSessionRepository coherenceIndexedSessionRepository, MapSession cached, boolean isNew) {
 		this.coherenceIndexedSessionRepository = coherenceIndexedSessionRepository;

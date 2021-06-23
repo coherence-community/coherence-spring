@@ -6,10 +6,9 @@
  */
 package com.oracle.coherence.spring.samples.session.controller;
 
-import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import com.tangosol.net.Coherence;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
