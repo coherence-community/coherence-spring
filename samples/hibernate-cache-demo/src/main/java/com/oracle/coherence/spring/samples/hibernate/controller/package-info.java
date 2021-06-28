@@ -6,6 +6,6 @@
  */
 
 /**
- * Base application package.
+ * Contains REST Controllers.
  */
-package com.oracle.coherence.spring.samples.session;
+package com.oracle.coherence.spring.samples.hibernate.controller;

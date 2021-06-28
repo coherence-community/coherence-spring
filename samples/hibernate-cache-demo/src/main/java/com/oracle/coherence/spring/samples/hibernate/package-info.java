@@ -8,4 +8,4 @@
 /**
  * Base application package.
  */
-package com.oracle.coherence.spring.samples.session;
+package com.oracle.coherence.spring.samples.hibernate;

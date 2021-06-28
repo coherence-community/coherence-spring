@@ -6,6 +6,6 @@
  */
 
 /**
- * Base application package.
+ * Domain objects.
  */
-package com.oracle.coherence.spring.samples.session;
+package com.oracle.coherence.spring.samples.hibernate.model;

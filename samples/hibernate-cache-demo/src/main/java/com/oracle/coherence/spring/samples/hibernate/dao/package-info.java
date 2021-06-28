@@ -6,6 +6,6 @@
  */
 
 /**
- * Base application package.
+ * Data Repositories.
  */
-package com.oracle.coherence.spring.samples.session;
+package com.oracle.coherence.spring.samples.hibernate.dao;

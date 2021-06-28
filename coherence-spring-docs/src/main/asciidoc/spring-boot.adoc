@@ -195,6 +195,175 @@ following resources:
 - {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
+[[spring-boot-hibernate-second-level-cache]]
+== Configure Hibernate Second-Level Caching
+
+Spring's cache abstraction is not your only option with regard to caching. Another option is to use Hibernate's
+{hibernate-docs}/#caching[Second-Level cache] support.
+
+IMPORTANT: Currently, Coherence only supports Hibernate up to `5.2.x`, as the Hibernate Cache SPI
+https://github.com/hibernate/hibernate-orm/blob/5.3/migration-guide.adoc#second-level-cache-provider-spi-changes[changed]
+with Hibernate `5.3.x` and higher. Please track the relevant https://github.com/coherence-community/coherence-hibernate/issues/13[GitHub issue] for
+the Coherence Hibernate project.
+
+When using only Hibernate's second-level cache without the requirement of using Coherence for non-Hibernate application
+needs, you may want to disable Coherence's auto-configuration support for Spring
+Boot as it is not needed:
+
+.Disable CoherenceAutoConfiguration
+[source,java,indent=0,subs="verbatim,quotes,attributes"]
+----
+@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
+public class HibernateApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(HibernateApplication.class, args);
+	}
+}
+----
+
+In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
+Hibernate property `hibernate.cache.region.factory_class` to `com.oracle.coherence.hibernate.cache.CoherenceRegionFactory`.
+
+Your Spring Boot `application.yaml` file may look like the following:
+
+.RegionFactory Configuration using YAML
+[source,yaml,indent=0,subs="verbatim,quotes,attributes"]
+----
+spring:
+  application:
+    name: Your Spring Boot App
+  jpa:
+    properties:
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <1>
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.format_sql: true
+      hibernate.generate_statistics: true
+      hibernate.show_sql: true
+      hibernate.use_sql_comments: false
+...
+----
+<1> Configuring the `CoherenceRegionFactory`
+
+For more detailed information please see the {hibernate-docs}#caching[Caching chapter] of the Hibernate reference
+documentation.
+
+[[spring-boot-hibernate-second-level-cache-example]]
+=== Hibernate Second Level Cache Example
+
+The Coherence Spring source code repository also provides an
+{coherence-spring-code}samples/hibernate-cache-demo[example application], illustrating the Coherence support for
+Hibernate's Second Level caching using https://spring.io/projects/spring-boot[Spring Boot].
+
+The example application has 1 REST endpoint that can persist, retrieve and delete a `Plant` object with taxonomic properties
+such as the genus and species.
+
+.Example of a `Plant` JSON response
+[source,json,indent=1,subs="verbatim,quotes,attributes"]
+----
+{"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}
+----
+
+[[spring-boot-hibernate-second-level-cache-example-run]]
+==== Run the Hibernate Application
+
+First, let's build the application:
+
+.Build the Coherence Server instance
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/hibernate-cache-demo
+----
+
+Next, run the application:
+
+.Run the Spring Boot application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-{coherence-spring-version}.jar
+----
+
+The application will be available on port `9090`.
+
+.Add a plant
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X POST --data '{"genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}' \
+  "http://localhost:9090/plants"
+----
+
+.List all plants
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+  curl -i \
+    -H "Accept: application/json" \
+    -H "Content-Type:application/json" \
+    -X GET "http://localhost:9090/plants"
+----
+
+.Get a single plant
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants/1"
+----
+
+.Delete a plant
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X DELETE "http://localhost:9090/plants/1"
+----
+
+When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead the plant is returned
+from the second level cache as illustrated by the printed out cache statistics.
+
+.Hibernate Cache Statistics
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
+27579 nanoseconds spent acquiring 1 JDBC connections;
+0 nanoseconds spent releasing 0 JDBC connections;
+0 nanoseconds spent preparing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC batches;
+0 nanoseconds spent performing 0 L2C puts;
+1587296 nanoseconds spent performing 1 L2C hits;
+0 nanoseconds spent performing 0 L2C misses;
+0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+----
+
+In order to also cache the results of query executions, you must provide query hints to Hibernate. The `PlantRepository`
+class has a custom query using such a hint for illustration purposes:
+
+.Using Query Hints
+[source,java,indent=,subs="verbatim,quotes,attributes"]
+----
+  @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+  @Query("select p from Plant p")
+  List<Plant> getAllPlantsCacheable();
+----
+
+You can see the cache being used by retrieving the list of plants with an additional request parameter `use-cache`:
+
+.List all plants
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants?use-cache=true"
+----
+
 [[spring-boot-sessions]]
 == Spring Session Support
 

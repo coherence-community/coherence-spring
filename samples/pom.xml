@@ -29,6 +29,7 @@
 	<modules>
 		<module>coherence-spring-cloud-config-demo</module>
 		<module>coherence-spring-demo</module>
+		<module>hibernate-cache-demo</module>
 		<module>spring-session-demo</module>
 	</modules>
 
