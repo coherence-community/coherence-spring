@@ -28,6 +28,8 @@
 :github-wiki: https://github.com/{github-repo}/wiki/
 :github-releases: https://github.com/{github-repo}/releases/
 
+:hibernate-docs: https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html
+
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 
 :spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/

@@ -1,0 +1,21 @@
+debug: false
+server:
+  port: 9090
+spring:
+  application:
+    name: Coherence Spring Hibernate Demo
+  jpa:
+    properties:
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.format_sql: true
+      hibernate.generate_statistics: true
+      hibernate.show_sql: true
+      hibernate.use_sql_comments: false
+logging:
+  level:
+    root: info
+    "Coherence": info
+    org.springframework.web: info
+    com.oracle.coherence.spring: info
