@@ -157,7 +157,16 @@ window.onload = function() {
 <li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
 <li><a href="#spring-boot-config-data-api">3. Coherence Support of the Spring Boot ConfigData API</a></li>
 <li><a href="#spring-boot-caching">4. Caching with Spring Boot</a></li>
-<li><a href="#spring-boot-sessions">5. Spring Session Support</a></li>
+<li><a href="#spring-boot-hibernate-second-level-cache">5. Configure Hibernate Second-Level Caching</a>
+<ul class="sectlevel2">
+<li><a href="#spring-boot-hibernate-second-level-cache-example">5.1. Hibernate Second Level Cache Example</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-hibernate-second-level-cache-example-run">5.1.1. Run the Hibernate Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot-sessions">6. Spring Session Support</a></li>
 </ul>
 </div>
 </div>
@@ -472,7 +481,208 @@ following resources:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>5. Spring Session Support</h2>
+<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>5. Configure Hibernate Second-Level Caching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
+<a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html/#caching">Second-Level cache</a> support.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Currently, Coherence only supports Hibernate up to <code>5.2.x</code>, as the Hibernate Cache SPI
+<a href="https://github.com/hibernate/hibernate-orm/blob/5.3/migration-guide.adoc#second-level-cache-provider-spi-changes">changed</a>
+with Hibernate <code>5.3.x</code> and higher. Please track the relevant <a href="https://github.com/coherence-community/coherence-hibernate/issues/13">GitHub issue</a> for
+the Coherence Hibernate project.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When using only Hibernate&#8217;s second-level cache without the requirement of using Coherence for non-Hibernate application
+needs, you may want to disable Coherence&#8217;s auto-configuration support for Spring
+Boot as it is not needed:</p>
+</div>
+<div class="listingblock">
+<div class="title">Disable CoherenceAutoConfiguration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
+public class HibernateApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(HibernateApplication.class, args);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
+Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>com.oracle.coherence.hibernate.cache.CoherenceRegionFactory</code>.</p>
+</div>
+<div class="paragraph">
+<p>Your Spring Boot <code>application.yaml</code> file may look like the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">RegionFactory Configuration using YAML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  application:
+    name: Your Spring Boot App
+  jpa:
+    properties:
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <i class="conum" data-value="1"></i><b>(1)</b>
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.format_sql: true
+      hibernate.generate_statistics: true
+      hibernate.show_sql: true
+      hibernate.use_sql_comments: false
+...</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configuring the <code>CoherenceRegionFactory</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For more detailed information please see the <a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html#caching">Caching chapter</a> of the Hibernate reference
+documentation.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>5.1. Hibernate Second Level Cache Example</h3>
+<div class="paragraph">
+<p>The Coherence Spring source code repository also provides an
+<a href="https://github.com/coherence-community/coherence-spring/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
+Hibernate&#8217;s Second Level caching using <a href="https://spring.io/projects/spring-boot">Spring Boot</a>.</p>
+</div>
+<div class="paragraph">
+<p>The example application has 1 REST endpoint that can persist, retrieve and delete a <code>Plant</code> object with taxonomic properties
+such as the genus and species.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of a <code>Plant</code> JSON response</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>5.1.1. Run the Hibernate Application</h4>
+<div class="paragraph">
+<p>First, let&#8217;s build the application:</p>
+</div>
+<div class="listingblock">
+<div class="title">Build the Coherence Server instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, run the application:</p>
+</div>
+<div class="listingblock">
+<div class="title">Run the Spring Boot application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-3.0.0-SNAPSHOT.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application will be available on port <code>9090</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Add a plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X POST --data '{"genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}' \
+  "http://localhost:9090/plants"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">List all plants</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Get a single plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants/1"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Delete a plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X DELETE "http://localhost:9090/plants/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead the plant is returned
+from the second level cache as illustrated by the printed out cache statistics.</p>
+</div>
+<div class="listingblock">
+<div class="title">Hibernate Cache Statistics</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
+27579 nanoseconds spent acquiring 1 JDBC connections;
+0 nanoseconds spent releasing 0 JDBC connections;
+0 nanoseconds spent preparing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC batches;
+0 nanoseconds spent performing 0 L2C puts;
+1587296 nanoseconds spent performing 1 L2C hits;
+0 nanoseconds spent performing 0 L2C misses;
+0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to also cache the results of query executions, you must provide query hints to Hibernate. The <code>PlantRepository</code>
+class has a custom query using such a hint for illustration purposes:</p>
+</div>
+<div class="listingblock">
+<div class="title">Using Query Hints</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+@Query("select p from Plant p")
+List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can see the cache being used by retrieving the list of plants with an additional request parameter <code>use-cache</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">List all plants</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants?use-cache=true"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>6. Spring Session Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you have not already done so, please read the chapter on
@@ -527,7 +737,7 @@ Coherence-specific configuration properties.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-29 05:11:07 UTC
+Last updated 2021-06-29 10:15:07 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
