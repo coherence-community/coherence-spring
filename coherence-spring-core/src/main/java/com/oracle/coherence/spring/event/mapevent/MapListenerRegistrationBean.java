@@ -14,7 +14,6 @@ import java.util.Set;
 
 import com.oracle.coherence.common.base.Exceptions;
 import com.oracle.coherence.spring.annotation.event.Created;
-import com.oracle.coherence.spring.annotation.event.Synchronous;
 import com.oracle.coherence.spring.configuration.FilterService;
 import com.oracle.coherence.spring.configuration.MapEventTransformerService;
 import com.oracle.coherence.spring.event.CoherenceEventListener;
@@ -59,7 +58,6 @@ public class MapListenerRegistrationBean {
 	 * and register relevant map listeners when caches are created.
 	 * @param event the {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent}
 	 */
-	@Synchronous
 	@CoherenceEventListener
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	void registerMapListeners(@Created CacheLifecycleEvent event) {
