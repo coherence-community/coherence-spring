@@ -45,7 +45,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 @SpringJUnitConfig(NamedTopicConfigurationTest.Config.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext
 public class NamedTopicConfigurationTest {
 	@Inject
 	ApplicationContext ctx;
@@ -63,7 +63,6 @@ public class NamedTopicConfigurationTest {
 		assertThat(bean.getGenericValues(), is(notNullValue()));
 		assertThat(bean.getGenericValues().getName(), is("genericValues"));
 	}
-
 
 	@Test
 	void shouldInjectNamedTopicWithGenerics() {
@@ -122,13 +121,13 @@ public class NamedTopicConfigurationTest {
 		NamedTopicPublisherFieldsBean publisherBean = this.ctx.getBean(NamedTopicPublisherFieldsBean.class);
 		NamedTopicSubscriberFieldsBean subscriberBean = this.ctx.getBean(NamedTopicSubscriberFieldsBean.class);
 
-		Publisher<Integer> numbersPublisher = publisherBean.getNumbers();
+		Publisher<Integer> numbersPublisher = publisherBean.getIntegers();
 		assertThat(numbersPublisher, is(notNullValue()));
 
 		Publisher<Person> peoplePublisher = publisherBean.getPeople();
 		assertThat(peoplePublisher, is(notNullValue()));
 
-		Subscriber<Integer> numbersSubscriber = subscriberBean.getNumbers();
+		Subscriber<Integer> numbersSubscriber = subscriberBean.getIntegers();
 		assertThat(numbersSubscriber, is(notNullValue()));
 
 		Subscriber<Person> peopleSubscriber = subscriberBean.getPeople();
@@ -255,11 +254,11 @@ public class NamedTopicConfigurationTest {
 		private Publisher<Person> people;
 
 		@Inject
-		@Name("numbers")
-		private Publisher<Integer> numbersPublisher;
+		@Name("integers")
+		private Publisher<Integer> integersPublisher;
 
-		Publisher<Integer> getNumbers() {
-			return this.numbersPublisher;
+		Publisher<Integer> getIntegers() {
+			return this.integersPublisher;
 		}
 
 		Publisher<Person> getPeople() {
@@ -273,7 +272,7 @@ public class NamedTopicConfigurationTest {
 		private Subscriber<Person> people;
 
 		@Inject
-		@Name("numbers")
+		@Name("integers")
 		private Subscriber<Integer> namedTopic;
 
 		@Inject
@@ -286,7 +285,7 @@ public class NamedTopicConfigurationTest {
 		@WhereFilter("firstName == 'Bart'")
 		private Subscriber<Person> peopleFiltered;
 
-		Subscriber<Integer> getNumbers() {
+		Subscriber<Integer> getIntegers() {
 			return this.namedTopic;
 		}
 
