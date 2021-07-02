@@ -405,3 +405,19 @@ By default, base package to scan for link:{coherence-spring-api}com/oracle/coher
 annotated interfaces is derived from the main class anotated with `@SpringBootApplication`. Base package can be overriden
 by annotating configuration class with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan]
 as described at <<coherence-spring-messaging-with-coherence-topics, Messaging with Coherence Topics>>.
+
+[[spring-boot-metrics]]
+== Coherence Metrics
+
+By adding the `coherence-spring-boot-starter` and `com.oracle.coherence.ce:coherence-micrometer` dependencies auto-configuration will register `CoherenceMicrometerMetrics` and publish link:{coherence-docs}/manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics] under the `coherence.` name.
+
+To disable the auto-configured Coherence metrics even when `coherence-micrometer` module is on the classpath, set the following property:
+
+.application.yaml
+[source,yaml]
+----
+management:
+  metrics:
+    enable:
+      coherence: false
+----
