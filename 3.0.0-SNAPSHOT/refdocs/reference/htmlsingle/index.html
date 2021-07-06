@@ -200,6 +200,13 @@ window.onload = function() {
 <li><a href="#coherence-spring-dependency-injection-session-with-name">3.6.4.1. Specify a Session Name</a></li>
 </ul>
 </li>
+<li><a href="#coherence-spring-dependency-injection-namedtopic">3.6.5. Injecting NamedTopic</a>
+<ul class="sectlevel4">
+<li><a href="#injecting-namedtopic">3.6.5.1. Injecting NamedTopic</a></li>
+<li><a href="#injecting-a-namedtopic-publisher">3.6.5.2. Injecting a NamedTopic Publisher</a></li>
+<li><a href="#injecting-a-namedtopic-subscriber">3.6.5.3. Injecting a NamedTopic Subscriber</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#coherence-spring-events">3.7. Events</a>
@@ -240,6 +247,27 @@ window.onload = function() {
 <li><a href="#create-the-extractor-binding-annotation">3.9.1. Create the extractor binding annotation</a></li>
 <li><a href="#create-the-extractorfactory">3.9.2. Create the <code>ExtractorFactory</code></a></li>
 <li><a href="#annotate-the-injection-point-2">3.9.3. Annotate the Injection Point</a></li>
+</ul>
+</li>
+<li><a href="#coherence-spring-messaging-with-coherence-topics">3.10. Messaging with Coherence Topics</a>
+<ul class="sectlevel3">
+<li><a href="#define-publishers-coherencepublisher">3.10.1. Define Publishers - @CoherencePublisher</a></li>
+<li><a href="#reactive-and-non-blocking-method-definitions">3.10.2. Reactive and Non-Blocking Method Definitions</a>
+<ul class="sectlevel4">
+<li><a href="#mono-value-and-return-type">3.10.2.1. Mono Value and Return Type</a></li>
+<li><a href="#reactor-flux-value-and-return-type">3.10.2.2. Reactor Flux Value and Return Type</a></li>
+<li><a href="#future-return-type">3.10.2.3. Future Return Type</a></li>
+</ul>
+</li>
+<li><a href="#define-subscribers-coherencetopiclistener">3.10.3. Define Subscribers - @CoherenceTopicListener</a></li>
+<li><a href="#method-parameter-bindings">3.10.4. Method Parameter Bindings</a></li>
+<li><a href="#committing-messages">3.10.5. Committing Messages</a>
+<ul class="sectlevel4">
+<li><a href="#default-commit-behaviour">3.10.5.1. Default Commit Behaviour</a></li>
+<li><a href="#setting-commit-strategy">3.10.5.2. Setting Commit Strategy</a></li>
+<li><a href="#forwarding-messages-with-sendto">3.10.5.3. Forwarding Messages with @SendTo</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -314,6 +342,7 @@ window.onload = function() {
 </ul>
 </li>
 <li><a href="#spring-boot-sessions">7.6. Spring Session Support</a></li>
+<li><a href="#spring-boot-messaging">7.7. Coherence Messaging Support</a></li>
 </ul>
 </li>
 <li><a href="#spring-cloud-config">8. Coherence Spring Cloud Config</a>
@@ -793,7 +822,7 @@ dependency as well as the desired dependency for Coherence.</p>
  &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
      &lt;artifactId&gt;coherence&lt;/artifactId&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
-     &lt;version&gt;21.06-M2&lt;/version&gt;
+     &lt;version&gt;21.06&lt;/version&gt;
  &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -907,14 +936,14 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-    &lt;version&gt;21.06-M2&lt;/version&gt;
+    &lt;version&gt;21.06&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06-M2")</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06")</code></pre>
 </div>
 </div>
 </div>
@@ -1659,6 +1688,245 @@ public class MyBean {
 <td>If your class has only a single constructor, you can even omit the <code>@Autowired</code> annotation</td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-dependency-injection-namedtopic"><a class="anchor" href="#coherence-spring-dependency-injection-namedtopic"></a>3.6.5. Injecting NamedTopic</h4>
+<div class="paragraph">
+<p>Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a>
+instances can be injected as beans in Spring applications.</p>
+</div>
+<div class="paragraph">
+<p>An alternative way to write message driven applications instead of directly injecting <code>NamedTopic</code>, <code>Publisher</code> or <code>Subscriber</code> beans is to use <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
+</div>
+<div class="sect4">
+<h5 id="injecting-namedtopic"><a class="anchor" href="#injecting-namedtopic"></a>3.6.5.1. Injecting NamedTopic</h5>
+<div class="paragraph">
+<p>The simplest way to inject a <code>NamedTopic</code> is to just annotate the injection point with <code>@javax.inject.Inject</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject NamedTopic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+private NamedTopic&lt;Person&gt; people;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the injection point field name is used to determine the topic name to inject,
+so a <code>NamedTopic</code> bean with an underlying topic name of <code>people</code> will be injected.</p>
+</div>
+<div class="paragraph">
+<p>As an alternative to using a <code>NamedTopic</code> directly in code, Coherence Spring also supports annotating methods directly as publishers and subscribers. See the <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a> section of the documentation.</p>
+</div>
+<div class="sect5">
+<h6 id="specify-the-topic-name"><a class="anchor" href="#specify-the-topic-name"></a>Specify the Topic Name</h6>
+<div class="paragraph">
+<p>Sometimes the name of the topic being injected needs to be different to the injection point name.
+This is always the case when injecting into method parameters as the parameter names are lost by the time the injection point is processed. In this case we can use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a>
+annotation to specify the underlying cache name.</p>
+</div>
+<div class="paragraph">
+<p>The example below will inject a <code>NamedTopic</code> that uses an underlying topic named <code>orders</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Use @Name to specify topic name</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@Name("people")
+private NamedTopic&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same applies when injecting a constructor or method parameter:</p>
+</div>
+<div class="listingblock">
+<div class="title">Use @Name to specify topic name on a parameter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
+public class SomeBean {
+    @Inject
+    public SomeBean(@Name("orders") NamedTopic&lt;Order&gt; topic) {
+    // ToDo:
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="specify-the-session-name"><a class="anchor" href="#specify-the-session-name"></a>Specify the Session Name</h6>
+<div class="paragraph">
+<p>Whilst most applications probably use a single Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/Session.html">Session</a> there are uses-cases where an application may
+have multiple sessions. In this case, when injecting a <code>NamedTopic</code> the specific session can be specified
+by annotating the injection point with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/SessionName.html">@SessionName</a>.</p>
+</div>
+<div class="paragraph">
+<p>In the previous examples where no <code>@SessionName</code> was specified Coherence will use the default session to obtain the caches.</p>
+</div>
+<div class="paragraph">
+<p>For example, assume the application has multiple sessions configured, one of which is named <code>Customers</code>.
+The following code snippet injects a <code>NamedTopic</code> using an underlying topic named <code>orders</code> in the <code>Customers</code> session.</p>
+</div>
+<div class="listingblock">
+<div class="title">Use @SessionName to specify session</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@SessionName("Customers")
+@Name("orders")
+private NamedTopic&lt;Order&gt; topic;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, the same annotation can be used on method parameter injection points.</p>
+</div>
+<div class="listingblock">
+<div class="title">Use @SessionName to specify session on a method parameter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class OrderProcessor {
+    @Inject
+    public OrderProcessor(@SessionName("Customers") @Name("orders")
+                          NamedTopic&lt;Order&gt; orders) {
+        // ToDo:
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="injecting-a-namedtopic-publisher"><a class="anchor" href="#injecting-a-namedtopic-publisher"></a>3.6.5.2. Injecting a NamedTopic Publisher</h5>
+<div class="paragraph">
+<p>If application code only needs to publish messages to a Coherence <code>NamedTopic</code> then instead of injecting a
+<code>NamedTopic</code> bean, a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Publisher.html">Publisher</a> bean can be injected.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to inject a <code>Publisher</code> is just to annotate the injection point of type <code>Publisher</code> with <code>@Inject</code>,
+for example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject a Publisher</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+private Publisher&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The example above will inject a <code>Publisher</code> bean, the name of the underlying <code>NamedTopic</code> will be taken from the
+name of the injection point, in this case <code>orders</code>.</p>
+</div>
+<div class="sect5">
+<h6 id="specify-the-topic-name-2"><a class="anchor" href="#specify-the-topic-name-2"></a>Specify the Topic Name</h6>
+<div class="paragraph">
+<p>If the name of the injection point cannot be used as the <code>NamedTopic</code> name, which is always the case with injection points that are method or constructor parameters, then the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a> annotation can be used to specify the topic name.</p>
+</div>
+<div class="paragraph">
+<p>For example, both of the code snippets below inject a <code>Publisher</code> that published to the <code>orders</code> topic:</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject a Publisher that publishes on the <code>orders</code> topic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@Name("orders")
+private Publisher&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Inject a Publisher that publishes on the <code>orders</code> topic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class OrderController {
+    @Inject
+    public OrderController(@Name("orders") Publisher&lt;Order&gt; topic) {
+        // ToDo:
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="specify-the-owning-session"><a class="anchor" href="#specify-the-owning-session"></a>Specify the Owning Session</h6>
+<div class="paragraph">
+<p>As with injection of <code>NamedTopics</code>, in applications using multiple <code>Session</code> instances, the name of the <code>Session</code> that
+owns the underlying <code>NamedTopic</code> can be specified when injecting a <code>Publisher</code> by adding the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject a Publisher while specifying the owning session</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@Name("orders")
+@SessionName("Customers")
+private Publisher&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="injecting-a-namedtopic-subscriber"><a class="anchor" href="#injecting-a-namedtopic-subscriber"></a>3.6.5.3. Injecting a NamedTopic Subscriber</h5>
+<div class="paragraph">
+<p>If application code only needs to subscribe to messages from a Coherence <code>NamedTopic</code> then instead of injecting a
+<code>NamedTopic</code> bean, a <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> bean can be injected.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to inject a <code>Subscriber</code> is just to annotate the injection point of type <code>Subscriber</code> with <code>@Inject</code>,
+for example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject Subscriber</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+private Subscriber&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The example above will inject a <code>Subscriber</code> bean, the name of the underlying <code>NamedTopic</code> will be taken from the
+name of the injection point, in this case <code>orders</code>.</p>
+</div>
+<div class="sect5">
+<h6 id="specify-the-topic-name-3"><a class="anchor" href="#specify-the-topic-name-3"></a>Specify the Topic Name</h6>
+<div class="paragraph">
+<p>If the name of the injection point cannot be used as the <code>NamedTopic</code> name, which is always the case with injection points that are method or constructor parameters, then the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a> annotation can be used to specify the topic name.</p>
+</div>
+<div class="paragraph">
+<p>For example, both of the code snippets below inject a <code>Subscriber</code> that subscribe to the <code>orders</code> topic:</p>
+</div>
+<div class="listingblock">
+<div class="title">Inject subscriber into field</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@Name("orders")
+private Subscriber&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Inject subscriber into method parameter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class OrderController {
+    @Inject
+    public OrderController(@Name("orders") Subscriber&lt;Order&gt; topic) {
+        // ToDo:
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="specify-the-owning-session-2"><a class="anchor" href="#specify-the-owning-session-2"></a>Specify the Owning Session</h6>
+<div class="paragraph">
+<p>As with injection of <code>NamedTopics</code>, in applications using multiple <code>Session</code> instances, the name of the <code>Session</code> that
+owns the underlying <code>NamedTopic</code> can be specified when injecting a <code>Subscriber</code> by adding the
+<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Inject
+@Name("orders")
+@SessionName("Customers")
+private Subscriber&lt;Order&gt; orders;</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3611,6 +3879,356 @@ from the underlying cache are transformed into <code>String</code> values by ext
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="coherence-spring-messaging-with-coherence-topics"><a class="anchor" href="#coherence-spring-messaging-with-coherence-topics"></a>3.10. Messaging with Coherence Topics</h3>
+<div class="paragraph">
+<p>Spring Coherence integration provides support for message driven applications by virtue of Coherence topics.</p>
+</div>
+<div class="paragraph">
+<p>A Coherence <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a> is analogous to a queue or pub/sub topic, depending on the configuration and application code. Messages published to the topic are stored in Coherence caches, so topics are scalable and performant.</p>
+</div>
+<div class="paragraph">
+<p>A typical stand-alone Coherence application would create a <code>NamedTopic</code> along with <code>Publisher</code> or <code>Subscriber</code> instances to publish to or subscribe to topics. Injection of topics into Spring applications is already covered in <a href="#injecting-namedtopic">Injecting NamedTopics</a>. With Spring messaging this becomes much simpler.</p>
+</div>
+<div class="paragraph">
+<p>With Spring Coherence Messaging publishers and subscribers beans are created by writing suitably annotated interfaces.</p>
+</div>
+<div class="sect3">
+<h4 id="define-publishers-coherencepublisher"><a class="anchor" href="#define-publishers-coherencepublisher"></a>3.10.1. Define Publishers - @CoherencePublisher</h4>
+<div class="paragraph">
+<p>To create a topic Publisher that sends messages you can simply define an interface that is annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>. Also configuration class has to be annotated with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisherScan.html">@CoherencePublisherScan</a> annotation in order to specify base packages for scanning for <code>@CoherencePublisher</code> annotated interfaces.</p>
+</div>
+<div class="listingblock">
+<div class="title">Config.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+@CoherencePublisherScan("com.example.app.services")
+public class Config {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example the following is a trivial <code>@CoherencePublisher</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="title">ProductClient.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.annotation.CoherencePublisher;
+import com.oracle.coherence.spring.annotation.Topic;
+
+@CoherencePublisher  <i class="conum" data-value="1"></i><b>(1)</b>
+public interface ProductClient {
+
+    @Topic("my-products") <i class="conum" data-value="2"></i><b>(2)</b>
+    void sendProduct(String message); <i class="conum" data-value="3"></i><b>(3)</b>
+
+    void sendProduct(@Topic String topic, String message); <i class="conum" data-value="4"></i><b>(4)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>@CoherencePublisher</code> annotation is used to designate this interface as a message publisher.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Topic.html">@Topic</a> annotation indicates which topics the message should be published to</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The method defines a single parameter, which is the message value. In this case the values being published are String instances but they could be any type that can be serialized by Coherence.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>It is also possible for the topic to be dynamic by making it a method argument annotated with <code>@Topic</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>At run time Spring will produce an implementation of the above interface. You can retrieve an instance of <code>ProductClient</code> either by looking up the bean from the <code>ApplicationContext</code> or by injecting the bean with <code>@Inject</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Using ProductClient</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ProductClient client = applicationContext.getBean(ProductClient.class);
+client.sendProduct("Blue Trainers");</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="reactive-and-non-blocking-method-definitions"><a class="anchor" href="#reactive-and-non-blocking-method-definitions"></a>3.10.2. Reactive and Non-Blocking Method Definitions</h4>
+<div class="paragraph">
+<p>The <code>@CoherencePublisher</code> annotation supports the definition of reactive return types (such as Reactor <code>Flux</code>) as well as Futures.</p>
+</div>
+<div class="paragraph">
+<p>The following sections cover possible method signatures and behaviour:</p>
+</div>
+<div class="sect4">
+<h5 id="mono-value-and-return-type"><a class="anchor" href="#mono-value-and-return-type"></a>3.10.2.1. Mono Value and Return Type</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Mono&lt;Publisher.Status&gt; sendBook(Mono&lt;Book&gt; book);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implementation will return a <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> that when subscribed to will subscribe to the passed <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> and send a message emitting the resulting <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="reactor-flux-value-and-return-type"><a class="anchor" href="#reactor-flux-value-and-return-type"></a>3.10.2.2. Reactor Flux Value and Return Type</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Flux&lt;Publisher.Status&gt; sendBooks(Flux&lt;Book&gt; book);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implementation will return a Reactor <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html">Flux</a> that when subscribed to will subscribe to the passed <code>Flux</code> and for each emitted item will send a message emitting the resulting <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="future-return-type"><a class="anchor" href="#future-return-type"></a>3.10.2.3. Future Return Type</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Future&lt;Publisher.Status&gt; sendBooks(Mono&lt;Book&gt; book);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The implementation will return a Future with publisher&#8217;s status.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="define-subscribers-coherencetopiclistener"><a class="anchor" href="#define-subscribers-coherencetopiclistener"></a>3.10.3. Define Subscribers - @CoherenceTopicListener</h4>
+<div class="paragraph">
+<p>To listen to Coherence topic messages you can use the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> annotation to define a message listener.</p>
+</div>
+<div class="paragraph">
+<p>The following example will listen for messages published by the <code>ProductClient</code> in the previous section:</p>
+</div>
+<div class="listingblock">
+<div class="title">ProductListener.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
+import com.oracle.coherence.spring.annotation.Topic;
+
+@CoherenceTopicListener   <i class="conum" data-value="1"></i><b>(1)</b>
+public class ProductListener {
+
+    @Topic("my-products")   <i class="conum" data-value="2"></i><b>(2)</b>
+    public void receive(String product) { <i class="conum" data-value="3"></i><b>(3)</b>
+        System.out.println("Got Product - " + product);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> annotation to indicate that this bean is a Coherence topic listener.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Topic.html">@Topic</a> annotation is again used to indicate which topic to subscribe to.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The receive method defines single arguments that will receive the message value, in this case the message is of type <code>String</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="method-parameter-bindings"><a class="anchor" href="#method-parameter-bindings"></a>3.10.4. Method Parameter Bindings</h4>
+<div class="paragraph">
+<p>When using a Coherence topic <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> directly in application code, the <code>receive</code> method returns an <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a>, which contains the message value and metadata. The annotated subscriber method can take various parameter types that will bind to the element itself or to the message.</p>
+</div>
+<div class="paragraph">
+<p>For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceTopicListener
+@Topic("my-products")
+public void receive(Element&lt;Product&gt; product) {
+    // ... process message ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The method above will be passed the <a href="https://coherence.community/21.06-M2/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a> received from the topic. By receiving the element, the method has access to the message value and all the metadata stored with the message.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="committing-messages"><a class="anchor" href="#committing-messages"></a>3.10.5. Committing Messages</h4>
+<div class="paragraph">
+<p>An important part of Coherence topic subscribers is committing messages to notify the server that they have been processed and guaranteeing at least once delivery. When using Micronaut Coherence messaging every message will be committed after the handler method has successfully processed the message. This behaviour can be controlled by adding a commit strategy to the <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> annotation.</p>
+</div>
+<div class="sect4">
+<h5 id="default-commit-behaviour"><a class="anchor" href="#default-commit-behaviour"></a>3.10.5.1. Default Commit Behaviour</h5>
+<div class="paragraph">
+<p>If no <code>commitStrategy</code> field has been provided to the <code>@CoherenceTopicListener</code> annotation the default behaviour is to synchronously call <code>Element.commit()</code> for every message received.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceTopicListener
+@Topic("my-products")
+public void receive(Element&lt;Product&gt; product) {
+    // ... process message ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>No <code>commitStrategy</code> field has been supplied to the <code>@CoherenceTopicListener</code> annotation.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="setting-commit-strategy"><a class="anchor" href="#setting-commit-strategy"></a>3.10.5.2. Setting Commit Strategy</h5>
+<div class="paragraph">
+<p>The <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> <code>commitStrategy</code> field is an enumeration of type <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CommitStrategy.html">CommitStrategy</a> with three values, <code>SYNC</code>, <code>ASYNC</code> and <code>MANUAL</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CommitStrategy.SYNC - This strategy is the default, and will synchronously commit every message upon successful completion of the handler method, by calling <code>Element.commit()</code>.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.SYNC)
+@Topic("my-products")
+public void receive(Product product) {
+    // ... process message ...
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CommitStrategy.ASYNC - This strategy will asynchronously commit every message upon successful completion of the handler method, by calling <code>Element.commitAsync()</code>.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.ASYNC)
+@Topic("my-products")
+public void receive(Product product) {
+    // ... process message ...
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CommitStrategy.MANUAL - This strategy will not automatically commit messages, all handling of commits must be done as part of the handler method or by some external process.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.MANUAL)
+@Topic("my-products")
+public void receive(Element&lt;Product&gt; product) {
+    // ... process message ...
+
+    // manually commit the element
+    element.commit();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the example above a <code>MANUAL</code> commit strategy has used. The element will be committed by the application code at the end of the handler method. To be able to manually commit a message the method must take the <code>Element</code> as a parameter so that application code can access the commit methods.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="forwarding-messages-with-sendto"><a class="anchor" href="#forwarding-messages-with-sendto"></a>3.10.5.3. Forwarding Messages with @SendTo</h5>
+<div class="paragraph">
+<p>On any @<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.</p>
+</div>
+<div class="paragraph">
+<p>The key of the original ConsumerRecord will be used as the key when forwarding the message.</p>
+</div>
+<div class="listingblock">
+<div class="title">ProductListener.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.*;
+import org.springframework.messaging.handler.annotation.SendTo;
+
+@CoherenceTopicListener
+public class ProductListener {
+
+    @Topic("awesome-products")      <i class="conum" data-value="1"></i><b>(1)</b>
+    @SendTo("product-quantities")   <i class="conum" data-value="2"></i><b>(2)</b>
+    public int receive(Product product) {
+        System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
+        return product.getQuantity(); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The topic subscribed to is <code>awesome-products</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The topic to send the result to is <code>product-quantities</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The return value is used to indicate the value to forward</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can also do the same using Reactive programming:</p>
+</div>
+<div class="listingblock">
+<div class="title">ProductListener.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.*;
+import org.springframework.messaging.handler.annotation.SendTo;
+import reactor.core.publisher.Mono;
+
+@CoherenceTopicListener
+public class ProductListener {
+
+    @Topic("awesome-products")       <i class="conum" data-value="1"></i><b>(1)</b>
+    @SendTo("product-quantities")    <i class="conum" data-value="2"></i><b>(2)</b>
+    public Mono&lt;Integer&gt; receiveProduct(Mono&lt;Product&gt; productSingle) {
+        return productSingle.map(product -&gt; {
+            System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
+            return product.getQuantity();  <i class="conum" data-value="3"></i><b>(3)</b>
+        });
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The topic subscribed to is <code>awesome-products</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The topic to send the result to is <code>product-quantities</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The return is mapped from the single to the value of the quantity</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3777,7 +4395,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06-M2&lt;/version&gt;
+        &lt;version&gt;21.06&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -3787,7 +4405,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-session:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06-M2")
+    compile("com.oracle.coherence.ce:coherence:21.06")
 }</code></pre>
 </div>
 </div>
@@ -4665,7 +5283,7 @@ as the desired version of Coherence.</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06-M2&lt;/version&gt;
+        &lt;version&gt;21.06&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -4675,7 +5293,7 @@ as the desired version of Coherence.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06-M2")
+    compile("com.oracle.coherence.ce:coherence:21.06")
 }</code></pre>
 </div>
 </div>
@@ -5187,6 +5805,16 @@ Coherence-specific configuration properties.</p>
 </tbody>
 </table>
 </div>
+<div class="sect2">
+<h3 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>7.7. Coherence Messaging Support</h3>
+<div class="paragraph">
+<p>Support for injecting Coherence Publishers is enabled automatically by adding the <code>coherence-spring-boot-starter</code> dependency.
+By default, base package to scan for <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>
+annotated interfaces is derived from the main class anotated with <code>@SpringBootApplication</code>. Base package can be overriden
+by annotating configuration class with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisherScan.html">@CoherencePublisherScan</a>
+as described at <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -5407,7 +6035,7 @@ the configuration data.</p>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>You can control which reports are generated by specifying a different report group configuration file. The pre-defined
-reports are located at <code>coherence-21.06-M2.jar/reports</code></td>
+reports are located at <code>coherence-21.06.jar/reports</code></td>
 </tr>
 </table>
 </div>
@@ -5529,7 +6157,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-02 05:09:55 UTC
+Last updated 2021-07-06 21:38:16 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
