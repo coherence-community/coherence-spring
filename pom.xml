@@ -141,7 +141,7 @@
 		<mockito.version>1.10.19</mockito.version>
 		<org.springframework.version>5.3.8</org.springframework.version>
 		<reactor.version>3.4.6</reactor.version>
-		<spring-boot.version>2.4.6</spring-boot.version>
+		<spring-boot.version>2.5.2</spring-boot.version>
 		<spring-session.version>2.4.3</spring-session.version>
 	</properties>
 
