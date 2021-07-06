@@ -17,11 +17,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>Annotation applied at the class level to indicate that a bean is a Coherence
  * topic {@link com.tangosol.net.topic.Subscriber}.</p>
  *
- * @author Vaso Putica
+ * @author Jonathan Knight
  * @since 3.0
  */
 @Documented
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface CoherenceTopicListener {
+	/**
+	 * The {@link CommitStrategy} to use for the subscriber.
+	 *
+	 * @return The {@link CommitStrategy}
+	 */
+	CommitStrategy commitStrategy() default CommitStrategy.SYNC;
 }

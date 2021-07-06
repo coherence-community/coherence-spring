@@ -25,12 +25,15 @@ import java.util.stream.Stream;
 import javax.annotation.PreDestroy;
 import javax.inject.Named;
 
+import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
+import com.oracle.coherence.spring.annotation.CommitStrategy;
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
 import com.oracle.coherence.spring.annotation.FilterBinding;
 import com.oracle.coherence.spring.annotation.SessionName;
 import com.oracle.coherence.spring.annotation.SubscriberGroup;
 import com.oracle.coherence.spring.configuration.ExtractorService;
 import com.oracle.coherence.spring.configuration.FilterService;
+import com.oracle.coherence.spring.messaging.exceptions.CoherenceSubscriberException;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.Session;
 import com.tangosol.net.events.CoherenceLifecycleEvent;
@@ -50,6 +53,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -126,30 +130,33 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 						: Coherence.DEFAULT_NAME;
 
 				if (!coherence.hasSession(sessionName)) {
-					logger.info("Skipping @CoherenceTopicListener annotated method subscription " + method
-							+ " Session " + sessionName + " does not exist on Coherence instance " + coherence.getName());
+					if (logger.isInfoEnabled()) {
+						logger.info(String.format("Skipping @CoherenceTopicListener annotated method subscription %s Session %s does not exist on Coherence instance %s",
+								method, sessionName, coherence.getName()));
+					}
 					continue;
 				}
 
 				Session session = coherence.getSession(sessionName);
-				PublisherHolder[] sendToPublishers;
+				Publisher[] sendToPublishers;
 				String[] sendToTopics = getSendToTopicNames(method);
 				if (sendToTopics.length > 0) {
 					if (method.getReturnType().equals(Void.class)) {
-						logger.info("Skipping @SendTo annotations for @CoherenceTopicListener annotated method " + method
-								+ " - method return type is void");
-						sendToPublishers = new PublisherHolder[0];
+						if (logger.isInfoEnabled()) {
+							logger.info(String.format("Skipping @SendTo annotations for @CoherenceTopicListener annotated method %s - method return type is void", method));
+						}
+						sendToPublishers = new Publisher[0];
 					}
 					else {
-						sendToPublishers = new PublisherHolder[sendToTopics.length];
+						sendToPublishers = new Publisher[sendToTopics.length];
 						for (int i = 0; i < sendToTopics.length; i++) {
 							NamedTopic<?> topic = session.getTopic(sendToTopics[i]);
-							sendToPublishers[i] = new PublisherHolder(sendToTopics[i], topic.createPublisher());
+							sendToPublishers[i] = topic.createPublisher();
 						}
 					}
 				}
 				else {
-					sendToPublishers = new PublisherHolder[0];
+					sendToPublishers = new Publisher[0];
 				}
 
 				List<Subscriber.Option> options = new ArrayList<>();
@@ -261,7 +268,7 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 		 * The optional topic {@link com.tangosol.net.topic.Publisher Publishers} to send
 		 * any method return value to.
 		 */
-		private final PublisherHolder[] publishers;
+		private final Publisher[] publishers;
 
 		/**
 		 * The bean declaring the {@link Method}.
@@ -279,6 +286,17 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 		private final Scheduler scheduler;
 
 		/**
+		 * The commit strategy to use to commit received messages.
+		 */
+		private final CommitStrategy commitStrategy;
+
+
+		/**
+		 * Subscriber argument type.
+		 */
+		private final Class<?> paramClass;
+
+		/**
 		 * Create a {@link TopicSubscriber}.
 		 *
 		 * @param topicName        the name of the subscribed topic.
@@ -288,7 +306,7 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 		 * @param method           the {@link Method} to forward topic elements to
 		 * @param scheduler        the scheduler service
 		 */
-		TopicSubscriber(String topicName, Subscriber<E> subscriber, PublisherHolder[] publishers, T bean,
+		TopicSubscriber(String topicName, Subscriber<E> subscriber, Publisher<?>[] publishers, T bean,
 						Method method, Scheduler scheduler) {
 			this.topicName = topicName;
 			this.subscriber = subscriber;
@@ -296,6 +314,10 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 			this.bean = bean;
 			this.method = method;
 			this.scheduler = scheduler;
+			this.commitStrategy = Optional.ofNullable(AnnotationUtils.getAnnotation(method, CoherenceTopicListener.class))
+					.map(CoherenceTopicListener::commitStrategy)
+					.orElse(CommitStrategy.SYNC);
+			this.paramClass = method.getParameterTypes()[0];
 		}
 
 		@Override
@@ -304,7 +326,9 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 				this.subscriber.close();
 			}
 			catch (Throwable throwable) {
-				logger.error("Error closing subscriber for topic " + this.topicName, throwable);
+				if (logger.isErrorEnabled()) {
+					logger.error(String.format("Error closing subscriber for topic %s",  this.topicName), throwable);
+				}
 			}
 		}
 
@@ -314,15 +338,20 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 		 * end and the {@link com.tangosol.net.topic.Subscriber} will be closed.</p>
 		 */
 		private void nextMessage() {
-			this.subscriber.receive().handle(this::handleMessage)
-					.handle((v, err) -> {
-						if (err != null) {
-							logger.error("Error requesting message from topic " + this.topicName
-									+ " for method " + this.method + " - subscriber will be closed", err);
-							this.subscriber.close();
-						}
-						return VOID;
-					});
+			if (this.subscriber.isActive()) {
+				this.subscriber.receive().handle(this::handleMessage)
+						.handle((v, err) -> {
+							if (err != null) {
+								if (logger.isErrorEnabled()) {
+									logger.error(String.format("Error requesting message from topic %s for method %s - subscriber will be closed",
+											this.topicName, this.method),
+											err);
+								}
+								this.subscriber.close();
+							}
+							return VOID;
+						});
+			}
 		}
 
 		/**
@@ -338,24 +367,81 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 		 * @return always returns {@link java.lang.Void} (i.e. {@code null})
 		 */
 		private Void handleMessage(Subscriber.Element<E> element, Throwable throwable) {
-			if (throwable != null) {
-				if (!(throwable instanceof CancellationException)) {
-					logger.error("Error receiving message from topic " + this.topicName
-							+ " for method " + this.method + " - subscriber will be closed", throwable);
-					this.subscriber.close();
+			SubscriberExceptionHandler.Action action = SubscriberExceptionHandler.Action.Continue;
+			Throwable error = null;
+
+			if (throwable == null) {
+				try {
+					Class<? extends Subscriber.Element> subscriberElementClass = element.getClass();
+					Object value = (Subscriber.Element.class.isAssignableFrom(this.paramClass) && this.paramClass.isAssignableFrom(subscriberElementClass))
+							? element
+							: element.getValue();
+					Object result = this.method.invoke(this.bean, value);
+					handleResult(result);
 				}
-				return VOID;
+				catch (Throwable thrown) {
+					error = thrown;
+				}
+			}
+			else {
+				error = throwable;
 			}
 
-			try {
-				E value = element.getValue();
-				Object result = this.method.invoke(this.bean, value);
-				handleResult(result);
+			if (error == null) {
+				// message processed successfully, do any commit action
+				try {
+					if (this.commitStrategy != CommitStrategy.MANUAL) {
+						CompletableFuture<Subscriber.CommitResult> future = element.commitAsync();
+						if (this.commitStrategy == CommitStrategy.ASYNC) {
+							// async commit, so log any failure in a future handler
+							future.handle((result, commitError) -> {
+								if (commitError != null) {
+									// With auto-commit strategies the developer has chosen to ignore commit failures, just log the error
+									logger.error(String.format("Error committing element channel=%s position=%s", element.getChannel(), element.getPosition()), commitError);
+								}
+								else if (!result.isSuccess()) {
+									// With auto-commit strategies the developer has chosen to ignore commit failures, just log the error
+									logger.error(String.format("Failed to commit element channel=%s position=%s status %s", element.getChannel(), element.getPosition(), result));
+								}
+								return VOID;
+							});
+						}
+						else {
+							// sync commit so wait for it to complete
+							Subscriber.CommitResult result = future.join();
+							if (!result.isSuccess()) {
+								// With auto-commit strategies the developer has chosen to ignore commit failures, just log the error
+								logger.error(String.format("Failed to commit element channel=%s position=%s status %s", element.getChannel(), element.getPosition(), result));
+							}
+						}
+					}
+				}
+				catch (Throwable thrown) {
+					// With auto-commit strategies the developer has chosen to ignore commit failures, just log the error
+					logger.error(String.format("Error committing element channel=%s position=%s", element.getChannel(), element.getPosition()), thrown);
+				}
 			}
-			catch (Throwable ex) {
-				logger.error("Error processing message from topic " + this.topicName, ex);
+			else if (error instanceof CancellationException) {
+				// cancellation probably due to subscriber closing so we ignore the error
+				action = SubscriberExceptionHandler.Action.Continue;
 			}
-			nextMessage();
+			else {
+				// an error occurred
+				action = handleException(this.subscriber, this.method, element, error);
+			}
+
+			switch (action) {
+				case Continue:
+					nextMessage();
+					break;
+				case Stop:
+					this.subscriber.close();
+					break;
+				default:
+					logger.error(String.format("Unknown SubscriberExceptionHandler.Action %s closing subscriber", action));
+					this.subscriber.close();
+			}
+
 			return VOID;
 		}
 
@@ -405,20 +491,26 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 					.flatMap((Function<Object, org.reactivestreams.Publisher<?>>) (o) -> {
 						if (this.publishers.length > 0) {
 							return Flux.create((emitter) -> {
-								for (PublisherHolder publisher : this.publishers) {
-									publisher.send(o).handle((ignored, exception) -> {
-										if (exception != null) {
-											emitter.error(exception);
-										}
-										return VOID;
-									});
+								for (Publisher publisher : this.publishers) {
+									if (publisher.isActive()) {
+										CompletableFuture<Publisher.Status> future = publisher.publish(o);
+										future.handle((status, exception) -> {
+											if (exception != null) {
+												emitter.error(exception);
+											}
+											else {
+												emitter.next(status);
+											}
+											return VOID;
+										});
+									}
 								}
 								emitter.complete();
 							}, FluxSink.OverflowStrategy.ERROR);
 						}
 						return Flux.empty();
 					}).onErrorResume((throwable) -> {
-						logger.error("Error processing result from method " + method, throwable);
+						logger.error(String.format("Error processing result from method %s" + method), throwable);
 						return Flux.empty();
 					});
 
@@ -427,6 +519,28 @@ public class CoherenceTopicListenerSubscribers implements ApplicationContextAwar
 					logger.trace(String.format("Method [%s] produced record metadata: %s", method, recordMetadata));
 				}
 			});
+		}
+
+		private SubscriberExceptionHandler.Action handleException(Subscriber<?> subscriber, Object consumerBean, Subscriber.Element<?> element, Throwable e) {
+			CoherenceSubscriberException exception = new CoherenceSubscriberException(
+					e,
+					consumerBean,
+					subscriber,
+					element
+			);
+			return handleException(consumerBean, exception);
+		}
+
+		private SubscriberExceptionHandler.Action handleException(Object consumerBean, CoherenceSubscriberException exception) {
+			if (consumerBean instanceof SubscriberExceptionHandler) {
+				return ((SubscriberExceptionHandler) consumerBean).handle(exception);
+			}
+			else {
+				Subscriber.Element<?> element = exception.getElement().orElse(null);
+				Throwable cause = exception.getCause();
+				logger.error(String.format("Closing subscriber due to error processing element [%s] for Coherence subscriber [%s] produced error: %s", element, consumerBean, cause.getMessage()), cause);
+				return SubscriberExceptionHandler.Action.Stop;
+			}
 		}
 	}
 }

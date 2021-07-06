@@ -37,12 +37,11 @@ import org.springframework.util.ReflectionUtils;
 /**
  * Method interceptor to invoke default methods on the gateway proxy.
  *
- * The copy of {@code DefaultMethodInvokingMethodInterceptor} from Spring Data Commons.
- *
  * @author Oliver Gierke
  * @author Jens Schauder
  * @author Mark Paluch
  * @author Artem Bilan
+ * @since 3.0
  */
 class DefaultMethodInvokingMethodInterceptor implements MethodInterceptor {
 	private final MethodHandleLookup methodHandleLookup = MethodHandleLookup.getMethodHandleLookup();

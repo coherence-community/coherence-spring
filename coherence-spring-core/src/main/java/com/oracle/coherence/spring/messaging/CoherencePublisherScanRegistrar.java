@@ -66,7 +66,7 @@ import org.springframework.util.StringUtils;
  * @author Artem Bilan
  * @author Gary Russell
  *
- * @since 4.0
+ * @since 3.0
  */
 public class CoherencePublisherScanRegistrar implements ImportBeanDefinitionRegistrar,
 		ResourceLoaderAware, EnvironmentAware {
