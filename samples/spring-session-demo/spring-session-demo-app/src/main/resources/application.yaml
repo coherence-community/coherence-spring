@@ -28,12 +28,12 @@ coherence:
         config: "coherence-cache-config.xml"
 logging:
   level:
-    root: info
+    root: warn
     "Coherence": info
-    org.springframework.security: debug
+    org.springframework.security: info
     org.springframework.web: info
     com.oracle.coherence.spring: info
     com.oracle.coherence.spring.samples.session: info
-    com.oracle.coherence.spring.session: debug
+    com.oracle.coherence.spring.session: info
 server:
   port: 8090

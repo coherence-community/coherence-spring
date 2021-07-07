@@ -3,7 +3,7 @@ server:
   port: 8081
 logging:
   level:
-    com.oracle.coherence: DEBUG
+    com.oracle.coherence: INFO
 coherence:
   sessions:
     server:

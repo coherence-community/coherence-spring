@@ -126,6 +126,20 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence-micrometer</artifactId>
+			<version>${coherence.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>io.spring.docresources</groupId>
 			<artifactId>spring-doc-resources</artifactId>
 			<version>${spring-doc-resources.version}</version>

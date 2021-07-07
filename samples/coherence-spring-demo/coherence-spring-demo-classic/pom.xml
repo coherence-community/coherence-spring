@@ -22,27 +22,16 @@
 	<description>Classic Demo project for Coherence Spring (No Spring Boot)</description>
 
 	<properties>
-		<maven.minimum.version>3.6.0</maven.minimum.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<mainClass>com.oracle.coherence.spring.demo.tomcat.Server</mainClass>
 
 		<java.version>8</java.version>
-		<coherence.version>21.06-M2</coherence.version>
 		<spring.version>5.3.6</spring.version>
 		<spring-data-bom.version>2020.0.8</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
 		<hibernate.version>5.4.31.Final</hibernate.version>
 		<jackson-datatype.version>2.11.4</jackson-datatype.version>
-
 		<tomcat.version>9.0.45</tomcat.version>
-		<coherence-spring.version>3.0.0-SNAPSHOT</coherence-spring.version>
-		<hsqldb.version>2.6.0</hsqldb.version>
 		<log4j.version>2.14.1</log4j.version>
-
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
-		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -74,7 +63,7 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-core</artifactId>
-			<version>${coherence-spring.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
@@ -242,7 +231,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>${maven.enforcer.plugin.version}</version>
+				<version>${maven-enforcer-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>enforce-plugin-versions</id>

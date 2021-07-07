@@ -9,7 +9,7 @@ package com.oracle.coherence.spring.messaging;
 import com.oracle.coherence.spring.messaging.exceptions.CoherenceSubscriberException;
 
 /**
- * Interface that {@eink com.oracle.coherence.spring.annotation.CoherenceTopicListener} beans can implement to handle exceptions.
+ * Interface that {@link com.oracle.coherence.spring.annotation.CoherenceTopicListener} beans can implement to handle exceptions.
  *
  * @author Jonathan Knight
  * @since 3.0

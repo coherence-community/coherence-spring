@@ -205,7 +205,7 @@
 							<checkinComment>${project.version} Site</checkinComment>
 							<subDirectory>${project.version}</subDirectory>
 							<scmBranch>gh-pages</scmBranch>
-							<content>${build.directory}/staging</content>
+							<content>${build.project/directory}/staging</content>
 							<pubScmUrl>${project.distributionManagement.site.url}</pubScmUrl>
 						</configuration>
 						<executions>
