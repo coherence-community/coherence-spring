@@ -14,9 +14,6 @@ The Spring Data Coherence module provides integration with Coherence data grids.
 * Native asynchronous repository support
 * Projections
 
-=== Functionality Not Supported in the M1 Release
-* Exception translation into Spring’s portable Data Access Exception hierarchy
-
 == Getting Started
 
 .Coherence Spring Data Dependencies
@@ -97,7 +94,7 @@ public interface PersonRepository extends CoherenceAsyncRepository<String, Perso
 The Coherence `NamedMap` that will be used by the Repository implementation
 will be based on the type name in the Repository class assuming the Repository
 name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called `person`).
-If this is not desired, the name may instead be passed by the `@CoherenceRepository` annotation.  For example:
+If this is not desired, the name may instead be passed by the `@CoherenceMap` annotation.  For example:
 
 [source,java]
 ----
