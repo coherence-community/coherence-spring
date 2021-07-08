@@ -297,11 +297,7 @@ window.onload = function() {
 <li><a href="#spring-data">6. Coherence Spring Data</a>
 <ul class="sectlevel2">
 <li><a href="#spring-data-introduction">6.1. Introduction</a></li>
-<li><a href="#features">6.2. Features</a>
-<ul class="sectlevel3">
-<li><a href="#functionality-not-supported-in-the-m1-release">6.2.1. Functionality Not Supported in the M1 Release</a></li>
-</ul>
-</li>
+<li><a href="#features">6.2. Features</a></li>
 <li><a href="#getting-started">6.3. Getting Started</a></li>
 <li><a href="#defining-repositories">6.4. Defining Repositories</a>
 <ul class="sectlevel3">
@@ -4747,16 +4743,6 @@ days.
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="functionality-not-supported-in-the-m1-release"><a class="anchor" href="#functionality-not-supported-in-the-m1-release"></a>6.2.1. Functionality Not Supported in the M1 Release</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Exception translation into Spring’s portable Data Access Exception hierarchy</p>
-</li>
-</ul>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="getting-started"><a class="anchor" href="#getting-started"></a>6.3. Getting Started</h3>
@@ -4865,7 +4851,7 @@ public interface PersonRepository extends CoherenceAsyncRepository&lt;String, Pe
 <p>The Coherence <code>NamedMap</code> that will be used by the Repository implementation
 will be based on the type name in the Repository class assuming the Repository
 name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called <code>person</code>).
-If this is not desired, the name may instead be passed by the <code>@CoherenceRepository</code> annotation.  For example:</p>
+If this is not desired, the name may instead be passed by the <code>@CoherenceMap</code> annotation.  For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6157,7 +6143,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-08 05:09:30 UTC
+Last updated 2021-07-08 17:56:31 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
