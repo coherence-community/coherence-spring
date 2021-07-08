@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import com.oracle.coherence.spring.data.support.Utils;
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.Aggregators;
@@ -49,6 +47,7 @@ import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.data.repository.query.parser.PartTree;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ReflectionUtils;
 

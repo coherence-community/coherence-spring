@@ -6,11 +6,8 @@
  */
 package com.oracle.coherence.spring.data.support;
 
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
-
-import javax.persistence.Entity;
 
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.data.repository.CoherenceRepository;
@@ -40,11 +37,6 @@ public class CoherenceRepositoryConfigurationExtension extends RepositoryConfigu
 	@Override
 	protected String getModulePrefix() {
 		return "coherence";
-	}
-
-	@Override
-	protected Collection<Class<? extends Annotation>> getIdentifyingAnnotations() {
-		return Collections.singleton(Entity.class);
 	}
 
 	@Override
