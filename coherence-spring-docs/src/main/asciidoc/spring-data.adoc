@@ -112,23 +112,21 @@ public interface PersonRepository extends CoherenceRepository<String, Person> {
 == Mapping Entities
 
 As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
-Repository is relatively simple.  It requires using the `javax.persistence.Entity` annotation
-to define the domain type that will be persisted, and the `javax.persistence.Id` annotation to denote the entity's id.
+Repository is relatively simple as only the id needs to be annotated.  It is possible to
+use either `org.springframework.data.annotation.Id` or `javax.persistence.Id` to denote the
+entity's id.
 
 For example:
 
 [source,java]
 ----
-@javax.persistence.Entity
 public class Person implements Serializable {
-	@javax.persistence.Id
+	@org.springframework.data.annotation.Id
 	protected String id;
 
 	// ---- person functionality ----
 }
 ----
-
-Any other `javax.persistence` annotations will not be considered by the runtime.
 
 == Using the Repository
 

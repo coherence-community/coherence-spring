@@ -14,15 +14,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import com.tangosol.util.UUID;
+
+import org.springframework.data.annotation.Id;
 
 /**
  * An entity for representing a {@code book}.
  */
-@Entity
 public class Book implements Cloneable, Serializable {
 	/**
 	 * The unique id of this book.
