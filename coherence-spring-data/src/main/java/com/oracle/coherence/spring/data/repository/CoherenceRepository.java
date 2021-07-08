@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import com.oracle.coherence.repository.AbstractRepository;
 import com.oracle.coherence.repository.EntityFactory;
+import com.tangosol.net.NamedMap;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Fragment;
 import com.tangosol.util.ValueExtractor;
@@ -42,6 +43,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface CoherenceRepository<T, ID>
 		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID> {
+
+	/**
+	 * Return the underlying {@link NamedMap} that backs this {@code Repository}.
+	 * @return the underlying {@link NamedMap} that backs this {@code Repository}
+	 */
+	NamedMap<ID, T> getMap();
 
 	@Override
 	long count();

@@ -30,6 +30,7 @@ import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.model.repositories.CoherenceBookRepository;
+import com.tangosol.net.NamedMap;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.Fragment;
@@ -1030,6 +1031,11 @@ public class RepositoryTests extends AbstractDataTest {
 	void ensureFinderQueries() {
 		List<Book> books = this.bookRepository.findByAuthor(FRANK_HERBERT);
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureGetMap() {
+		assertThat(this.bookRepository.getMap()).isNotNull().isInstanceOf(NamedMap.class);
 	}
 
 	// ----- helper methods -------------------------------------------------

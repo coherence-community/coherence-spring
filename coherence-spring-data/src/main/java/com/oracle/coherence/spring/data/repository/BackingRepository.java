@@ -59,7 +59,7 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	}
 
 	@Override
-	protected NamedMap<ID, T> getMap() {
+	public NamedMap<ID, T> getMap() {
 		return this.namedMap;
 	}
 

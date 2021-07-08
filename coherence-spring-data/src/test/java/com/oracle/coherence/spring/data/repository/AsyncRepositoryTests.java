@@ -31,6 +31,7 @@ import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.model.repositories.CoherenceBookAsyncRepository;
+import com.tangosol.net.AsyncNamedMap;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import com.tangosol.util.Fragment;
@@ -964,6 +965,11 @@ public class AsyncRepositoryTests extends AbstractDataTest {
 	void ensureFinderQueries() throws Exception {
 		List<Book> books = this.bookRepository.findByAuthor(FRANK_HERBERT).get(5, TimeUnit.SECONDS);
 		assertThat(books).containsExactlyInAnyOrder(DUNE, DUNE_MESSIAH);
+	}
+
+	@Test
+	void ensureGetMap() {
+		assertThat(this.bookRepository.getMap()).isNotNull().isInstanceOf(AsyncNamedMap.class);
 	}
 
 	// ----- helper methods -------------------------------------------------

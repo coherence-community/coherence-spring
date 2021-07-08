@@ -70,7 +70,7 @@ public class BackingAsyncRepository<T, ID> extends AbstractAsyncRepository<ID, T
 	}
 
 	@Override
-	protected AsyncNamedMap<ID, T> getMap() {
+	public AsyncNamedMap<ID, T> getMap() {
 		return this.namedMap;
 	}
 

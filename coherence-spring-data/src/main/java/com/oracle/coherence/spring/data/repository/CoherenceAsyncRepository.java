@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import com.oracle.coherence.repository.AbstractRepository;
 import com.oracle.coherence.repository.EntityFactory;
+import com.tangosol.net.AsyncNamedMap;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Fragment;
 import com.tangosol.util.ValueExtractor;
@@ -40,6 +41,12 @@ import com.tangosol.util.stream.RemoteCollectors;
  */
 public interface CoherenceAsyncRepository<T, ID>
 		extends AsyncCrudRepository<T, ID>, ListenerSupport<T, ID> {
+
+	/**
+	 * Return the underlying {@link AsyncNamedMap} that backs this {@code Repository}.
+	 * @return the underlying {@link AsyncNamedMap} that backs this {@code Repository}
+	 */
+	AsyncNamedMap<ID, T> getMap();
 
 	@Override
 	CompletableFuture<Long> count();
