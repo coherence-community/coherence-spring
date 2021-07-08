@@ -339,6 +339,7 @@ window.onload = function() {
 </li>
 <li><a href="#spring-boot-sessions">7.6. Spring Session Support</a></li>
 <li><a href="#spring-boot-messaging">7.7. Coherence Messaging Support</a></li>
+<li><a href="#spring-boot-metrics">7.8. Coherence Metrics</a></li>
 </ul>
 </li>
 <li><a href="#spring-cloud-config">8. Coherence Spring Cloud Config</a>
@@ -5801,6 +5802,24 @@ by annotating configuration class with <a href="https://spring.coherence.communi
 as described at <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>7.8. Coherence Metrics</h3>
+<div class="paragraph">
+<p>By adding the <code>coherence-spring-boot-starter</code> and <code>com.oracle.coherence.ce:coherence-micrometer</code> dependencies auto-configuration will register <code>CoherenceMicrometerMetrics</code> and publish <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0//manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7">Coherence Metrics</a> under the <code>coherence.</code> name.</p>
+</div>
+<div class="paragraph">
+<p>To disable the auto-configured Coherence metrics even when <code>coherence-micrometer</code> module is on the classpath, set the following property:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management:
+  metrics:
+    enable:
+      coherence: false</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -6143,7 +6162,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-08 19:12:55 UTC
+Last updated 2021-07-08 22:44:56 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
