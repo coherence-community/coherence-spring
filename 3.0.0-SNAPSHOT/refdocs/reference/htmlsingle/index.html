@@ -4873,25 +4873,22 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 <h3 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>6.5. Mapping Entities</h3>
 <div class="paragraph">
 <p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
-Repository is relatively simple.  It requires using the <code>javax.persistence.Entity</code> annotation
-to define the domain type that will be persisted, and the <code>javax.persistence.Id</code> annotation to denote the entity&#8217;s id.</p>
+Repository is relatively simple as only the id needs to be annotated.  It is possible to
+use either <code>org.springframework.data.annotation.Id</code> or <code>javax.persistence.Id</code> to denote the
+entity&#8217;s id.</p>
 </div>
 <div class="paragraph">
 <p>For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@javax.persistence.Entity
-public class Person implements Serializable {
-    @javax.persistence.Id
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Person implements Serializable {
+    @org.springframework.data.annotation.Id
     protected String id;
 
     // ---- person functionality ----
 }</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Any other <code>javax.persistence</code> annotations will not be considered by the runtime.</p>
 </div>
 </div>
 <div class="sect2">
@@ -6162,7 +6159,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-08 22:44:56 UTC
+Last updated 2021-07-08 22:51:29 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
