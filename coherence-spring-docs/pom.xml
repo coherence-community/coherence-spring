@@ -175,6 +175,7 @@
 								<link>https://docs.oracle.com/javaee/7/api/</link>
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
+							<additionalJOption>--no-module-directories</additionalJOption>
 						</configuration>
 					</execution>
 				</executions>
