@@ -11,7 +11,9 @@ import org.springframework.util.Assert;
 
 /**
  * Contains utilities to create common log messages.
+ *
  * @author Gunnar Hillert
+ * @since 3.0
  */
 public final class SessionDebugMessageUtils {
 	private SessionDebugMessageUtils() {
