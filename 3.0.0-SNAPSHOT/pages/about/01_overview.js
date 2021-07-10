@@ -3,11 +3,13 @@
 <h2 id="_overview">Overview</h2>
 <div class="section">
 <p>The Coherence Spring project provides mechanisms for application developers to integrate
-<a id="" title="" target="_blank" href="https://coherence.community/">Oracle Coherence</a> and <a id="" title="" target="_blank" href="https://spring.io/">Spring-based</a> applications.</p>
+<a id="" title="" target="_blank" href="https://coherence.community/">Oracle Coherence</a> and <a id="" title="" target="_blank" href="https://spring.io/">Spring-based</a> applications. Coherence Spring not
+only provides foundational support for Spring Framework and Spring Boot but also direct integrations for various Spring
+portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.</p>
 
 </div>
 
-<h2 id="_core_components">Core Components</h2>
+<h2 id="_get_started">Get Started</h2>
 <div class="section">
 <v-layout row wrap class="mb-5">
 <v-flex xs12>
@@ -15,28 +17,7 @@
 <v-layout row wrap class="pillars">
 <v-flex xs12 sm4 lg3>
 <v-card>
-<router-link to="/about/03_spring-core"><div class="card__link-hover"/>
-</router-link>
-<v-layout align-center justify-center class="">
-<v-avatar size="150px">
-<v-icon class="xxx-large">eco</v-icon>
-</v-avatar>
-</v-layout>
-<div class="px-3">
-<v-divider class="indigo lighten-4"/>
-</div>
-<v-card-title primary class="headline layout justify-center">
-<span style="text-align:center">Spring Core</span>
-</v-card-title>
-<v-card-text class="caption">
-<p></p>
-<p>Core Spring Framework Support</p>
-</v-card-text>
-</v-card>
-</v-flex>
-<v-flex xs12 sm4 lg3>
-<v-card>
-<router-link to="/about/04_spring-boot"><div class="card__link-hover"/>
+<router-link to="/about/02_spring-boot"><div class="card__link-hover"/>
 </router-link>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -51,93 +32,10 @@
 </v-card-title>
 <v-card-text class="caption">
 <p></p>
-<p>Autoconfiguration Support</p>
+<p>Minimum Configuration</p>
 </v-card-text>
 </v-card>
 </v-flex>
-</v-layout>
-</v-container>
-</v-flex>
-</v-layout>
-<v-layout row wrap class="mb-5">
-<v-flex xs12>
-<v-container fluid grid-list-md class="pa-0">
-<v-layout row wrap class="pillars">
-<v-flex xs12 sm4 lg3>
-<v-card>
-<router-link to="/about/05_spring-cache"><div class="card__link-hover"/>
-</router-link>
-<v-layout align-center justify-center class="">
-<v-avatar size="150px">
-<v-icon class="xxx-large">cached</v-icon>
-</v-avatar>
-</v-layout>
-<div class="px-3">
-<v-divider class="indigo lighten-4"/>
-</div>
-<v-card-title primary class="headline layout justify-center">
-<span style="text-align:center">Spring Cache</span>
-</v-card-title>
-<v-card-text class="caption">
-<p></p>
-<p>Spring&#8217;s Caching Abstraction Support</p>
-</v-card-text>
-</v-card>
-</v-flex>
-<v-flex xs12 sm4 lg3>
-<v-card>
-<router-link to="/about/07_spring-config-server"><div class="card__link-hover"/>
-</router-link>
-<v-layout align-center justify-center class="">
-<v-avatar size="150px">
-<v-icon class="xxx-large">settings</v-icon>
-</v-avatar>
-</v-layout>
-<div class="px-3">
-<v-divider class="indigo lighten-4"/>
-</div>
-<v-card-title primary class="headline layout justify-center">
-<span style="text-align:center">Spring Config Server</span>
-</v-card-title>
-<v-card-text class="caption">
-<p></p>
-<p>Centralize Configuration</p>
-</v-card-text>
-</v-card>
-</v-flex>
-<v-flex xs12 sm4 lg3>
-<v-card>
-<router-link to="/about/08_spring-data"><div class="card__link-hover"/>
-</router-link>
-<v-layout align-center justify-center class="">
-<v-avatar size="150px">
-<v-icon class="xxx-large">inventory</v-icon>
-</v-avatar>
-</v-layout>
-<div class="px-3">
-<v-divider class="indigo lighten-4"/>
-</div>
-<v-card-title primary class="headline layout justify-center">
-<span style="text-align:center">Spring Data</span>
-</v-card-title>
-<v-card-text class="caption">
-<p></p>
-<p>Use Coherence as a Spring Data Repository</p>
-</v-card-text>
-</v-card>
-</v-flex>
-</v-layout>
-</v-container>
-</v-flex>
-</v-layout>
-</div>
-
-<h2 id="_get_started">Get Started</h2>
-<div class="section">
-<v-layout row wrap class="mb-5">
-<v-flex xs12>
-<v-container fluid grid-list-md class="pa-0">
-<v-layout row wrap class="pillars">
 <v-flex xs12 sm4 lg3>
 <v-card>
 <a id="" title="" target="_blank" href="refdocs/reference/html/quickstart.html"><div class="card__link-hover"/>

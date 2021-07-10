@@ -39,20 +39,7 @@ function createRoutes(){
             component: loadPage('about-01_overview', '/about/01_overview', {})
         },
         {
-            path: '/about/03_spring-core',
-            meta: {
-                h1: 'Core Spring Framework',
-                title: 'Core Spring Framework',
-                h1Prefix: null,
-                description: null,
-                keywords: null,
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('about-03_spring-core', '/about/03_spring-core', {})
-        },
-        {
-            path: '/about/04_spring-boot',
+            path: '/about/02_spring-boot',
             meta: {
                 h1: 'Spring Boot',
                 title: 'Spring Boot',
@@ -62,59 +49,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('about-04_spring-boot', '/about/04_spring-boot', {})
-        },
-        {
-            path: '/about/05_spring-cache',
-            meta: {
-                h1: 'Spring Cache',
-                title: 'Spring Cache',
-                h1Prefix: null,
-                description: null,
-                keywords: null,
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('about-05_spring-cache', '/about/05_spring-cache', {})
-        },
-        {
-            path: '/about/06_spring-session',
-            meta: {
-                h1: 'Spring Session',
-                title: 'Spring Session',
-                h1Prefix: null,
-                description: null,
-                keywords: null,
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('about-06_spring-session', '/about/06_spring-session', {})
-        },
-        {
-            path: '/about/07_spring-config-server',
-            meta: {
-                h1: 'Spring Config Server',
-                title: 'Spring Config Server',
-                h1Prefix: null,
-                description: null,
-                keywords: null,
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('about-07_spring-config-server', '/about/07_spring-config-server', {})
-        },
-        {
-            path: '/about/08_spring-data',
-            meta: {
-                h1: 'Spring Data',
-                title: 'Spring Data',
-                h1Prefix: null,
-                description: null,
-                keywords: null,
-                customLayout: null,
-                hasNav: true
-            },
-            component: loadPage('about-08_spring-data', '/about/08_spring-data', {})
+            component: loadPage('about-02_spring-boot', '/about/02_spring-boot', {})
         },
         {
             path: '/dev/01_license',
@@ -220,17 +155,12 @@ function createNav(){
     return [
         { header: 'Project Website' },
         {
-            title: 'Components',
+            title: 'Getting Started',
             action: 'assistant',
             group: '/about',
             items: [
                 { href: '/about/01_overview', title: 'Overview' },
-                { href: '/about/03_spring-core', title: 'Core Spring Framework' },
-                { href: '/about/04_spring-boot', title: 'Spring Boot' },
-                { href: '/about/05_spring-cache', title: 'Spring Cache' },
-                { href: '/about/06_spring-session', title: 'Spring Session' },
-                { href: '/about/07_spring-config-server', title: 'Spring Config Server' },
-                { href: '/about/08_spring-data', title: 'Spring Data' }
+                { href: '/about/02_spring-boot', title: 'Spring Boot' }
             ]
         },
         {

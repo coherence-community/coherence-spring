@@ -177,7 +177,7 @@ window.onload = function() {
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section dives into the Coherence Spring Boot module. It explains how to use
-Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/">Spring Boot</a>, e.g. Autoconfiguration.</p>
+Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/">Spring Boot</a>, e.g., Autoconfiguration.</p>
 </div>
 </div>
 </div>
@@ -314,7 +314,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].name</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Namee of the session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the session.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].config</p></td>
@@ -386,8 +386,8 @@ configuration data for your Spring Boot based applications.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config">Externalized Configuration</a>,
-especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-files-importing">Importing Additional Data</a>.
+Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-external-config">Externalized Configuration</a>,
+especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-external-config-files-importing">Importing Additional Data</a>.
 </td>
 </tr>
 </table>
@@ -408,13 +408,13 @@ Please also see the chapter on <a href="spring-cloud-config.html#spring-cloud-co
 <p>You can trigger the import of remote configuration properties with the Spring Boot property
 <code>spring.config.import</code> using the value <code>coherence:</code>. You will also need the corresponding Coherence config-client
 configured to specify any remote connection settings for your Coherence cluster as well as settings specifying how
-properties will be applied, e.g. the name of the application used to fetch remote properties.</p>
+properties will be applied, e.g., the name of the application used to fetch remote properties.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
   config:
-    import: coherence:
+    import: "coherence:"
 coherence:
   config-client:
     application-name: berlin
@@ -446,7 +446,7 @@ Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/jav
 </div>
 <div class="paragraph">
 <p>Once that is in place, you can take advantage of
-<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">Spring&#8217;s Cache abstraction</a>
+<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching">Spring&#8217;s Cache abstraction</a>
 backed by Coherence and use Spring&#8217;s annotations such as <code>@Cacheable</code>, <code>@CacheEvict</code>, <code>@CachePut</code> etc.</p>
 </div>
 <div class="admonitionblock note">
@@ -469,7 +469,7 @@ following resources:</p>
 <p><a href="spring-cache.html#spring-cache">Coherence Core Spring Cache Support</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching">Spring Boot&#8217;s reference documentation&#8217;s support regarding caching</a></p>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching">Spring Boot&#8217;s reference documentation&#8217;s support regarding caching</a></p>
 </li>
 <li>
 <p><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">The Cache Abstraction</a> chapter in the core Spring Framework reference guide</p>
@@ -487,7 +487,7 @@ following resources:</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
-<a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html/#caching">Second-Level cache</a> support.</p>
+<a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html#caching">Second-Level cache</a> support.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -561,7 +561,7 @@ documentation.</p>
 <h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>5.1. Hibernate Second Level Cache Example</h3>
 <div class="paragraph">
 <p>The Coherence Spring source code repository also provides an
-<a href="https://github.com/coherence-community/coherence-spring/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
+<a href="https://github.com/coherence-community/coherence-spring/tree/master/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
 Hibernate&#8217;s Second Level caching using <a href="https://spring.io/projects/spring-boot">Spring Boot</a>.</p>
 </div>
 <div class="paragraph">
@@ -635,7 +635,7 @@ such as the genus and species.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead the plant is returned
+<p>When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead, the plant is returned
 from the second level cache as illustrated by the printed out cache statistics.</p>
 </div>
 <div class="listingblock">
@@ -742,7 +742,7 @@ Coherence-specific configuration properties.</p>
 <div class="paragraph">
 <p>Support for injecting Coherence Publishers is enabled automatically by adding the <code>coherence-spring-boot-starter</code> dependency.
 By default, base package to scan for <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>
-annotated interfaces is derived from the main class anotated with <code>@SpringBootApplication</code>. Base package can be overriden
+annotated interfaces is derived from the main class annotated with <code>@SpringBootApplication</code>. Base package can be overridden
 by annotating configuration class with <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisherScan.html">@CoherencePublisherScan</a>
 as described at <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
 </div>
@@ -771,7 +771,7 @@ as described at <a href="#coherence-spring-messaging-with-coherence-topics">Mess
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-09 05:12:16 UTC
+Last updated 2021-07-10 05:11:58 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
