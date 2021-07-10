@@ -50,7 +50,7 @@ backend:
         - title: "Project Website"
           pathprefix: "/about"
           items:
-            - title: "Components"
+            - title: "Getting Started"
               pathprefix: "/about"
               glyph:
                 type: "icon"

@@ -132,7 +132,7 @@ Let's check the statistics again, this time via the Coherence VisualVM Plugin:
 .Cache Statistics via Coherence VisualVM Plugin
 image::visual-vm-cache-get-value.png[VisuamVM Get Value From Cache]
 
-We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g. `"cacheHits" : 1`.
+We will see now how values are being returned from the cache by seeing increasing cacheHits, e.g., `"cacheHits" : 1`.
 Let's evict our Event with id 1 from the cache named events:
 
 .Evict Event

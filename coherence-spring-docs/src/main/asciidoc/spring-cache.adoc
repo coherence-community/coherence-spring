@@ -24,7 +24,7 @@ which is provided by the https://github.com/coherence-community/coherence-hibern
 As a start, please familiarize yourself with Spring's Cache Abstraction by reading the following resources:
 
 - The {spring-docs-caching}[Cache Abstraction chapter] in the core Spring Framework reference guide
-- Spring Boot's reference documentation's {spring-docs-boot}spring-boot-features.html#boot-features-caching[support regarding caching]
+- Spring Boot's reference documentation's {spring-docs-boot}features.html#boot-features-caching[support regarding caching]
 
 Spring's cache abstraction for Coherence will be automatically enabled as soon as you specify `@EnableCaching` in your
 applications configuration classes. In that case a `CoherenceCacheManager` bean implementation is registered as

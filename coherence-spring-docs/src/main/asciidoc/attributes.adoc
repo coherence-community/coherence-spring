@@ -15,7 +15,7 @@
 :coherence-spring: https://spring.coherence.community/
 :coherence-spring-website: {coherence-spring}{coherence-spring-version}/
 :github-tag: master
-:coherence-api: https://coherence.community/21.06-M2/api/java/
+:coherence-api: https://coherence.community/21.06/api/java/
 :coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/
 :coherence-spring-docs: {coherence-spring-website}refdocs/reference/
 :coherence-spring-api: {coherence-spring-website}refdocs/api/
@@ -36,13 +36,13 @@
 :spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/
 :spring-api:  https://docs.spring.io/spring-framework/docs/current/javadoc-api/
 :spring-docs-caching: {spring-docs}html/integration.html#cache
-:spring-docs-session: https://docs.spring.io/spring-session/docs/curent/reference/html5/
+:spring-docs-session: https://docs.spring.io/spring-session/docs/current/reference/html5/
 :spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
 :spring-docs-data-commons: https://docs.spring.io/spring-data/commons/docs/current/reference/html/
 :spring-docs-data-projections: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#projections
 :spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
 :oracle-coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/
-:oracle-coherence-repository-docs: https://coherence.community/21.06-M2/docs/#/docs/core/05_repository
+:oracle-coherence-repository-docs: https://coherence.community/21.06/docs/#/docs/core/05_repository
 
 :oracle-coherence: https://coherence.community/
 :spring: https://spring.io/

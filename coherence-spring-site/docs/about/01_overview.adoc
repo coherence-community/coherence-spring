@@ -15,63 +15,22 @@
 == Overview
 
 The Coherence Spring project provides mechanisms for application developers to integrate
-https://coherence.community/[Oracle Coherence] and https://spring.io/[Spring-based] applications.
-
-== Core Components
-
-[PILLARS]
-====
-[CARD]
-.Spring Core
-[icon=eco,link=about/03_spring-core.adoc]
---
-Core Spring Framework Support
---
-
-[CARD]
-.Spring Boot
-[icon=power_settings_new,link=about/04_spring-boot.adoc]
---
-Autoconfiguration Support
---
-====
-
-[PILLARS]
-====
-[CARD]
-.Spring Cache
-[icon=cached,link=about/05_spring-cache.adoc]
---
-Spring's Caching Abstraction Support
---
-
-//[CARD]
-//.Spring Session
-//[icon=fa-database,link=about/06_spring-session.adoc]
-//--
-//Spring's Session Abstraction
-//--
-
-[CARD]
-.Spring Config Server
-[icon=settings,link=about/07_spring-config-server.adoc]
---
-Centralize Configuration
---
-
-[CARD]
-.Spring Data
-[icon=inventory,link=about/08_spring-data.adoc]
---
-Use Coherence as a Spring Data Repository
---
-
-====
+https://coherence.community/[Oracle Coherence] and https://spring.io/[Spring-based] applications. Coherence Spring not
+only provides foundational support for Spring Framework and Spring Boot but also direct integrations for various Spring
+portfolio projects, including _Spring Data_ and _Spring Session_.
 
 == Get Started
 
 [PILLARS]
 ====
+
+[CARD]
+.Spring Boot
+[icon=power_settings_new,link=about/02_spring-boot.adoc]
+--
+Minimum Configuration
+--
+
 [CARD]
 .Quickstart
 [icon=arrow_circle_up,link=refdocs/reference/html/quickstart.html,link-type=url]

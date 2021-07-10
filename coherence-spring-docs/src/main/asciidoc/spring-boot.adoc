@@ -3,7 +3,7 @@
 include::attributes.adoc[]
 
 This section dives into the Coherence Spring Boot module. It explains how to use
-Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g. Autoconfiguration.
+Coherence's dedicated support for {spring-docs-boot}[Spring Boot], e.g., Autoconfiguration.
 
 [[spring-boot-getting-started]]
 == Getting Started
@@ -103,7 +103,7 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 
 | coherence.sessions.<type>[0].name
 |
-| Namee of the session.
+| Name of the session.
 
 | coherence.sessions.<type>[0].config
 |
@@ -141,21 +141,21 @@ https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[cust
 import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
 configuration data for your Spring Boot based applications.
 
-NOTE: Please also consult the Spring Boot reference guide on {spring-docs-boot}spring-boot-features.html#boot-features-external-config[Externalized Configuration],
-especially the chapter on {spring-docs-boot}spring-boot-features.html#boot-features-external-config-files-importing[Importing Additional Data].
+NOTE: Please also consult the Spring Boot reference guide on {spring-docs-boot}features.html#boot-features-external-config[Externalized Configuration],
+especially the chapter on {spring-docs-boot}features.html#boot-features-external-config-files-importing[Importing Additional Data].
 
 NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
 
 You can trigger the import of remote configuration properties with the Spring Boot property
 `spring.config.import` using the value `coherence:`. You will also need the corresponding Coherence config-client
 configured to specify any remote connection settings for your Coherence cluster as well as settings specifying how
-properties will be applied, e.g. the name of the application used to fetch remote properties.
+properties will be applied, e.g., the name of the application used to fetch remote properties.
 
 [source,yaml]
 ----
 spring:
   config:
-    import: coherence:
+    import: "coherence:"
 coherence:
   config-client:
     application-name: berlin
@@ -181,7 +181,7 @@ Spring's {spring-api}org/springframework/cache/CacheManager.html[CacheManager]) 
 `CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
 
 Once that is in place, you can take advantage of
-https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-caching[Spring's Cache abstraction]
+https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching[Spring's Cache abstraction]
 backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEvict`, `@CachePut` etc.
 
 [NOTE]
@@ -191,7 +191,7 @@ following resources:
 
 - <<quickstart.adoc#quickstart, Coherence Spring Quickstart chapter>>
 - <<spring-cache.adoc#spring-cache,Coherence Core Spring Cache Support>>
-- {spring-docs-boot}spring-boot-features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
+- {spring-docs-boot}features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
 - {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
@@ -199,7 +199,7 @@ following resources:
 == Configure Hibernate Second-Level Caching
 
 Spring's cache abstraction is not your only option with regard to caching. Another option is to use Hibernate's
-{hibernate-docs}/#caching[Second-Level cache] support.
+{hibernate-docs}#caching[Second-Level cache] support.
 
 IMPORTANT: Currently, Coherence only supports Hibernate up to `5.2.x`, as the Hibernate Cache SPI
 https://github.com/hibernate/hibernate-orm/blob/5.3/migration-guide.adoc#second-level-cache-provider-spi-changes[changed]
@@ -252,7 +252,7 @@ documentation.
 === Hibernate Second Level Cache Example
 
 The Coherence Spring source code repository also provides an
-{coherence-spring-code}samples/hibernate-cache-demo[example application], illustrating the Coherence support for
+{coherence-spring-code}tree/master/samples/hibernate-cache-demo[example application], illustrating the Coherence support for
 Hibernate's Second Level caching using https://spring.io/projects/spring-boot[Spring Boot].
 
 The example application has 1 REST endpoint that can persist, retrieve and delete a `Plant` object with taxonomic properties
@@ -322,7 +322,7 @@ curl -i \
   -X DELETE "http://localhost:9090/plants/1"
 ----
 
-When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead the plant is returned
+When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead, the plant is returned
 from the second level cache as illustrated by the printed out cache statistics.
 
 .Hibernate Cache Statistics
@@ -402,7 +402,7 @@ The following Coherence-specific configuration properties are available:
 
 Support for injecting Coherence Publishers is enabled automatically by adding the `coherence-spring-boot-starter` dependency.
 By default, base package to scan for link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]
-annotated interfaces is derived from the main class anotated with `@SpringBootApplication`. Base package can be overriden
+annotated interfaces is derived from the main class annotated with `@SpringBootApplication`. Base package can be overridden
 by annotating configuration class with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan]
 as described at <<coherence-spring-messaging-with-coherence-topics, Messaging with Coherence Topics>>.
 

@@ -99,7 +99,7 @@ configuration the default session is configured using the embedded default confi
 joining Coherence as a cluster member (Session type `SERVER`). This is of course not the only way. Coherence Spring support
 the following 3 session types:
 
-- *SERVER* - Join as Coherence cluster member. This is the default dession type.
+- *SERVER* - Join as Coherence cluster member. This is the default session type.
 - *CLIENT* - Connect to Coherence as a Coherence*Extend client
 - *GRPC* - Connect to Coherence as gRPC client
 
@@ -154,7 +154,7 @@ Depending on the session type the available properties change a bit. The followi
 
 **name**
 
-The name of the session. If not set it will be set to the default session name which is an empty String.
+The name of the session. If not set, it will be set to the default session name which is an empty String.
 
 **scopeName**
 
@@ -412,7 +412,7 @@ include::{include-source-code}di/wherefilter/PeopleService.java[tags=simpleWhere
 ----
 <1> The name of the underlying map for the view is "people".
 <2> The `@View` annotation specifies that a view will be injected rather than a raw`NamedMap`.
-<3> The `@Wherefilter` annotation specifies the CohQL expression.
+<3> The `@WhereFilter` annotation specifies the CohQL expression.
 <4> The `NamedMap` contains only people with the last name `Simpson`.
 
 The above CohQL expression is still rather simple. Let's further restrict the results:
@@ -422,7 +422,7 @@ The above CohQL expression is still rather simple. Let's further restrict the re
 ----
 include::{include-source-code}di/wherefilter/PeopleService.java[tags=complexWhereFilter]
 ----
-<1> The @Wherefilter also filters on the `age` property.
+<1> The @WhereFilter also filters on the `age` property.
 
 The view injected above will be all People with a `lastName` attribute equal to `Simpson` and an `age` attribute
 greater than `10`.
@@ -603,7 +603,7 @@ public class SomeBean {
 
 Whilst most applications probably use a single Coherence link:{coherence-api}com/tangosol/net/Session.html[Session] there are uses-cases where an application may
 have multiple sessions. In this case, when injecting a `NamedTopic` the specific session can be specified
-by annotating the injection point with link:{coherence-spring-api}com/oracle/coherence/spring/SessionName.html[@SessionName].
+by annotating the injection point with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.html[@SessionName].
 
 In the previous examples where no `@SessionName` was specified Coherence will use the default session to obtain the caches.
 
@@ -1644,7 +1644,7 @@ public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
 
 A link:{coherence-api}com/tangosol/net/events/partition/TransferEvent.html[TransferEvent] captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of link:{coherence-api}com/tangosol/util/BinaryEntry.html[BinaryEntry] instances that are being transferred.
 
-NOTE: TransferEvents are dispatched to interceptors while holding a lock on the partition being transferred, blocking any operations for the partition. Event observer methods should therfore execute as quickly as possible of hand-off execution to another thread.
+NOTE: TransferEvents are dispatched to interceptors while holding a lock on the partition being transferred, blocking any operations for the partition. Event observer methods should therefore execute as quickly as possible of hand-off execution to another thread.
 
 To subscribe to `TransferEvent` simply create a Spring bean with a listener method annotated with link:{coherence-spring-api}com/oracle/coherence/spring/event/CoherenceEventListener.html[@CoherenceEventListener].
 The method should have a single parameter of type `TransferEvent`.
@@ -1755,7 +1755,7 @@ is annotated with the filter binding annotation. This is a factory that produces
 
 We will put all three parts together in an example. Let's use a Coherence `NamedMap` named `plants` that contains plants
 represented by instances of the `Plant` class as map values. Among the various properties on the `Plant` class there is
-a property called `plantType` and a property called `height`. In this exaple, we want to inject a view that only shows
+a property called `plantType` and a property called `height`. In this example, we want to inject a view that only shows
 large palm trees (any palm tree larger than 20 meters). We would need a `Filter` that has a condition like the following:
 `plantType == PlantType.PALM && height >= 20`.
 
@@ -1909,13 +1909,18 @@ Spring Coherence integration provides support for message driven applications by
 
 A Coherence link:{coherence-api}com/tangosol/net/topic/NamedTopic.html[NamedTopic] is analogous to a queue or pub/sub topic, depending on the configuration and application code. Messages published to the topic are stored in Coherence caches, so topics are scalable and performant.
 
-A typical stand-alone Coherence application would create a `NamedTopic` along with `Publisher` or `Subscriber` instances to publish to or subscribe to topics. Injection of topics into Spring applications is already covered in <<injecting-namedtopic,Injecting NamedTopics>>. With Spring messaging this becomes much simpler.
+A typical stand-alone Coherence application would create a `NamedTopic` along with `Publisher` or `Subscriber` instances to publish to or subscribe to topics. Injection of topics into Spring applications is already covered in <<core.adoc#coherence-spring-dependency-injection-namedtopic,Injecting NamedTopics>>. With Spring messaging this becomes much simpler.
 
 With Spring Coherence Messaging publishers and subscribers beans are created by writing suitably annotated interfaces.
 
 === Define Publishers - @CoherencePublisher
 
-To create a topic Publisher that sends messages you can simply define an interface that is annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]. Also configuration class has to be annotated with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan] annotation in order to specify base packages for scanning for `@CoherencePublisher` annotated interfaces.
+To create a topic Publisher that sends messages, you can simply define an interface that is annotated with
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]. Also, your
+configuration class has to be annotated with the
+link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan]
+annotation. This is needed to specify the base package from which we recursively scan for `@CoherencePublisher` annotated
+interfaces.
 
 [source,java]
 .Config.java

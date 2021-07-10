@@ -95,7 +95,7 @@ specify the version they need, either the Oracle Coherence CE (OSS) or the comme
 In order to run the demo, we first need to create a Git repository that will contain
 the configuration data.
 
-.Setup the Config Data
+.Set up the Config Data
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
 $ cd /path/to/git/repo

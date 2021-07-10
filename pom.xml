@@ -57,14 +57,34 @@
 			<name>Gunnar Hillert</name>
 			<organization>Oracle Corporation</organization>
 		</developer>
+
+		<developer>
+			<name>Ryan Lubke</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
+
+		<developer>
+			<name>Vaso Putica</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
+
+		<developer>
+			<name>Aleks Seovic</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
+
+		<developer>
+			<name>Jonathan Knight</name>
+			<organization>Oracle Corporation</organization>
+		</developer>
 	</developers>
 
 	<scm>
 		<connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
 		<developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
 		<url>https://github.com/coherence-community/coherence-spring</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<modules>
 		<module>coherence-spring-core</module>

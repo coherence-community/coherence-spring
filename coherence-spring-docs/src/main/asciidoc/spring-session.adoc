@@ -108,7 +108,7 @@ The example application show-cases 2 use-cases:
 - Use Spring Session with embedded Coherence instances and Java serialization
 - Use Spring Session with remote Coherence instances (Coherence*Extends) and Java serialization
 
-Even though this demo is targetting Spring Session, we use Spring Security as well, since the authentication details are
+Even though this demo is targeting Spring Session, we use Spring Security as well, since the authentication details are
 stored in the session as well. In regard to authentication, users have 2 choices:
 
 - A user can POST a JSON request containing the  username and password in the body of the request.
