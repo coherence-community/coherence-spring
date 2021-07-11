@@ -16,7 +16,7 @@ Coherence Spring also provides a set of components to aid in the integration of 
 - Spring Data
 - Spring's Cache Abstraction
 - Spring Boot Config API + Spring Cloud Config Server (In-process)
-- Spring Session (TBD)
+- Spring Session
 
 == Documentation
 
