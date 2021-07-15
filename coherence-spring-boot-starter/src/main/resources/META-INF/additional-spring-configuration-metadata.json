@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "defaultValue": true,
+      "name": "coherence.spring.session.enabled",
+      "description": "Enables Coherence integration.",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}
