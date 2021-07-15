@@ -12,7 +12,7 @@ import org.springframework.session.SaveMode;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Coherence congiguration properties for Spring Session.
+ * Coherence configuration properties for Spring Session.
  *
  * @author Gunnar Hillert
  * @since 3.0
@@ -20,11 +20,6 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "coherence.spring.session")
 @Validated
 public class CoherenceSessionProperties {
-
-	/**
-	 * Is Spring Session support enabled?
-	 */
-	private boolean enabled = false;
 
 	/**
 	 * Name of the map used to store sessions.
@@ -65,14 +60,6 @@ public class CoherenceSessionProperties {
 
 	public void setSaveMode(SaveMode saveMode) {
 		this.saveMode = saveMode;
-	}
-
-	public boolean isEnabled() {
-		return this.enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
 	}
 
 }
