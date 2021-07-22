@@ -20,7 +20,7 @@
 
 		<java.version>8</java.version>
 		<coherence.version>21.06-M2</coherence.version>
-		<spring.version>5.3.6</spring.version>
+		<spring.version>5.3.9</spring.version>
 		<spring-data-bom.version>2021.0.0</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
 		<hibernate.version>5.4.31.Final</hibernate.version>
