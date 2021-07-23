@@ -379,7 +379,7 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 			}), FluxSink.OverflowStrategy.BUFFER));
 
 			if (maxBlock != null) {
-				sendFlux.timeout(maxBlock);
+				sendFlux = sendFlux.timeout(maxBlock);
 			}
 			return sendFlux;
 		}
