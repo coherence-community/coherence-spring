@@ -6,13 +6,14 @@
  */
 package com.oracle.coherence.spring.cache;
 
-import java.util.Collections;
+import java.time.Duration;
 import java.util.concurrent.Callable;
 
 import com.tangosol.net.NamedCache;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
+import org.springframework.util.Assert;
 
 /**
  * Coherence-specific implementation of {@link Cache} that defines common cache operations.
@@ -23,10 +24,17 @@ import org.springframework.cache.support.SimpleValueWrapper;
 public class CoherenceCache implements Cache {
 
 	private final NamedCache<Object, Object> cache;
+	private final CoherenceCacheConfiguration cacheConfiguration;
 
-	public CoherenceCache(NamedCache<Object, Object> cache) {
+	public CoherenceCache(NamedCache<Object, Object> cache, CoherenceCacheConfiguration cacheConfiguration) {
 		super();
+
+		Assert.notNull(cache, "The NamedCache must not be null.");
+		Assert.notNull(cache, "cacheConfiguration must not be null.");
+
 		this.cache = cache;
+		this.cacheConfiguration = cacheConfiguration;
+
 	}
 
 	@Override
@@ -107,7 +115,12 @@ public class CoherenceCache implements Cache {
 		if (value == null) {
 			return;
 		}
-		this.cache.putAll(Collections.singletonMap(key, value));
+		if (isUsingTtl(this.cacheConfiguration.getTimeToLive())) {
+			this.cache.put(key, value, this.cacheConfiguration.getTimeToLive().toMillis());
+		}
+		else {
+			this.cache.put(key, value);
+		}
 	}
 
 	/**
@@ -116,5 +129,17 @@ public class CoherenceCache implements Cache {
 	 */
 	public int size() {
 		return this.cache.size();
+	}
+
+	/**
+	 * Return the used {@link CoherenceCacheConfiguration}.
+	 * @return never returns {@code null}.
+	 */
+	public CoherenceCacheConfiguration getCacheConfiguration() {
+		return this.cacheConfiguration;
+	}
+
+	private static boolean isUsingTtl(Duration timeTolive) {
+		return timeTolive != null && !timeTolive.isZero() && !timeTolive.isNegative();
 	}
 }
