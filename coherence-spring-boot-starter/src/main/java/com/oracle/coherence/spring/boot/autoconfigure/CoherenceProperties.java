@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.boot.autoconfigure;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +80,12 @@ public class CoherenceProperties {
 	private boolean configEnabled;
 
 	/**
+	 * Spring cache abstraction configuration.
+	 */
+	private CacheAbstractionProperties cache = new CacheAbstractionProperties();
+
+
+	/**
 	 * Default prefix for Coherence properties. Defaults to {@link SpringSystemPropertyResolver#DEFAULT_PROPERTY_PREFIX}.
 	 */
 	private String propertyPrefix = SpringSystemPropertyResolver.DEFAULT_PROPERTY_PREFIX;
@@ -126,6 +133,14 @@ public class CoherenceProperties {
 
 	public void setPropertyPrefix(String propertyPrefix) {
 		this.propertyPrefix = propertyPrefix;
+	}
+
+	public CacheAbstractionProperties getCache() {
+		return this.cache;
+	}
+
+	public void setCache(CacheAbstractionProperties cache) {
+		this.cache = cache;
 	}
 
 	/**
@@ -299,6 +314,28 @@ public class CoherenceProperties {
 				sessionConfigurationBeans.addAll(this.grpc);
 			}
 			return sessionConfigurationBeans;
+		}
+	}
+
+	/**
+	 * Spring cache abstraction properties.
+	 */
+	public static class CacheAbstractionProperties {
+
+		/**
+		 * Defines the global time-to-live (ttl) value for Coherence cache entries that are used as part of the Spring Cache
+		 * abstraction. By default, this property will be initialized with a value of {@link Duration#ZERO}, which
+		 * means that the expiration value for cache values will NOT be specified when performing cache puts. However,
+		 * depending on your Coherence cache configuration in coherence-cache-config.xml, cache values may still expire.
+		 */
+		private Duration timeToLive = Duration.ZERO;
+
+		public Duration getTimeToLive() {
+			return this.timeToLive;
+		}
+
+		public void setTimeToLive(Duration timeToLive) {
+			this.timeToLive = timeToLive;
 		}
 	}
 }

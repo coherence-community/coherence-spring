@@ -6,6 +6,10 @@
  */
 package com.oracle.coherence.spring.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.oracle.coherence.spring.cache.CoherenceCacheConfiguration;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtils;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
@@ -52,6 +56,8 @@ public class EnableCoherenceImportBeanDefinitionRegistrar implements ImportBeanD
 		boolean cacheManagerFound = false;
 		boolean springSystemPropertyResolverFound = false;
 
+		final List<String> cacheConfigurationBeanNames = new ArrayList<>();
+
 		for (String beanName : beanNames) {
 			final Class<?> beanType = CoherenceAnnotationUtils.getBeanTypeForBeanName(this.beanFactory, beanName);
 			final EnableCaching enableCaching = AnnotationUtils.findAnnotation(beanType, EnableCaching.class);
@@ -63,6 +69,9 @@ public class EnableCoherenceImportBeanDefinitionRegistrar implements ImportBeanD
 			}
 			if (SpringSystemPropertyResolver.class.isAssignableFrom(beanType)) {
 				springSystemPropertyResolverFound = true;
+			}
+			if (CoherenceCacheConfiguration.class.isAssignableFrom(beanType)) {
+				cacheConfigurationBeanNames.add(beanName);
 			}
 		}
 
@@ -81,8 +90,20 @@ public class EnableCoherenceImportBeanDefinitionRegistrar implements ImportBeanD
 				this.logger.info("Creating default CacheManager.");
 			}
 
-			registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
-					.addConstructorArgReference(CoherenceSpringConfiguration.COHERENCE_BEAN_NAME).getBeanDefinition());
+			if (cacheConfigurationBeanNames.size() == 1) {
+				registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
+						.addConstructorArgReference(CoherenceSpringConfiguration.COHERENCE_BEAN_NAME)
+						.addConstructorArgReference(cacheConfigurationBeanNames.get(0))
+						.getBeanDefinition());
+			}
+			else {
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info(String.format("More than 1 CacheConfiguration bean found (Total: %s). " +
+							"Not using them for creating the default CacheManager.", cacheConfigurationBeanNames.size()));
+				}
+				registry.registerBeanDefinition("cacheManager", BeanDefinitionBuilder.genericBeanDefinition(CoherenceCacheManager.class)
+						.addConstructorArgReference(CoherenceSpringConfiguration.COHERENCE_BEAN_NAME).getBeanDefinition());
+			}
 		}
 	}
 }

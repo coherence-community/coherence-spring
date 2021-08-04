@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.cache;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,17 +27,32 @@ import org.springframework.util.Assert;
  */
 public class CoherenceCacheManager implements CacheManager {
 
-	private Coherence coherence;
+	private final Coherence coherence;
+	private final CoherenceCacheConfiguration defaultCacheConfiguration;
 
 	private final Map<String, CoherenceCache> coherenceCacheMap = new ConcurrentHashMap<String, CoherenceCache>(16);
 
 	/**
-	 * Constructs a new {@link CoherenceCacheManager} using the provided {@link Coherence} instance.
+	 * Constructs a new {@link CoherenceCacheManager} using the provided {@link Coherence} instance. The underlying
+	 * {@link CoherenceCacheConfiguration} will be initialized with a timeToLive value of {@link Duration#ZERO}, which
+	 * means that the expiration value for cache values will NOT be specified when performing cache puts. However, depending
+	 * on your Coherence cache configuration in {@code coherence-cache-config.xml} cache values may still expire.
 	 * @param coherence must not be null
 	 */
 	public CoherenceCacheManager(Coherence coherence) {
+		this(coherence, new CoherenceCacheConfiguration(Duration.ZERO));
+	}
+
+	/**
+	 * Constructs a new {@link CoherenceCacheManager} using the provided {@link Coherence} instance.
+	 * @param coherence must not be null
+	 * @param defaultCacheConfiguration must not be null
+	 */
+	public CoherenceCacheManager(Coherence coherence, CoherenceCacheConfiguration defaultCacheConfiguration) {
 		Assert.notNull(coherence, "The coherence instance must not be null.");
+		Assert.notNull(coherence, "defaultCacheConfiguration must not be null.");
 		this.coherence = coherence;
+		this.defaultCacheConfiguration = defaultCacheConfiguration;
 	}
 
 	/**
@@ -48,7 +64,7 @@ public class CoherenceCacheManager implements CacheManager {
 
 		if (cache == null) {
 			final NamedCache<Object, Object> namedCache = this.coherence.getSession().getCache(name);
-			final CoherenceCache coherenceCache = new CoherenceCache(namedCache);
+			final CoherenceCache coherenceCache = new CoherenceCache(namedCache, this.defaultCacheConfiguration);
 			final CoherenceCache preExitingCoherenceCache = this.coherenceCacheMap.putIfAbsent(name, coherenceCache);
 
 			return (preExitingCoherenceCache != null) ? preExitingCoherenceCache : coherenceCache;

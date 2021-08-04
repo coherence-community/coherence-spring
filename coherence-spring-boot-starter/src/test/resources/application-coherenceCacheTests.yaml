@@ -1,0 +1,3 @@
+coherence:
+  cache:
+    time-to-live: 1s

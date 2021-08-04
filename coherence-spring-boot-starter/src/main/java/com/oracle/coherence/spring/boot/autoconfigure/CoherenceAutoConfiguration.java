@@ -11,6 +11,7 @@ import java.util.List;
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.boot.autoconfigure.messaging.CoherencePublisherAutoConfigurationScanRegistrar;
 import com.oracle.coherence.spring.boot.config.CoherenceConfigClientProperties;
+import com.oracle.coherence.spring.cache.CoherenceCacheConfiguration;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
@@ -56,8 +57,13 @@ public class CoherenceAutoConfiguration {
 	@Bean
 	@Conditional(CachingEnabledCondition.class)
 	@ConditionalOnMissingBean(CacheManager.class)
-	CoherenceCacheManager cacheManager(Coherence coherence) {
-		return new CoherenceCacheManager(coherence);
+	CoherenceCacheManager cacheManager(Coherence coherence, CoherenceProperties coherenceProperties) {
+		if (coherenceProperties.getCache() != null) {
+			return new CoherenceCacheManager(coherence, new CoherenceCacheConfiguration(coherenceProperties.getCache().getTimeToLive()));
+		}
+		else {
+			return new CoherenceCacheManager(coherence);
+		}
 	}
 
 	@Bean

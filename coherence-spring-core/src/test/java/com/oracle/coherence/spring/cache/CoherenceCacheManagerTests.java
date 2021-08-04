@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.cache;
 
+import java.time.Duration;
 import java.util.Collection;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,6 +68,13 @@ public class CoherenceCacheManagerTests {
 		final CoherenceCache springCoherenceCache = (CoherenceCache) springCache;
 		final CoherenceCache anotherCoherenceCache = (CoherenceCache) anotherCache;
 
+		final CoherenceCacheConfiguration springCoherenceCacheConfiguration =
+				(CoherenceCacheConfiguration) ReflectionTestUtils.getField(springCoherenceCache, "cacheConfiguration");
+		final CoherenceCacheConfiguration anotherCoherenceCacheConfiguration =
+				(CoherenceCacheConfiguration) ReflectionTestUtils.getField(anotherCoherenceCache, "cacheConfiguration");
+
+		assertThat(springCoherenceCacheConfiguration.getTimeToLive()).isEqualTo(Duration.ZERO);
+		assertThat(anotherCoherenceCacheConfiguration.getTimeToLive()).isEqualTo(Duration.ZERO);
 		assertThat(springCoherenceCache.size()).isEqualTo(0);
 		assertThat(anotherCoherenceCache.size()).isEqualTo(0);
 	}

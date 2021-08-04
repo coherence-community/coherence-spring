@@ -68,6 +68,68 @@ public class CacheConfiguration {
 ----
 ====
 
+When the `CacheManager` gets instantiated it is configured with default settings that then get applied for all underlying
+caches being created and used. Those settings are defined using the `CoherenceCacheConfiguration` object. If not specified
+as a second (optional) constructor argument to the `CoherenceCacheManager`, a default instance is created.
+
+Thus, you can customize certain cache properties when instantiating the `CoherenceCacheManager` by providing
+your own `CoherenceCacheConfiguration` instance as a second constructor argument. For example, you can set the
+`time-to-live` (ttl) property to specify that caches shall expire after a certain period.
+
+NOTE: By default, the underling `time-to-live` property for caches used for the Spring cache abstraction is `0`. This means
+that cache entries typically do not expire. *However*, you can also specify cache expiration settings via the
+`coherence-cache-config.xml`.
+
+.Defining a CacheManager with additional cache configuration
+====
+.Java
+[source,java,role="primary"]
+----
+@Configuration
+@EnableCaching
+public class CacheConfiguration {
+	@Bean
+	public CacheManager cacheManager(Coherence coherence) {
+		CoherenceCacheConfiguration cacheConfiguration =
+					new CoherenceCacheConfiguration(Duration.ofMillis(1234));
+		return new CoherenceCacheManager(coherenceInstance, cacheConfiguration);
+	}
+}
+----
+
+.XML
+[source,xml,role="secondary"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd">
+
+  <cache:annotation-driven/>
+
+  <bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager">
+    <constructor-arg ref="coherenceInstance"/>
+    <constructor-arg>
+        <bean class="com.oracle.coherence.spring.cache.CoherenceCacheConfiguration">
+            <constructor-arg>
+                <bean class="java.time.Duration" factory-method="ofMillis">
+                    <constructor-arg value="1234"/>
+                </bean>
+            </constructor-arg>
+        </bean>
+    </constructor-arg>
+  </bean>
+</beans>
+----
+====
+
+TIP: You don't need to define a `CoherenceCacheManager` to configure the default configuration. You can also just define
+a `CoherenceCacheConfiguration` bean in your Spring application context. As long as there is only a single bean of that
+type defined, the default `CoherenceCacheManager` that is being implicitly created will use that bean.
+
 Please consult the <<quickstart.adoc#quickstart, Quickstart chapter>> to see an example using Spring's cache abstraction support with
 Spring Boot. Coherence Spring also provides an example of using Spring Framework (without Spring Boot). The source code
 for the samples is part of the Coherence Spring projects:
