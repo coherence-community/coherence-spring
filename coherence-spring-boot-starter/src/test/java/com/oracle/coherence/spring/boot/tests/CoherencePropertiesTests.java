@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.boot.tests;
 
+import java.time.Duration;
 import java.util.List;
 
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
@@ -98,6 +99,14 @@ public class CoherencePropertiesTests {
 		assertThat(this.coherenceProperties.getProperties().get("coherence.log.logger")).isEqualTo("CoherenceSpring");
 		assertThat(this.coherenceProperties.getProperties().get("coherence.log")).isEqualTo("log4j");
 		assertThat(this.coherenceProperties.getProperties().get("coherence.log.format")).isEqualTo("foobar");
+	}
+
+	@Test
+	void testCacheProperties() {
+		assertThat(this.coherenceProperties.getCache()).isNotNull();
+		assertThat(this.coherenceProperties.getCache().getCacheNamePrefix()).isEqualTo("");
+		assertThat(this.coherenceProperties.getCache().getTimeToLive()).isEqualTo(Duration.ZERO);
+		assertThat(this.coherenceProperties.getCache().isUseCacheNamePrefix()).isFalse();
 	}
 
 	private void validateConfigUri(String expectedConfigUri, SessionConfiguration sessionConfiguration) {

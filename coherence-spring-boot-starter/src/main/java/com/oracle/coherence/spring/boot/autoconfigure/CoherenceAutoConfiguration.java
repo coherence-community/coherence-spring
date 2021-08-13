@@ -59,7 +59,12 @@ public class CoherenceAutoConfiguration {
 	@ConditionalOnMissingBean(CacheManager.class)
 	CoherenceCacheManager cacheManager(Coherence coherence, CoherenceProperties coherenceProperties) {
 		if (coherenceProperties.getCache() != null) {
-			return new CoherenceCacheManager(coherence, new CoherenceCacheConfiguration(coherenceProperties.getCache().getTimeToLive()));
+			final CoherenceProperties.CacheAbstractionProperties cacheProperties = coherenceProperties.getCache();
+			final CoherenceCacheConfiguration coherenceCacheConfiguration = new CoherenceCacheConfiguration();
+			coherenceCacheConfiguration.setCacheNamePrefix(cacheProperties.getCacheNamePrefix());
+			coherenceCacheConfiguration.setUseCacheNamePrefix(cacheProperties.isUseCacheNamePrefix());
+			coherenceCacheConfiguration.setTimeToLive(cacheProperties.getTimeToLive());
+			return new CoherenceCacheManager(coherence, coherenceCacheConfiguration);
 		}
 		else {
 			return new CoherenceCacheManager(coherence);

@@ -1,0 +1,9 @@
+
+coherence:
+  cache:
+    time-to-live: 0s
+    cache-name-prefix: "${spring.application.name}_"
+    use-cache-name-prefix: true
+spring:
+  application:
+    name: FooTesting
