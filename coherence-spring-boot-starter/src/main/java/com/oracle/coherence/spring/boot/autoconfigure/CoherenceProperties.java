@@ -330,12 +330,38 @@ public class CoherenceProperties {
 		 */
 		private Duration timeToLive = Duration.ZERO;
 
+		/**
+		 * Disabled by default. Prepend cache names with a prefix.
+		 */
+		private boolean useCacheNamePrefix = false;
+
+		/**
+		 * The String to prepend cache names with. Empty by default
+		 */
+		private String cacheNamePrefix = "";
+
 		public Duration getTimeToLive() {
 			return this.timeToLive;
 		}
 
 		public void setTimeToLive(Duration timeToLive) {
 			this.timeToLive = timeToLive;
+		}
+
+		public String getCacheNamePrefix() {
+			return this.cacheNamePrefix;
+		}
+
+		public void setCacheNamePrefix(String cacheNamePrefix) {
+			this.cacheNamePrefix = cacheNamePrefix;
+		}
+
+		public boolean isUseCacheNamePrefix() {
+			return this.useCacheNamePrefix;
+		}
+
+		public void setUseCacheNamePrefix(boolean useCacheNamePrefix) {
+			this.useCacheNamePrefix = useCacheNamePrefix;
 		}
 	}
 }

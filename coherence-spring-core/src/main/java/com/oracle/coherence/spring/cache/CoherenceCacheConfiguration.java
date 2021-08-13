@@ -18,7 +18,20 @@ import org.springframework.util.Assert;
  * @since 3.0
  */
 public class CoherenceCacheConfiguration {
-	private final Duration timeToLive;
+	private Duration timeToLive = Duration.ZERO;
+
+	/**
+	 * Disabled by default. Prepend cache names with a prefix.
+	 */
+	private boolean useCacheNamePrefix = false;
+
+	/**
+	 * The String to prepend cache names with. Empty by default
+	 */
+	private String cacheNamePrefix = "";
+
+	public CoherenceCacheConfiguration() {
+	}
 
 	/**
 	 * Initialize the cache configuration properties.
@@ -26,9 +39,7 @@ public class CoherenceCacheConfiguration {
 	 *                   control the expiration via the coherence-cache-config.xml file.
 	 */
 	public CoherenceCacheConfiguration(Duration timeToLive) {
-		Assert.notNull(timeToLive, "timeToLive must not be null.");
-		Assert.isTrue(!timeToLive.isNegative(), "timeToLive must not be negative.");
-		this.timeToLive = timeToLive;
+		this.setTimeToLive(timeToLive);
 	}
 
 	/**
@@ -37,5 +48,36 @@ public class CoherenceCacheConfiguration {
 	 */
 	public Duration getTimeToLive() {
 		return this.timeToLive;
+	}
+
+	public void setTimeToLive(Duration timeToLive) {
+		Assert.notNull(timeToLive, "timeToLive must not be null.");
+		Assert.isTrue(!timeToLive.isNegative(), "timeToLive must not be negative.");
+		this.timeToLive = timeToLive;
+	}
+
+	public boolean isUseCacheNamePrefix() {
+		return this.useCacheNamePrefix;
+	}
+
+	public void setUseCacheNamePrefix(boolean useCacheNamePrefix) {
+		this.useCacheNamePrefix = useCacheNamePrefix;
+	}
+
+	public String getCacheNamePrefix() {
+		return this.cacheNamePrefix;
+	}
+
+	public void setCacheNamePrefix(String cacheNamePrefix) {
+		this.cacheNamePrefix = cacheNamePrefix;
+	}
+
+	public String getCacheName(String name) {
+		if (this.isUseCacheNamePrefix()) {
+			return this.getCacheNamePrefix() + name;
+		}
+		else {
+			return name;
+		}
 	}
 }

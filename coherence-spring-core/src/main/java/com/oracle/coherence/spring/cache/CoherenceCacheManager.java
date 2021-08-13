@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
+import com.tangosol.net.Session;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -63,11 +64,13 @@ public class CoherenceCacheManager implements CacheManager {
 		final CoherenceCache cache = this.coherenceCacheMap.get(name);
 
 		if (cache == null) {
-			final NamedCache<Object, Object> namedCache = this.coherence.getSession().getCache(name);
+			final Session session = this.coherence.getSession();
+			final String cacheNameToUse = this.defaultCacheConfiguration.getCacheName(name);
+			final NamedCache<Object, Object> namedCache = session.getCache(cacheNameToUse);
 			final CoherenceCache coherenceCache = new CoherenceCache(namedCache, this.defaultCacheConfiguration);
-			final CoherenceCache preExitingCoherenceCache = this.coherenceCacheMap.putIfAbsent(name, coherenceCache);
+			final CoherenceCache preExistingCoherenceCache = this.coherenceCacheMap.putIfAbsent(name, coherenceCache);
 
-			return (preExitingCoherenceCache != null) ? preExitingCoherenceCache : coherenceCache;
+			return (preExistingCoherenceCache != null) ? preExistingCoherenceCache : coherenceCache;
 		}
 		else {
 			return cache;
