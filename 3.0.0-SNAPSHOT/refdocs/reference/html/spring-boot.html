@@ -422,7 +422,7 @@ coherence:
 </div>
 </div>
 <div class="paragraph">
-<p>Many properties have sensible default value. Please see class
+<p>Many properties have sensible default values. Please see class
 <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/config/CoherenceConfigClientProperties.html">CoherenceConfigClientProperties</a>
 for details.</p>
 </div>
@@ -687,12 +687,64 @@ List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 <h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>6. Spring Session Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you have not already done so, please read the chapter on
-<a href="spring-session.html#spring-session">Coherence Spring Session</a> first.</p>
+<p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
+Coherence-specific configuration properties. Before you continue, please consider reading the chapter
+on <a href="spring-session.html#spring-session">Coherence Spring Session</a> first.</p>
 </div>
 <div class="paragraph">
-<p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
-Coherence-specific configuration properties.</p>
+<p>In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
+project:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. Add Coherence Spring Session Support</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.06&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.spring:coherence-spring-session:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.06")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Basically, adding the <code>coherence-spring-session</code> dependency will activate the <code>CoherenceSpringSessionAutoConfiguration</code>
+class. Auto-configuration will back-off in certain situations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set property <code>coherence.spring.session.enabled</code> to <code>false</code></p>
+</li>
+<li>
+<p>Define <code>spring.session.store-type</code>. Any value will deactivate auto-configuration.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>The following Coherence-specific configuration properties are available:</p>
@@ -771,7 +823,7 @@ as described at <a href="#coherence-spring-messaging-with-coherence-topics">Mess
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-17 05:10:58 UTC
+Last updated 2021-08-18 03:57:26 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
