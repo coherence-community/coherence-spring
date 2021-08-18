@@ -35,7 +35,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringJUnitConfig(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.Config.class)
@@ -84,13 +83,11 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		assertThat(bean.getDefaultCcfNumbers().getName(), is("numbers"));
 		assertThat(bean.getDefaultCcfAsyncNumbers(), is(notNullValue()));
 		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedMap().getName(), is("numbers"));
-		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedMap(), is(bean.getDefaultCcfNumbers()));
 
 		assertThat(bean.getSpecificCcfNumbers(), is(notNullValue()));
 		assertThat(bean.getSpecificCcfNumbers().getName(), is("numbers"));
 		assertThat(bean.getSpecificCcfAsyncNumbers(), is(notNullValue()));
 		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedMap().getName(), is("numbers"));
-		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedMap(), is(bean.getSpecificCcfNumbers()));
 
 		assertThat(bean.getDefaultCcfNumbers(), is(not(bean.getSpecificCcfNumbers())));
 	}
@@ -142,7 +139,6 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		CacheMap map = bean.getCacheMap();
 		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test
@@ -150,7 +146,6 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		ConcurrentMap map = bean.getConcurrentMap();
 		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test
@@ -158,7 +153,6 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		InvocableMap map = bean.getInvocableMap();
 		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test
@@ -166,7 +160,6 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		ObservableMap map = bean.getObservableMap();
 		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test
@@ -174,7 +167,6 @@ class CoherenceNamedCacheConfigurationNamedMapAnnotationTests {
 		CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean bean = this.ctx.getBean(CoherenceNamedCacheConfigurationNamedMapAnnotationTests.SuperTypesBean.class);
 		QueryMap map = bean.getQueryMap();
 		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test

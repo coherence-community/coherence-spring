@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) 2021, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<!-- # tag::header[] -->
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+<!-- # end::header[] -->
+
+    <caching-scheme-mapping>
+        <!-- # tag::mapping[] -->
+        <cache-mapping>
+            <cache-name>people</cache-name>
+            <scheme-name>db-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>repository-bean</param-name>
+                    <param-value>personRepository</param-value>
+                </init-param>
+            </init-params>
+        </cache-mapping>
+        <!-- # end::mapping[] -->
+    </caching-scheme-mapping>
+
+<!-- # tag::scheme[] -->
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>db-scheme</scheme-name>
+            <service-name>StorageService</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme/>
+                    </internal-cache-scheme>
+                    <cachestore-scheme>
+                        <spring:bean>{repository-bean}</spring:bean>
+                    </cachestore-scheme>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+        </distributed-scheme>
+<!-- # end::scheme[] -->
+
+        <!-- proxy scheme that allows extend clients to connect to the cluster over TCP/IP -->
+        <proxy-scheme>
+            <service-name>Proxy</service-name>
+            <acceptor-config>
+                <tcp-acceptor>
+                    <local-address>
+                        <address system-property="coherence.extend.address">0.0.0.0</address>
+                        <port system-property="coherence.extend.port">20000</port>
+                    </local-address>
+                </tcp-acceptor>
+            </acceptor-config>
+            <autostart>true</autostart>
+        </proxy-scheme>
+    </caching-schemes>
+</cache-config>

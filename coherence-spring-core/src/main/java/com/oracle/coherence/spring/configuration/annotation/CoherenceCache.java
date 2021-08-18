@@ -16,6 +16,7 @@ import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.SessionName;
 import com.tangosol.net.Coherence;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.AliasFor;
 
 /**
@@ -30,6 +31,7 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @CoherenceMap
+@Lazy
 public @interface CoherenceCache {
 
 	@AliasFor(annotation = Name.class)

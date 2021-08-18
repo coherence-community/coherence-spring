@@ -31,6 +31,7 @@
 		<module>coherence-spring-demo</module>
 		<module>hibernate-cache-demo</module>
 		<module>spring-session-demo</module>
+		<module>cachestore-demo</module>
 	</modules>
 
 	<build>

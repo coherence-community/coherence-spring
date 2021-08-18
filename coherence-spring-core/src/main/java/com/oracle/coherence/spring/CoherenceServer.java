@@ -107,6 +107,9 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+		// We need to ensure that the context is injected into the CoherenceContext to work around
+		// any race where Spring may not yet have done this for us
+		CoherenceContext.setApplicationContext(applicationContext);
 	}
 
 	@Override

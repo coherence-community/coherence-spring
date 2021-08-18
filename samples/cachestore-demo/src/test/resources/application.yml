@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:hsql://localhost/testdb
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.show_sql: false
+      hibernate.use_sql_comments: false
+      hibernate.format_sql: true

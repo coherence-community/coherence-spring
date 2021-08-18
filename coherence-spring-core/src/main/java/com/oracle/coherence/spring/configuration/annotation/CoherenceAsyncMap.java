@@ -18,6 +18,7 @@ import com.oracle.coherence.spring.configuration.NamedCacheConfiguration;
 import com.tangosol.net.Coherence;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.AliasFor;
 
 /**
@@ -34,6 +35,7 @@ import org.springframework.core.annotation.AliasFor;
 @Documented
 @CoherenceCache
 @Value("#{" + NamedCacheConfiguration.COHERENCE_ASYNC_CACHE_BEAN_NAME + "}")
+@Lazy
 public @interface CoherenceAsyncMap {
 
 	@AliasFor(annotation = Name.class)

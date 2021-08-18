@@ -6,9 +6,11 @@
  */
 package com.oracle.coherence.spring.namespace;
 
+import java.text.ParseException;
 import java.util.Objects;
 
 import com.tangosol.coherence.config.ParameterList;
+import com.tangosol.coherence.config.ParameterMacroExpressionParser;
 import com.tangosol.coherence.config.builder.ParameterizedBuilder;
 import com.tangosol.config.ConfigurationException;
 import com.tangosol.config.expression.Expression;
@@ -45,7 +47,14 @@ public class BeanBuilder implements ParameterizedBuilder<Object>, ParameterizedB
 	 */
 	BeanBuilder(ApplicationContext context, String beanNameExpression) {
 		this.context = Objects.requireNonNull(context);
-		this.beanNameExpression = new LiteralExpression<>(beanNameExpression);
+		Expression<String> expression;
+		try {
+			expression = ParameterMacroExpressionParser.INSTANCE.parse(beanNameExpression, String.class);
+		}
+		catch (ParseException ex) {
+			expression = new LiteralExpression<>(beanNameExpression);
+		}
+		this.beanNameExpression = expression;
 	}
 
 	@Override
