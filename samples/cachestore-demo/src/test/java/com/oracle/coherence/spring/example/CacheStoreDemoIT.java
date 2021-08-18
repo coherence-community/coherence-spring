@@ -8,9 +8,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.oracle.bedrock.runtime.LocalPlatform;
 import com.oracle.bedrock.runtime.coherence.CoherenceClusterMember;
 import com.oracle.bedrock.runtime.coherence.callables.IsServiceRunning;
+import com.oracle.bedrock.runtime.coherence.options.LocalHost;
 import com.oracle.bedrock.runtime.java.ClassPath;
 import com.oracle.bedrock.runtime.java.JavaApplication;
 import com.oracle.bedrock.runtime.java.options.ClassName;
+import com.oracle.bedrock.runtime.java.options.IPv4Preferred;
 import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.Arguments;
 import com.oracle.bedrock.runtime.options.DisplayName;
@@ -113,6 +115,7 @@ public class CacheStoreDemoIT {
 				testLogs,
 				ClassPath.ofClass(Server.class),
 				Arguments.of("--database.0", "file:testdb", "--dbname.0", "testdb", "--port", 9001),
+				IPv4Preferred.yes(),
 				DisplayName.of("HSQLDB"));
 
 		// Start the Coherence demo server
@@ -120,6 +123,8 @@ public class CacheStoreDemoIT {
 				ClassName.of(CacheStoreDemo.class),
 				testLogs,
 				SystemProperty.of("spring.jmx.enabled", true),
+				LocalHost.only(),
+				IPv4Preferred.yes(),
 				DisplayName.of("server"));
 
 		// Wait for Spring to start

@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.example.controller;
 
 import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
+import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
 import com.oracle.coherence.spring.example.model.Person;
 import com.tangosol.net.NamedCache;
 
@@ -34,8 +35,7 @@ public class PersonController {
 	/**
 	 * The {@link NamedCache} to store {@link Person} entities.
 	 */
-	@Lazy
-	@CoherenceCache
+	@CoherenceMap
 	private NamedCache<Long, Person> people;
 
 	/**
