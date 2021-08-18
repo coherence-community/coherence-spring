@@ -9,16 +9,21 @@ package com.oracle.coherence.spring.boot.autoconfigure.session;
 import java.time.Duration;
 
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
+import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import com.oracle.coherence.spring.session.config.annotation.web.http.CoherenceHttpSessionConfiguration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.session.SessionProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.session.SessionRepository;
 
 /**
  * Coherence auto-configuration for Spring Session.
@@ -28,9 +33,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @AutoConfigureAfter(CoherenceAutoConfiguration.class)
 @Configuration
-@EnableConfigurationProperties(CoherenceSessionProperties.class)
-@ConditionalOnProperty(name = "coherence.spring.session.enabled", havingValue = "true")
-public class CoherenceSessionConfiguration {
+@EnableConfigurationProperties(CoherenceSpringSessionProperties.class)
+@Conditional(CoherenceSpringSessionCondition.class)
+@ConditionalOnClass(CoherenceIndexedSessionRepository.class)
+@ConditionalOnMissingBean(SessionRepository.class)
+@ConditionalOnProperty(name = "coherence.spring.session.enabled", havingValue = "true", matchIfMissing = true)
+public class CoherenceSpringSessionAutoConfiguration {
 
 	@Configuration(proxyBeanMethods = false)
 	@AutoConfigureBefore(name = "org.springframework.boot.actuate.autoconfigure.session.SessionsEndpointAutoConfiguration")
@@ -38,15 +46,15 @@ public class CoherenceSessionConfiguration {
 
 		@Autowired
 		public void customize(SessionProperties sessionProperties,
-				CoherenceSessionProperties coherenceSessionProperties, ServerProperties serverProperties) {
+				CoherenceSpringSessionProperties coherenceSpringSessionProperties, ServerProperties serverProperties) {
 			final Duration timeout = sessionProperties
 					.determineTimeout(() -> serverProperties.getServlet().getSession().getTimeout());
 			if (timeout != null) {
 				setMaxInactiveIntervalInSeconds((int) timeout.getSeconds());
 			}
-			setSessionMapName(coherenceSessionProperties.getMapName());
-			setFlushMode(coherenceSessionProperties.getFlushMode());
-			setSaveMode(coherenceSessionProperties.getSaveMode());
+			setSessionMapName(coherenceSpringSessionProperties.getMapName());
+			setFlushMode(coherenceSpringSessionProperties.getFlushMode());
+			setSaveMode(coherenceSpringSessionProperties.getSaveMode());
 		}
 
 	}

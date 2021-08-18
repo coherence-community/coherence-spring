@@ -162,7 +162,7 @@ coherence:
     profile: kona
 ----
 
-Many properties have sensible default value. Please see class
+Many properties have sensible default values. Please see class
 {coherence-spring-api}com/oracle/coherence/spring/boot/config/CoherenceConfigClientProperties.html[CoherenceConfigClientProperties]
 for details.
 
@@ -367,11 +367,53 @@ curl -i \
 [[spring-boot-sessions]]
 == Spring Session Support
 
-If you have not already done so, please read the chapter on
-<<spring-session.adoc#spring-session, Coherence Spring Session>> first.
-
 Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
-Coherence-specific configuration properties.
+Coherence-specific configuration properties. Before you continue, please consider reading the chapter
+on <<spring-session.adoc#spring-session, Coherence Spring Session>> first.
+
+In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
+project:
+
+.Add Coherence Spring Session Support
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-session</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
+----
+====
+
+Basically, adding the `coherence-spring-session` dependency will activate the `CoherenceSpringSessionAutoConfiguration`
+class. Auto-configuration will back-off in certain situations:
+
+- Set property `coherence.spring.session.enabled` to `false`
+- Define `spring.session.store-type`. Any value will deactivate auto-configuration.
 
 The following Coherence-specific configuration properties are available:
 

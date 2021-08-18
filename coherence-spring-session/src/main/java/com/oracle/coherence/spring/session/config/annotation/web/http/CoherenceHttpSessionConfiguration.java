@@ -15,6 +15,8 @@ import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
 import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import com.oracle.coherence.spring.session.config.annotation.SpringSessionCoherenceInstance;
 import com.tangosol.net.Coherence;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,8 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfiguration implements ImportAware {
+
+	private static final Log logger = LogFactory.getLog(CoherenceHttpSessionConfiguration.class);
 
 	private Integer maxInactiveIntervalInSeconds = MapSession.DEFAULT_MAX_INACTIVE_INTERVAL_SECONDS;
 
@@ -124,6 +128,10 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	}
 
 	private CoherenceIndexedSessionRepository createCoherenceIndexedSessionRepository() {
+		if (logger.isInfoEnabled()) {
+			logger.info("Creating CoherenceIndexedSessionRepository...");
+		}
+
 		final com.tangosol.net.Session coherenceSession;
 		if (StringUtils.hasText(this.coherenceSessionName)) {
 			coherenceSession = this.coherence.getSession(this.coherenceSessionName);

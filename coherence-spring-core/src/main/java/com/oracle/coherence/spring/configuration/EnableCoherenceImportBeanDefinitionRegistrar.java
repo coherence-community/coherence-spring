@@ -38,7 +38,7 @@ import org.springframework.core.type.AnnotationMetadata;
  */
 public class EnableCoherenceImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
 
-	protected static final Log logger = LogFactory.getLog(CoherenceSpringConfiguration.class);
+	protected static final Log logger = LogFactory.getLog(EnableCoherenceImportBeanDefinitionRegistrar.class);
 
 	final Environment environment;
 	final BeanFactory beanFactory;
