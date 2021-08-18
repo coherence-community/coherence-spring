@@ -6,6 +6,8 @@
  */
 package com.oracle.coherence.spring;
 
+import javax.inject.Inject;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +31,9 @@ public class CoherenceContext {
 	 * Create a {@link CoherenceContext}.
 	 * @param ctx the {@link ApplicationContext}
 	 */
-
+	@Inject
 	public CoherenceContext(ApplicationContext ctx) {
-		CoherenceContext.ctx = ctx;
+		setApplicationContext(ctx);
 	}
 
 	/**
@@ -40,5 +42,15 @@ public class CoherenceContext {
 	 */
 	public static ApplicationContext getApplicationContext() {
 		return ctx;
+	}
+
+	/**
+	 * Set the global {@link ApplicationContext}.
+	 * @param ctx  the {@link ApplicationContext} to be used by Coherence classes
+	 */
+	public static void setApplicationContext(ApplicationContext ctx) {
+		if (ctx != null) {
+			CoherenceContext.ctx = ctx;
+		}
 	}
 }

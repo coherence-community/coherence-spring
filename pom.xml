@@ -148,7 +148,7 @@
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.18.1</assertj.version>
 		<awaitility.version>4.0.3</awaitility.version>
-		<bedrock.version>5.1.1</bedrock.version>
+		<bedrock.version>5.1.2</bedrock.version>
 		<coherence.version>21.06</coherence.version>
 		<classgraph.version>4.8.102</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
@@ -161,6 +161,7 @@
 		<log4j.version>2.14.1</log4j.version>
 		<mockito.version>1.10.19</mockito.version>
 		<org.springframework.version>5.3.8</org.springframework.version>
+		<org.springframework.data.version>2021.0.4</org.springframework.data.version>
 		<reactor.version>3.4.6</reactor.version>
 		<spring-boot.version>2.5.2</spring-boot.version>
 		<spring-session.version>2.4.3</spring-session.version>
@@ -207,6 +208,13 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
 				<version>${org.springframework.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-bom</artifactId>
+				<version>${org.springframework.data.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
