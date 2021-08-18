@@ -463,3 +463,51 @@ management:
     enable:
       coherence: false
 ----
+
+[[spring-boot-data]]
+== Spring Data Support
+
+Coherence Spring's support for Spring Data also contain auto-configuration support for Spring Boot. The auto-configuration
+is activated as soon as the Coherence Spring Data dependency is added to your Spring Boot project.
+
+.Add Coherence Spring Data Support
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-data</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    compile("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
+    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
+----
+====
+
+There is no need to add the `@EnableCoherenceRepositories` annotation, as the Coherence Spring Data auto-configuration
+support, will automatically detect any Coherence repositories. In fact, adding `@EnableCoherenceRepositories` to your
+Spring Boot project, will cause auto-configuration to back-off.
+
+Auto-configuration can also be de-activated by setting environment property `coherence.spring.data.repositories.enabled`
+to `false`.

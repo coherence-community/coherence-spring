@@ -77,7 +77,7 @@
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-data</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>

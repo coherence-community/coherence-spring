@@ -1,10 +1,16 @@
 {
   "properties": [
     {
-      "defaultValue": true,
       "name": "coherence.spring.session.enabled",
+      "type": "java.lang.Boolean",
       "description": "Enables Coherence integration.",
-      "type": "java.lang.Boolean"
+      "defaultValue": true
+    },
+    {
+      "name": "coherence.spring.data.repositories.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Coherence data repositories.",
+      "defaultValue": true
     }
   ]
 }
