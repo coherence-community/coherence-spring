@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @ConfigurationProperties(prefix = "coherence.spring.session")
 @Validated
-public class CoherenceSessionProperties {
+public class CoherenceSpringSessionProperties {
 
 	/**
 	 * Name of the map used to store sessions.
