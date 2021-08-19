@@ -68,7 +68,7 @@ include::src/main/resources/coherence-cache-config.xml[tag=mapping]
 ----
 
 In the mapping above, the cache name `people` maps to the scheme `db-scheme` that we created above.
-As we mentioned above, we need to pass the actual bean name in the `repository-bean` parameter, which we do using `<init-params>` in the mapping. We set the `<param-value>` element to the bean name, in this case `personRepository`.
+As we mentioned above, we need to pass the actual bean name in the `repository-bean` parameter, which we do by using the `<init-params>` element in the mapping. We set the `<param-value>` element to the bean name, in this case `personRepository`.
 
 [NOTE]
 ====
