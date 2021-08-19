@@ -23,11 +23,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: Build with Maven + Deploy Website + Snapshots
+      - name: Build and test with Maven
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+          ./mvnw clean verify -B -Pspring -Powasp --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
