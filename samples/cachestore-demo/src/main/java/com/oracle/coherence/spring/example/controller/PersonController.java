@@ -6,12 +6,10 @@
  */
 package com.oracle.coherence.spring.example.controller;
 
-import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
 import com.oracle.coherence.spring.example.model.Person;
-import com.tangosol.net.NamedCache;
+import com.tangosol.net.NamedMap;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,16 +25,17 @@ import org.springframework.web.server.ResponseStatusException;
  *
  * @author Jonathan Knight 2021.08.17
  */
+// # tag::code[]
 @RestController
 @RequestMapping(path = "/api/people")
 @Transactional()
 public class PersonController {
 
 	/**
-	 * The {@link NamedCache} to store {@link Person} entities.
+	 * The {@link NamedMap} to store {@link Person} entities.
 	 */
 	@CoherenceMap
-	private NamedCache<Long, Person> people;
+	private NamedMap<Long, Person> people;
 
 	/**
 	 * Create a {@link Person} in the cache.
@@ -74,3 +73,4 @@ public class PersonController {
 	}
 
 }
+// # end::code[]

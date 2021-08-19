@@ -6,8 +6,10 @@
  */
 package com.oracle.coherence.spring.example.model;
 
+// # tag::imports[]
 import com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore;
 import org.springframework.stereotype.Repository;
+// # end::imports[]
 
 /**
  * A JPA repository cache store for the {@link Person} entity.
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Repository;
  *
  * @author Jonathan Knight 2021.08.17
  */
+// # tag::personRepo[]
 @Repository
 public interface PersonRepository extends JpaRepositoryCacheStore<Person, Long> {
 
 }
+// # end::personRepo[]

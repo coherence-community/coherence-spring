@@ -4,12 +4,15 @@
   Licensed under the Universal Permissive License v 1.0 as shown at
   http://oss.oracle.com/licenses/upl.
 -->
+<!-- # tag::header[] -->
 <cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
               xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+<!-- # end::header[] -->
 
     <caching-scheme-mapping>
+        <!-- # tag::mapping[] -->
         <cache-mapping>
             <cache-name>people</cache-name>
             <scheme-name>db-scheme</scheme-name>
@@ -20,22 +23,18 @@
                 </init-param>
             </init-params>
         </cache-mapping>
-
-        <cache-mapping>
-            <cache-name>*</cache-name>
-            <scheme-name>storage-scheme</scheme-name>
-        </cache-mapping>
+        <!-- # end::mapping[] -->
     </caching-scheme-mapping>
 
+<!-- # tag::scheme[] -->
     <caching-schemes>
         <distributed-scheme>
             <scheme-name>db-scheme</scheme-name>
-            <scheme-ref>storage-scheme</scheme-ref>
+            <service-name>StorageService</service-name>
             <backing-map-scheme>
                 <read-write-backing-map-scheme>
                     <internal-cache-scheme>
-                        <local-scheme>
-                        </local-scheme>
+                        <local-scheme/>
                     </internal-cache-scheme>
                     <cachestore-scheme>
                         <spring:bean>{repository-bean}</spring:bean>
@@ -44,15 +43,7 @@
             </backing-map-scheme>
             <autostart>true</autostart>
         </distributed-scheme>
-
-        <distributed-scheme>
-            <scheme-name>storage-scheme</scheme-name>
-            <service-name>StorageService</service-name>
-            <backing-map-scheme>
-                <local-scheme/>
-            </backing-map-scheme>
-            <autostart>true</autostart>
-        </distributed-scheme>
+<!-- # end::scheme[] -->
 
         <!-- proxy scheme that allows extend clients to connect to the cluster over TCP/IP -->
         <proxy-scheme>
