@@ -2,6 +2,7 @@ com.oracle.coherence.spring
 com.oracle.coherence.spring.annotation
 com.oracle.coherence.spring.annotation.event
 com.oracle.coherence.spring.boot.autoconfigure
+com.oracle.coherence.spring.boot.autoconfigure.data
 com.oracle.coherence.spring.boot.autoconfigure.messaging
 com.oracle.coherence.spring.boot.autoconfigure.metrics
 com.oracle.coherence.spring.boot.autoconfigure.session

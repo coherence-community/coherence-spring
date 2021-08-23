@@ -169,6 +169,7 @@ window.onload = function() {
 <li><a href="#spring-boot-sessions">6. Spring Session Support</a></li>
 <li><a href="#spring-boot-messaging">7. Coherence Messaging Support</a></li>
 <li><a href="#spring-boot-metrics">8. Coherence Metrics</a></li>
+<li><a href="#spring-boot-data">9. Spring Data Support</a></li>
 </ul>
 </div>
 </div>
@@ -820,10 +821,65 @@ as described at <a href="#coherence-spring-messaging-with-coherence-topics">Mess
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>9. Spring Data Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coherence Spring&#8217;s support for Spring Data also contain auto-configuration support for Spring Boot. The auto-configuration
+is activated as soon as the Coherence Spring Data dependency is added to your Spring Boot project.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. Add Coherence Spring Data Support</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.06&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.spring:coherence-spring-data:3.0.0-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.06")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>There is no need to add the <code>@EnableCoherenceRepositories</code> annotation, as the Coherence Spring Data auto-configuration
+support, will automatically detect any Coherence repositories. In fact, adding <code>@EnableCoherenceRepositories</code> to your
+Spring Boot project, will cause auto-configuration to back-off.</p>
+</div>
+<div class="paragraph">
+<p>Auto-configuration can also be de-activated by setting environment property <code>coherence.spring.data.repositories.enabled</code>
+to <code>false</code>.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-23 05:23:00 UTC
+Last updated 2021-08-23 11:03:12 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
