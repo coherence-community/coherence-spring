@@ -267,6 +267,12 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 <1> If not specified, the name of the field will be used to determine the cache name
 <2> Alternatively, you can specify the name of the cache using the `@Name` annotation
 
+[IMPORTANT]
+====
+All the annotations `@CoherenceCache`, `@CoherenceMap`, `@CoherenceAsyncCache`, and `@CoherenceAsyncMap` are themselves annotated with `@Lazy`. This is to avoid deadlocks where a cache bean requires another bean to be injected in its configuration, which will happen on a different thread to the main Spring thread.
+A consequence of this is that all cache beans will be Spring lazy dynamic proxies.
+====
+
 ==== Specify the Map/Cache Name
 
 As already mentioned above, you specify the name of the map/cache using the value-property of the annotation. Of course,
