@@ -1276,6 +1276,21 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 </tr>
 </table>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>All the annotations <code>@CoherenceCache</code>, <code>@CoherenceMap</code>, <code>@CoherenceAsyncCache</code>, and <code>@CoherenceAsyncMap</code> are themselves annotated with <code>@Lazy</code>. This is to avoid deadlocks where a cache bean requires another bean to be injected in its configuration, which will happen on a different thread to the main Spring thread.
+A consequence of this is that all cache beans will be Spring lazy dynamic proxies.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="sect4">
 <h5 id="specify-the-mapcache-name"><a class="anchor" href="#specify-the-mapcache-name"></a>3.6.1.1. Specify the Map/Cache Name</h5>
 <div class="paragraph">
@@ -6356,7 +6371,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-25 05:20:57 UTC
+Last updated 2021-08-25 10:06:48 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
