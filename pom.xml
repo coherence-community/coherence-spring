@@ -159,7 +159,7 @@
 		<javax.inject.version>1</javax.inject.version>
 		<junit.version>5.7.2</junit.version>
 		<log4j.version>2.14.1</log4j.version>
-		<mockito.version>1.10.19</mockito.version>
+		<mockito.version>3.12.4</mockito.version>
 		<org.springframework.version>5.3.8</org.springframework.version>
 		<org.springframework.data.version>2021.0.4</org.springframework.data.version>
 		<reactor.version>3.4.6</reactor.version>

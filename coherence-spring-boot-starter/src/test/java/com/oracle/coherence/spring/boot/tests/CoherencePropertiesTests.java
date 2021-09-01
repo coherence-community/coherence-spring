@@ -11,8 +11,10 @@ import java.util.List;
 
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
+import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
-import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.ServerSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionType;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.SessionConfiguration;
 import com.tangosol.net.SessionConfiguration.ConfigurableCacheFactorySessionConfig;
@@ -35,8 +37,8 @@ public class CoherencePropertiesTests {
 
 	@Test
 	void testCoherencePropertiesWithSessions() {
-		final List<SessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
-		final List<SessionConfigurationBean> clientSessions = this.coherenceProperties.getSessions().getClient();
+		final List<ServerSessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
+		final List<ClientSessionConfigurationBean> clientSessions = this.coherenceProperties.getSessions().getClient();
 		final List<GrpcSessionConfigurationBean> grpcSessions = this.coherenceProperties.getSessions().getGrpc();
 
 		assertThat(serverSessions).hasSize(3);
@@ -44,21 +46,33 @@ public class CoherencePropertiesTests {
 		assertThat(serverSessions.get(0).getConfig()).isEqualTo("coherence-cache-config.xml");
 		assertThat(serverSessions.get(0).getScopeName()).isEqualTo("fooscope");
 		assertThat(serverSessions.get(0).getPriority()).isEqualTo(1);
+		assertThat(serverSessions.get(0).getType()).isEqualTo(SessionType.SERVER);
 		assertThat(serverSessions.get(1).getName()).isEqualTo("test");
 		assertThat(serverSessions.get(1).getConfig()).isEqualTo("test-coherence-config.xml");
 		assertThat(serverSessions.get(1).getScopeName()).isEqualTo("barscope");
 		assertThat(serverSessions.get(1).getPriority()).isEqualTo(2);
+		assertThat(serverSessions.get(1).getType()).isEqualTo(SessionType.SERVER);
 		assertThat(serverSessions.get(2).getName()).isNull();
 		assertThat(serverSessions.get(2).getConfig()).isEqualTo("test-coherence-config.xml");
 		assertThat(serverSessions.get(2).getScopeName()).isEqualTo("myscope");
 		assertThat(serverSessions.get(2).getPriority()).isEqualTo(0);
+		assertThat(serverSessions.get(2).getType()).isEqualTo(SessionType.SERVER);
 
 		assertThat(clientSessions).hasSize(1);
+		assertThat(clientSessions.get(0).getName()).isEqualTo("coherence-extend");
+		assertThat(clientSessions.get(0).getConfig()).isEqualTo("coherence-cache-config.xml");
+		assertThat(clientSessions.get(0).getScopeName()).isEqualTo("client-scope");
+		assertThat(clientSessions.get(0).getPriority()).isEqualTo(3);
+		assertThat(clientSessions.get(0).getType()).isEqualTo(SessionType.CLIENT);
+
+		assertThat(grpcSessions).hasSize(1);
+		assertThat(grpcSessions.get(0).getName()).isEqualTo("grpc-session");
+		assertThat(grpcSessions.get(0).getType()).isEqualTo(SessionType.GRPC);
 	}
 
 	@Test
 	void testCoherenceConfiguration() {
-		final List<SessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
+		final List<ServerSessionConfigurationBean> serverSessions = this.coherenceProperties.getSessions().getServer();
 
 		assertThat(serverSessions.get(0).getConfiguration()).isNotNull();
 		assertThat(serverSessions.get(1).getConfiguration()).isNotNull();

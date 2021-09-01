@@ -33,3 +33,7 @@ coherence:
     coherence.log: log4j
     coherence.log.format: foobar
   property-prefix: "coherence.properties."
+  instance:
+    type: client
+  server:
+    startup-time: 78901

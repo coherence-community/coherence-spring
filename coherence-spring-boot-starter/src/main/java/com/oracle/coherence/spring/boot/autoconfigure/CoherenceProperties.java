@@ -14,8 +14,10 @@ import java.util.Map;
 
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
-import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.ServerSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.support.CoherenceInstanceType;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -91,6 +93,16 @@ public class CoherenceProperties {
 	private String propertyPrefix = SpringSystemPropertyResolver.DEFAULT_PROPERTY_PREFIX;
 
 	/**
+	 * Configuration properties of the Coherence Server.
+	 */
+	private ServerProperties server = new ServerProperties();
+
+	/**
+	 * Configuration properties of the Coherence Instance.
+	 */
+	private InstanceProperties instance = new InstanceProperties();
+
+	/**
 	 * Session configuration.
 	 */
 	private SessionProperties sessions = new SessionProperties();
@@ -141,6 +153,22 @@ public class CoherenceProperties {
 
 	public void setCache(CacheAbstractionProperties cache) {
 		this.cache = cache;
+	}
+
+	public ServerProperties getServer() {
+		return this.server;
+	}
+
+	public void setServer(ServerProperties server) {
+		this.server = server;
+	}
+
+	public InstanceProperties getInstance() {
+		return this.instance;
+	}
+
+	public void setInstance(InstanceProperties instance) {
+		this.instance = instance;
 	}
 
 	/**
@@ -271,12 +299,12 @@ public class CoherenceProperties {
 		/**
 		 * Session configuration.
 		 */
-		private List<SessionConfigurationBean> client;
+		private List<ClientSessionConfigurationBean> client;
 
 		/**
 		 * Session configuration.
 		 */
-		private List<SessionConfigurationBean> server;
+		private List<ServerSessionConfigurationBean> server;
 
 		public List<GrpcSessionConfigurationBean> getGrpc() {
 			return this.grpc;
@@ -286,21 +314,22 @@ public class CoherenceProperties {
 			this.grpc = grpc;
 		}
 
-		public List<SessionConfigurationBean> getClient() {
+		public List<ClientSessionConfigurationBean> getClient() {
 			return this.client;
 		}
 
-		public void setClient(List<SessionConfigurationBean> client) {
+		public void setClient(List<ClientSessionConfigurationBean> client) {
 			this.client = client;
 		}
 
-		public List<SessionConfigurationBean> getServer() {
+		public List<ServerSessionConfigurationBean> getServer() {
 			return this.server;
 		}
 
-		public void setServer(List<SessionConfigurationBean> server) {
+		public void setServer(List<ServerSessionConfigurationBean> server) {
 			this.server = server;
 		}
+
 
 		public List<AbstractSessionConfigurationBean> getAllSessionConfigurationBeans() {
 			final List<AbstractSessionConfigurationBean> sessionConfigurationBeans = new ArrayList<>();
@@ -362,6 +391,46 @@ public class CoherenceProperties {
 
 		public void setUseCacheNamePrefix(boolean useCacheNamePrefix) {
 			this.useCacheNamePrefix = useCacheNamePrefix;
+		}
+	}
+
+	/**
+	 * Configuration properties of the Coherence Instance.
+	 */
+	public static class InstanceProperties {
+
+		/**
+		 * Defines the type of the Coherence instance. If not specified, defaults to CLIENT or CLUSTER, depending on the
+		 * configured Coherence sessions.
+		 */
+		private CoherenceInstanceType type;
+
+		public CoherenceInstanceType getType() {
+			return this.type;
+		}
+
+		public void setType(CoherenceInstanceType type) {
+			this.type = type;
+		}
+	}
+
+	/**
+	 * Configuration properties of the Coherence Server.
+	 */
+	public static class ServerProperties {
+
+		/**
+		 * Overrides the default startup-timeout when starting Coherence. If not set, defaults to
+		 * {@link com.oracle.coherence.spring.CoherenceServer#DEFAULT_STARTUP_TIMEOUT_MILLIS}.
+		 */
+		private Duration startupTimeout;
+
+		public Duration getStartupTimeout() {
+			return this.startupTimeout;
+		}
+
+		public void setStartupTimeout(Duration startupTimeout) {
+			this.startupTimeout = startupTimeout;
 		}
 	}
 }
