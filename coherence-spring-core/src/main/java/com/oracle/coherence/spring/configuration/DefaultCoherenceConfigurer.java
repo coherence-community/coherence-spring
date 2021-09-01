@@ -6,14 +6,19 @@
  */
 package com.oracle.coherence.spring.configuration;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionType;
+import com.oracle.coherence.spring.configuration.support.CoherenceInstanceType;
 import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
@@ -23,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -52,6 +58,10 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 
 	private CoherenceEventListenerCandidates coherenceEventListenerCandidates;
 
+	private Duration coherenceServerStartupTimeout;
+
+	private CoherenceInstanceType coherenceInstanceType;
+
 	public DefaultCoherenceConfigurer(ConfigurableApplicationContext context,
 			CoherenceEventListenerCandidates coherenceEventListenerCandidates) {
 		this.applicationContext = context;
@@ -79,6 +89,8 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			return;
 		}
 
+		final Set<SessionType> detectedSessionTypes = new HashSet<>();
+
 		if (this.applicationContext != null) {
 			final Collection<AbstractSessionConfigurationBean> sessionConfigurationBeans =
 					this.applicationContext.getBeansOfType(AbstractSessionConfigurationBean.class).values();
@@ -90,8 +102,18 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 				this.sessionConfigurations.addAll(
 					sessionConfigurationBeans
 						.stream()
-						.map((sp) -> sp.getConfiguration().orElseThrow(
-								() -> new IllegalStateException("Empty sessionConfigurations found.")))
+						.map((sp) -> {
+							final SessionType sessionType = sp.getType();
+							if (sessionType == null) {
+								detectedSessionTypes.add(SessionType.SERVER);
+							}
+							else {
+								detectedSessionTypes.add(sp.getType());
+							}
+							return sp.getConfiguration().orElseThrow(
+									() -> new IllegalStateException("Empty sessionConfigurations found."));
+
+						})
 						.collect(Collectors.toList()));
 			}
 
@@ -106,6 +128,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			}
 		}
 
+		//TODO
 		if (this.getCoherenceConfiguration() == null) {
 			if (logger.isInfoEnabled()) {
 				logger.info("No Coherence configuration was provided...using default.");
@@ -116,7 +139,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 			if (logger.isInfoEnabled()) {
 				logger.info("No Coherence instance was provided...creating a default instance.");
 			}
-			this.coherence = this.createCoherence();
+			this.coherence = this.createCoherence(detectedSessionTypes);
 		}
 		if (this.getCoherenceServer() == null) {
 			if (logger.isInfoEnabled()) {
@@ -148,12 +171,98 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 		return builder.build();
 	}
 
-	protected Coherence createCoherence() {
-		return Coherence.clusterMember(this.getCoherenceConfiguration());
+	/**
+	 * Creates a {@link Coherence} instance with the {@link CoherenceConfiguration} provided
+	 * by {@link #getCoherenceConfiguration()}. The created Coherence instance may either be
+	 * a client Coherence instance ({@link Coherence#client(CoherenceConfiguration)}) or a
+	 * cluster member instance ({@link Coherence#clusterMember(CoherenceConfiguration)}.
+	 * <p>
+	 * The rules for determining the instance type are as follows in descending priority:
+	 *
+	 * <ul>
+	 *    <li>Explicit configuration via {@link #getCoherenceInstanceType()}.
+	 *    <li>Via the {@link Set} of detected {@link SessionType}s. As soon as {@link SessionType#SERVER} is provided,
+	 *        the Coherence instances is configured using {@link Coherence#clusterMember(CoherenceConfiguration)}.
+	 *    <li>If the {@link Set} of detected {@link SessionType} is empty,
+	 *        the Coherence instances is configured using {@link Coherence#clusterMember(CoherenceConfiguration)}.
+	 * </ul>
+	 * @param detectedSessionTypes must not be null
+	 * @return the Coherence instance
+	 */
+	protected Coherence createCoherence(Set<SessionType> detectedSessionTypes) {
+		Assert.notNull(detectedSessionTypes, "detectedSessionTypes must not be null.");
+
+		if (this.coherenceInstanceType != null) {
+			if (CoherenceInstanceType.CLIENT.equals(this.getCoherenceInstanceType())) {
+				return Coherence.client(this.getCoherenceConfiguration());
+			}
+			else if (CoherenceInstanceType.CLUSTER.equals(this.getCoherenceInstanceType())) {
+				return Coherence.clusterMember(this.getCoherenceConfiguration());
+			}
+			else {
+				throw new IllegalStateException("Unsupported CoherenceInstanceType: " + this.getCoherenceInstanceType());
+			}
+		}
+		else {
+			if (detectedSessionTypes.isEmpty() || detectedSessionTypes.contains(SessionType.SERVER)) {
+				return Coherence.clusterMember(this.getCoherenceConfiguration());
+			}
+			else {
+				return Coherence.client(this.getCoherenceConfiguration());
+			}
+		}
 	}
 
+	/**
+	 * Create a {@link CoherenceServer} using the provided {@link Coherence} instance. If
+	 * {@link #getCoherenceServerStartupTimeout()} is not null, also provide it to the {@link CoherenceServer}. If
+	 * {@link #getCoherenceServerStartupTimeout()} is null, the {@link CoherenceServer} will use the timout specified by
+	 * {@link CoherenceServer#DEFAULT_STARTUP_TIMEOUT_MILLIS}.
+	 * @return the created CoherenceServer, never null
+	 */
 	protected CoherenceServer createCoherenceServer() {
-		return new CoherenceServer(this.getCoherence());
+		if (this.getCoherenceServerStartupTimeout() != null) {
+			return new CoherenceServer(this.getCoherence(), this.getCoherenceServerStartupTimeout());
+		}
+		else {
+			return new CoherenceServer(this.getCoherence());
+		}
 	}
 
+	/**
+	 * Return the Coherence Server startup timeout value.
+	 * @return may be null
+	 */
+	public Duration getCoherenceServerStartupTimeout() {
+		return this.coherenceServerStartupTimeout;
+	}
+
+	/**
+	 * Set the Coherence Server startup timeout value. This is an optional property. If not specified
+	 * the {@link CoherenceServer} will use {@link CoherenceServer#DEFAULT_STARTUP_TIMEOUT_MILLIS}.
+	 * @param coherenceServerStartupTimeout must be a positive value
+	 * @see CoherenceServer
+	 */
+	public void setCoherenceServerStartupTimeout(Duration coherenceServerStartupTimeout) {
+		Assert.isTrue(!coherenceServerStartupTimeout.isNegative(), "coherenceServerStartupTimeout must be positive");
+		this.coherenceServerStartupTimeout = coherenceServerStartupTimeout;
+	}
+
+	/**
+	 * Set the Coherence instance type explicitly. This is an optional property. If not specified, the
+	 * {@link CoherenceInstanceType} will be defined depending on the configured Coherence
+	 * {@link com.tangosol.net.Session}s. See {@link #createCoherence(Set)} for further details.
+	 * @param coherenceInstanceType explicitly set the CoherenceInstanceType
+	 */
+	public void setCoherenceInstanceType(CoherenceInstanceType coherenceInstanceType) {
+		this.coherenceInstanceType = coherenceInstanceType;
+	}
+
+	/**
+	 * Return the configured {@link CoherenceInstanceType}.
+	 * @return value may be null
+	 */
+	public CoherenceInstanceType getCoherenceInstanceType() {
+		return this.coherenceInstanceType;
+	}
 }

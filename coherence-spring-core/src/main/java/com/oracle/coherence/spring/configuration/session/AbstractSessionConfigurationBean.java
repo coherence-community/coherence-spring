@@ -129,7 +129,7 @@ public abstract class AbstractSessionConfigurationBean implements SessionConfigu
 	 * @param sessionType   the type of this {@link com.tangosol.net.Session}
 	 */
 	public void setType(SessionType sessionType) {
-		Assert.notNull(sessionType, "SessionType must not be null.");
+		Assert.notNull(sessionType, "CoherenceInstanceType must not be null.");
 		this.type = sessionType;
 	}
 

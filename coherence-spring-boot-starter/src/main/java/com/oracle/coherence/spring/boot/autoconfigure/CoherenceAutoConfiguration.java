@@ -14,8 +14,10 @@ import com.oracle.coherence.spring.boot.config.CoherenceConfigClientProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheConfiguration;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
 import com.oracle.coherence.spring.configuration.CoherenceSpringConfiguration;
+import com.oracle.coherence.spring.configuration.DefaultCoherenceConfigurer;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.support.CoherenceConfigurerCustomizer;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.oracle.coherence.spring.messaging.CoherencePublisherProxyFactoryBean;
 import com.tangosol.net.Coherence;
@@ -105,6 +107,19 @@ public class CoherenceAutoConfiguration {
 					beanFactory.registerSingleton("sessionConfigurationBean_" + count, sessionConfigurationBean);
 					count++;
 				}
+			}
+		};
+	}
+
+	@Bean
+	public CoherenceConfigurerCustomizer<DefaultCoherenceConfigurer> coherenceConfigurerCustomizer(
+			CoherenceProperties coherenceProperties) {
+		return (configurer) -> {
+			if (coherenceProperties.getInstance() != null && coherenceProperties.getInstance().getType() != null) {
+				configurer.setCoherenceInstanceType(coherenceProperties.getInstance().getType());
+			}
+			if (coherenceProperties.getServer() != null && coherenceProperties.getServer().getStartupTimeout() != null) {
+				configurer.setCoherenceServerStartupTimeout(coherenceProperties.getServer().getStartupTimeout());
 			}
 		};
 	}

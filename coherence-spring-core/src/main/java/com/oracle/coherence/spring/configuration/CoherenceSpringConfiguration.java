@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
+import com.oracle.coherence.spring.configuration.support.CoherenceConfigurerCustomizer;
 import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
 import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
@@ -24,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -164,6 +166,7 @@ public class CoherenceSpringConfiguration {
 			MapEventTransformerService mapEventTransformerService) {
 		return new MapListenerRegistrationBean(filterService, mapEventTransformerService);
 	}
+
 	/**
 	 * Sets up the basic components used by Coherence. These are extracted from the
 	 * underlying {@link CoherenceConfigurer}, defaulting to sensible values.
@@ -193,6 +196,15 @@ public class CoherenceSpringConfiguration {
 
 		if (numberOfConfigurers < 1) {
 			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer(this.context, this.coherenceEventListenerCandidates);
+
+			try {
+				final CoherenceConfigurerCustomizer<?> customizer = this.context.getBean(CoherenceConfigurerCustomizer.class);
+				//customizer.customize(coherenceConfigurer);
+			}
+			catch (NoSuchBeanDefinitionException ex) {
+				//Ignore
+			}
+
 			coherenceConfigurer.initialize();
 			this.context.getBeanFactory().registerSingleton(COHERENCE_CONFIGURER_BEAN_NAME,
 					coherenceConfigurer);

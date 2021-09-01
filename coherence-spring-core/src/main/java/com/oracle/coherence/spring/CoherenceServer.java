@@ -6,11 +6,13 @@
  */
 package com.oracle.coherence.spring;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.tangosol.coherence.config.Config;
+import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import org.apache.commons.logging.Log;
@@ -56,8 +58,8 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 	/**
 	 * {@link Coherence} startup timeout in milliseconds.
 	 */
-	private long startupTimeout = Config.getLong(STARTUP_TIMEOUT_SYSTEM_PROPERTY,
-			DEFAULT_STARTUP_TIMEOUT_MILLIS);
+	private Duration startupTimeout = Duration.ofMillis(Config.getLong(STARTUP_TIMEOUT_SYSTEM_PROPERTY,
+			DEFAULT_STARTUP_TIMEOUT_MILLIS));
 
 	/**
 	 * Create a {@link CoherenceServer}.
@@ -77,7 +79,7 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 	 *        or to what the system property {@value #STARTUP_TIMEOUT_SYSTEM_PROPERTY}
 	 *        specifies
 	 */
-	public CoherenceServer(Coherence coherence, long startupTimeout) {
+	public CoherenceServer(Coherence coherence, Duration startupTimeout) {
 		this.coherence = coherence;
 		this.startupTimeout = startupTimeout;
 	}
@@ -118,7 +120,7 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 			return;
 		}
 		try {
-			this.coherence.start().get(this.startupTimeout, TimeUnit.MILLISECONDS);
+			this.coherence.start().get(this.startupTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException ex) {
 			throw new IllegalStateException(String.format("Oracle Coherence did not start "
@@ -131,12 +133,11 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 		if (logger.isInfoEnabled()) {
 			logger.info("Stopping Coherence");
 		}
-		if (this.coherence != null) {
-			this.coherence.close();
-		}
 		Coherence.closeAll();
+
 		if (logger.isInfoEnabled()) {
 			logger.info("Stopped Coherence");
 		}
+		CacheFactory.getCluster().shutdown();
 	}
 }

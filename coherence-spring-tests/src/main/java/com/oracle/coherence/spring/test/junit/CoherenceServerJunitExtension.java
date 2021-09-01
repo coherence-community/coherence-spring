@@ -1,17 +1,8 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.test.junit;
 
@@ -33,14 +24,27 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 /**
  * Provides an embedded Coherence Cluster as a Junit5 extension.
+ *
  * @author Gunnar Hillert
+ * @since 3.0
  */
 public class CoherenceServerJunitExtension implements ParameterResolver,
 		BeforeAllCallback, AfterAllCallback {
 
 	protected static final Log logger = LogFactory.getLog(CoherenceServerJunitExtension.class);
 
+	private final String configUri;
+
 	private Coherence coherence;
+
+	public CoherenceServerJunitExtension() {
+		this.configUri = "coherence-cache-config.xml";
+	}
+
+	public CoherenceServerJunitExtension(String configUri) {
+		this.configUri = configUri;
+	}
+
 
 	@Override
 	public void afterAll(ExtensionContext context) {
@@ -62,7 +66,7 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 				.getMethod("builder")
 				.invoke(null);
 		final SessionConfiguration sessionConfiguration = sessionConfigurationBuilder
-				.withConfigUri("coherence-cache-config.xml")
+				.withConfigUri(this.configUri)
 				.build();
 
 		final CoherenceConfiguration.Builder coherenceBuilder = (CoherenceConfiguration.Builder) getFromTestClassloader(CoherenceConfiguration.class)
