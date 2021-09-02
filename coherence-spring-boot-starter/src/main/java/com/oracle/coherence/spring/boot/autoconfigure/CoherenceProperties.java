@@ -78,9 +78,6 @@ public class CoherenceProperties {
 	 */
 	private LoggingProperties logging;
 
-	//TODO
-	private boolean configEnabled;
-
 	/**
 	 * Spring cache abstraction configuration.
 	 */
@@ -129,14 +126,6 @@ public class CoherenceProperties {
 
 	public void setLogging(LoggingProperties logging) {
 		this.logging = logging;
-	}
-
-	public boolean isConfigEnabled() {
-		return this.configEnabled;
-	}
-
-	public void setConfigEnabled(boolean configEnabled) {
-		this.configEnabled = configEnabled;
 	}
 
 	public String getPropertyPrefix() {
