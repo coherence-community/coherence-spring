@@ -140,4 +140,8 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 		}
 		CacheFactory.getCluster().shutdown();
 	}
+
+	public Duration getStartupTimeout() {
+		return this.startupTimeout;
+	}
 }

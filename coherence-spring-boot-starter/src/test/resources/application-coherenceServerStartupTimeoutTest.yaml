@@ -1,0 +1,10 @@
+coherence:
+  sessions:
+    client:
+      - name: default
+        config: "coherence-cache-config.xml"
+        priority: 1
+        scope-name: fooscope
+  server:
+    startup-timeout: 4m
+

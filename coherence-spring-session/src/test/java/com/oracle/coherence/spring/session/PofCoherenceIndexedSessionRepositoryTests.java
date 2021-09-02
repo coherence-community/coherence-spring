@@ -65,6 +65,7 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 	@AfterAll
 	static void cleanup() throws InterruptedException {
 		GrpcServerController.INSTANCE.stop();
+
 		if (server != null) {
 			server.close();
 		}

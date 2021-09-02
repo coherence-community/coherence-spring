@@ -117,6 +117,14 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 |
 | The scope name for the session.
 
+| coherence.instance.type
+| Depends on session type. As soon as you specify a `server` session, it defaults to `cluster`
+| Type of the Coherence instance: `cluster` or `client`
+
+| coherence.server.startup-timeout
+| `60s`
+| Overrides the default startup-timeout when starting Coherence.
+
 |===
 
 `Session`-related configuration properties are defined based on the session type in:
@@ -125,7 +133,7 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 - {coherence-spring-api}com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html[SessionConfigurationBean]
 - {coherence-spring-api}com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html[GrpcSessionConfigurationBean]
 
-IMPORTANT: All but the `Session` properties are translated into native Coherence properties. If both
+IMPORTANT: Many properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property `coherence.properties.*` are configured, the Spring Boot
 property is used.
 

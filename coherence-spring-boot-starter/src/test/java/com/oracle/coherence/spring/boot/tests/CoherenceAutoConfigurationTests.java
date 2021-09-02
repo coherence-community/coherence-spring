@@ -6,11 +6,15 @@
  */
 package com.oracle.coherence.spring.boot.tests;
 
+import java.time.Duration;
+
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.cache.CoherenceCacheManager;
+import com.oracle.coherence.spring.configuration.CoherenceConfigurer;
+import com.oracle.coherence.spring.configuration.DefaultCoherenceConfigurer;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.coherence.config.SystemPropertyResolver;
@@ -172,6 +176,37 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(environment.getProperty("coherence.properties.coherence.log.logger")).isEqualTo("testing");
 					assertThat(environment.getProperty("coherence.properties.coherence.log")).isEqualTo("slf4j");
 					assertThat(environment.getProperty("coherence.properties.coherence.log.format")).isEqualTo("Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}");
+				});
+	}
+
+	@Test
+	public void testCoherenceServerStartupTimeoutIsSet() {
+		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
+				.withSystemProperties("spring.profiles.active=coherenceServerStartupTimeoutTest")
+				.run((context) -> {
+					final CoherenceConfigurer coherenceConfigurer = context.getBean(CoherenceConfigurer.class);
+					assertThat(coherenceConfigurer).isInstanceOf(DefaultCoherenceConfigurer.class);
+					DefaultCoherenceConfigurer defaultCoherenceConfigurer = (DefaultCoherenceConfigurer) coherenceConfigurer;
+					assertThat(defaultCoherenceConfigurer.getCoherenceServerStartupTimeout()).isEqualTo(Duration.ofMinutes(4));
+					assertThat(coherenceConfigurer.getCoherenceServer().getStartupTimeout()).isEqualTo(Duration.ofMinutes(4));
+
+					final Environment environment = context.getEnvironment();
+					assertThat(environment.getProperty("coherence.server.startup-timeout")).isEqualTo("4m");
+				});
+	}
+
+	@Test
+	public void testCoherenceServerDefaultStartupTimeoutIsSet() {
+		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
+				.run((context) -> {
+					final CoherenceConfigurer coherenceConfigurer = context.getBean(CoherenceConfigurer.class);
+					assertThat(coherenceConfigurer).isInstanceOf(DefaultCoherenceConfigurer.class);
+					DefaultCoherenceConfigurer defaultCoherenceConfigurer = (DefaultCoherenceConfigurer) coherenceConfigurer;
+					assertThat(defaultCoherenceConfigurer.getCoherenceServerStartupTimeout()).isNull();
+					assertThat(coherenceConfigurer.getCoherenceServer().getStartupTimeout()).isEqualTo(Duration.ofMinutes(1));
+
+					final Environment environment = context.getEnvironment();
+					assertThat(environment.getProperty("coherence.server.startup-timeout")).isNull();
 				});
 	}
 

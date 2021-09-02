@@ -36,4 +36,4 @@ coherence:
   instance:
     type: client
   server:
-    startup-time: 78901
+    startup-timeout: 78901ms

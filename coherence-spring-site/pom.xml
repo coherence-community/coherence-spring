@@ -105,7 +105,7 @@
 					<skipDeploy>true</skipDeploy>
 					<skip>false</skip>
 					<siteDirectory>docs</siteDirectory>
-					<stagingDirectory>${build.directory}/staging</stagingDirectory>
+					<stagingDirectory>${project.build.directory}/staging</stagingDirectory>
 				</configuration>
 				<executions>
 					<execution>

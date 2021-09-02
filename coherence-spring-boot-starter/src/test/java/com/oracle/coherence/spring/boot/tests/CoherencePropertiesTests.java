@@ -15,6 +15,7 @@ import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurat
 import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.ServerSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
+import com.oracle.coherence.spring.configuration.support.CoherenceInstanceType;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.SessionConfiguration;
 import com.tangosol.net.SessionConfiguration.ConfigurableCacheFactorySessionConfig;
@@ -132,4 +133,17 @@ public class CoherencePropertiesTests {
 		assertThat(actualConfigUri).isNotBlank();
 		assertThat(expectedConfigUri).isEqualTo(actualConfigUri);
 	}
+
+	@Test
+	void testServerProperties() {
+		assertThat(this.coherenceProperties.getServer()).isNotNull();
+		assertThat(this.coherenceProperties.getServer().getStartupTimeout()).isEqualTo(Duration.ofMillis(78901));
+	}
+
+	@Test
+	void testInstanceProperties() {
+		assertThat(this.coherenceProperties.getInstance()).isNotNull();
+		assertThat(this.coherenceProperties.getInstance().getType()).isEqualTo(CoherenceInstanceType.CLIENT);
+	}
+
 }

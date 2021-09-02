@@ -198,8 +198,8 @@ public class CoherenceSpringConfiguration {
 			final DefaultCoherenceConfigurer coherenceConfigurer = new DefaultCoherenceConfigurer(this.context, this.coherenceEventListenerCandidates);
 
 			try {
-				final CoherenceConfigurerCustomizer<?> customizer = this.context.getBean(CoherenceConfigurerCustomizer.class);
-				//customizer.customize(coherenceConfigurer);
+				final CoherenceConfigurerCustomizer<DefaultCoherenceConfigurer> customizer = this.context.getBean(CoherenceConfigurerCustomizer.class);
+				customizer.customize(coherenceConfigurer);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
 				//Ignore
