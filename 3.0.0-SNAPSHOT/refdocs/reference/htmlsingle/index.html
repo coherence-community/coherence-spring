@@ -5500,6 +5500,16 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The scope name for the session.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.instance.type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depends on session type. As soon as you specify a <code>server</code> session, it defaults to <code>cluster</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of the Coherence instance: <code>cluster</code> or <code>client</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.server.startup-timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>60s</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides the default startup-timeout when starting Coherence.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -5525,7 +5535,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-All but the <code>Session</code> properties are translated into native Coherence properties. If both
+Many properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property <code>coherence.properties.*</code> are configured, the Spring Boot
 property is used.
 </td>
@@ -6371,7 +6381,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-01 09:57:21 UTC
+Last updated 2021-09-02 02:06:15 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
