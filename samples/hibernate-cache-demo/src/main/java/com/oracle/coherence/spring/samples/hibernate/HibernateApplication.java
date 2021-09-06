@@ -7,9 +7,11 @@
 package com.oracle.coherence.spring.samples.hibernate;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import org.modelmapper.ModelMapper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Main entry to the application.
@@ -20,5 +22,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HibernateApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HibernateApplication.class, args);
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 }

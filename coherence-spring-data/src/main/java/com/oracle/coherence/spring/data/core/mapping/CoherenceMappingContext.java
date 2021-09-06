@@ -15,7 +15,7 @@ import org.springframework.data.util.TypeInformation;
  * Coherence implementation of {@link AbstractMappingContext}.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceMappingContext
 		extends AbstractMappingContext<CoherencePersistentEntity<?>,

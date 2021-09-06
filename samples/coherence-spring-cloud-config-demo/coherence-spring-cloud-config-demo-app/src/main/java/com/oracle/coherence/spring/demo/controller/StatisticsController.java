@@ -13,7 +13,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tangosol.net.CacheFactory;
@@ -33,8 +32,7 @@ public class StatisticsController {
 	@Autowired
 	private CacheManager cacheManager;
 
-	@RequestMapping(path="/api/statistics/{cacheName}")
-	@GetMapping
+	@GetMapping(path="/api/statistics/{cacheName}")
 	public CacheStatistics getEvents(@PathVariable String cacheName) {
 		final NearCache<?, ?> nearCache = (NearCache<?, ?>) CacheFactory.getCache(cacheName);
 
@@ -43,8 +41,7 @@ public class StatisticsController {
 		return cacheStatistics;
 	}
 
-	@RequestMapping(path="/api/cache-names")
-	@GetMapping
+	@GetMapping(path="/api/cache-names")
 	public Collection<String> getCacheNames() {
 		return cacheManager.getCacheNames();
 	}

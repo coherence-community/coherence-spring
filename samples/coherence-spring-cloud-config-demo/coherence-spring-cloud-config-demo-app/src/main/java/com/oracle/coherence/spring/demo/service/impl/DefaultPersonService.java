@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oracle.coherence.spring.demo.dao.PersonRepository;
 import com.oracle.coherence.spring.demo.model.Person;
 import com.oracle.coherence.spring.demo.service.PersonService;
+import org.springframework.util.Assert;
 
 @Transactional
 @Service
@@ -30,6 +31,9 @@ public class DefaultPersonService implements PersonService {
 
 	@Override
 	public Long createAndStorePerson(String firstName, String lastName, int age) {
+		Assert.hasText(firstName, "firstName must not be null or empty.");
+		Assert.hasText(lastName, "lastName must not be null or empty.");
+		Assert.isTrue(age >= 0, "The specified age must be a positive number.");
 		final Person person = new Person();
 		person.setFirstname(firstName);
 		person.setLastname(lastName);

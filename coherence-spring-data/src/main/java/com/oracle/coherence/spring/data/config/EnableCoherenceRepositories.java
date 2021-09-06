@@ -27,7 +27,7 @@ import org.springframework.data.repository.query.QueryLookupStrategy;
  * {@link #basePackages()} or {@link #basePackageClasses()} it will trigger scanning of the package of annotated class.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

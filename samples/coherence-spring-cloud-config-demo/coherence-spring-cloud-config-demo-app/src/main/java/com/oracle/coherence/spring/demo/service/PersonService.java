@@ -20,23 +20,23 @@ public interface PersonService {
 
 	/**
 	 *
-	 * @return
+	 * @return a paged list of people
 	 */
 	Page<Person> listPeople(Pageable pageable);
 
 	/**
 	 *
-	 * @param firstName
-	 * @param lastName
-	 * @param age
-	 * @return
+	 * @param firstName must not be null or empty
+	 * @param lastName must not be null or empty
+	 * @param age requires positive value
+	 * @return the id of the created person
 	 */
 	Long createAndStorePerson(String firstName, String lastName, int age);
 
 	/**
 	 *
-	 * @param personId
-	 * @param eventId
+	 * @param personId the person to add
+	 * @param eventId the event to add the person to
 	 */
 	void addPersonToEvent(Long personId, Long eventId);
 

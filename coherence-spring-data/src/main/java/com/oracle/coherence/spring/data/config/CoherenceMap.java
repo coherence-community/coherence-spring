@@ -23,7 +23,7 @@ import com.tangosol.net.Session;
  * the runtime based on the repository class name.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

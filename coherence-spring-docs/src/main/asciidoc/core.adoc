@@ -542,7 +542,7 @@ or into a constructor:
 ----
 @RestController
 public class MyBean {
-    @Autowired                                   <1>
+    @Autowired                                   // <1>
     public MyBean(@Name("Catalog") Session session) {
         // TODO...
     }

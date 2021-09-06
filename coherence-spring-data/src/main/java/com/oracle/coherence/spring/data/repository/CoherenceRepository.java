@@ -39,7 +39,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @param <ID> the type of the id of the entity the repository manages
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public interface CoherenceRepository<T, ID>
 		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID> {

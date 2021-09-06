@@ -21,7 +21,7 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
  *
  * @author Ryan Lubke
  * @author Gunnar Hillert
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceRepositoryConfigurationExtension extends RepositoryConfigurationExtensionSupport {
 	@Override

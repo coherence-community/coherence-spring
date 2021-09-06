@@ -49,7 +49,7 @@ public abstract class FederationEventHandler<E extends Event<T>, T extends Enum<
 	@SuppressWarnings("rawtypes")
 	protected boolean isApplicable(EventDispatcher dispatcher, String sScopeName) {
 		Set<Enum> setSupported = dispatcher.getSupportedTypes();
-		boolean fMatch = eventTypes().stream().anyMatch(setSupported::contains);
+		boolean fMatch = getEventTypes().stream().anyMatch(setSupported::contains);
 		return fMatch && super.isApplicable(dispatcher, sScopeName);
 	}
 

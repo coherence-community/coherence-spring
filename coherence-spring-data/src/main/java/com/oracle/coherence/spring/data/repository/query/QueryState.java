@@ -13,7 +13,7 @@ import com.tangosol.util.InvocableMap;
  * Simple query state holder used by the query building process.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 @SuppressWarnings("rawtypes")
 public class QueryState {

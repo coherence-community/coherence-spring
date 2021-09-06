@@ -39,7 +39,7 @@ import org.springframework.data.mapping.context.MappingContext;
  * @param <ID> the id type
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  *
  * @see CoherenceRepository
  */
@@ -143,7 +143,6 @@ public class BackingRepository<T, ID> extends AbstractRepository<ID, T> {
 	 * @throws IllegalArgumentException if {@literal id} is {@literal null}.
 	 */
 	public Optional<T> findById(ID id) {
-		T result = get(id);
 		return Optional.ofNullable(get(id));
 	}
 

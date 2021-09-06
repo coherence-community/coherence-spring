@@ -15,7 +15,7 @@ import org.springframework.data.util.TypeInformation;
  *
  * @param <T> the entity type
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherencePersistentEntity<T>
 		extends BasicPersistentEntity<T, CoherencePersistentProperty> {

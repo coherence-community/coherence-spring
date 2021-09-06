@@ -16,7 +16,7 @@ import com.tangosol.util.Filter;
  * @param <ID> the type of the id of the entity the repository manages
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public interface ListenerSupport<T, ID> {
 	/**

@@ -21,7 +21,7 @@ import org.springframework.util.ClassUtils;
  * Coherence implementation of {@link PersistentProperty}.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherencePersistentProperty
 		extends AnnotationBasedPersistentProperty<CoherencePersistentProperty> {

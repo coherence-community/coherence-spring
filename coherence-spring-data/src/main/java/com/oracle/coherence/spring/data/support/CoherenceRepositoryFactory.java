@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
  * Coherence implementation of {@link RepositoryFactorySupport}.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 

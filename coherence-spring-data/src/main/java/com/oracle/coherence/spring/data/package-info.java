@@ -9,6 +9,6 @@
  * Coherence Spring Data integration.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 package com.oracle.coherence.spring.data;

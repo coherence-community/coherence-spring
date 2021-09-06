@@ -18,7 +18,7 @@ import org.springframework.data.repository.Repository;
  * @param <ID> the type of the id of the entity the repository manages
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public interface AsyncCrudRepository<T, ID> extends Repository<T, ID> {
 

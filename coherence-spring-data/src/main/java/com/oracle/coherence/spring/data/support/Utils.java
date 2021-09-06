@@ -22,7 +22,7 @@ import static com.tangosol.util.function.Remote.comparator;
  * General static utilities.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class Utils {
 

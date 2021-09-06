@@ -17,7 +17,7 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
  * This class wil register support for Coherence repositories with the Spring runtime.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceRepositoriesRegistrar extends RepositoryBeanDefinitionRegistrarSupport {
 	@Override

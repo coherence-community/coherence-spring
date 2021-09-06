@@ -65,7 +65,7 @@ public abstract class AbstractSessionEventTests {
 	@Test
 	void saveSessionTest() throws InterruptedException {
 		final NamedCache sessionCache = this.coherence.getSession().getCache(this.expectedCacheName);
-		assertThat(sessionCache.isActive());
+		assertThat(sessionCache.isActive()).isTrue();
 		assertThat(sessionCache.size()).isEqualTo(0);
 
 		final String username = "coherence_rocks";

@@ -101,13 +101,12 @@ public class CoherenceConfigDataLocationResolver implements ConfigDataLocationRe
 
 		final CoherenceConfigClientProperties properties = loadProperties(resolverContext);
 
-		//TODO Currently not supported and actual uris following the COHERENCE_PREFIX are ignored
 		final String uris = location.getNonPrefixedValue(getPrefix());
 
 		if (StringUtils.hasText(uris)) {
 			if (logger.isWarnEnabled()) {
 				logger.warn("Uri values following the prefix '" + getPrefix() + "' are not currently supported and "
-						+ "are ignore. However, you specified: " + uris);
+						+ "are ignored. However, you specified: " + uris);
 			}
 		}
 

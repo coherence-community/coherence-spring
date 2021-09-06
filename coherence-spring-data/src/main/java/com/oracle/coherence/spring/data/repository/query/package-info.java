@@ -9,7 +9,7 @@
  * Coherence finder query support.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 @org.springframework.lang.NonNullApi
 package com.oracle.coherence.spring.data.repository.query;

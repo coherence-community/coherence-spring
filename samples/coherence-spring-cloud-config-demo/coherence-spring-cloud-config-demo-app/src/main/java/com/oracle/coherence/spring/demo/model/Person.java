@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.demo.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +29,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="PEOPLE")
-public class Person {
+public class Person implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

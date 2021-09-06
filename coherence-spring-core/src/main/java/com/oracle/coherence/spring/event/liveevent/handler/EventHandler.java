@@ -68,7 +68,7 @@ public abstract class EventHandler<E extends Event<T>, T extends Enum<T>>
 	@Override
 	public void introduceEventDispatcher(String identifier, EventDispatcher dispatcher) {
 		if (isApplicable(dispatcher, this.scopeName)) {
-			dispatcher.addEventInterceptor(getId(), this, eventTypes(), false);
+			dispatcher.addEventInterceptor(getId(), this, getEventTypes(), false);
 		}
 	}
 
@@ -146,7 +146,7 @@ public abstract class EventHandler<E extends Event<T>, T extends Enum<T>>
 	 * Create a final set of event types to register this interceptor for.
 	 * @return a final set of event types to register this interceptor for
 	 */
-	protected EnumSet<T> eventTypes() {
+	protected EnumSet<T> getEventTypes() {
 		return this.eventTypes.isEmpty() ? EnumSet.complementOf(this.eventTypes) : this.eventTypes;
 	}
 

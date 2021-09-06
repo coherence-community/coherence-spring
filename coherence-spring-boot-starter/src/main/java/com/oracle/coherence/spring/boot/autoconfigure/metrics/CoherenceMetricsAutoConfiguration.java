@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * {@link EnableAutoConfiguration Auto-configuration} for {@link CoherenceMicrometerMetrics}.
  *
  * @author Vaso Putica
- * @since 3.0.0
+ * @since 3.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(CoherenceMicrometerMetrics.class)

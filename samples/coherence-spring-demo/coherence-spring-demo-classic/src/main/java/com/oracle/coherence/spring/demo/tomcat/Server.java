@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.demo.tomcat;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 
@@ -32,15 +33,16 @@ public class Server {
 	}
 
 	/**
-	 *
-	 * @param port
-	 * @throws Exception
+	 * Creates a Tomcat instance with the specified port
+	 * @param port the port of the default connector
+	 * @throws IOException when underlying temp directories cannot be created
 	 */
-	public Server(int port) throws Exception {
+	public Server(int port) throws IOException {
 		tomcat = new Tomcat();
 		tomcat.setPort(port);
 		tomcat.getConnector(); //Needed for Tomcat 9
 
+		@SuppressWarnings("java:S5443") // Sonar
 		final File tempDirectory = Files.createTempDirectory("coherence-spring-demo").toFile();
 		tomcat.setBaseDir(tempDirectory.getAbsolutePath());
 		final Context tomcatContext = tomcat.addWebapp("", tempDirectory.getAbsolutePath());
@@ -49,16 +51,18 @@ public class Server {
 
 	/**
 	 * Start the server.
+	 * @throws LifecycleException indicate Tomcat lifecycle related problems
 	 */
-	public void run() throws Exception {
+	public void run() throws LifecycleException {
 		tomcat.start();
 		tomcat.getServer().await();
 	}
 
 	/**
 	 * Start server and return when server has started.
+	 * @throws LifecycleException indicate Tomcat lifecycle related problems
 	 */
-	public void start() throws Exception {
+	public void start() throws LifecycleException {
 		tomcat.start();
 	}
 

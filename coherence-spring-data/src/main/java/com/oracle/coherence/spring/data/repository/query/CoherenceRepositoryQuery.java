@@ -58,7 +58,7 @@ import static com.oracle.coherence.spring.data.support.Utils.toComparator;
  * Coherence implementation of {@link RepositoryQuery}.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceRepositoryQuery implements RepositoryQuery {
 

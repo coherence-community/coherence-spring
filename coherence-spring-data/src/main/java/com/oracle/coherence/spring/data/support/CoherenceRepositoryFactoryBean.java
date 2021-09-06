@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
  * @param <S>  the entity type
  * @author Ryan Lubke
  * @author Gunnar Hillert
- * @since 3.0.0
+ * @since 3.0
  */
 public class CoherenceRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
 		extends RepositoryFactoryBeanSupport<T, S, ID> {

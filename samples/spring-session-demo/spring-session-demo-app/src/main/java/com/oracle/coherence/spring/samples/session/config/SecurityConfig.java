@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private ObjectMapper objectMapper;
 
 	@Override
+	@SuppressWarnings("java:S4502") // SONAR
 	public void configure(HttpSecurity http) throws Exception {
 
 		final BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(

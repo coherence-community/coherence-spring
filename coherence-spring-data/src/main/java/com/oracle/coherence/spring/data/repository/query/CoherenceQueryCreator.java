@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
  * Coherence implementation of {@link AbstractQueryCreator}.
  *
  * @author Ryan Lubke
- * @since 3.0.0
+ * @since 3.0
  */
 @SuppressWarnings("rawtypes")
 public class CoherenceQueryCreator extends AbstractQueryCreator<QueryResult, QueryState> {

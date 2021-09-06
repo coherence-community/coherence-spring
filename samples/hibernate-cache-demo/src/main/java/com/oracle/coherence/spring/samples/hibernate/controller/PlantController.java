@@ -9,7 +9,9 @@ package com.oracle.coherence.spring.samples.hibernate.controller;
 import java.util.List;
 
 import com.oracle.coherence.spring.samples.hibernate.dao.PlantRepository;
+import com.oracle.coherence.spring.samples.hibernate.dto.PlantDto;
 import com.oracle.coherence.spring.samples.hibernate.model.Plant;
+import org.modelmapper.ModelMapper;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/plants")
 public class PlantController {
 
-	private PlantRepository plantRepository;
+	private final PlantRepository plantRepository;
 
-	public PlantController(PlantRepository plantRepository) {
+	private final ModelMapper modelMapper;
+
+
+	public PlantController(PlantRepository plantRepository, ModelMapper modelMapper) {
 		this.plantRepository = plantRepository;
+		this.modelMapper = modelMapper;
 	}
 
 	@GetMapping
@@ -50,8 +56,9 @@ public class PlantController {
 	}
 
 	@PostMapping
-	public Plant createPlant(@RequestBody Plant plant) {
-		return this.plantRepository.save(plant);
+	public Plant createPlant(@RequestBody PlantDto plantDto) {
+		final Plant plantToSave = this.modelMapper.map(plantDto, Plant.class);
+		return this.plantRepository.save(plantToSave);
 	}
 
 	@DeleteMapping("/{id}")

@@ -16,7 +16,9 @@
 package com.oracle.coherence.spring.boot.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tangosol.net.NamedMap;
 import com.tangosol.net.Session;
@@ -41,19 +43,18 @@ public class CoherenceConfigDataLoader implements ConfigDataLoader<CoherenceConf
 	}
 
 	public List<PropertySource<?>> getPropertySources(CoherenceConfigDataResource resource) {
-
-		final CoherenceGrpcClient coherenceGrpcClient = new CoherenceGrpcClient(resource.getProperties());
-
-		final List<String> keys = this.buildSourceNames(resource);
-
-		final List<PropertySource<?>> composite = new ArrayList<>();
-		final Session session = coherenceGrpcClient.getCoherenceSession();
-		for (String propertySourceName : keys) {
-			final NamedMap<String, Object> configMap = session.getMap(propertySourceName);
-			final MapPropertySource propertySource = new MapPropertySource(propertySourceName, configMap);
-			composite.add(propertySource);
+		try (CoherenceGrpcClient coherenceGrpcClient = new CoherenceGrpcClient(resource.getProperties())) {
+			final List<String> keys = this.buildSourceNames(resource);
+			final List<PropertySource<?>> composite = new ArrayList<>();
+			final Session session = coherenceGrpcClient.getCoherenceSession();
+			for (String propertySourceName : keys) {
+				final NamedMap<String, Object> configMap = session.getMap(propertySourceName);
+				final Map<String, Object> results = new HashMap<>(configMap);
+				final MapPropertySource propertySource = new MapPropertySource(propertySourceName, results);
+				composite.add(propertySource);
+			}
+			return composite;
 		}
-		return composite;
 	}
 
 	/**

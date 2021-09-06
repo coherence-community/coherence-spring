@@ -52,6 +52,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringJUnitConfig(CoherenceTopicListenerTest.Config.class)
 @DirtiesContext
@@ -277,7 +278,10 @@ class CoherenceTopicListenerTest {
 			String message = "ABC";
 			Publisher.Status status = publisher.publish(message).get(1, TimeUnit.MINUTES);
 
-			this.listenerFour.latch.await(1, TimeUnit.MINUTES);
+			boolean latchResult = this.listenerFour.latch.await(1, TimeUnit.MINUTES);
+			if (!latchResult) {
+				fail("Latch did not count down to 0.");
+			}
 			assertThat(this.listenerFour.lastElementOne, is(notNullValue()));
 			assertThat(this.listenerFour.lastElementOne.getChannel(), is(status.getChannel()));
 			assertThat(this.listenerFour.lastElementOne.getPosition(), is(status.getPosition()));
