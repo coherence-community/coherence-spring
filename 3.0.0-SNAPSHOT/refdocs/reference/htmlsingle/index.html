@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.8">
-<meta name="author" content="Gunnar Hillert, Ryan Lubke, Vaso Putica">
+<meta name="author" content="Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight">
 <title>Coherence Spring Reference Documentation</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -152,7 +152,7 @@ window.onload = function() {
 <div id="header">
 <h1>Coherence Spring Reference Documentation</h1>
 <div class="details">
-<span id="author" class="author">Gunnar Hillert, Ryan Lubke, Vaso Putica</span><br>
+<span id="author" class="author">Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight</span><br>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -337,7 +337,7 @@ window.onload = function() {
 <ul class="sectlevel2">
 <li><a href="#spring-boot-getting-started">7.1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">7.2. Using Coherence with Spring Boot</a></li>
-<li><a href="#spring-boot-config-data-api">7.3. Coherence Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-config-data-api">7.3. Support of the Spring Boot ConfigData API</a></li>
 <li><a href="#spring-boot-caching">7.4. Caching with Spring Boot</a></li>
 <li><a href="#spring-boot-hibernate-second-level-cache">7.5. Configure Hibernate Second-Level Caching</a>
 <ul class="sectlevel3">
@@ -366,7 +366,6 @@ window.onload = function() {
 <li><a href="#spring-cloud-config-coherence">8.3. Use Spring Cloud Config Server to Configure Coherence</a></li>
 </ul>
 </li>
-<li><a href="#appendix">9. Appendices</a></li>
 </ul>
 </div>
 </div>
@@ -831,7 +830,7 @@ dependency as well as the desired dependency for Coherence.</p>
  &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
      &lt;artifactId&gt;coherence&lt;/artifactId&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
-     &lt;version&gt;21.06&lt;/version&gt;
+     &lt;version&gt;21.06.1&lt;/version&gt;
  &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -945,14 +944,14 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-    &lt;version&gt;21.06&lt;/version&gt;
+    &lt;version&gt;21.06.1&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06")</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:21.06.1")</code></pre>
 </div>
 </div>
 </div>
@@ -1490,10 +1489,10 @@ CohQL where-clause, in this case <code>lastName == 'Simpson'</code>.</p>
 <div class="listingblock">
 <div class="title">Injecting a @CoherenceMap with @WhereFilter</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                           <i class="conum" data-value="1"></i><b>(1)</b>
-    @View                                             <i class="conum" data-value="2"></i><b>(2)</b>
-    @WhereFilter("lastName = 'Simpson'")              <i class="conum" data-value="3"></i><b>(3)</b>
-    private NamedMap&lt;String, Person&gt; allSimpsons;     <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
+    @View                                                    <i class="conum" data-value="2"></i><b>(2)</b>
+    @WhereFilter("lastName = 'Simpson'")                     <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;String, Person&gt; allSimpsons;            <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1524,7 +1523,7 @@ CohQL where-clause, in this case <code>lastName == 'Simpson'</code>.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")
     @View
-    @WhereFilter("lastName = 'Simpson' and age &gt; 10") <i class="conum" data-value="1"></i><b>(1)</b>
+    @WhereFilter("lastName = 'Simpson' and age &gt; 10")        <i class="conum" data-value="1"></i><b>(1)</b>
     private NamedMap&lt;String, Person&gt; simpsons;</code></pre>
 </div>
 </div>
@@ -1577,10 +1576,10 @@ could be used to specify that the values should be transformed using a property 
 <div class="listingblock">
 <div class="title">Injecting a @CoherenceMap with multiple @WhereFilter</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                          <i class="conum" data-value="1"></i><b>(1)</b>
-    @View                                            <i class="conum" data-value="2"></i><b>(2)</b>
-    @PropertyExtractor("age")                        <i class="conum" data-value="3"></i><b>(3)</b>
-    private NamedMap&lt;String, Integer&gt; ages;          <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
+    @View                                                    <i class="conum" data-value="2"></i><b>(2)</b>
+    @PropertyExtractor("age")                                <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;String, Integer&gt; ages;                  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2061,12 +2060,12 @@ import com.oracle.coherence.spring.event.CoherenceEventListener;
 import com.tangosol.util.MapEvent;
 import org.springframework.stereotype.Component;
 
-@Component                                                     <i class="conum" data-value="1"></i><b>(1)</b>
+@Component                                       <i class="conum" data-value="1"></i><b>(1)</b>
 public class PersonEventHandler {
 
-    @CoherenceEventListener                                    <i class="conum" data-value="2"></i><b>(2)</b>
-    public void onNewPerson(@MapName("people")                 <i class="conum" data-value="3"></i><b>(3)</b>
-                            @Inserted                          <i class="conum" data-value="4"></i><b>(4)</b>
+    @CoherenceEventListener                      <i class="conum" data-value="2"></i><b>(2)</b>
+    public void onNewPerson(@MapName("people")   <i class="conum" data-value="3"></i><b>(3)</b>
+                            @Inserted            <i class="conum" data-value="4"></i><b>(4)</b>
                             MapEvent&lt;String, Person&gt; event) {
         // TODO: process the event
     }
@@ -2134,7 +2133,7 @@ from.</p>
 <div class="title">Listening to events for the map named "foo"</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    public void onFooEvent(@MapName("foo")                <i class="conum" data-value="1"></i><b>(1)</b>
+    public void onFooEvent(@MapName("foo")       <i class="conum" data-value="1"></i><b>(1)</b>
                            MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2152,7 +2151,7 @@ from.</p>
 <div class="title">Listening to events for the cache named "bar"</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    public void onBarEvent(@CacheName("bar")             <i class="conum" data-value="1"></i><b>(1)</b>
+    public void onBarEvent(@CacheName("bar")     <i class="conum" data-value="1"></i><b>(1)</b>
                            MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2200,7 +2199,7 @@ services, the events can be restricted to just specific services using the
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
     public void onEventOnStorageService(@MapName("foo")
-                        @ServiceName("Storage")        <i class="conum" data-value="1"></i><b>(1)</b>
+                        @ServiceName("Storage")  <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2245,7 +2244,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="title">Listening to events for the "orders" map in ALL sessions</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    public void onOrdersEventAllSessions(@MapName("orders")                  <i class="conum" data-value="1"></i><b>(1)</b>
+    public void onOrdersEventAllSessions(@MapName("orders")  <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2264,7 +2263,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
     public void onOrdersEventInCustomerSession(@MapName("orders")
-                        @SessionName("Customer")                            <i class="conum" data-value="1"></i><b>(1)</b>
+                        @SessionName("Customer")             <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2303,14 +2302,14 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="title">Route events with the cache name by the name of the session</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    public void onCustomerOrders(@SessionName("Customer")                    <i class="conum" data-value="1"></i><b>(1)</b>
+    public void onCustomerOrders(@SessionName("Customer")    <i class="conum" data-value="1"></i><b>(1)</b>
                                  @MapName("orders")
                                  MapEvent&lt;String, Order&gt; event) {
         // TODO: process the event
     }
 
     @CoherenceEventListener
-    public void onCatalogOrders(@SessionName("Catalog")                      <i class="conum" data-value="2"></i><b>(2)</b>
+    public void onCatalogOrders(@SessionName("Catalog")      <i class="conum" data-value="2"></i><b>(2)</b>
                                 @MapName("orders")
                                 MapEvent&lt;String, Order&gt; event) {
         // TODO: process the event
@@ -2374,7 +2373,7 @@ the following annotations:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
     public void onInsertEvent(@MapName("test")
-                        @Inserted                                            <i class="conum" data-value="1"></i><b>(1)</b>
+                        @Inserted                            <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2393,7 +2392,7 @@ the following annotations:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
     public void onInsertAndDeleteEvent(@MapName("test")
-                        @Inserted @Deleted                                   <i class="conum" data-value="1"></i><b>(1)</b>
+                        @Inserted @Deleted                   <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2455,7 +2454,7 @@ built-in <code>@WhereFilter</code> filter binding annotation will be used in thi
 <div class="listingblock">
 <div class="title">Example of a Where Filter</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @WhereFilter("age &gt;= 18")                                                <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @WhereFilter("age &gt;= 18")                    <i class="conum" data-value="1"></i><b>(1)</b>
     @CoherenceEventListener
     @MapName("people")
     public void onAdult(MapEvent&lt;String, Person&gt; people) {
@@ -2511,9 +2510,9 @@ to just extract the <code>customerId</code> from the event:</p>
 <div class="title">Example of a Property Extractor</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    @PropertyExtractor("customerId")                                         <i class="conum" data-value="1"></i><b>(1)</b>
-    public void onOrder(@MapName("orders")                                   <i class="conum" data-value="2"></i><b>(2)</b>
-                        MapEvent&lt;String, String&gt; event) {                    <i class="conum" data-value="3"></i><b>(3)</b>
+    @PropertyExtractor("customerId")                         <i class="conum" data-value="1"></i><b>(1)</b>
+    public void onOrder(@MapName("orders")                   <i class="conum" data-value="2"></i><b>(2)</b>
+                        MapEvent&lt;String, String&gt; event) {    <i class="conum" data-value="3"></i><b>(3)</b>
         // TODO: process event...
     }</code></pre>
 </div>
@@ -2551,14 +2550,14 @@ with a two <code>@PropertyExtractor</code> annotations:</p>
 <div class="title">Example of using multiple Property Extractors</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @CoherenceEventListener
-    @PropertyExtractor("customerId")                                         <i class="conum" data-value="1"></i><b>(1)</b>
+    @PropertyExtractor("customerId")                              <i class="conum" data-value="1"></i><b>(1)</b>
     @PropertyExtractor("orderId")
     public void onOrderWithMultiplePropertyExtractors(
-                        @Inserted                                            <i class="conum" data-value="2"></i><b>(2)</b>
+                        @Inserted                                 <i class="conum" data-value="2"></i><b>(2)</b>
                         @MapName("orders")
-                        MapEvent&lt;String, List&lt;Object&gt;&gt; event) {              <i class="conum" data-value="3"></i><b>(3)</b>
+                        MapEvent&lt;String, List&lt;Object&gt;&gt; event) {   <i class="conum" data-value="3"></i><b>(3)</b>
         List list = event.getNewValue();
-        String customerId = (String) list.get(0);                            <i class="conum" data-value="4"></i><b>(4)</b>
+        String customerId = (String) list.get(0);                 <i class="conum" data-value="4"></i><b>(4)</b>
         Long orderId = (Long) list.get(1);
         // ...
     }</code></pre>
@@ -3570,10 +3569,10 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.oracle.coherence.spring.annotation.FilterBinding;
 
-@FilterBinding                             <i class="conum" data-value="1"></i><b>(1)</b>
+@FilterBinding                                   <i class="conum" data-value="1"></i><b>(1)</b>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LargePalmTrees {         <i class="conum" data-value="2"></i><b>(2)</b>
+public @interface LargePalmTrees {               <i class="conum" data-value="2"></i><b>(2)</b>
 }</code></pre>
 </div>
 </div>
@@ -3607,12 +3606,12 @@ import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import org.springframework.stereotype.Component;
 
-@LargePalmTrees                                                              <i class="conum" data-value="1"></i><b>(1)</b>
-@Component                                                                   <i class="conum" data-value="2"></i><b>(2)</b>
+@LargePalmTrees                                              <i class="conum" data-value="1"></i><b>(1)</b>
+@Component                                                   <i class="conum" data-value="2"></i><b>(2)</b>
 public class LargePalmTreesFilterFactory&lt;Plant&gt;
         implements FilterFactory&lt;LargePalmTrees, Plant&gt; {
     @Override
-    public Filter&lt;Plant&gt; create(LargePalmTrees annotation) {                 <i class="conum" data-value="3"></i><b>(3)</b>
+    public Filter&lt;Plant&gt; create(LargePalmTrees annotation) { <i class="conum" data-value="3"></i><b>(3)</b>
         Filter&lt;Plant&gt; palm = Filters.equal("plantType", PlantType.PALM);
         Filter&lt;Plant&gt; height = Filters.greaterEqual(
                 Extractors.extract("height"), 20);
@@ -3673,15 +3672,15 @@ import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import org.springframework.stereotype.Component;
 
-@PalmTrees                                                                  <i class="conum" data-value="1"></i><b>(1)</b>
-@Component                                                                  <i class="conum" data-value="2"></i><b>(2)</b>
+@PalmTrees                                                                <i class="conum" data-value="1"></i><b>(1)</b>
+@Component                                                                <i class="conum" data-value="2"></i><b>(2)</b>
 public class PalmTreesFilterFactory&lt;Plant&gt;
         implements FilterFactory&lt;PalmTrees, Plant&gt; {
     @Override
-    public Filter&lt;Plant&gt; create(PalmTrees annotation) {                     <i class="conum" data-value="3"></i><b>(3)</b>
+    public Filter&lt;Plant&gt; create(PalmTrees annotation) {                   <i class="conum" data-value="3"></i><b>(3)</b>
         Filter&lt;Plant&gt; palm = Filters.equal("plantType", PlantType.PALM);
         Filter&lt;Plant&gt; height = Filters.greaterEqual(
-                Extractors.extract("height"), annotation.value());    <i class="conum" data-value="4"></i><b>(4)</b>
+                Extractors.extract("height"), annotation.value());  <i class="conum" data-value="4"></i><b>(4)</b>
         return Filters.all(palm, height);
     }
 }</code></pre>
@@ -3716,9 +3715,9 @@ up as a Spring bean</td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @View                                                                    <i class="conum" data-value="1"></i><b>(1)</b>
-    @PalmTrees(1)                                                            <i class="conum" data-value="2"></i><b>(2)</b>
-    @CoherenceCache("plants")                                                <i class="conum" data-value="3"></i><b>(3)</b>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @View                                                    <i class="conum" data-value="1"></i><b>(1)</b>
+    @PalmTrees(1)                                            <i class="conum" data-value="2"></i><b>(2)</b>
+    @CoherenceCache("plants")                                <i class="conum" data-value="3"></i><b>(3)</b>
     private NamedMap&lt;Long, Plant&gt; palmTrees;</code></pre>
 </div>
 </div>
@@ -3780,10 +3779,10 @@ extracts the <code>name</code> property and the resulting map of plant names can
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ExtractorBinding                         <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ExtractorBinding                                <i class="conum" data-value="1"></i><b>(1)</b>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PersonAge {            <i class="conum" data-value="2"></i><b>(2)</b>
+public @interface PersonAge {                    <i class="conum" data-value="2"></i><b>(2)</b>
 }
 
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
@@ -3793,10 +3792,10 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@ExtractorBinding                              <i class="conum" data-value="1"></i><b>(1)</b>
+@ExtractorBinding                                <i class="conum" data-value="1"></i><b>(1)</b>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PlantNameExtractor {         <i class="conum" data-value="2"></i><b>(2)</b>
+public @interface PlantNameExtractor {           <i class="conum" data-value="2"></i><b>(2)</b>
 }</code></pre>
 </div>
 </div>
@@ -3829,8 +3828,8 @@ import com.tangosol.util.Extractors;
 import com.tangosol.util.ValueExtractor;
 import org.springframework.stereotype.Component;
 
-@PlantNameExtractor                                                         <i class="conum" data-value="1"></i><b>(1)</b>
-@Component                                                                  <i class="conum" data-value="2"></i><b>(2)</b>
+@PlantNameExtractor                                          <i class="conum" data-value="1"></i><b>(1)</b>
+@Component                                                   <i class="conum" data-value="2"></i><b>(2)</b>
 public class PlantNameExtractorFactory&lt;Plant&gt;
         implements ExtractorFactory&lt;PlantNameExtractor, Plant, String&gt; {
     @Override
@@ -3869,14 +3868,14 @@ In this case the annotation has no values, but if it did we could access those v
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@View               <i class="conum" data-value="1"></i><b>(1)</b>
-@PersonAge          <i class="conum" data-value="2"></i><b>(2)</b>
-@Name("people")     <i class="conum" data-value="3"></i><b>(3)</b>
-private NamedMap&lt;String, Integer&gt; ages;   <i class="conum" data-value="4"></i><b>(4)</b>
-    @View                                                                    <i class="conum" data-value="1"></i><b>(1)</b>
-    @PlantNameExtractor                                                      <i class="conum" data-value="2"></i><b>(2)</b>
-    @CoherenceMap("plants")                                                  <i class="conum" data-value="3"></i><b>(3)</b>
-    private NamedMap&lt;Long, String&gt; plants;                                   <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@View                                            <i class="conum" data-value="1"></i><b>(1)</b>
+@PersonAge                                       <i class="conum" data-value="2"></i><b>(2)</b>
+@Name("people")                                  <i class="conum" data-value="3"></i><b>(3)</b>
+private NamedMap&lt;String, Integer&gt; ages;          <i class="conum" data-value="4"></i><b>(4)</b>
+    @View                                        <i class="conum" data-value="1"></i><b>(1)</b>
+    @PlantNameExtractor                          <i class="conum" data-value="2"></i><b>(2)</b>
+    @CoherenceMap("plants")                      <i class="conum" data-value="3"></i><b>(3)</b>
+    private NamedMap&lt;Long, String&gt; plants;       <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -3945,11 +3944,11 @@ public class Config {
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.annotation.Topic;
 
-@CoherencePublisher  <i class="conum" data-value="1"></i><b>(1)</b>
+@CoherencePublisher                              <i class="conum" data-value="1"></i><b>(1)</b>
 public interface ProductClient {
 
-    @Topic("my-products") <i class="conum" data-value="2"></i><b>(2)</b>
-    void sendProduct(String message); <i class="conum" data-value="3"></i><b>(3)</b>
+    @Topic("my-products")                        <i class="conum" data-value="2"></i><b>(2)</b>
+    void sendProduct(String message);            <i class="conum" data-value="3"></i><b>(3)</b>
 
     void sendProduct(@Topic String topic, String message); <i class="conum" data-value="4"></i><b>(4)</b>
 }</code></pre>
@@ -4042,11 +4041,11 @@ client.sendProduct("Blue Trainers");</code></pre>
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
 import com.oracle.coherence.spring.annotation.Topic;
 
-@CoherenceTopicListener   <i class="conum" data-value="1"></i><b>(1)</b>
+@CoherenceTopicListener                          <i class="conum" data-value="1"></i><b>(1)</b>
 public class ProductListener {
 
-    @Topic("my-products")   <i class="conum" data-value="2"></i><b>(2)</b>
-    public void receive(String product) { <i class="conum" data-value="3"></i><b>(3)</b>
+    @Topic("my-products")                        <i class="conum" data-value="2"></i><b>(2)</b>
+    public void receive(String product) {        <i class="conum" data-value="3"></i><b>(3)</b>
         System.out.println("Got Product - " + product);
     }
 }</code></pre>
@@ -4176,7 +4175,7 @@ public void receive(Element&lt;Product&gt; product) {
 <div class="sect4">
 <h5 id="forwarding-messages-with-sendto"><a class="anchor" href="#forwarding-messages-with-sendto"></a>3.10.5.3. Forwarding Messages with @SendTo</h5>
 <div class="paragraph">
-<p>On any @<a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.</p>
+<p>On any <a href="https://spring.coherence.community/3.0.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.</p>
 </div>
 <div class="paragraph">
 <p>The key of the original ConsumerRecord will be used as the key when forwarding the message.</p>
@@ -4190,11 +4189,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @CoherenceTopicListener
 public class ProductListener {
 
-    @Topic("awesome-products")      <i class="conum" data-value="1"></i><b>(1)</b>
-    @SendTo("product-quantities")   <i class="conum" data-value="2"></i><b>(2)</b>
+    @Topic("awesome-products")                   <i class="conum" data-value="1"></i><b>(1)</b>
+    @SendTo("product-quantities")                <i class="conum" data-value="2"></i><b>(2)</b>
     public int receive(Product product) {
         System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
-        return product.getQuantity(); <i class="conum" data-value="3"></i><b>(3)</b>
+        return product.getQuantity();            <i class="conum" data-value="3"></i><b>(3)</b>
     }
 }</code></pre>
 </div>
@@ -4228,12 +4227,12 @@ import reactor.core.publisher.Mono;
 @CoherenceTopicListener
 public class ProductListener {
 
-    @Topic("awesome-products")       <i class="conum" data-value="1"></i><b>(1)</b>
-    @SendTo("product-quantities")    <i class="conum" data-value="2"></i><b>(2)</b>
+    @Topic("awesome-products")                   <i class="conum" data-value="1"></i><b>(1)</b>
+    @SendTo("product-quantities")                <i class="conum" data-value="2"></i><b>(2)</b>
     public Mono&lt;Integer&gt; receiveProduct(Mono&lt;Product&gt; productSingle) {
         return productSingle.map(product -&gt; {
             System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
-            return product.getQuantity();  <i class="conum" data-value="3"></i><b>(3)</b>
+            return product.getQuantity();        <i class="conum" data-value="3"></i><b>(3)</b>
         });
     }
 }</code></pre>
@@ -4895,7 +4894,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06&lt;/version&gt;
+        &lt;version&gt;21.06.1&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -4905,7 +4904,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-session:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06")
+    compile("com.oracle.coherence.ce:coherence:21.06.1")
 }</code></pre>
 </div>
 </div>
@@ -5770,7 +5769,7 @@ as the desired version of Coherence.</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06&lt;/version&gt;
+        &lt;version&gt;21.06.1&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -5780,7 +5779,7 @@ as the desired version of Coherence.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06")
+    compile("com.oracle.coherence.ce:coherence:21.06.1")
 }</code></pre>
 </div>
 </div>
@@ -5945,7 +5944,7 @@ the native Coherence properties. For a list of available native properties, plea
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>7.3. Coherence Support of the Spring Boot ConfigData API</h3>
+<h3 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>7.3. Support of the Spring Boot ConfigData API</h3>
 <div class="paragraph">
 <p>Since Spring Boot <code>2.4.x</code>, you can define your own
 <a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
@@ -6282,7 +6281,7 @@ project:</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06&lt;/version&gt;
+        &lt;version&gt;21.06.1&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -6293,7 +6292,7 @@ project:</p>
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-session:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06")
+    compile("com.oracle.coherence.ce:coherence:21.06.1")
 }</code></pre>
 </div>
 </div>
@@ -6408,7 +6407,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;21.06&lt;/version&gt;
+        &lt;version&gt;21.06.1&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -6419,7 +6418,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.0.0-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-data:3.0.0-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:21.06")
+    compile("com.oracle.coherence.ce:coherence:21.06.1")
 }</code></pre>
 </div>
 </div>
@@ -6606,15 +6605,15 @@ the configuration data.</p>
 <div class="listingblock">
 <div class="title">config-client.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=6                                                     <i class="conum" data-value="1"></i><b>(1)</b>
- coherence.logging.destination=slf4j                                                    <i class="conum" data-value="2"></i><b>(2)</b>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=6                                           <i class="conum" data-value="1"></i><b>(1)</b>
+ coherence.logging.destination=slf4j                                          <i class="conum" data-value="2"></i><b>(2)</b>
 
- coherence.properties.coherence.cluster=Demo Cluster                                    <i class="conum" data-value="3"></i><b>(3)</b>
- coherence.properties.coherence.member=Demo Cluster Member                              <i class="conum" data-value="4"></i><b>(4)</b>
- coherence.properties.coherence.management.remote=true                                  <i class="conum" data-value="5"></i><b>(5)</b>
- coherence.properties.coherence.management=all                                          <i class="conum" data-value="6"></i><b>(6)</b>
- coherence.properties.coherence.management.report.autostart=true                        <i class="conum" data-value="7"></i><b>(7)</b>
- coherence.properties.coherence.reporter.output.directory=/path/to/reports/             <i class="conum" data-value="8"></i><b>(8)</b>
+ coherence.properties.coherence.cluster=Demo Cluster                          <i class="conum" data-value="3"></i><b>(3)</b>
+ coherence.properties.coherence.member=Demo Cluster Member                    <i class="conum" data-value="4"></i><b>(4)</b>
+ coherence.properties.coherence.management.remote=true                        <i class="conum" data-value="5"></i><b>(5)</b>
+ coherence.properties.coherence.management=all                                <i class="conum" data-value="6"></i><b>(6)</b>
+ coherence.properties.coherence.management.report.autostart=true              <i class="conum" data-value="7"></i><b>(7)</b>
+ coherence.properties.coherence.reporter.output.directory=/path/to/reports/   <i class="conum" data-value="8"></i><b>(8)</b>
  coherence.properties.coherence.management.report.configuration=/reports/report-all.xml <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
 </div>
 </div>
@@ -6655,7 +6654,7 @@ the configuration data.</p>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>You can control which reports are generated by specifying a different report group configuration file. The pre-defined
-reports are located at <code>coherence-21.06.jar/reports</code></td>
+reports are located at <code>coherence-21.06.1.jar/reports</code></td>
 </tr>
 </table>
 </div>
@@ -6768,16 +6767,10 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="appendix"><a class="anchor" href="#appendix"></a>9. Appendices</h2>
-<div class="sectionbody">
-
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-07 05:28:06 UTC
+Last updated 2021-09-07 09:32:00 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
