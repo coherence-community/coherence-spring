@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <ID> the type of the id of the entity the repository manages and the type of the
  * cache key
  * @author Jonathan Knight 2021.08.17
+ * @since 3.0
  */
 @NoRepositoryBean
 public interface JpaRepositoryCacheStore<T, ID> extends JpaRepositoryCacheLoader<T, ID>, CacheStore<ID, T> {

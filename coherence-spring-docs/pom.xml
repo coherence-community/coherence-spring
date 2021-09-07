@@ -23,6 +23,7 @@
 
 	<properties>
 		<refdocs.build.directory>${project.build.directory}/refdocs/</refdocs.build.directory>
+		<coherence.spring.root>${basedir}/..</coherence.spring.root>
 	</properties>
 
 	<dependencies>
@@ -246,6 +247,7 @@
 						<coherence-spring-version>${project.version}</coherence-spring-version>
 						<coherence-version>${coherence.version}</coherence-version>
 						<sources-root>${project.basedir}/src</sources-root>
+						<sources-root-samples>${coherence.spring.root}/samples/</sources-root-samples>
 					</attributes>
 				</configuration>
 				<dependencies>

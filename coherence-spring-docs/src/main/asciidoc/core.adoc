@@ -2158,3 +2158,189 @@ public class ProductListener {
 <1> The topic subscribed to is `awesome-products`
 <2> The topic to send the result to is `product-quantities`
 <3> The return is mapped from the single to the value of the quantity
+
+[[coherence-spring-cachestore]]
+== Cache Store
+
+Coherence Spring provides dedicated support for database-backed caches using JPA. Spring Data's
+{spring-docs-data-jpa}#jpa.repositories[JPA Repositories] make basic CRUD database access very simple. An application
+developer can just provide an interface that extends `JpaRepository` with the required generic parameters and
+Spring will do the rest.
+
+Coherence caches that are backed by a database have two options for how the database integration is provided:
+
+* `CacheLoader` - an application developer writes an implementation of a `CacheLoader` to read data from a database for
+a given key (or keys), convert it to entities that are then loaded into a cache for the given keys.
+* `CacheStore` - whilst a `CacheLoader` only loads from a database into a cache, a `CacheStore` (which extends
+`CacheLoader`) also stores cached entities back to the database, or for entries deleted from the cache, erases the
+corresponding values from the database. The parallels between a `CacheLoader` or `CacheStore` and a `JpaRepository`
+should be pretty obvious.
+
+The Coherence Spring core module provides two interfaces:
+
+- `com.oracle.coherence.spring.cachestore.JpaRepositoryCacheLoader`, which extends both `JpaRepository` and `CacheLoader`
+- `com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore`, which extends both `JpaRepository` and `CacheStore`.
+
+To create a JPA repository cache loader or cache store, all a developer needs to do is extend the relevant interface
+`JpaRepositoryCacheLoader` or `JpaRepositoryCacheStore` with the correct generic parameters.
+
+We will illustrate the use of Cache Stores using the following example.
+
+[[coherence-spring-cachestore-sample]]
+=== JPA Repository CacheStore Demo
+
+In this demo we are show-casing how to use Spring Data JPA repository beans as Coherence CacheStores in
+applications using the https://github.com/coherence-community/coherence-spring[Coherence Spring project]. The sample
+has a simple class called `Person` annotated with JPA annotations:
+
+[source,java]
+----
+include::{include-source-code-samples-cachestore}model/Person.java[tag=person]
+----
+
+The identifier of a `Person` is defined as a `Long` so in our Coherence application we would put these `Person`
+instances into a Coherence `NamedMap<Long, Person>`.
+
+==== Writing a JPA Repository CacheStore
+
+To write a JPA repository `CacheStore` that can be used by our people cache we just need to write a simple Spring Data
+repository interface:
+
+[source,java]
+----
+include::{include-source-code-samples-cachestore}model/PersonRepository.java[tag=imports]
+
+include::{include-source-code-samples-cachestore}model/PersonRepository.java[tag=personRepo]
+----
+
+That is all the code required to write a `CacheStore` that can be plugged into Coherence. Spring Data will take care of
+actually generating the implementation of the interface, and supplying that implementation as a bean.
+
+==== Configure the CacheStore in Coherence
+
+To use a `CacheStore` in Coherence it needs to be configured in the Coherence cache configuration file.
+To use the repository bean as a `CacheStore` we will make use of the Coherence Spring feature that allows injection of
+Spring beans into the cache configuration file.
+
+To use Spring bean injection in the configuration file we need to declare the custom namespace in the root XML element.
+
+[source,xml]
+.coherence-cache-config.xml
+----
+include::{include-source-code-samples-cachestore-resources}coherence-cache-config.xml[tag=header]
+----
+
+The `xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"` line declares the custom namespace,
+so elements with a prefix `spring` will be handled by the `com.oracle.coherence.spring.namespace.NamespaceHandler` class.
+The custom namespace handler allows us to use elements of the form `<spring:bean>bean-name</spring:bean>` anywhere in the
+configuration that Coherence normally allows an `<instance>` element or a `<class-scheme>` element.
+
+We can add a scheme to the `<cache-schemes>` section of the configuration that uses the repository bean.
+[source,xml]
+.coherence-cache-config.xml
+----
+include::{include-source-code-samples-cachestore-resources}coherence-cache-config.xml[tag=scheme]
+----
+
+In the snippet above you can see the `<spring:bean>\{repository-bean}</spring:bean>` element used as the cache store.
+In this case we have not used the name of the repository bean directly, we have used a parameter named `repository-bean`
+(XML values in curly-brackets in the `<spring:bean>` element are treated as parameter macros). This allows us to map
+multiple caches to the same scheme each with a different cache store - this is quite a common approach in Coherence for
+a number of elements that may be configured in a scheme per-cache.
+
+We can also now add the cache mapping for our `people` cache that will use the scheme above.
+[source,xml]
+.coherence-cache-config.xml
+----
+include::{include-source-code-samples-cachestore-resources}coherence-cache-config.xml[tag=mapping]
+----
+
+In the mapping above, the cache name `people` maps to the scheme `db-scheme` that we created above.
+As we mentioned above, we need to pass the actual bean name in the `repository-bean` parameter, which we do by using the
+`<init-params>` element in the mapping. We set the `<param-value>` element to the bean name, in this case `personRepository`.
+
+[NOTE]
+====
+The bean name used here is `personRepository`. This is the default name generated by Spring for the `PersonRepository`
+class, which is the simple class name with the first letter lowercase. If we did not want to rely on Spring generating a
+bean name we could specify a name in the `@Repository` annotation on the `PersonRepository` class.
+====
+
+If we had another cache with a different cache store, for example if we had an entity called `Location` with a repository
+cache store class called `LocationRepository`, the bean name would default to `locationRepository`, and we could add the
+following mapping.
+
+[source,xml]
+----
+<cache-mapping>
+    <cache-name>locations</cache-name>
+    <scheme-name>db-scheme</scheme-name>
+    <init-params>
+        <init-param>
+            <param-name>repository-bean</param-name>
+            <param-value>locationRepository</param-value>
+        </init-param>
+    </init-params>
+</cache-mapping>
+----
+
+==== Running the Sample
+
+This sample is just a simple Spring Boot application that exposes two endpoints to create/update people and get people by id.
+
+The controller class is very simple:
+[source,java]
+.PersonController.java
+----
+include::{include-source-code-samples-cachestore}controller/PersonController.java[tag=code]
+----
+
+We use the Coherence Spring integration to inject a `NamedMap` into the controller. This will be for the cache named `people`,
+which we configured to use the cache store in the configuration above.
+
+In the `createPerson` method we use the request parameters to create a `Person` and put it into the cache. The `CacheStore`
+will write this to the database.
+
+In the `getPerson` method we retrieve the `Person` from the cache using the id from the request path, loading from the
+database if there is no entry in the cache for the id.
+
+We can build the example using Maven from the cache store sample root directory:
+[source,bash]
+----
+./mvnw clean package -pl samples/cachestore-demo
+----
+
+This will build a Spring Boot jar that we can run the normal Spring Boot ways, for example:
+[source,bash,subs="verbatim,quotes,attributes"]
+----
+java -jar samples/cachestore-demo/target/coherence-spring-cachestore-demo-{coherence-spring-version}.jar
+----
+
+After the application has started we can try to get a `Person` using `curl`
+[source,bash]
+----
+curl -i -X GET http://localhost:8080/api/people/100
+----
+This should return a 404 response because there is no person in the database or cache with the id 100.
+
+We can create a `Person` using a `curl` POST request:
+[source,bash]
+----
+curl -i -X POST http://localhost:8080/api/people \
+    -d 'firstName=Joe' -d 'lastName=Smith' \
+    -d 'age=21' -d 'id=100'
+----
+This will create the `Person` named Joe Smith with the id 100. This should return with a 200 response to say the `Person`
+was successfully created and will be stored in the database.
+
+If we re-run the GET request we should get Joe Smith.
+[source,bash]
+----
+curl -i -X GET http://localhost:8080/api/people/100
+HTTP/1.1 200
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Thu, 19 Aug 2021 16:13:47 GMT
+
+{"id":100,"age":21,"firstname":"Joe","lastname":"Smith"}%
+----
