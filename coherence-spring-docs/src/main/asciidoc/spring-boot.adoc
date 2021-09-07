@@ -142,7 +142,7 @@ the native Coherence properties. For a list of available native properties, plea
 {oracle-coherence-docs}develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E[System Property Overrides].
 
 [[spring-boot-config-data-api]]
-== Coherence Support of the Spring Boot ConfigData API
+== Support of the Spring Boot ConfigData API
 
 Since Spring Boot `2.4.x`, you can define your own
 https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[custom config locations]. This allows you to

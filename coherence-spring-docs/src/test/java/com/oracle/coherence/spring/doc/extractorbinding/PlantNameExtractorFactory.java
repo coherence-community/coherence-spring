@@ -13,8 +13,8 @@ import com.tangosol.util.Extractors;
 import com.tangosol.util.ValueExtractor;
 import org.springframework.stereotype.Component;
 
-@PlantNameExtractor                                                         // <1>
-@Component                                                                  // <2>
+@PlantNameExtractor                                          // <1>
+@Component                                                   // <2>
 public class PlantNameExtractorFactory<Plant>
         implements ExtractorFactory<PlantNameExtractor, Plant, String> {
     @Override

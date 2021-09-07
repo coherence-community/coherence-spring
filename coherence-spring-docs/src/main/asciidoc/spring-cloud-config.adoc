@@ -109,15 +109,15 @@ Add a properties file called `config-client.properties`:
 .config-client.properties
 [source,properties,indent=1,subs="verbatim,quotes,attributes"]
 ----
-coherence.logging.severity-level=6                                                     <1>
-coherence.logging.destination=slf4j                                                    <2>
+coherence.logging.severity-level=6                                           <1>
+coherence.logging.destination=slf4j                                          <2>
 
-coherence.properties.coherence.cluster=Demo Cluster                                    <3>
-coherence.properties.coherence.member=Demo Cluster Member                              <4>
-coherence.properties.coherence.management.remote=true                                  <5>
-coherence.properties.coherence.management=all                                          <6>
-coherence.properties.coherence.management.report.autostart=true                        <7>
-coherence.properties.coherence.reporter.output.directory=/path/to/reports/             <8>
+coherence.properties.coherence.cluster=Demo Cluster                          <3>
+coherence.properties.coherence.member=Demo Cluster Member                    <4>
+coherence.properties.coherence.management.remote=true                        <5>
+coherence.properties.coherence.management=all                                <6>
+coherence.properties.coherence.management.report.autostart=true              <7>
+coherence.properties.coherence.reporter.output.directory=/path/to/reports/   <8>
 coherence.properties.coherence.management.report.configuration=/reports/report-all.xml <9>
 ----
 <1> `-1` emits no log messages, `9` emits the most

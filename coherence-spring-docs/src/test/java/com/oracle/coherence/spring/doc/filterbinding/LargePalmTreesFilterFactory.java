@@ -14,12 +14,12 @@ import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
 import org.springframework.stereotype.Component;
 
-@LargePalmTrees                                                              // <1>
-@Component                                                                   // <2>
+@LargePalmTrees                                              // <1>
+@Component                                                   // <2>
 public class LargePalmTreesFilterFactory<Plant>
 		implements FilterFactory<LargePalmTrees, Plant> {
 	@Override
-	public Filter<Plant> create(LargePalmTrees annotation) {                 // <3>
+	public Filter<Plant> create(LargePalmTrees annotation) { // <3>
 		Filter<Plant> palm = Filters.equal("plantType", PlantType.PALM);
 		Filter<Plant> height = Filters.greaterEqual(
 				Extractors.extract("height"), 20);

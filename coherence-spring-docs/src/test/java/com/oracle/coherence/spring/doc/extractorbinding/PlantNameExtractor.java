@@ -15,8 +15,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@ExtractorBinding                              // <1>
+@ExtractorBinding                                // <1>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PlantNameExtractor {         // <2>
+public @interface PlantNameExtractor {           // <2>
 }

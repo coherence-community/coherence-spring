@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PlantService {
 	private final Log logger = LogFactory.getLog(PlantService.class);
 // end::hide[]
-	@View                                                                    // <1>
-	@PlantNameExtractor                                                      // <2>
-	@CoherenceMap("plants")                                                  // <3>
-	private NamedMap<Long, String> plants;                                   // <4>
+	@View                                        // <1>
+	@PlantNameExtractor                          // <2>
+	@CoherenceMap("plants")                      // <3>
+	private NamedMap<Long, String> plants;       // <4>
 // tag::hide[]
 	public void getPalmTrees() {
 		assertThat(this.plants.size()).isEqualTo(5);

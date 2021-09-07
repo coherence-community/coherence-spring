@@ -27,16 +27,16 @@ public class PeopleService {
 	private NamedMap<String, Person> allPeople;
 
 // tag::simpleWhereFilter[]
-	@CoherenceMap("people")                           // <1>
-	@View                                             // <2>
-	@WhereFilter("lastName = 'Simpson'")              // <3>
-	private NamedMap<String, Person> allSimpsons;     // <4>
+	@CoherenceMap("people")                                  // <1>
+	@View                                                    // <2>
+	@WhereFilter("lastName = 'Simpson'")                     // <3>
+	private NamedMap<String, Person> allSimpsons;            // <4>
 // end::simpleWhereFilter[]
 
 // tag::complexWhereFilter[]
 	@CoherenceMap("people")
 	@View
-	@WhereFilter("lastName = 'Simpson' and age > 10") // <1>
+	@WhereFilter("lastName = 'Simpson' and age > 10")        // <1>
 	private NamedMap<String, Person> simpsons;
 // end::complexWhereFilter[]
 

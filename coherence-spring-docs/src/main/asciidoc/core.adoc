@@ -229,10 +229,10 @@ limitations, for instance, not being usable for constructor injection.
 [source,java]
 ----
     @Resource(name = COHERENCE_CACHE_BEAN_NAME)
-    private NamedCache numbers;                  <1>
+    private NamedCache numbers;                  // <1>
 
     @Resource(name = COHERENCE_CACHE_BEAN_NAME)
-    @Name("numbers")                             <2>
+    @Name("numbers")                             // <2>
     private NamedCache namedCache;
 ----
 <1> If not specified, the name of the field will be used to determine the cache name
@@ -259,9 +259,9 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 [source,java]
 ----
     @CoherenceCache
-    private NamedCache numbers;                  <1>
+    private NamedCache numbers;                  // <1>
 
-    @CoherenceCache("numbers")                   <2>
+    @CoherenceCache("numbers")                   // <2>
     private NamedCache namedCache;
 ----
 <1> If not specified, the name of the field will be used to determine the cache name
@@ -384,7 +384,7 @@ point. A view is a sub-set of the data in an underlying cache, controlled by a
 [source,java]
 ----
 @CoherenceMap("people")
-@View                                            <1>
+@View                                            // <1>
 private NamedMap<String, Person> map;
 ----
 <1> The injection point has been annotated with `@View`, so the injected `NamedMap` will actually be an implementation
@@ -495,7 +495,7 @@ Spring-supported injection annotation such as `@Autowired` or `@Inject`:
 ----
 @RestController
 public class MyBean {
-    @Inject                                      <1>
+    @Inject                                      // <1>
     private Session session;
 ----
 <1> Other injection annotations such as `@Autowired` can be used as well
@@ -505,7 +505,7 @@ public class MyBean {
 ----
 @RestController
 public class MyBean {
-    @Autowired                                   <1>
+    @Autowired                                   // <1>
     public MyBean(Session session) {
         // TODO...
     }
@@ -528,7 +528,7 @@ the injection point.
 ----
 @RestController
 public class MyBean {
-    @Autowired                                   <1>
+    @Autowired                                   // <1>
     @Name("Catalog")
     private Session session;
 }
@@ -1860,10 +1860,10 @@ First create a simple annotation called `PlantName`
 
 [source,java]
 ----
-@ExtractorBinding                         // <1>
+@ExtractorBinding                                // <1>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PersonAge {            // <2>
+public @interface PersonAge {                    // <2>
 }
 include::{include-source-code}extractorbinding/PlantNameExtractor.java[tags=!hide]
 ----
@@ -1895,10 +1895,10 @@ Now the application code where the view is to be injected can use the custom ext
 
 [source,java]
 ----
-@View               // <1>
-@PersonAge          // <2>
-@Name("people")     // <3>
-private NamedMap<String, Integer> ages;   // <4>
+@View                                            // <1>
+@PersonAge                                       // <2>
+@Name("people")                                  // <3>
+private NamedMap<String, Integer> ages;          // <4>
 include::{include-source-code}extractorbinding/PlantService.java[tags=!hide]
 ----
 <1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
@@ -1945,11 +1945,11 @@ For example the following is a trivial `@CoherencePublisher` interface:
 import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.annotation.Topic;
 
-@CoherencePublisher  // <1>
+@CoherencePublisher                              // <1>
 public interface ProductClient {
 
-    @Topic("my-products") // <2>
-    void sendProduct(String message); // <3>
+    @Topic("my-products")                        // <2>
+    void sendProduct(String message);            // <3>
 
     void sendProduct(@Topic String topic, String message); // <4>
 }
@@ -2014,11 +2014,11 @@ The following example will listen for messages published by the `ProductClient` 
 import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
 import com.oracle.coherence.spring.annotation.Topic;
 
-@CoherenceTopicListener   // <1>
+@CoherenceTopicListener                          // <1>
 public class ProductListener {
 
-    @Topic("my-products")   // <2>
-    public void receive(String product) { // <3>
+    @Topic("my-products")                        // <2>
+    public void receive(String product) {        // <3>
         System.out.println("Got Product - " + product);
     }
 }
@@ -2106,7 +2106,7 @@ In the example above a `MANUAL` commit strategy has used. The element will be co
 
 ==== Forwarding Messages with @SendTo
 
-On any @link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.
+On any link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherenceTopicListener.html[@CoherenceTopicListener] method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.
 
 The key of the original ConsumerRecord will be used as the key when forwarding the message.
 
@@ -2119,11 +2119,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @CoherenceTopicListener
 public class ProductListener {
 
-    @Topic("awesome-products")      // <1>
-    @SendTo("product-quantities")   // <2>
+    @Topic("awesome-products")                   // <1>
+    @SendTo("product-quantities")                // <2>
     public int receive(Product product) {
         System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
-        return product.getQuantity(); // <3>
+        return product.getQuantity();            // <3>
     }
 }
 ----
@@ -2144,12 +2144,12 @@ import reactor.core.publisher.Mono;
 @CoherenceTopicListener
 public class ProductListener {
 
-    @Topic("awesome-products")       // <1>
-    @SendTo("product-quantities")    // <2>
+    @Topic("awesome-products")                   // <1>
+    @SendTo("product-quantities")                // <2>
     public Mono<Integer> receiveProduct(Mono<Product> productSingle) {
         return productSingle.map(product -> {
             System.out.println("Got Product - " + product.getName() + " by " + product.getBrand());
-            return product.getQuantity();  // <3>
+            return product.getQuantity();        // <3>
         });
     }
 }

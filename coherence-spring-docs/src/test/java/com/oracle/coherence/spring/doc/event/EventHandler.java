@@ -38,7 +38,7 @@ public class EventHandler {
 
 	// tag::foo-map[]
 	@CoherenceEventListener
-	public void onFooEvent(@MapName("foo")                // <1>
+	public void onFooEvent(@MapName("foo")       // <1>
 			               MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -46,7 +46,7 @@ public class EventHandler {
 
 	// tag::bar-cache[]
 	@CoherenceEventListener
-	public void onBarEvent(@CacheName("bar")             // <1>
+	public void onBarEvent(@CacheName("bar")     // <1>
 			               MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -63,7 +63,7 @@ public class EventHandler {
 	// tag::storage-service[]
 	@CoherenceEventListener
 	public void onEventOnStorageService(@MapName("foo")
-	                    @ServiceName("Storage")        // <1>
+	                    @ServiceName("Storage")  // <1>
 			            MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -79,7 +79,7 @@ public class EventHandler {
 
 	// tag::orders-all-sessions[]
 	@CoherenceEventListener
-	public void onOrdersEventAllSessions(@MapName("orders")                  // <1>
+	public void onOrdersEventAllSessions(@MapName("orders")  // <1>
 			            MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -88,7 +88,7 @@ public class EventHandler {
 	// tag::orders-customer-session[]
 	@CoherenceEventListener
 	public void onOrdersEventInCustomerSession(@MapName("orders")
-	                    @SessionName("Customer")                            // <1>
+	                    @SessionName("Customer")             // <1>
 			            MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -104,14 +104,14 @@ public class EventHandler {
 
 	// tag::on-customer-catalog-orders[]
 	@CoherenceEventListener
-	public void onCustomerOrders(@SessionName("Customer")                    // <1>
+	public void onCustomerOrders(@SessionName("Customer")    // <1>
 	                             @MapName("orders")
 			                     MapEvent<String, Order> event) {
 		// TODO: process the event
 	}
 
 	@CoherenceEventListener
-	public void onCatalogOrders(@SessionName("Catalog")                      // <2>
+	public void onCatalogOrders(@SessionName("Catalog")      // <2>
 	                            @MapName("orders")
 			                    MapEvent<String, Order> event) {
 		// TODO: process the event
@@ -121,7 +121,7 @@ public class EventHandler {
 	// tag::on-insert-event[]
 	@CoherenceEventListener
 	public void onInsertEvent(@MapName("test")
-	                    @Inserted                                            // <1>
+	                    @Inserted                            // <1>
 			            MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -130,7 +130,7 @@ public class EventHandler {
 	// tag::on-insert-delete-event[]
 	@CoherenceEventListener
 	public void onInsertAndDeleteEvent(@MapName("test")
-	                    @Inserted @Deleted                                   // <1>
+	                    @Inserted @Deleted                   // <1>
 			            MapEvent<String, String> event) {
 		// TODO: process the event
 	}
@@ -144,7 +144,7 @@ public class EventHandler {
 	// end::on-map-event-test-map[]
 
 	// tag::on-map-event-with-where-filter[]
-	@WhereFilter("age >= 18")                                                // <1>
+	@WhereFilter("age >= 18")                    // <1>
 	@CoherenceEventListener
 	@MapName("people")
 	public void onAdult(MapEvent<String, Person> people) {
@@ -154,23 +154,23 @@ public class EventHandler {
 
 	// tag::on-order-with-property-extractor[]
 	@CoherenceEventListener
-	@PropertyExtractor("customerId")                                         // <1>
-	public void onOrder(@MapName("orders")                                   // <2>
-			            MapEvent<String, String> event) {                    // <3>
+	@PropertyExtractor("customerId")                         // <1>
+	public void onOrder(@MapName("orders")                   // <2>
+			            MapEvent<String, String> event) {    // <3>
 		// TODO: process event...
 	}
 	// end::on-order-with-property-extractor[]
 
 	// tag::on-order-with-multiple-property-extractors[]
 	@CoherenceEventListener
-	@PropertyExtractor("customerId")                                         // <1>
+	@PropertyExtractor("customerId")                              // <1>
 	@PropertyExtractor("orderId")
 	public void onOrderWithMultiplePropertyExtractors(
-			            @Inserted                                            // <2>
+			            @Inserted                                 // <2>
 	                    @MapName("orders")
-			            MapEvent<String, List<Object>> event) {              // <3>
+			            MapEvent<String, List<Object>> event) {   // <3>
 		List list = event.getNewValue();
-		String customerId = (String) list.get(0);                            // <4>
+		String customerId = (String) list.get(0);                 // <4>
 		Long orderId = (Long) list.get(1);
 		// ...
 	}

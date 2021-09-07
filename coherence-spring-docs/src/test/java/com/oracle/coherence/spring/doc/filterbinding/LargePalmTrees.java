@@ -13,8 +13,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.oracle.coherence.spring.annotation.FilterBinding;
 
-@FilterBinding                             // <1>
+@FilterBinding                                   // <1>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LargePalmTrees {         // <2>
+public @interface LargePalmTrees {               // <2>
 }

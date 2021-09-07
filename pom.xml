@@ -149,7 +149,7 @@
 		<assertj.version>3.20.2</assertj.version>
 		<awaitility.version>4.1.0</awaitility.version>
 		<bedrock.version>5.1.2</bedrock.version>
-		<coherence.version>21.06</coherence.version>
+		<coherence.version>21.06.1</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hsqldb.version>2.6.0</hsqldb.version>
@@ -164,7 +164,7 @@
 		<org.springframework.data.version>2021.0.4</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<spring-boot.version>2.5.4</spring-boot.version>
-		<spring-session.version>2.4.5</spring-session.version>
+		<spring-session.version>2.5.2</spring-session.version>
 		<spring-security.version>5.5.2</spring-security.version>
 	</properties>
 

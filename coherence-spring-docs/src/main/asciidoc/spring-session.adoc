@@ -54,11 +54,11 @@ Session using the `@EnableCoherenceHttpSession` annotation.
 ----
 @Configuration
 @EnableCoherence
-@EnableCoherenceHttpSession(                     <1>
-        session = "coherence_session",           <2>
-        cache = "spring:session:sessions",       <3>
-        flushMode = FlushMode.ON_SAVE,           <4>
-        sessionTimeoutInSeconds = 1800           <5>
+@EnableCoherenceHttpSession(                     // <1>
+        session = "coherence_session",           // <2>
+        cache = "spring:session:sessions",       // <3>
+        flushMode = FlushMode.ON_SAVE,           // <4>
+        sessionTimeoutInSeconds = 1800           // <5>
 )
 static class CoherenceSessionConfig {
 }

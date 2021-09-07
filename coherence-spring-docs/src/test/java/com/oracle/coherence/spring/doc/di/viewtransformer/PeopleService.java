@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PeopleService {
 	private final Log logger = LogFactory.getLog(PeopleService.class);
 // end::hide[]
-	@CoherenceMap("people")                          // <1>
-	@View                                            // <2>
-	@PropertyExtractor("age")                        // <3>
-	private NamedMap<String, Integer> ages;          // <4>
+	@CoherenceMap("people")                                  // <1>
+	@View                                                    // <2>
+	@PropertyExtractor("age")                                // <3>
+	private NamedMap<String, Integer> ages;                  // <4>
 // tag::hide[]
 	public void getPeople() {
 		assertThat(this.ages.size()).isEqualTo(5);

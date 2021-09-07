@@ -18,15 +18,15 @@ import org.apache.commons.logging.LogFactory;
 // end::hide[]
 import org.springframework.stereotype.Component;
 
-@Component                                                     // <1>
+@Component                                       // <1>
 public class PersonEventHandler {
 	// tag::hide[]
 	private static final Log logger = LogFactory.getLog(PersonEventHandler.class);
 	// end::hide[]
 
-	@CoherenceEventListener                                    // <2>
-	public void onNewPerson(@MapName("people")                 // <3>
-	                        @Inserted                          // <4>
+	@CoherenceEventListener                      // <2>
+	public void onNewPerson(@MapName("people")   // <3>
+	                        @Inserted            // <4>
 	                        MapEvent<String, Person> event) {
 		// TODO: process the event
 		// tag::hide[]

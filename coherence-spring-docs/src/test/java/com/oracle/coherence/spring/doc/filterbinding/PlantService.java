@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PlantService {
 	private final Log logger = LogFactory.getLog(PlantService.class);
 
-	@View                                                                    // <1>
-	@LargePalmTrees                                                          // <2>
-	@CoherenceMap("plants")                                                  // <3>
+	@View                                                    // <1>
+	@LargePalmTrees                                          // <2>
+	@CoherenceMap("plants")                                  // <3>
 	private NamedMap<Long, Plant> largePalmTrees;
 // end::hide[]
-	@View                                                                    // <1>
-	@PalmTrees(1)                                                            // <2>
-	@CoherenceCache("plants")                                                // <3>
+	@View                                                    // <1>
+	@PalmTrees(1)                                            // <2>
+	@CoherenceCache("plants")                                // <3>
 	private NamedMap<Long, Plant> palmTrees;
 // tag::hide[]
 	public void getLargePalmTrees() {
