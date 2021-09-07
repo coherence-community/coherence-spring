@@ -270,6 +270,17 @@ window.onload = function() {
 </li>
 </ul>
 </li>
+<li><a href="#coherence-spring-cachestore">3.11. Cache Store</a>
+<ul class="sectlevel3">
+<li><a href="#coherence-spring-cachestore-sample">3.11.1. JPA Repository CacheStore Demo</a>
+<ul class="sectlevel4">
+<li><a href="#writing-a-jpa-repository-cachestore">3.11.1.1. Writing a JPA Repository CacheStore</a></li>
+<li><a href="#configure-the-cachestore-in-coherence">3.11.1.2. Configure the CacheStore in Coherence</a></li>
+<li><a href="#running-the-sample">3.11.1.3. Running the Sample</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#spring-cache">4. Coherence Spring Cache</a>
@@ -4247,6 +4258,391 @@ public class ProductListener {
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="coherence-spring-cachestore"><a class="anchor" href="#coherence-spring-cachestore"></a>3.11. Cache Store</h3>
+<div class="paragraph">
+<p>Coherence Spring provides dedicated support for database-backed caches using JPA. Spring Data&#8217;s
+<a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.repositories">JPA Repositories</a> make basic CRUD database access very simple. An application
+developer can just provide an interface that extends <code>JpaRepository</code> with the required generic parameters and
+Spring will do the rest.</p>
+</div>
+<div class="paragraph">
+<p>Coherence caches that are backed by a database have two options for how the database integration is provided:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheLoader</code> - an application developer writes an implementation of a <code>CacheLoader</code> to read data from a database for
+a given key (or keys), convert it to entities that are then loaded into a cache for the given keys.</p>
+</li>
+<li>
+<p><code>CacheStore</code> - whilst a <code>CacheLoader</code> only loads from a database into a cache, a <code>CacheStore</code> (which extends
+<code>CacheLoader</code>) also stores cached entities back to the database, or for entries deleted from the cache, erases the
+corresponding values from the database. The parallels between a <code>CacheLoader</code> or <code>CacheStore</code> and a <code>JpaRepository</code>
+should be pretty obvious.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Coherence Spring core module provides two interfaces:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>com.oracle.coherence.spring.cachestore.JpaRepositoryCacheLoader</code>, which extends both <code>JpaRepository</code> and <code>CacheLoader</code></p>
+</li>
+<li>
+<p><code>com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore</code>, which extends both <code>JpaRepository</code> and <code>CacheStore</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To create a JPA repository cache loader or cache store, all a developer needs to do is extend the relevant interface
+<code>JpaRepositoryCacheLoader</code> or <code>JpaRepositoryCacheStore</code> with the correct generic parameters.</p>
+</div>
+<div class="paragraph">
+<p>We will illustrate the use of Cache Stores using the following example.</p>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-cachestore-sample"><a class="anchor" href="#coherence-spring-cachestore-sample"></a>3.11.1. JPA Repository CacheStore Demo</h4>
+<div class="paragraph">
+<p>In this demo we are show-casing how to use Spring Data JPA repository beans as Coherence CacheStores in
+applications using the <a href="https://github.com/coherence-community/coherence-spring">Coherence Spring project</a>. The sample
+has a simple class called <code>Person</code> annotated with JPA annotations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+@Table(name = "PEOPLE")
+public class Person implements Serializable {
+
+    /**
+     * The unique identifier for this person.
+     */
+    @Id
+    private Long id;
+
+    /**
+     * The age of this person.
+     */
+    private int age;
+
+    /**
+     * The person's first name.
+     */
+    private String firstname;
+
+    /**
+     * The person's last name.
+     */
+    private String lastname;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The identifier of a <code>Person</code> is defined as a <code>Long</code> so in our Coherence application we would put these <code>Person</code>
+instances into a Coherence <code>NamedMap&lt;Long, Person&gt;</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="writing-a-jpa-repository-cachestore"><a class="anchor" href="#writing-a-jpa-repository-cachestore"></a>3.11.1.1. Writing a JPA Repository CacheStore</h5>
+<div class="paragraph">
+<p>To write a JPA repository <code>CacheStore</code> that can be used by our people cache we just need to write a simple Spring Data
+repository interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PersonRepository extends JpaRepositoryCacheStore&lt;Person, Long&gt; {
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That is all the code required to write a <code>CacheStore</code> that can be plugged into Coherence. Spring Data will take care of
+actually generating the implementation of the interface, and supplying that implementation as a bean.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="configure-the-cachestore-in-coherence"><a class="anchor" href="#configure-the-cachestore-in-coherence"></a>3.11.1.2. Configure the CacheStore in Coherence</h5>
+<div class="paragraph">
+<p>To use a <code>CacheStore</code> in Coherence it needs to be configured in the Coherence cache configuration file.
+To use the repository bean as a <code>CacheStore</code> we will make use of the Coherence Spring feature that allows injection of
+Spring beans into the cache configuration file.</p>
+</div>
+<div class="paragraph">
+<p>To use Spring bean injection in the configuration file we need to declare the custom namespace in the root XML element.</p>
+</div>
+<div class="listingblock">
+<div class="title">coherence-cache-config.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"</code> line declares the custom namespace,
+so elements with a prefix <code>spring</code> will be handled by the <code>com.oracle.coherence.spring.namespace.NamespaceHandler</code> class.
+The custom namespace handler allows us to use elements of the form <code>&lt;spring:bean&gt;bean-name&lt;/spring:bean&gt;</code> anywhere in the
+configuration that Coherence normally allows an <code>&lt;instance&gt;</code> element or a <code>&lt;class-scheme&gt;</code> element.</p>
+</div>
+<div class="paragraph">
+<p>We can add a scheme to the <code>&lt;cache-schemes&gt;</code> section of the configuration that uses the repository bean.</p>
+</div>
+<div class="listingblock">
+<div class="title">coherence-cache-config.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">    &lt;caching-schemes&gt;
+        &lt;distributed-scheme&gt;
+            &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
+            &lt;service-name&gt;StorageService&lt;/service-name&gt;
+            &lt;backing-map-scheme&gt;
+                &lt;read-write-backing-map-scheme&gt;
+                    &lt;internal-cache-scheme&gt;
+                        &lt;local-scheme/&gt;
+                    &lt;/internal-cache-scheme&gt;
+                    &lt;cachestore-scheme&gt;
+                        &lt;spring:bean&gt;{repository-bean}&lt;/spring:bean&gt;
+                    &lt;/cachestore-scheme&gt;
+                &lt;/read-write-backing-map-scheme&gt;
+            &lt;/backing-map-scheme&gt;
+            &lt;autostart&gt;true&lt;/autostart&gt;
+        &lt;/distributed-scheme&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the snippet above you can see the <code>&lt;spring:bean&gt;{repository-bean}&lt;/spring:bean&gt;</code> element used as the cache store.
+In this case we have not used the name of the repository bean directly, we have used a parameter named <code>repository-bean</code>
+(XML values in curly-brackets in the <code>&lt;spring:bean&gt;</code> element are treated as parameter macros). This allows us to map
+multiple caches to the same scheme each with a different cache store - this is quite a common approach in Coherence for
+a number of elements that may be configured in a scheme per-cache.</p>
+</div>
+<div class="paragraph">
+<p>We can also now add the cache mapping for our <code>people</code> cache that will use the scheme above.</p>
+</div>
+<div class="listingblock">
+<div class="title">coherence-cache-config.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">        &lt;cache-mapping&gt;
+            &lt;cache-name&gt;people&lt;/cache-name&gt;
+            &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
+            &lt;init-params&gt;
+                &lt;init-param&gt;
+                    &lt;param-name&gt;repository-bean&lt;/param-name&gt;
+                    &lt;param-value&gt;personRepository&lt;/param-value&gt;
+                &lt;/init-param&gt;
+            &lt;/init-params&gt;
+        &lt;/cache-mapping&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the mapping above, the cache name <code>people</code> maps to the scheme <code>db-scheme</code> that we created above.
+As we mentioned above, we need to pass the actual bean name in the <code>repository-bean</code> parameter, which we do by using the
+<code>&lt;init-params&gt;</code> element in the mapping. We set the <code>&lt;param-value&gt;</code> element to the bean name, in this case <code>personRepository</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The bean name used here is <code>personRepository</code>. This is the default name generated by Spring for the <code>PersonRepository</code>
+class, which is the simple class name with the first letter lowercase. If we did not want to rely on Spring generating a
+bean name we could specify a name in the <code>@Repository</code> annotation on the <code>PersonRepository</code> class.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If we had another cache with a different cache store, for example if we had an entity called <code>Location</code> with a repository
+cache store class called <code>LocationRepository</code>, the bean name would default to <code>locationRepository</code>, and we could add the
+following mapping.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;cache-mapping&gt;
+    &lt;cache-name&gt;locations&lt;/cache-name&gt;
+    &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
+    &lt;init-params&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;repository-bean&lt;/param-name&gt;
+            &lt;param-value&gt;locationRepository&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/init-params&gt;
+&lt;/cache-mapping&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="running-the-sample"><a class="anchor" href="#running-the-sample"></a>3.11.1.3. Running the Sample</h5>
+<div class="paragraph">
+<p>This sample is just a simple Spring Boot application that exposes two endpoints to create/update people and get people by id.</p>
+</div>
+<div class="paragraph">
+<p>The controller class is very simple:</p>
+</div>
+<div class="listingblock">
+<div class="title">PersonController.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestController
+@RequestMapping(path = "/api/people")
+@Transactional()
+public class PersonController {
+
+    /**
+     * The {@link NamedMap} to store {@link Person} entities.
+     */
+    @CoherenceMap
+    private NamedMap&lt;Long, Person&gt; people;
+
+    /**
+     * Create a {@link Person} in the cache.
+     * @param id         the unique identifier for the person
+     * @param firstName  the person's first name
+     * @param lastName   the person's last name
+     * @param age        the person's age
+     * @return the identifier used to create the person
+     */
+    @PostMapping
+    public Long createPerson(@RequestParam("id") long id, @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName, @RequestParam("age") int age) {
+        Person person = new Person();
+        person.setFirstname(firstName);
+        person.setLastname(lastName);
+        person.setAge(age);
+        person.setId(id);
+        people.put(id, person);
+        return id;
+    }
+
+    /**
+     * Returns the {@link Person} with the specified identifier.
+     *
+     * @param personId  the unique identifier for the person
+     * @return  the {@link Person} with the specified identifier
+     */
+    @GetMapping("/{personId}")
+    public Person getPerson(@PathVariable("personId") Long personId) {
+        Person person = people.get(personId);
+        if (person == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person " + personId + " does not exist");
+        }
+        return person;
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We use the Coherence Spring integration to inject a <code>NamedMap</code> into the controller. This will be for the cache named <code>people</code>,
+which we configured to use the cache store in the configuration above.</p>
+</div>
+<div class="paragraph">
+<p>In the <code>createPerson</code> method we use the request parameters to create a <code>Person</code> and put it into the cache. The <code>CacheStore</code>
+will write this to the database.</p>
+</div>
+<div class="paragraph">
+<p>In the <code>getPerson</code> method we retrieve the <code>Person</code> from the cache using the id from the request path, loading from the
+database if there is no entry in the cache for the id.</p>
+</div>
+<div class="paragraph">
+<p>We can build the example using Maven from the cache store sample root directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package -pl samples/cachestore-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will build a Spring Boot jar that we can run the normal Spring Boot ways, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar samples/cachestore-demo/target/coherence-spring-cachestore-demo-3.0.0-SNAPSHOT.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the application has started we can try to get a <code>Person</code> using <code>curl</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i -X GET http://localhost:8080/api/people/100</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This should return a 404 response because there is no person in the database or cache with the id 100.</p>
+</div>
+<div class="paragraph">
+<p>We can create a <code>Person</code> using a <code>curl</code> POST request:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i -X POST http://localhost:8080/api/people \
+    -d 'firstName=Joe' -d 'lastName=Smith' \
+    -d 'age=21' -d 'id=100'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the <code>Person</code> named Joe Smith with the id 100. This should return with a 200 response to say the <code>Person</code>
+was successfully created and will be stored in the database.</p>
+</div>
+<div class="paragraph">
+<p>If we re-run the GET request we should get Joe Smith.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i -X GET http://localhost:8080/api/people/100
+HTTP/1.1 200
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Thu, 19 Aug 2021 16:13:47 GMT
+
+{"id":100,"age":21,"firstname":"Joe","lastname":"Smith"}%</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -6381,7 +6777,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-07 00:20:18 UTC
+Last updated 2021-09-07 02:10:15 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
