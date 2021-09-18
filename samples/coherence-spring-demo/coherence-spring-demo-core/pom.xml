@@ -20,7 +20,6 @@
 
 		<java.version>8</java.version>
 		<coherence.version>21.06.1</coherence.version>
-		<spring.version>5.3.9</spring.version>
 		<spring-data-bom.version>2021.0.4</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
 		<hibernate.version>5.4.31.Final</hibernate.version>
@@ -55,7 +54,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
+			<version>${org.springframework.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
