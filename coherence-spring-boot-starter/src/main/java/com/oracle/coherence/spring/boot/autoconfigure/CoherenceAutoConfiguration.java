@@ -29,7 +29,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -76,14 +75,9 @@ public class CoherenceAutoConfiguration {
 	@Bean
 	public static BeanFactoryPostProcessor coherenceAutoConfigurationBeanFactoryPostProcessor(ConfigurableEnvironment environment) {
 		return (beanFactory) -> {
-			BindResult<CoherenceProperties> result = Binder.get(environment)
-					.bind("coherence", CoherenceProperties.class);
 
-			if (!result.isBound()) {
-				return;
-			}
-
-			final CoherenceProperties coherenceProperties = result.get();
+			final CoherenceProperties coherenceProperties = Binder.get(environment)
+					.bindOrCreate("coherence", CoherenceProperties.class);
 
 			environment.getPropertySources().addFirst(
 					new MapPropertySource("coherence.properties", coherenceProperties.retrieveCoherencePropertiesAsMap()));
@@ -91,7 +85,7 @@ public class CoherenceAutoConfiguration {
 			final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 			if (registry.containsBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME)) {
-				registry.removeBeanDefinition("springSystemPropertyResolver");
+				registry.removeBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME);
 			}
 
 			registry.registerBeanDefinition(CoherenceSpringConfiguration.SPRING_SYSTEM_PROPERTY_RESOLVER_BEAN_NAME,
