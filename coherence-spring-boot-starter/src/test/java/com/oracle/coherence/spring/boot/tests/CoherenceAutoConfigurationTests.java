@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.boot.tests;
 
 import java.time.Duration;
+import java.util.Map;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.CoherencePublisher;
@@ -19,21 +20,27 @@ import com.oracle.coherence.spring.configuration.session.SessionConfigurationBea
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
 import com.tangosol.coherence.config.SystemPropertyResolver;
 import com.tangosol.net.Coherence;
+import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
+import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  *
@@ -45,7 +52,13 @@ public class CoherenceAutoConfigurationTests {
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(CoherenceAutoConfiguration.class))
 			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class))
-			.withInitializer(new ConfigDataApplicationContextInitializer());
+			.withInitializer(new ConfigDataApplicationContextInitializer())
+			.withInitializer(
+					(context) -> {
+						ConfigurableConversionService conversionService = new ApplicationConversionService();
+						context.getBeanFactory().setConversionService(conversionService);
+						context.getEnvironment().setConversionService(conversionService);
+					});
 
 	@Test
 	public void testDefaultCacheManagerExists() {
@@ -207,6 +220,30 @@ public class CoherenceAutoConfigurationTests {
 
 					final Environment environment = context.getEnvironment();
 					assertThat(environment.getProperty("coherence.server.startup-timeout")).isNull();
+				});
+	}
+
+	@Test
+	public void testExistenceOfCoherenceGenericConverter() {
+		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
+				.run((context) -> {
+					final ConversionService conversionServiceFromBeanFactory = context.getBeanFactory().getConversionService();
+					final ConversionService conversionServiceFromEnvironment = context.getEnvironment().getConversionService();
+
+					assertThat(conversionServiceFromBeanFactory).isNotNull();
+					assertThat(conversionServiceFromEnvironment).isNotNull();
+					assertThat(conversionServiceFromEnvironment).isSameAs(conversionServiceFromBeanFactory);
+
+					assertThat(conversionServiceFromBeanFactory).isInstanceOf(ConfigurableConversionService.class);
+
+					final NamedCache<String, Integer> mockedNamedCache = Mockito.mock(NamedCache.class);
+					Mockito.when(mockedNamedCache.entrySet()).thenAnswer((invocation) ->
+						fail("entrySet() should never be called by converter.")
+					);
+					assertThat(conversionServiceFromBeanFactory.canConvert(NamedCache.class, Map.class)).isTrue();
+					final Map<String, Integer> result = conversionServiceFromBeanFactory.convert(mockedNamedCache, Map.class);
+					assertThat(result).isNotNull();
+					assertThat(result).isSameAs(mockedNamedCache);
 				});
 	}
 

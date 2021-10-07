@@ -44,6 +44,7 @@ import org.springframework.context.annotation.Scope;
  */
 @Configuration
 @Import({
+		CoherenceConversionServicePostProcessor.class,
 		NamedCacheConfiguration.class,
 		ExtractorConfiguration.class,
 		FilterConfiguration.class,

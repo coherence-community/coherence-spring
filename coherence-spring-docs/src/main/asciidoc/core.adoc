@@ -269,9 +269,46 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 
 [IMPORTANT]
 ====
-All the annotations `@CoherenceCache`, `@CoherenceMap`, `@CoherenceAsyncCache`, and `@CoherenceAsyncMap` are themselves annotated with `@Lazy`. This is to avoid deadlocks where a cache bean requires another bean to be injected in its configuration, which will happen on a different thread to the main Spring thread.
-A consequence of this is that all cache beans will be Spring lazy dynamic proxies.
+All the annotations `@CoherenceCache`, `@CoherenceMap`, `@CoherenceAsyncCache`, and `@CoherenceAsyncMap` are themselves
+annotated with `@Lazy`. This is to avoid deadlocks where a cache bean requires another bean to be injected in its
+configuration, which will happen on a different thread to the main Spring thread. A consequence of this is that all
+cache beans will be Spring lazy dynamic proxies.
 ====
+
+[[coherence-spring-dependency-injection-type-conversion]]
+==== Type Conversion of NamedMap and NamedCache
+
+As mentioned previously, Spring a has a special relationship with Map implementations. In order to work around this
+limitation, we provide the meta-annotations `@CoherenceCache`, `@CoherenceMap` etc. We apply a little trick using the
+`@Value` annotation and referencing the injection candidate via a `SpEL` expression. This in turn, however, triggers type
+conversion in Spring's `DefaultListableBeanFactory`, and we must provide a no-op converter for Map-based Coherence objects
+using the `CoherenceGenericConverter`.
+
+Without it, you may see Spring's `MapToMapConverter` being used, which in turn will call `Map#entrySet()`, a potentially
+very expensive operation for large datasets in a Coherence cluster.
+
+IMPORTANT: When defining your own `ConversionService` bean, please make sure that the `CoherenceGenericConverter` is added to it.
+
+If the `BeanFactory` already contains a `ConfigurableConversionService`, we will add the `CoherenceGenericConverter` automatically
+using the `CoherenceConversionServicePostProcessor`. This should be typically the case with Spring Boot, which provides
+the `ApplicationConversionService`. If you provide your own `ConversionService` bean, we will back-off and a message to
+add the `CoherenceGenericConverter` manually will be logged.
+
+.Manually adding the `CoherenceGenericConverter`
+[source,java]
+----
+    @Bean
+    public ConversionService conversionService() {
+        DefaultFormattingConversionService conversionService =
+            new DefaultFormattingConversionService();
+        conversionService.addConverter(new CoherenceGenericConverter());   // <1>
+        return conversionService;
+    }
+----
+<1> Adding a new instance of the CoherenceGenericConverter
+
+In case no `ConversionService` is defined in your application context, PropertyEditors are being used, and that chain
+does not seem to trigger the same expensive operation, nonetheless using the `ConversionService` route is advised.
 
 ==== Specify the Map/Cache Name
 
