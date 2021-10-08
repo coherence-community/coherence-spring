@@ -162,8 +162,9 @@ window.onload = function() {
 <ul class="sectlevel2">
 <li><a href="#coherence-spring-dependency-injection-namedmap-namedcache">6.1. Injecting NamedMap and NamedCache</a>
 <ul class="sectlevel3">
-<li><a href="#specify-the-mapcache-name">6.1.1. Specify the Map/Cache Name</a></li>
-<li><a href="#specify-the-owning-session-name">6.1.2. Specify the Owning Session Name</a></li>
+<li><a href="#coherence-spring-dependency-injection-type-conversion">6.1.1. Type Conversion of NamedMap and NamedCache</a></li>
+<li><a href="#specify-the-mapcache-name">6.1.2. Specify the Map/Cache Name</a></li>
+<li><a href="#specify-the-owning-session-name">6.1.3. Specify the Owning Session Name</a></li>
 </ul>
 </li>
 <li><a href="#coherence-spring-dependency-injection-asyncnamedmap-asyncnamedcache">6.2. Injecting AsyncNamedMap &amp; AsyncNamedCache</a></li>
@@ -740,15 +741,73 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 </td>
 <td class="content">
 <div class="paragraph">
-<p>All the annotations <code>@CoherenceCache</code>, <code>@CoherenceMap</code>, <code>@CoherenceAsyncCache</code>, and <code>@CoherenceAsyncMap</code> are themselves annotated with <code>@Lazy</code>. This is to avoid deadlocks where a cache bean requires another bean to be injected in its configuration, which will happen on a different thread to the main Spring thread.
-A consequence of this is that all cache beans will be Spring lazy dynamic proxies.</p>
+<p>All the annotations <code>@CoherenceCache</code>, <code>@CoherenceMap</code>, <code>@CoherenceAsyncCache</code>, and <code>@CoherenceAsyncMap</code> are themselves
+annotated with <code>@Lazy</code>. This is to avoid deadlocks where a cache bean requires another bean to be injected in its
+configuration, which will happen on a different thread to the main Spring thread. A consequence of this is that all
+cache beans will be Spring lazy dynamic proxies.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="sect3">
-<h4 id="specify-the-mapcache-name"><a class="anchor" href="#specify-the-mapcache-name"></a>6.1.1. Specify the Map/Cache Name</h4>
+<h4 id="coherence-spring-dependency-injection-type-conversion"><a class="anchor" href="#coherence-spring-dependency-injection-type-conversion"></a>6.1.1. Type Conversion of NamedMap and NamedCache</h4>
+<div class="paragraph">
+<p>As mentioned previously, Spring a has a special relationship with Map implementations. In order to work around this
+limitation, we provide the meta-annotations <code>@CoherenceCache</code>, <code>@CoherenceMap</code> etc. We apply a little trick using the
+<code>@Value</code> annotation and referencing the injection candidate via a <code>SpEL</code> expression. This in turn, however, triggers type
+conversion in Spring&#8217;s <code>DefaultListableBeanFactory</code>, and we must provide a no-op converter for Map-based Coherence objects
+using the <code>CoherenceGenericConverter</code>.</p>
+</div>
+<div class="paragraph">
+<p>Without it, you may see Spring&#8217;s <code>MapToMapConverter</code> being used, which in turn will call <code>Map#entrySet()</code>, a potentially
+very expensive operation for large datasets in a Coherence cluster.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When defining your own <code>ConversionService</code> bean, please make sure that the <code>CoherenceGenericConverter</code> is added to it.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If the <code>BeanFactory</code> already contains a <code>ConfigurableConversionService</code>, we will add the <code>CoherenceGenericConverter</code> automatically
+using the <code>CoherenceConversionServicePostProcessor</code>. This should be typically the case with Spring Boot, which provides
+the <code>ApplicationConversionService</code>. If you provide your own <code>ConversionService</code> bean, we will back-off and a message to
+add the <code>CoherenceGenericConverter</code> manually will be logged.</p>
+</div>
+<div class="listingblock">
+<div class="title">Manually adding the <code>CoherenceGenericConverter</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    @Bean
+    public ConversionService conversionService() {
+        DefaultFormattingConversionService conversionService =
+            new DefaultFormattingConversionService();
+        conversionService.addConverter(new CoherenceGenericConverter());   <i class="conum" data-value="1"></i><b>(1)</b>
+        return conversionService;
+    }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Adding a new instance of the CoherenceGenericConverter</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In case no <code>ConversionService</code> is defined in your application context, PropertyEditors are being used, and that chain
+does not seem to trigger the same expensive operation, nonetheless using the <code>ConversionService</code> route is advised.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="specify-the-mapcache-name"><a class="anchor" href="#specify-the-mapcache-name"></a>6.1.2. Specify the Map/Cache Name</h4>
 <div class="paragraph">
 <p>As already mentioned above, you specify the name of the map/cache using the value-property of the annotation. Of course,
 the same applies when injecting a constructor or method parameter:</p>
@@ -794,7 +853,7 @@ private NamedMap&lt;String, Person&gt; map;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="specify-the-owning-session-name"><a class="anchor" href="#specify-the-owning-session-name"></a>6.1.2. Specify the Owning Session Name</h4>
+<h4 id="specify-the-owning-session-name"><a class="anchor" href="#specify-the-owning-session-name"></a>6.1.3. Specify the Owning Session Name</h4>
 <div class="paragraph">
 <p>Whilst most applications probably use a single Coherence Session, there are uses-cases where an application may have
 multiple sessions. In this case, when injecting for example a <code>NamedMap</code>, the specific session can be specified by
@@ -4102,7 +4161,7 @@ Date: Thu, 19 Aug 2021 16:13:47 GMT
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-08 05:26:21 UTC
+Last updated 2021-10-08 07:01:11 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
