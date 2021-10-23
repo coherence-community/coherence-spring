@@ -23,7 +23,8 @@
 
 	<properties>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
-		<hibernate.version>5.2.17.Final</hibernate.version>
+		<hibernate.version>5.2.18.Final</hibernate.version>
+		<spring-boot.version>2.5.6</spring-boot.version>
 	</properties>
 
 	<dependencies>
@@ -31,6 +32,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>${spring-boot.version}</version>
+		</dependency>
+		<!-- https://github.com/coherence-community/coherence-spring/issues/75 -->
+		<dependency>
+			<artifactId>spring-data-jpa</artifactId>
+			<groupId>org.springframework.data</groupId>
+			<version>2.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
