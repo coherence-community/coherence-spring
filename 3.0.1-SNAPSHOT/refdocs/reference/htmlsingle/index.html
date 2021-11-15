@@ -6116,21 +6116,6 @@ following resources:</p>
 <p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
 <a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html#caching">Second-Level cache</a> support.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Currently, Coherence only supports Hibernate up to <code>5.2.x</code>, as the Hibernate Cache SPI
-<a href="https://github.com/hibernate/hibernate-orm/blob/5.3/migration-guide.adoc#second-level-cache-provider-spi-changes">changed</a>
-with Hibernate <code>5.3.x</code> and higher. Please track the relevant <a href="https://github.com/coherence-community/coherence-hibernate/issues/13">GitHub issue</a> for
-the Coherence Hibernate project.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>When using only Hibernate&#8217;s second-level cache without the requirement of using Coherence for non-Hibernate application
 needs, you may want to disable Coherence&#8217;s auto-configuration support for Spring
@@ -6829,7 +6814,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-11-14 05:28:07 UTC
+Last updated 2021-11-15 08:59:47 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
