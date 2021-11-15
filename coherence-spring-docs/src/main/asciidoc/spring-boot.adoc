@@ -209,11 +209,6 @@ following resources:
 Spring's cache abstraction is not your only option with regard to caching. Another option is to use Hibernate's
 {hibernate-docs}#caching[Second-Level cache] support.
 
-IMPORTANT: Currently, Coherence only supports Hibernate up to `5.2.x`, as the Hibernate Cache SPI
-https://github.com/hibernate/hibernate-orm/blob/5.3/migration-guide.adoc#second-level-cache-provider-spi-changes[changed]
-with Hibernate `5.3.x` and higher. Please track the relevant https://github.com/coherence-community/coherence-hibernate/issues/13[GitHub issue] for
-the Coherence Hibernate project.
-
 When using only Hibernate's second-level cache without the requirement of using Coherence for non-Hibernate application
 needs, you may want to disable Coherence's auto-configuration support for Spring
 Boot as it is not needed:

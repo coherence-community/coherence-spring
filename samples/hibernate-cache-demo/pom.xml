@@ -22,9 +22,9 @@
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
 
 	<properties>
+		<coherence-hibernate.version>2.1.0-SNAPSHOT</coherence-hibernate.version>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
-		<hibernate.version>5.2.18.Final</hibernate.version>
-		<spring-boot.version>2.5.6</spring-boot.version>
+		<hibernate.version>5.6.0.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -32,12 +32,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>${spring-boot.version}</version>
-		</dependency>
-		<!-- https://github.com/coherence-community/coherence-spring/issues/75 -->
-		<dependency>
-			<artifactId>spring-data-jpa</artifactId>
-			<groupId>org.springframework.data</groupId>
-			<version>2.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -67,8 +61,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.hibernate</groupId>
-			<artifactId>coherence-hibernate-cache-52</artifactId>
-			<version>2.0.0</version>
+			<artifactId>coherence-hibernate-cache-53</artifactId>
+			<version>${coherence-hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -80,13 +74,11 @@
 			<artifactId>javassist</artifactId>
 			<version>3.23.1-GA</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>2.4.4</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
