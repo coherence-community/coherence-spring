@@ -183,6 +183,9 @@
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
 							<additionalJOption>--no-module-directories</additionalJOption>
+							<bottom>
+								Copyright © 2013, 2021, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
+							</bottom>
 						</configuration>
 					</execution>
 				</executions>

@@ -106,7 +106,7 @@ you may have to provide additional command line arguments:
 
 [source,bash]
 ----
-./mvnw com.github.github:site-maven-plugin:site -pl coherence-spring-site -Pspring
+./mvnw deploy -pl coherence-spring-site -Pspring
 ----
 
 == Getting Support

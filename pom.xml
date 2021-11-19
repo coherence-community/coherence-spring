@@ -223,7 +223,6 @@
 
 	<build>
 		<pluginManagement>
-
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -342,7 +341,6 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<includes>
-						<include>**/*FunctionalTest.java</include>
 						<include>**/*Test.java</include>
 						<include>**/*Tests.java</include>
 					</includes>
@@ -460,6 +458,7 @@
 								<parent>expand</parent>
 								<distributionManagement>remove</distributionManagement>
 								<repositories>remove</repositories>
+								<profiles>remove</profiles>
 							</pomElements>
 						</configuration>
 					</execution>
