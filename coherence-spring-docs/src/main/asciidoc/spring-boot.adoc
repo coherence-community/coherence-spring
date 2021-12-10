@@ -122,7 +122,7 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 | Type of the Coherence instance: `cluster` or `client`
 
 | coherence.server.startup-timeout
-| `60s`
+| `5m`
 | Overrides the default startup-timeout when starting Coherence.
 
 |===
