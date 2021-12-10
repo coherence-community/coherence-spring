@@ -38,7 +38,7 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 	/**
 	 * Start up default of 60 seconds.
 	 */
-	public static final long DEFAULT_STARTUP_TIMEOUT_MILLIS = 60000;
+	public static final long DEFAULT_STARTUP_TIMEOUT_MILLIS = 300_000;
 
 	/**
 	 * Start up default of 60 seconds.

@@ -216,7 +216,7 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(coherenceConfigurer).isInstanceOf(DefaultCoherenceConfigurer.class);
 					DefaultCoherenceConfigurer defaultCoherenceConfigurer = (DefaultCoherenceConfigurer) coherenceConfigurer;
 					assertThat(defaultCoherenceConfigurer.getCoherenceServerStartupTimeout()).isNull();
-					assertThat(coherenceConfigurer.getCoherenceServer().getStartupTimeout()).isEqualTo(Duration.ofMinutes(1));
+					assertThat(coherenceConfigurer.getCoherenceServer().getStartupTimeout()).isEqualTo(Duration.ofMinutes(5));
 
 					final Environment environment = context.getEnvironment();
 					assertThat(environment.getProperty("coherence.server.startup-timeout")).isNull();
