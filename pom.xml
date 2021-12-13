@@ -163,7 +163,7 @@
 		<org.springframework.version>5.3.9</org.springframework.version>
 		<org.springframework.data.version>2021.0.4</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
-		<spring-boot.version>2.5.6</spring-boot.version>
+		<spring-boot.version>2.5.7</spring-boot.version>
 		<spring-session.version>2.5.2</spring-session.version>
 		<spring-security.version>5.5.2</spring-security.version>
 	</properties>
