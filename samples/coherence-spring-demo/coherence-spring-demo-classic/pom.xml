@@ -29,7 +29,7 @@
 		<hibernate.version>5.4.31.Final</hibernate.version>
 		<jackson-datatype.version>2.11.4</jackson-datatype.version>
 		<tomcat.version>9.0.54</tomcat.version>
-		<log4j.version>2.17.0</log4j.version>
+		<log4j.version>2.17.1</log4j.version>
 	</properties>
 
 	<dependencies>
