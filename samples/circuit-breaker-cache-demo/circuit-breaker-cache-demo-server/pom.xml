@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2022, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.oracle.coherence.spring</groupId>
+		<artifactId>circuit-breaker-cache-demo-parent</artifactId>
+		<version>3.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>circuit-breaker-cache-demo-server</artifactId>
+
+	<name>Circuit Breaker Cache Demo - Server</name>
+	<description>Circuit Breaker Cache Demo - Server</description>
+
+	<properties>
+		<coherence.spring.root>${basedir}/../../..</coherence.spring.root>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-boot-starter</artifactId>
+			<version>3.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence</artifactId>
+			<version>${coherence.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>

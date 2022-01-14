@@ -31,6 +31,7 @@
 
 :hibernate-docs: https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html
 
+:sources-root-samples: {coherence-spring-code}tree/master/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 :include-source-code-samples-cachestore: {sources-root-samples}cachestore-demo/src/main/java/com/oracle/coherence/spring/example/
 :include-source-code-samples-cachestore-resources: {sources-root-samples}cachestore-demo/src/main/resources/
@@ -56,3 +57,5 @@
 :spring-security-website: https://spring.io/projects/spring-security/
 
 :commercial-coherence-version: 14.1.1-0-1
+
+:resilience4j-website: https://github.com/resilience4j/resilience4j/

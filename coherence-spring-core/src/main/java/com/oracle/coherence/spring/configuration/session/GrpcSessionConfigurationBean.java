@@ -69,7 +69,7 @@ public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBe
 		this.ctx = ctx;
 	}
 
-	public GrpcSessionConfigurationBean() {  //TODO
+	public GrpcSessionConfigurationBean() {
 		super.setType(SessionType.GRPC);
 	}
 

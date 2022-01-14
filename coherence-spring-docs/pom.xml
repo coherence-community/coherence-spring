@@ -248,6 +248,7 @@
 					</resources>
 					<attributes>
 						<coherence-spring-version>${project.version}</coherence-spring-version>
+						<resilience4j-version>${resilience4j.version}</resilience4j-version>
 						<coherence-version>${coherence.version}</coherence-version>
 						<sources-root>${project.basedir}/src</sources-root>
 						<sources-root-samples>${coherence.spring.root}/samples/</sources-root-samples>
