@@ -1,0 +1,11 @@
+debug: false
+server:
+  port: 8081
+logging:
+  level:
+    com.oracle.coherence: INFO
+coherence:
+  sessions:
+    server:
+    - name: default
+      config: "coherence-cache-config.xml"

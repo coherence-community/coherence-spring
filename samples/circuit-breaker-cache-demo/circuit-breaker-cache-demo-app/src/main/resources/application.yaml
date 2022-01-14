@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: Coherence Spring Circuit Breaker Demo
+debug: false
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+    loggers:
+      enabled: true
+    metrics:
+      enabled:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+coherence:
+  sessions:
+    server:
+      - name: default
+        config: "coherence-cache-config.xml"
+logging:
+  level:
+    root: warn
+    "Coherence": info
+    org.springframework.security: info
+    org.springframework.web: info
+    com.oracle.coherence.spring: info
+    com.oracle.coherence.spring.samples.session: info
+    com.oracle.coherence.spring.session: info
+    org.springframework.cache: trace
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 5
+        eventConsumerBufferSize: 10
+        ignoreExceptions:
+          - com.oracle.coherence.spring.samples.circuitbreaker.service.impl.BusinessException
+    instances:
+      coherence:
+        baseConfig: default
+server:
+  port: 8090

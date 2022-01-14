@@ -27,11 +27,12 @@
 	</properties>
 
 	<modules>
+		<module>cachestore-demo</module>
+		<module>circuit-breaker-cache-demo</module>
 		<module>coherence-spring-cloud-config-demo</module>
 		<module>coherence-spring-demo</module>
 		<module>hibernate-cache-demo</module>
 		<module>spring-session-demo</module>
-		<module>cachestore-demo</module>
 	</modules>
 
 	<build>

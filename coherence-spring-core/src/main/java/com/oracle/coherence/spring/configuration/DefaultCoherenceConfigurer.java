@@ -182,7 +182,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	 * <ul>
 	 *    <li>Explicit configuration via {@link #getCoherenceInstanceType()}.
 	 *    <li>Via the {@link Set} of detected {@link SessionType}s. As soon as {@link SessionType#SERVER} is provided,
-	 *        the Coherence instances is configured using {@link Coherence#clusterMember(CoherenceConfiguration)}.
+	 *        the Coherence instance is configured using {@link Coherence#clusterMember(CoherenceConfiguration)}.
 	 *    <li>If the {@link Set} of detected {@link SessionType} is empty,
 	 *        the Coherence instances is configured using {@link Coherence#clusterMember(CoherenceConfiguration)}.
 	 * </ul>
@@ -192,7 +192,7 @@ public class DefaultCoherenceConfigurer implements CoherenceConfigurer {
 	protected Coherence createCoherence(Set<SessionType> detectedSessionTypes) {
 		Assert.notNull(detectedSessionTypes, "detectedSessionTypes must not be null.");
 
-		if (this.coherenceInstanceType != null) {
+		if (this.getCoherenceInstanceType() != null) {
 			if (CoherenceInstanceType.CLIENT.equals(this.getCoherenceInstanceType())) {
 				return Coherence.client(this.getCoherenceConfiguration());
 			}
