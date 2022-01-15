@@ -339,7 +339,18 @@ window.onload = function() {
 <li><a href="#spring-boot-getting-started">7.1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">7.2. Using Coherence with Spring Boot</a></li>
 <li><a href="#spring-boot-config-data-api">7.3. Support of the Spring Boot ConfigData API</a></li>
-<li><a href="#spring-boot-caching">7.4. Caching with Spring Boot</a></li>
+<li><a href="#spring-boot-caching">7.4. Caching with Spring Boot</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-caching-circuit-breaker">7.4.1. Configure Circuit Breakers with Resilience4j</a>
+<ul class="sectlevel4">
+<li><a href="#spring-boot-caching-circuit-breaker-running-example">7.4.1.1. Running the Example</a></li>
+<li><a href="#monitoring-the-circuit-breaker">7.4.1.2. Monitoring the Circuit Breaker</a></li>
+<li><a href="#add-resilience4j-dependencies">7.4.1.3. Add Resilience4j Dependencies</a></li>
+<li><a href="#resilience4j-annotations">7.4.1.4. Resilience4j Annotations</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#spring-boot-hibernate-second-level-cache">7.5. Configure Hibernate Second-Level Caching</a>
 <ul class="sectlevel3">
 <li><a href="#spring-boot-hibernate-second-level-cache-example">7.5.1. Hibernate Second Level Cache Example</a>
@@ -6109,6 +6120,359 @@ following resources:</p>
 </tr>
 </table>
 </div>
+<div class="sect3">
+<h4 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>7.4.1. Configure Circuit Breakers with Resilience4j</h4>
+<div class="paragraph">
+<p>Generally, it is recommended to configure and run Coherence as part of your application as a <em>cluster member</em>. However,
+caching can also be configured using Coherence in <em>client mode</em> via Coherence*Extend or gRPC. However, in client mode
+you may encounter failures and/or reliability situations due to network issues resulting in cache failures. In those
+situations, it would be desirable to retrieve the data from the persistence store instead, until the connectivity
+is being restored. Similarly, your application may encounter request timeout issues when retrieving data from the cache.</p>
+</div>
+<div class="paragraph">
+<p>This is where the circuit breaker pattern can be quite helpful, allowing you to gracefully degrade functionality via
+configurable fallback methods. Spring Boot has excellent support via <a href="https://github.com/resilience4j/resilience4j/">Resilience4j</a>, a fault
+tolerance library.</p>
+</div>
+<div class="paragraph">
+<p>Coherence Spring includes an <a href="/home/runner/work/coherence-spring/coherence-spring/coherence-spring-docs/../samples/circuit-breaker-cache-demo">example application</a> that illustrates
+a basic circuit breaker use-case via Resilience4j. In this example a Spring Boot-based application has REST endpoints
+to retrieve Books:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GET <code>/api/books</code> - Retrieve all books</p>
+</li>
+<li>
+<p>GET <code>/api/books/1234</code> - Retrieve a single book</p>
+</li>
+<li>
+<p>DELETE <code>/api/books/1234</code> - Evict a book from the Coherence cache</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default, 2 books are inserted into the in-memory database AND into the Coherence cache. The application uses Spring&#8217;s
+cache abstraction backed by Coherence. The application is configured to connect to Coherence on a separate node via
+Coherence*Extend. The use-case of the application is that when you shut down the Coherence server, the application won&#8217;t
+be able to retrieve cached domain data from Coherence. Instead, the Resilience4j circuit breaker will catch the connection
+exception and invoke a fallback method. In this case the data is returned from the main persistence store, bi-passing
+the Spring cache until the connection to the Coherence server has been restored.</p>
+</div>
+<div class="sect4">
+<h5 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>7.4.1.1. Running the Example</h5>
+<div class="paragraph">
+<p>The example application consists of 2 applications:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>circuit-breaker-cache-demo-server</strong> - The stand-alone Coherence instance</p>
+</li>
+<li>
+<p><strong>circuit-breaker-cache-demo-app</strong> - The client application that will connect to the Coherence server via Coherence*Extend</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s first run the server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
+mvn spring-boot:run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we need to run the actual application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
+mvn spring-boot:run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the application starts, <code>2</code> books are added not only to the persistence store (HSQLDB) but also to the Coherence cache.
+However, this is not true for the retrieve of all books in this example.</p>
+</div>
+<div class="paragraph">
+<p><strong>Get all books</strong></p>
+</div>
+<div class="paragraph">
+<p>When you retrieve a list of all books. You will see that the main relevant business method is executed and the data retrieved
+from the database. But at this point the collection of books is added to the Coherence cache for the first time.</p>
+</div>
+<div class="listingblock">
+<div class="title">List all books</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Thus, when you retrieve the list of books again, you will see in the logs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key 'SimpleKey []' found in cache 'allBooks'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Get a Single Book</strong></p>
+</div>
+<div class="paragraph">
+<p>When retrieving a single book, on the other side, the book is retrieved from the Coherence cache right away.</p>
+</div>
+<div class="listingblock">
+<div class="title">Get a single book</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key '1' found in cache 'books'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s evict the book from the Coherence cache:</p>
+</div>
+<div class="listingblock">
+<div class="title">Evict book with id <code>1</code> from the Coherence Cache</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X DELETE "http://localhost:8090/api/books/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, when you retrieve the book again, it will be retrieved from the persistence store instead. Let&#8217;s do something more
+interesting. When retrieving a single book we added a special case to the business service, where the retrieval of a book
+with id <code>42</code> will cause a <code>BusinessException</code> to be thrown.</p>
+</div>
+<div class="listingblock">
+<div class="title">Get a single book throwing a business exception</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/42"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you may notice, an <code>Internal Server Error</code> (HTTP status 500) is returned to you. Additionally, a <code>BusinessException</code>
+was thrown and handled by a Resilience4j fallback method.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Resilience4j selects fallback methods based on the specificity of the thrown Exceptions in relation to the exception
+declared in the fallback method. Thus, if you have multiple fallback methods, the method with the most specific exception
+is being chosen. Furthermore, it is important to know that expected exceptions (e.g. Business Exceptions) that you have
+included in the list of <code>ignoreExceptions</code> via <code>application.yaml</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>resilience4j.circuitbreaker.configs.*.ignoreExceptions</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>will also trigger the execution of fallBack methods, but it will not change the state of the circuit breaker.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id <code>1</code>. As you see,
+the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So basically, the <code>CacheManager</code> was unable to connect to the Coherence instance and therefore the Circuit Breaker kicked
+in, calling the fallback method instead, and thus returning the Book not from the cache but from the persistence store.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>7.4.1.2. Monitoring the Circuit Breaker</h5>
+<div class="paragraph">
+<p>Spring Boot and Resilience4j also provide facilities to monitor the state of the Circuit Breaker via Spring Boot&#8217;s
+health-endpoint as well as its circuit breaker events endpoint:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://localhost:8090/actuator/health" class="bare">localhost:8090/actuator/health</a></p>
+</li>
+<li>
+<p><a href="http://localhost:8090/actuator/circuitbreakerevents/coherence" class="bare">localhost:8090/actuator/circuitbreakerevents/coherence</a></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Spring Boot Health Endpoint</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "status":"UP",
+  "components":{
+    "circuitBreakers":{
+      "status":"UNKNOWN",
+      "details":{
+        "coherence":{
+          "status":"CIRCUIT_OPEN",
+          "details":{
+            "failureRate":"100.0%",
+            "failureRateThreshold":"5.0%",
+            "slowCallRate":"0.0%",
+            "slowCallRateThreshold":"100.0%",
+            "bufferedCalls":3,
+            "slowCalls":0,
+            "slowFailedCalls":0,
+            "failedCalls":3,
+            "notPermittedCalls":8,
+            "state":"OPEN"
+          }
+        }
+      }
+    },
+    "db":{
+      "status":"UP",
+      "details":{
+        "database":"HSQL Database Engine",
+        "validationQuery":"isValid()"
+      }
+    },
+    "diskSpace":{
+      "status":"UP",
+      "details":{
+        "total":2000796545024,
+        "free":1490744430592,
+        "threshold":10485760,
+        "exists":true
+      }
+    },
+    "ping":{
+      "status":"UP"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For demonstrating purposes we enabled the relevant health endpoints via Spring Boot configuration in <code>application.yaml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management.endpoints.web.exposure.include: "*"
+management.endpoint.health.show-details: always</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may not want to do this in production. This is solely for demonstration purposes, especially as no security is configured
+for this application.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>7.4.1.3. Add Resilience4j Dependencies</h5>
+<div class="paragraph">
+<p>In order to use Resilience4j in your Coherence Spring project with Spring Boot, you need to add the following dependencies:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 9. Resilience4j Spring Boot Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
+    &lt;artifactId&gt;resilience4j-spring-boot2&lt;/artifactId&gt;
+    &lt;version&gt;1.7.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>7.4.1.4. Resilience4j Annotations</h5>
+<div class="paragraph">
+<p>In order to add circuit-breaker capabilities to our <code>@Cacheable</code> business methods in <code>DefaultBookService</code>, we simply add
+the <code>@CircuitBreaker</code> annotations, e.g.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Cacheable("allBooks")
+@CircuitBreaker(name = "coherence", fallbackMethod = "getAllBooksFallback")
+@Override
+public List&lt;Book&gt; getAllBooks() {
+ ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The key is the specified fallback method: whenever an exception occurs, the fallback method is being executed. You can have
+multiple fallback methods, specifying different exception types. Resilience4j will then select the fallback methods based
+on the specificity of the thrown exception.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When dealing with fallback method, it may at times be necessary to call other methods of the same services that you expect
+to be proxied, e.g. have applied annotations etc. However, when calling other methods in the same service, you are calling
+those methods without the relevant AOP aspects applied to them. You may either need to refactor those methods into another
+Spring bean or can actually inject the same service into the service. This type of injection call self injection or self
+autowiring has <a href="https://stackoverflow.com/questions/5152686/self-injection-with-spring">been supported</a> since Spring <code>4.3</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>7.5. Configure Hibernate Second-Level Caching</h3>
@@ -6306,7 +6670,7 @@ on <a href="#spring-session">Coherence Spring Session</a> first.</p>
 project:</p>
 </div>
 <div class="exampleblock">
-<div class="title">Example 9. Add Coherence Spring Session Support</div>
+<div class="title">Example 10. Add Coherence Spring Session Support</div>
 <div class="content">
 <div class="listingblock primary">
 <div class="title">Maven</div>
@@ -6432,7 +6796,7 @@ as described at <a href="#coherence-spring-messaging-with-coherence-topics">Mess
 is activated as soon as the Coherence Spring Data dependency is added to your Spring Boot project.</p>
 </div>
 <div class="exampleblock">
-<div class="title">Example 10. Add Coherence Spring Data Support</div>
+<div class="title">Example 11. Add Coherence Spring Data Support</div>
 <div class="content">
 <div class="listingblock primary">
 <div class="title">Maven</div>
@@ -6814,7 +7178,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-15 05:40:47 UTC
+Last updated 2022-01-15 10:11:22 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
