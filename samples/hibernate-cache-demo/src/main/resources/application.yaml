@@ -13,6 +13,7 @@ spring:
       hibernate.generate_statistics: true
       hibernate.show_sql: true
       hibernate.use_sql_comments: false
+      com.oracle.coherence.hibernate.cache.session_name: coherence_hibernate
 logging:
   level:
     root: info
