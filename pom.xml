@@ -118,7 +118,7 @@
 		<asciidoctor-maven-plugin.version>1.6.0</asciidoctor-maven-plugin.version>
 		<doxia-module-markdown.version>1.0</doxia-module-markdown.version>
 		<exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
-		<flatten-maven-plugin.version>1.2.2</flatten-maven-plugin.version>
+		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<dependency-check-maven.version>6.5.3</dependency-check-maven.version>
@@ -140,16 +140,16 @@
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
-		<checkstyle.version>8.32</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.28</spring-javaformat-checkstyle.version>
+		<checkstyle.version>8.45.1</checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.29</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.5.1</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.20.2</assertj.version>
 		<awaitility.version>4.1.0</awaitility.version>
-		<bedrock.version>5.1.2</bedrock.version>
-		<coherence.version>21.12</coherence.version>
+		<bedrock.version>5.1.3</bedrock.version>
+		<coherence.version>21.12.1</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hsqldb.version>2.6.0</hsqldb.version>
@@ -160,8 +160,8 @@
 		<junit.version>5.7.2</junit.version>
 		<log4j.version>2.17.1</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>5.3.14</org.springframework.version>
-		<org.springframework.data.version>2021.0.4</org.springframework.data.version>
+		<org.springframework.version>5.3.15</org.springframework.version>
+		<org.springframework.data.version>2021.1.1</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<spring-boot.version>2.5.8</spring-boot.version>
