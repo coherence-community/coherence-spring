@@ -1,6 +1,6 @@
 :snapshot-version: 3.0.1-SNAPSHOT
 :website: https://spring.coherence.community/
-:milestone: 3.0.0
+:milestone: 3.1.0
 
 = Welcome to the Oracle Coherence Spring Project
 
