@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Coherence Spring Boot</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body id="spring-boot" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Boot</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
+<li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
+<li><a href="#spring-boot-config-data-api">3. Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">4. Caching with Spring Boot</a>
+<ul class="sectlevel2">
+<li><a href="#spring-boot-caching-circuit-breaker">4.1. Configure Circuit Breakers with Resilience4j</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-caching-circuit-breaker-running-example">4.1.1. Running the Example</a></li>
+<li><a href="#monitoring-the-circuit-breaker">4.1.2. Monitoring the Circuit Breaker</a></li>
+<li><a href="#add-resilience4j-dependencies">4.1.3. Add Resilience4j Dependencies</a></li>
+<li><a href="#resilience4j-annotations">4.1.4. Resilience4j Annotations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot-hibernate-second-level-cache">5. Configure Hibernate Second-Level Caching</a>
+<ul class="sectlevel2">
+<li><a href="#spring-boot-hibernate-second-level-cache-example">5.1. Hibernate Second Level Cache Example</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-hibernate-second-level-cache-example-run">5.1.1. Run the Hibernate Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot-sessions">6. Spring Session Support</a></li>
+<li><a href="#spring-boot-messaging">7. Coherence Messaging Support</a></li>
+<li><a href="#spring-boot-metrics">8. Coherence Metrics</a></li>
+<li><a href="#spring-boot-data">9. Spring Data Support</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Boot module. It explains how to use
+Coherence&#8217;s dedicated support for <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/">Spring Boot</a>, e.g., Autoconfiguration.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-getting-started"><a class="anchor" href="#spring-boot-getting-started"></a>1. Getting Started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to start using Coherence with Spring Boot you have to add the <code>coherence-spring-boot-starter</code> dependency as well
+as the desired version of Coherence.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Adding the Coherence Spring Boot Starter Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.12.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.1.1-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.12.1")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requires Oracle Coherence CE version
+<code>20.12</code> or higher.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-using-coherence"><a class="anchor" href="#spring-boot-using-coherence"></a>2. Using Coherence with Spring Boot</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the
+<a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html">CoherenceAutoConfiguration</a>
+class. This will also bind the <a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceProperties.html">CoherenceProperties</a>
+class for further configuration. The YAML configuration for Spring Boot&#8217;s Coherence support may look like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
+  logging:
+    destination: slf4j
+    logger-name: MyCoherence
+  sessions:
+  - name: default
+    config: "coherence-cache-config.xml"
+    priority: 1
+  - name: test
+    config: "test-coherence-config.xml"
+    priority: 2
+  properties:
+    coherence.log.limit: 400
+    coherence.log.level: 1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following configuration properties are available.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Coherence Configuration Properties</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.destination</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>slf4j</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of the logging destination.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.severity-level</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies which logged messages are emitted to the log destination. The legal values are <code>-1</code> to <code>9</code>.
+No messages are emitted if <code>-1</code> is specified. More log messages are emitted as the log level is increased.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.logger-name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Coherence</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a logger name within chosen logging system</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.message-format</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies how messages that have a logging level specified are formatted before passing them to the log destination.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.logging.character-limit</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of characters that the logger daemon processes from the message queue before discarding
+  all remaining messages in the queue</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>grpc</code>, <code>server</code>, <code>client</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].name</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].config</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Coherence cache configuration URI for the session</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].priority</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SessionConfiguration#DEFAULT_PRIORITY</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The priority order to be used when starting the session. Sessions will be started with the lowest priority first.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].scope-name</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The scope name for the session.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.instance.type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depends on session type. As soon as you specify a <code>server</code> session, it defaults to <code>cluster</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of the Coherence instance: <code>cluster</code> or <code>client</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.server.startup-timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5m</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides the default startup-timeout when starting Coherence.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>Session</code>-related configuration properties are defined based on the session type in:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/AbstractSessionConfigurationBean.html">AbstractSessionConfigurationBean</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html">SessionConfigurationBean</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html">GrpcSessionConfigurationBean</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Many properties are translated into native Coherence properties. If both
+Spring Boot property AND a native property <code>coherence.properties.*</code> are configured, the Spring Boot
+property is used.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If the provided Spring Boot configuration properties are not sufficient for your needs, you can also specify any of
+the native Coherence properties. For a list of available native properties, please consult the reference guide chapter on
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/system-property-overrides.html#GUID-32230D28-4976-4147-A887-0A0120FF5C7E">System Property Overrides</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>3. Support of the Spring Boot ConfigData API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since Spring Boot <code>2.4.x</code>, you can define your own
+<a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4">custom config locations</a>. This allows you to
+import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
+configuration data for your Spring Boot based applications.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also consult the Spring Boot reference guide on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-external-config">Externalized Configuration</a>,
+especially the chapter on <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-external-config-files-importing">Importing Additional Data</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also see the chapter on <a href="spring-cloud-config.html#spring-cloud-config">Coherence Spring Cloud Config</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can trigger the import of remote configuration properties with the Spring Boot property
+<code>spring.config.import</code> using the value <code>coherence:</code>. You will also need the corresponding Coherence config-client
+configured to specify any remote connection settings for your Coherence cluster as well as settings specifying how
+properties will be applied, e.g., the name of the application used to fetch remote properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  config:
+    import: "coherence:"
+coherence:
+  config-client:
+    application-name: berlin
+    profile: kona</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Many properties have sensible default values. Please see class
+<a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/config/CoherenceConfigClientProperties.html">CoherenceConfigClientProperties</a>
+for details.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>4. Caching with Spring Boot</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have not already done so, please read the chapter
+<a href="spring-cache.html#spring-cache-configuration">Configuring Coherence Cache for Spring</a> first.</p>
+</div>
+<div class="paragraph">
+<p>In this chapter, we see how we can use caching with Coherence in Spring Boot.
+As long as <code>coherence-spring-boot-starter</code> is added to your project, and caching is enabled via <code>@EnableCaching</code>,
+<a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html">Coherence Autoconfiguration</a>
+will automatically provide a
+<a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/cache/CoherenceCacheManager.html">CoherenceCacheManager</a> (implementing
+Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/cache/CacheManager.html">CacheManager</a>) to the ApplicationContext. However, the
+<code>CacheManager</code> is only added if no <code>CacheManager</code> was configured explicitly beforehand.</p>
+</div>
+<div class="paragraph">
+<p>Once that is in place, you can take advantage of
+<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching">Spring&#8217;s Cache abstraction</a>
+backed by Coherence and use Spring&#8217;s annotations such as <code>@Cacheable</code>, <code>@CacheEvict</code>, <code>@CachePut</code> etc.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When learning about Coherence&#8217;s Spring cache abstraction support, please familiarize yourself with the
+following resources:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="quickstart.html#quickstart">Coherence Spring Quickstart chapter</a></p>
+</li>
+<li>
+<p><a href="spring-cache.html#spring-cache">Coherence Core Spring Cache Support</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching">Spring Boot&#8217;s reference documentation&#8217;s support regarding caching</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">The Cache Abstraction</a> chapter in the core Spring Framework reference guide</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>4.1. Configure Circuit Breakers with Resilience4j</h3>
+<div class="paragraph">
+<p>Generally, it is recommended to configure and run Coherence as part of your application as a <em>cluster member</em>. However,
+caching can also be configured using Coherence in <em>client mode</em> via Coherence*Extend or gRPC. However, in client mode
+you may encounter failures and/or reliability situations due to network issues resulting in cache failures. In those
+situations, it would be desirable to retrieve the data from the persistence store instead, until the connectivity
+is being restored. Similarly, your application may encounter request timeout issues when retrieving data from the cache.</p>
+</div>
+<div class="paragraph">
+<p>This is where the circuit breaker pattern can be quite helpful, allowing you to gracefully degrade functionality via
+configurable fallback methods. Spring Boot has excellent support via <a href="https://github.com/resilience4j/resilience4j/">Resilience4j</a>, a fault
+tolerance library.</p>
+</div>
+<div class="paragraph">
+<p>Coherence Spring includes an <a href="/home/runner/work/coherence-spring/coherence-spring/coherence-spring-docs/../samples/circuit-breaker-cache-demo">example application</a> that illustrates
+a basic circuit breaker use-case via Resilience4j. In this example a Spring Boot-based application has REST endpoints
+to retrieve Books:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GET <code>/api/books</code> - Retrieve all books</p>
+</li>
+<li>
+<p>GET <code>/api/books/1234</code> - Retrieve a single book</p>
+</li>
+<li>
+<p>DELETE <code>/api/books/1234</code> - Evict a book from the Coherence cache</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default, 2 books are inserted into the in-memory database AND into the Coherence cache. The application uses Spring&#8217;s
+cache abstraction backed by Coherence. The application is configured to connect to Coherence on a separate node via
+Coherence*Extend. The use-case of the application is that when you shut down the Coherence server, the application won&#8217;t
+be able to retrieve cached domain data from Coherence. Instead, the Resilience4j circuit breaker will catch the connection
+exception and invoke a fallback method. In this case the data is returned from the main persistence store, bi-passing
+the Spring cache until the connection to the Coherence server has been restored.</p>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>4.1.1. Running the Example</h4>
+<div class="paragraph">
+<p>The example application consists of 2 applications:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>circuit-breaker-cache-demo-server</strong> - The stand-alone Coherence instance</p>
+</li>
+<li>
+<p><strong>circuit-breaker-cache-demo-app</strong> - The client application that will connect to the Coherence server via Coherence*Extend</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s first run the server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
+mvn spring-boot:run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we need to run the actual application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
+mvn spring-boot:run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the application starts, <code>2</code> books are added not only to the persistence store (HSQLDB) but also to the Coherence cache.
+However, this is not true for the retrieve of all books in this example.</p>
+</div>
+<div class="paragraph">
+<p><strong>Get all books</strong></p>
+</div>
+<div class="paragraph">
+<p>When you retrieve a list of all books. You will see that the main relevant business method is executed and the data retrieved
+from the database. But at this point the collection of books is added to the Coherence cache for the first time.</p>
+</div>
+<div class="listingblock">
+<div class="title">List all books</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Thus, when you retrieve the list of books again, you will see in the logs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key 'SimpleKey []' found in cache 'allBooks'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Get a Single Book</strong></p>
+</div>
+<div class="paragraph">
+<p>When retrieving a single book, on the other side, the book is retrieved from the Coherence cache right away.</p>
+</div>
+<div class="listingblock">
+<div class="title">Get a single book</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key '1' found in cache 'books'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s evict the book from the Coherence cache:</p>
+</div>
+<div class="listingblock">
+<div class="title">Evict book with id <code>1</code> from the Coherence Cache</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X DELETE "http://localhost:8090/api/books/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, when you retrieve the book again, it will be retrieved from the persistence store instead. Let&#8217;s do something more
+interesting. When retrieving a single book we added a special case to the business service, where the retrieval of a book
+with id <code>42</code> will cause a <code>BusinessException</code> to be thrown.</p>
+</div>
+<div class="listingblock">
+<div class="title">Get a single book throwing a business exception</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/42"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you may notice, an <code>Internal Server Error</code> (HTTP status 500) is returned to you. Additionally, a <code>BusinessException</code>
+was thrown and handled by a Resilience4j fallback method.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Resilience4j selects fallback methods based on the specificity of the thrown Exceptions in relation to the exception
+declared in the fallback method. Thus, if you have multiple fallback methods, the method with the most specific exception
+is being chosen. Furthermore, it is important to know that expected exceptions (e.g. Business Exceptions) that you have
+included in the list of <code>ignoreExceptions</code> via <code>application.yaml</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>resilience4j.circuitbreaker.configs.*.ignoreExceptions</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>will also trigger the execution of fallBack methods, but it will not change the state of the circuit breaker.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id <code>1</code>. As you see,
+the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So basically, the <code>CacheManager</code> was unable to connect to the Coherence instance and therefore the Circuit Breaker kicked
+in, calling the fallback method instead, and thus returning the Book not from the cache but from the persistence store.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>4.1.2. Monitoring the Circuit Breaker</h4>
+<div class="paragraph">
+<p>Spring Boot and Resilience4j also provide facilities to monitor the state of the Circuit Breaker via Spring Boot&#8217;s
+health-endpoint as well as its circuit breaker events endpoint:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://localhost:8090/actuator/health" class="bare">localhost:8090/actuator/health</a></p>
+</li>
+<li>
+<p><a href="http://localhost:8090/actuator/circuitbreakerevents/coherence" class="bare">localhost:8090/actuator/circuitbreakerevents/coherence</a></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Spring Boot Health Endpoint</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "status":"UP",
+  "components":{
+    "circuitBreakers":{
+      "status":"UNKNOWN",
+      "details":{
+        "coherence":{
+          "status":"CIRCUIT_OPEN",
+          "details":{
+            "failureRate":"100.0%",
+            "failureRateThreshold":"5.0%",
+            "slowCallRate":"0.0%",
+            "slowCallRateThreshold":"100.0%",
+            "bufferedCalls":3,
+            "slowCalls":0,
+            "slowFailedCalls":0,
+            "failedCalls":3,
+            "notPermittedCalls":8,
+            "state":"OPEN"
+          }
+        }
+      }
+    },
+    "db":{
+      "status":"UP",
+      "details":{
+        "database":"HSQL Database Engine",
+        "validationQuery":"isValid()"
+      }
+    },
+    "diskSpace":{
+      "status":"UP",
+      "details":{
+        "total":2000796545024,
+        "free":1490744430592,
+        "threshold":10485760,
+        "exists":true
+      }
+    },
+    "ping":{
+      "status":"UP"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For demonstrating purposes we enabled the relevant health endpoints via Spring Boot configuration in <code>application.yaml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management.endpoints.web.exposure.include: "*"
+management.endpoint.health.show-details: always</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may not want to do this in production. This is solely for demonstration purposes, especially as no security is configured
+for this application.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>4.1.3. Add Resilience4j Dependencies</h4>
+<div class="paragraph">
+<p>In order to use Resilience4j in your Coherence Spring project with Spring Boot, you need to add the following dependencies:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. Resilience4j Spring Boot Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
+    &lt;artifactId&gt;resilience4j-spring-boot2&lt;/artifactId&gt;
+    &lt;version&gt;1.7.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>4.1.4. Resilience4j Annotations</h4>
+<div class="paragraph">
+<p>In order to add circuit-breaker capabilities to our <code>@Cacheable</code> business methods in <code>DefaultBookService</code>, we simply add
+the <code>@CircuitBreaker</code> annotations, e.g.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Cacheable("allBooks")
+@CircuitBreaker(name = "coherence", fallbackMethod = "getAllBooksFallback")
+@Override
+public List&lt;Book&gt; getAllBooks() {
+ ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The key is the specified fallback method: whenever an exception occurs, the fallback method is being executed. You can have
+multiple fallback methods, specifying different exception types. Resilience4j will then select the fallback methods based
+on the specificity of the thrown exception.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When dealing with fallback method, it may at times be necessary to call other methods of the same services that you expect
+to be proxied, e.g. have applied annotations etc. However, when calling other methods in the same service, you are calling
+those methods without the relevant AOP aspects applied to them. You may either need to refactor those methods into another
+Spring bean or can actually inject the same service into the service. This type of injection call self injection or self
+autowiring has <a href="https://stackoverflow.com/questions/5152686/self-injection-with-spring">been supported</a> since Spring <code>4.3</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>5. Configure Hibernate Second-Level Caching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
+<a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html#caching">Second-Level cache</a> support.</p>
+</div>
+<div class="paragraph">
+<p>When using only Hibernate&#8217;s second-level cache without the requirement of using Coherence for non-Hibernate application
+needs, you may want to disable Coherence&#8217;s auto-configuration support for Spring
+Boot as it is not needed:</p>
+</div>
+<div class="listingblock">
+<div class="title">Disable CoherenceAutoConfiguration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
+public class HibernateApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(HibernateApplication.class, args);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
+Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>com.oracle.coherence.hibernate.cache.CoherenceRegionFactory</code>.</p>
+</div>
+<div class="paragraph">
+<p>Your Spring Boot <code>application.yaml</code> file may look like the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">RegionFactory Configuration using YAML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  application:
+    name: Your Spring Boot App
+  jpa:
+    properties:
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <i class="conum" data-value="1"></i><b>(1)</b>
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.use_second_level_cache: true
+      hibernate.format_sql: true
+      hibernate.generate_statistics: true
+      hibernate.show_sql: true
+      hibernate.use_sql_comments: false
+...</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configuring the <code>CoherenceRegionFactory</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For more detailed information please see the <a href="https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html#caching">Caching chapter</a> of the Hibernate reference
+documentation.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>5.1. Hibernate Second Level Cache Example</h3>
+<div class="paragraph">
+<p>The Coherence Spring source code repository also provides an
+<a href="https://github.com/coherence-community/coherence-spring/tree/master/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
+Hibernate&#8217;s Second Level caching using <a href="https://spring.io/projects/spring-boot">Spring Boot</a>.</p>
+</div>
+<div class="paragraph">
+<p>The example application has 1 REST endpoint that can persist, retrieve and delete a <code>Plant</code> object with taxonomic properties
+such as the genus and species.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of a <code>Plant</code> JSON response</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>5.1.1. Run the Hibernate Application</h4>
+<div class="paragraph">
+<p>First, let&#8217;s build the application:</p>
+</div>
+<div class="listingblock">
+<div class="title">Build the Coherence Server instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, run the application:</p>
+</div>
+<div class="listingblock">
+<div class="title">Run the Spring Boot application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-3.1.1-SNAPSHOT.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application will be available on port <code>9090</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Add a plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X POST --data '{"genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}' \
+  "http://localhost:9090/plants"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">List all plants</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Get a single plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants/1"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Delete a plant</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X DELETE "http://localhost:9090/plants/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When retrieving a single plant repeatedly, you will see no SQL printed to the console. Instead, the plant is returned
+from the second level cache as illustrated by the printed out cache statistics.</p>
+</div>
+<div class="listingblock">
+<div class="title">Hibernate Cache Statistics</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
+27579 nanoseconds spent acquiring 1 JDBC connections;
+0 nanoseconds spent releasing 0 JDBC connections;
+0 nanoseconds spent preparing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC batches;
+0 nanoseconds spent performing 0 L2C puts;
+1587296 nanoseconds spent performing 1 L2C hits;
+0 nanoseconds spent performing 0 L2C misses;
+0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to also cache the results of query executions, you must provide query hints to Hibernate. The <code>PlantRepository</code>
+class has a custom query using such a hint for illustration purposes:</p>
+</div>
+<div class="listingblock">
+<div class="title">Using Query Hints</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+@Query("select p from Plant p")
+List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can see the cache being used by retrieving the list of plants with an additional request parameter <code>use-cache</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">List all plants</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:9090/plants?use-cache=true"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>6. Spring Session Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
+Coherence-specific configuration properties. Before you continue, please consider reading the chapter
+on <a href="spring-session.html#spring-session">Coherence Spring Session</a> first.</p>
+</div>
+<div class="paragraph">
+<p>In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
+project:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. Add Coherence Spring Session Support</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+        &lt;version&gt;3.1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.12.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.1.1-SNAPSHOT")
+    compile("com.oracle.coherence.spring:coherence-spring-session:3.1.1-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.12.1")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Basically, adding the <code>coherence-spring-session</code> dependency will activate the <code>CoherenceSpringSessionAutoConfiguration</code>
+class. Auto-configuration will back-off in certain situations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set property <code>coherence.spring.session.enabled</code> to <code>false</code></p>
+</li>
+<li>
+<p>Define <code>spring.session.store-type</code>. Any value will deactivate auto-configuration.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following Coherence-specific configuration properties are available:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Coherence Configuration Properties</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to <code>true</code> to enable Spring Session support</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.map-name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring:session:sessions</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the map used to store sessions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.flush-mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ON_SAVE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sessions flush mode. Determines when session changes are written to the session store.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.save-mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ON_SET_ATTRIBUTE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The session save mode determines how session changes are tracked and saved to the session store.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>7. Coherence Messaging Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Support for injecting Coherence Publishers is enabled automatically by adding the <code>coherence-spring-boot-starter</code> dependency.
+By default, base package to scan for <a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>
+annotated interfaces is derived from the main class annotated with <code>@SpringBootApplication</code>. Base package can be overridden
+by annotating configuration class with <a href="https://spring.coherence.community/3.1.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisherScan.html">@CoherencePublisherScan</a>
+as described at <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>8. Coherence Metrics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By adding the <code>coherence-spring-boot-starter</code> and <code>com.oracle.coherence.ce:coherence-micrometer</code> dependencies auto-configuration will register <code>CoherenceMicrometerMetrics</code> and publish <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0//manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7">Coherence Metrics</a> under the <code>coherence.</code> name.</p>
+</div>
+<div class="paragraph">
+<p>To disable the auto-configured Coherence metrics even when <code>coherence-micrometer</code> module is on the classpath, set the following property:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management:
+  metrics:
+    enable:
+      coherence: false</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>9. Spring Data Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coherence Spring&#8217;s support for Spring Data also contain auto-configuration support for Spring Boot. The auto-configuration
+is activated as soon as the Coherence Spring Data dependency is added to your Spring Boot project.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 4. Add Coherence Spring Data Support</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
+        &lt;version&gt;3.1.1-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;21.12.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.1.1-SNAPSHOT")
+    compile("com.oracle.coherence.spring:coherence-spring-data:3.1.1-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:21.12.1")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>There is no need to add the <code>@EnableCoherenceRepositories</code> annotation, as the Coherence Spring Data auto-configuration
+support, will automatically detect any Coherence repositories. In fact, adding <code>@EnableCoherenceRepositories</code> to your
+Spring Boot project, will cause auto-configuration to back-off.</p>
+</div>
+<div class="paragraph">
+<p>Auto-configuration can also be de-activated by setting environment property <code>coherence.spring.data.repositories.enabled</code>
+to <code>false</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-01-21 00:16:26 UTC
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
