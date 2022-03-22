@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,6 +8,7 @@ package com.oracle.coherence.spring.configuration;
 
 import javax.annotation.PostConstruct;
 
+import com.oracle.coherence.common.base.Classes;
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.configuration.support.CoherenceConfigurerCustomizer;
@@ -16,10 +17,12 @@ import com.oracle.coherence.spring.event.CoherenceEventListenerMethodProcessor;
 import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
 import com.oracle.coherence.spring.messaging.CoherenceTopicListenerPostProcessor;
 import com.oracle.coherence.spring.messaging.CoherenceTopicListenerSubscribers;
+import com.tangosol.io.Serializer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
+import com.tangosol.net.OperationalContext;
 import com.tangosol.net.Session;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +56,6 @@ import org.springframework.context.annotation.Scope;
 		FilterService.class,
 		MapEventTransformerService.class,
 		MapEventTransformerConfiguration.class,
-		SerializerConfiguration.class,
 		NamedTopicConfiguration.class,
 		CoherenceTopicListenerSubscribers.class
 })
@@ -162,7 +165,7 @@ public class CoherenceSpringConfiguration {
 	}
 
 	@Bean
-	MapListenerRegistrationBean mapListenerRegistrationBean(
+	static MapListenerRegistrationBean mapListenerRegistrationBean(
 			FilterService filterService,
 			MapEventTransformerService mapEventTransformerService) {
 		return new MapListenerRegistrationBean(filterService, mapEventTransformerService);
@@ -237,4 +240,28 @@ public class CoherenceSpringConfiguration {
 		return new CoherenceTopicListenerPostProcessor();
 	}
 
+	/**
+	 * A factory method to produce the default Java {@link Serializer}.
+	 * @return the default Java {@link Serializer}
+	 */
+	@Qualifier("java")
+	@Bean
+	public Serializer defaultSerializer() {
+		final OperationalContext operationalContext = ((OperationalContext) this.getCoherenceCluster());
+		return operationalContext.getSerializerMap().get("java")
+				.createSerializer(Classes.getContextClassLoader());
+	}
+
+	/**
+	 * A factory method to produce the default
+	 * Java {@link Serializer}.
+	 * @return the default Java {@link Serializer}
+	 */
+	@Qualifier("pof")
+	@Bean
+	public Serializer pofSerializer() {
+		final OperationalContext operationalContext = ((OperationalContext) this.getCoherenceCluster());
+		return operationalContext.getSerializerMap().get("pof")
+				.createSerializer(Classes.getContextClassLoader());
+	}
 }
