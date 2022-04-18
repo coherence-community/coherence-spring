@@ -123,6 +123,9 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 			this.coherence.start().get(this.startupTimeout.toMillis(), TimeUnit.MILLISECONDS);
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException ex) {
+			if (ex instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new IllegalStateException(String.format("Oracle Coherence did not start "
 					+ "successfully within within the specified timeout period of %sms", this.startupTimeout), ex);
 		}

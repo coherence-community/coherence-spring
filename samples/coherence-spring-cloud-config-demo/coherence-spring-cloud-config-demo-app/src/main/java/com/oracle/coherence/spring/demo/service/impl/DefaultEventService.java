@@ -52,7 +52,7 @@ public class DefaultEventService implements EventService {
 	@Cacheable(cacheNames="events", key="#id")
 	@Override
 	public Event getEvent(Long id) {
-		return this.eventRepository.findById(id).get();
+		return this.eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No event found for id: " + id));
 	}
 
 	@Override

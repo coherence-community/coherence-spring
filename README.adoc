@@ -5,6 +5,7 @@
 = Welcome to the Oracle Coherence Spring Project
 
 image:https://github.com/coherence-community/coherence-spring/workflows/CI%20Coherence%20Spring/badge.svg[CI Coherence Spring,link=https://github.com/coherence-community/coherence-spring/actions]
+image:https://sonarcloud.io/api/project_badges/measure?project=coherence-community_coherence-spring&metric=alert_status[Quality Gate Status,link=https://sonarcloud.io/summary/new_code?id=coherence-community_coherence-spring]
 image:https://img.shields.io/badge/Coherence-Join%20Slack-brightgreen[Chat with us on slack,link=https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw]
 image:https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence[Stack Exchange questions,link=https://stackoverflow.com/questions/tagged/oracle-coherence]
 image:https://img.shields.io/twitter/follow/OracleCoherence?style=social[Twitter Follow,link=https://twitter.com/OracleCoherence]

@@ -24,6 +24,7 @@
 
 	<properties>
 		<coherence.spring.root>${basedir}/..</coherence.spring.root>
+		<sonar.skip>true</sonar.skip>
 	</properties>
 
 	<modules>

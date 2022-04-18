@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -27,7 +27,6 @@ import com.tangosol.config.xml.XmlSimpleName;
 import com.tangosol.run.xml.QualifiedName;
 import com.tangosol.run.xml.XmlElement;
 import com.tangosol.util.Base;
-import com.tangosol.util.Builder;
 import com.tangosol.util.ClassHelper;
 import com.tangosol.util.RegistrationBehavior;
 import com.tangosol.util.ResourceRegistry;
@@ -597,19 +596,13 @@ public class SpringNamespaceHandler extends AbstractNamespaceHandler {
 				}
 
 				// attempt to create a factory and register it
-				registry.registerResource(BeanFactory.class, sFactoryName, new Builder<BeanFactory>() {
-					@Override
-					public BeanFactory realize() {
-						return new CoherenceApplicationContext(url.toExternalForm());
-					}
-				}, RegistrationBehavior.IGNORE, new ResourceRegistry.ResourceLifecycleObserver<BeanFactory>() {
-					@Override
-					public void onRelease(BeanFactory factory) {
-						if (factory instanceof ConfigurableApplicationContext) {
-							((ConfigurableApplicationContext) factory).close();
-						}
-					}
-				});
+				registry.registerResource(BeanFactory.class, sFactoryName,
+						() -> new CoherenceApplicationContext(url.toExternalForm()),
+						RegistrationBehavior.IGNORE, (BeanFactory bf) -> {
+							if (bf instanceof ConfigurableApplicationContext) {
+								((ConfigurableApplicationContext) bf).close();
+							}
+						});
 
 				// lookup the factory we just registered
 				factory = registry.getResource(BeanFactory.class, sFactoryName);

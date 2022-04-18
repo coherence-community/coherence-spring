@@ -102,7 +102,7 @@ public class DefaultBookService implements BookService {
 		if (logger.isInfoEnabled()) {
 			logger.info("Going to retrieve the Book with id '{}' from the persistence store.", id);
 		}
-		return this.bookRepository.findById(id).get();
+		return this.bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No book found for id: " + id));
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class DefaultBookService implements BookService {
 		else if (logger.isDebugEnabled()) {
 			logger.debug("getBook fallback method (For Throwable) was called:", ex);
 		}
-		return this.bookRepository.findById(id).get();
+		return this.bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No book found for id: " + id));
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright 2017-2022 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,22 +35,16 @@ public class CoherenceConfigDataResource extends ConfigDataResource {
 
 	private final CoherenceConfigClientProperties properties;
 
-	private final boolean optional;
-
 	private final Profiles profiles;
 
 	public CoherenceConfigDataResource(CoherenceConfigClientProperties properties, boolean optional, Profiles profiles) {
+		super(optional);
 		this.properties = properties;
-		this.optional = optional;
 		this.profiles = profiles;
 	}
 
 	public CoherenceConfigClientProperties getProperties() {
 		return this.properties;
-	}
-
-	public boolean isOptional() {
-		return this.optional;
 	}
 
 	public String getProfiles() {
@@ -85,19 +79,18 @@ public class CoherenceConfigDataResource extends ConfigDataResource {
 			return false;
 		}
 		CoherenceConfigDataResource that = (CoherenceConfigDataResource) o;
-		return this.optional == that.optional && this.properties.equals(that.properties) && this.profiles.equals(that.profiles);
+		return this.properties.equals(that.properties) && this.profiles.equals(that.profiles);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.properties, this.optional, this.profiles);
+		return Objects.hash(this.properties, this.profiles);
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
 				.append("client", this.properties.getClient())
-				.append("optional", this.optional)
 				.append("profiles", this.profiles.getAccepted()).toString();
 
 	}

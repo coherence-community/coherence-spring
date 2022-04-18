@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -32,7 +32,7 @@ public class SpringSystemPropertyResolver
 	/**
 	 * The Spring {@link Environment}.
 	 */
-	private static volatile Environment env;
+	private static Environment env;
 
 	/**
 	 * An optional prefix. By default not used.
@@ -71,7 +71,7 @@ public class SpringSystemPropertyResolver
 	}
 
 	@Override
-	public String getProperty(String coherenceProperty) {
+	public synchronized String getProperty(String coherenceProperty) {
 		if (SpringSystemPropertyResolver.env != null) {
 			return SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
 		}
@@ -81,7 +81,7 @@ public class SpringSystemPropertyResolver
 	}
 
 	@Override
-	public String getEnv(String coherenceProperty) {
+	public synchronized String getEnv(String coherenceProperty) {
 		if (SpringSystemPropertyResolver.env != null) {
 			return SpringSystemPropertyResolver.env.getProperty(propertyPrefix + coherenceProperty, String.class);
 		}

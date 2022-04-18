@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -37,11 +37,6 @@ public class CoherenceProperties {
 	 * Configuration prefix for config properties.
 	 */
 	public static final String PREFIX = "coherence";
-
-	/**
-	 * Default service name prefix. Defaults recursively to ${code coherence.role}.
-	 */
-	private static final String SERVICE_NAME_PREFIX = "coherence.service.prefix";
 
 	/**
 	 * The name of the config property for the character limit.
