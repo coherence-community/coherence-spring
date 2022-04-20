@@ -39,7 +39,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-m2-
-      - name: Build and test with Maven
+      - name: Build and test with Maven + Sonar
+        if: "github.event_name != 'pull_request'"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
@@ -48,6 +49,16 @@ jobs:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           SONAR_TOKEN: "${{secrets.SONAR_TOKEN}}"
+          MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
+          MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+      - name: Build and test with Maven (PR Only)
+        if: "github.event_name == 'pull_request'"
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          ./mvnw clean verify -B -Pspring -Powasp --settings .mvn/settings.xml
+        env:
+          MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       - name: Clean Maven cache
