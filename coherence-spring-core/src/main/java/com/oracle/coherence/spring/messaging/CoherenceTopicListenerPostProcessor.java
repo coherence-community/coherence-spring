@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -46,6 +46,7 @@ import org.springframework.util.CollectionUtils;
  * {@link CoherenceTopicListenerSubscribers} for further processing.
  *
  * @author Vaso Putica
+ * @author Gunnar Hillert
  * @since 3.0
  *
  */
@@ -110,22 +111,14 @@ public class CoherenceTopicListenerPostProcessor implements BeanFactoryPostProce
 		if (!this.nonAnnotatedClasses.contains(targetType) &&
 				AnnotationUtils.isCandidateClass(targetType, CoherenceTopicListener.class) &&
 				!isSpringContainerClass(targetType)) {
-			Map<Method, CoherenceTopicListener> annotatedMethods = null;
-			try {
-				final MethodIntrospector.MetadataLookup<CoherenceTopicListener> metadataLookup = (method) ->
-						AnnotationUtils.getAnnotation(method,  CoherenceTopicListener.class);
-				annotatedMethods = MethodIntrospector.selectMethods(targetType, metadataLookup);
-			}
-			catch (Throwable ex) {
-				// An unresolvable type in a method signature, probably from a lazy bean - let's ignore it.
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not resolve methods for bean with name '" + beanName + "'", ex);
-				}
-			}
 
-			CoherenceTopicListener classAnnotation = AnnotationUtils.getAnnotation(targetType, CoherenceTopicListener.class);
+			final MethodIntrospector.MetadataLookup<CoherenceTopicListener> metadataLookup = (method) ->
+					AnnotationUtils.getAnnotation(method,  CoherenceTopicListener.class);
+			final Map<Method, CoherenceTopicListener> annotatedMethods = MethodIntrospector.selectMethods(targetType, metadataLookup);
+
+			final CoherenceTopicListener classAnnotation = AnnotationUtils.getAnnotation(targetType, CoherenceTopicListener.class);
 			if (classAnnotation != null) {
-				Map<Method, CoherenceTopicListener> notAnnotatedMethods = MethodIntrospector.selectMethods(targetType,
+				final Map<Method, CoherenceTopicListener> notAnnotatedMethods = MethodIntrospector.selectMethods(targetType,
 						(MethodIntrospector.MetadataLookup<CoherenceTopicListener>) (method) -> {
 							if (!method.isAnnotationPresent(CoherenceTopicListener.class)
 									&& method.getParameterCount() == 1) {

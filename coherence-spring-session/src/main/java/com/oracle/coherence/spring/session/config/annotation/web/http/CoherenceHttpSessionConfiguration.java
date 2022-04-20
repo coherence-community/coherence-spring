@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -86,7 +86,13 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	public void setImportMetadata(AnnotationMetadata importMetadata) {
 		final Map<String, Object> attributeMap = importMetadata
 				.getAnnotationAttributes(EnableCoherenceHttpSession.class.getName());
+
 		final AnnotationAttributes attributes = AnnotationAttributes.fromMap(attributeMap);
+
+		if (attributes == null) {
+			return;
+		}
+
 		this.maxInactiveIntervalInSeconds = attributes.getNumber("sessionTimeoutInSeconds");
 		final String sessionMapNameValue = attributes.getString("cache");
 		if (StringUtils.hasText(sessionMapNameValue)) {

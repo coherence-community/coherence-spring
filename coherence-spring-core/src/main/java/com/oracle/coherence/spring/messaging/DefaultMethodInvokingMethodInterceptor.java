@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  */
 package com.oracle.coherence.spring.messaging;
 
@@ -128,8 +128,14 @@ class DefaultMethodInvokingMethodInterceptor implements MethodInterceptor {
 				catch (Exception ex) {
 					// this is the signal that we are on Java 9 (encapsulated) and can't use the accessible constructor
 					// approach.
-					if (!ex.getClass().getName().equals("java.lang.reflect.InaccessibleObjectException")) {
-						throw new IllegalStateException(ex);
+					try {
+						Class inaccessibleObjectExceptionClass = Class.forName("java.lang.reflect.InaccessibleObjectException");
+						if (!inaccessibleObjectExceptionClass.isAssignableFrom(ex.getClass())) {
+							throw new IllegalStateException(ex);
+						}
+					}
+					catch (ClassNotFoundException ex2) {
+						throw new IllegalStateException(ex2);
 					}
 				}
 				this.constructor = ctor;

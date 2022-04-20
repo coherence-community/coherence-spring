@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -109,6 +109,8 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
 	 */
 	private String cacheConfigURI;
 
+	private final CoherenceBeanExpressionResolver coherenceBeanExpressionResolver =
+			new CoherenceBeanExpressionResolver(ParameterMacroExpressionParser.INSTANCE);
 
 	/**
 	 * Constructs a {@link SpringBasedCoherenceSession} that will
@@ -185,6 +187,7 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
 		this.configurableCacheFactory.dispose();
 		CacheFactory.getCacheFactoryBuilder().release(this.configurableCacheFactory);
 		this.configurableCacheFactory = null;
+		this.coherenceBeanExpressionResolver.cleanupParameterResolver();
 	}
 
 
@@ -203,8 +206,7 @@ public class SpringBasedCoherenceSession implements ApplicationContextAware,
 
 			if (beanFactory instanceof ConfigurableBeanFactory) {
 				((ConfigurableBeanFactory) beanFactory)
-					.setBeanExpressionResolver(new CoherenceBeanExpressionResolver(ParameterMacroExpressionParser
-						.INSTANCE));
+					.setBeanExpressionResolver(this.coherenceBeanExpressionResolver);
 			}
 
 			// register this application context as a resource so that the

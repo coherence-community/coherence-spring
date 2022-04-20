@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -30,6 +30,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * application context file.
  *
  * @author Harvey Raja
+ * @author Gunnar Hillert
  *
  * @see SpringNamespaceHandler
  */
@@ -37,9 +38,8 @@ public class CoherenceBeanExpressionResolver extends StandardBeanExpressionResol
 	// ----- data members ---------------------------------------------------
 
 	/**
-	 * A thread local {@link ParameterResolver} used to hold the context
-	 * sensitive {@link ParameterResolver} based on the bean's reference in
-	 * the cache configuration file.
+	 * A thread local {@link ParameterResolver} used to hold the context-sensitive {@link ParameterResolver} based on
+	 * the bean's reference in the cache configuration file.
 	 * <p>
 	 * This member is thread local to avoid a context bleeding when used by
 	 * multiple threads such as when a backing map is created in parallel to
@@ -91,6 +91,13 @@ public class CoherenceBeanExpressionResolver extends StandardBeanExpressionResol
 	 */
 	public void setParameterResolver(ParameterResolver resolver) {
 		this.m_tlResolver.set(resolver);
+	}
+
+	/**
+	 * Cleaned up {@link ThreadLocal} ParameterResolver when no longer used.
+	 */
+	public void cleanupParameterResolver() {
+		this.m_tlResolver.remove();
 	}
 
 	/**

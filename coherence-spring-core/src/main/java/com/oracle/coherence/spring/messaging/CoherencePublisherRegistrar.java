@@ -56,10 +56,15 @@ public class CoherencePublisherRegistrar implements ImportBeanDefinitionRegistra
 			Assert.isTrue(importingClassMetadata.isInterface(),
 					"@CoherencePublisher can only be specified on an interface");
 
-			Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(CoherencePublisher.class.getName());
+			final Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(CoherencePublisher.class.getName());
+
+			if (annotationAttributes == null) {
+				throw new IllegalStateException("Unable to retrieve annotationAttributes for CoherencePublisher annotations");
+			}
+
 			annotationAttributes.put(SERVICE_INTERFACE_ATTR, importingClassMetadata.getClassName());
 			annotationAttributes.put(PROXY_DEFAULT_METHODS_ATTR, "" + annotationAttributes.remove(PROXY_DEFAULT_METHODS_ATTR));
-			BeanDefinitionHolder benDefinitionHolder = parse(annotationAttributes);
+			final BeanDefinitionHolder benDefinitionHolder = parse(annotationAttributes);
 			BeanDefinitionReaderUtils.registerBeanDefinition(benDefinitionHolder, registry);
 		}
 	}

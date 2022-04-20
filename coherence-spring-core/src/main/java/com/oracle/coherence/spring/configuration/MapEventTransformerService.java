@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -96,14 +96,19 @@ public class MapEventTransformerService {
 	MapEventTransformer getMapEventTransformer(InjectionPoint injectionPoint) {
 		final  List<Annotation> bindings = CoherenceAnnotationUtils.getAnnotationsMarkedWithMarkerAnnotation(injectionPoint, MapEventTransformerBinding.class);
 
-		for (Annotation annotation : bindings) {
+		if (bindings.size() == 1) {
+			Annotation annotation = bindings.get(0);
 			final Class<? extends Annotation> annotationType = annotation.annotationType();
 			final MapEventTransformerFactory factory =
 					CoherenceAnnotationUtils.getSingleBeanWithAnnotation(this.applicationContext, annotationType);
 			return factory.create(annotation);
 		}
-
-		throw new IllegalStateException(
-				"Unsatisfied dependency - no MapEventTransformerFactory bean found for bindings " + bindings);
+		else if (bindings.size() > 1) {
+			throw new IllegalStateException(
+					String.format("More than 1 MapEventTransformerBinding annotation present (Total: %s).", bindings.size()));
+		}
+		else {
+			throw new IllegalStateException("No MapEventTransformerBinding found.");
+		}
 	}
 }

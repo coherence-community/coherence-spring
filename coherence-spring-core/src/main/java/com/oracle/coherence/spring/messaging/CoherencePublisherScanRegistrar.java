@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  */
 package com.oracle.coherence.spring.messaging;
 
@@ -94,7 +94,9 @@ public class CoherencePublisherScanRegistrar implements ImportBeanDefinitionRegi
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-		Map<String, Object> componentScan = importingClassMetadata.getAnnotationAttributes(CoherencePublisherScan.class.getName());
+
+		final Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(CoherencePublisherScan.class.getName());
+		Assert.notNull(annotationAttributes, "No matching CoherencePublisherScan was found.");
 
 		Collection<String> basePackages = getBasePackages(importingClassMetadata, registry);
 
@@ -102,7 +104,7 @@ public class CoherencePublisherScanRegistrar implements ImportBeanDefinitionRegi
 			basePackages = Collections.singleton(ClassUtils.getPackageName(importingClassMetadata.getClassName()));
 		}
 
-		ClassPathScanningCandidateComponentProvider scanner =
+		final ClassPathScanningCandidateComponentProvider scanner =
 				new ClassPathScanningCandidateComponentProvider(false, this.environment) {
 
 					@Override
@@ -118,7 +120,7 @@ public class CoherencePublisherScanRegistrar implements ImportBeanDefinitionRegi
 
 				};
 
-		filter(registry, componentScan, scanner);
+		filter(registry, annotationAttributes, scanner);
 
 		scanner.setResourceLoader(this.resourceLoader);
 
@@ -134,21 +136,31 @@ public class CoherencePublisherScanRegistrar implements ImportBeanDefinitionRegi
 		}
 	}
 
+	/**
+	 * Get the collection of base packages from the {@link CoherencePublisherScan} annotation if available.
+	 * @param importingClassMetadata the AnnotationMetadata
+	 * @param registry the BeanDefinitionRegistry
+	 * @return the basePackages, never null
+	 */
 	protected Collection<String> getBasePackages(AnnotationMetadata importingClassMetadata,
 			@SuppressWarnings("unused") BeanDefinitionRegistry registry) {
 
-		Map<String, Object> componentScan =
+		Map<String, Object> annotationAttributes =
 				importingClassMetadata.getAnnotationAttributes(CoherencePublisherScan.class.getName());
 
 		Set<String> basePackages = new HashSet<>();
 
-		for (String pkg : (String[]) componentScan.get("value")) {
+		if (annotationAttributes == null) {
+			return basePackages;
+		}
+
+		for (String pkg : (String[]) annotationAttributes.get("value")) {
 			if (StringUtils.hasText(pkg)) {
 				basePackages.add(pkg);
 			}
 		}
 
-		for (Class<?> clazz : (Class<?>[]) componentScan.get("basePackageClasses")) {
+		for (Class<?> clazz : (Class<?>[]) annotationAttributes.get("basePackageClasses")) {
 			basePackages.add(ClassUtils.getPackageName(clazz));
 		}
 

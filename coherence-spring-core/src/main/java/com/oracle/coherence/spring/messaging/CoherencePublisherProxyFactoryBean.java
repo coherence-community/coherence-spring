@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -15,9 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,6 +59,7 @@ import org.springframework.util.StringUtils;
  * Generates a proxy for the provided, {@link CoherencePublisher} annotated, interface.
  *
  * @author Vaso Putica
+ * @author Gunnar Hillert
  * @since 3.0
  */
 public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, MethodInterceptor, BeanClassLoaderAware,
@@ -142,7 +146,10 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 	}
 
 	private void rethrowExceptionCauseIfPossible(Throwable originalException, Method method) throws Throwable {
-		Class<?>[] exceptionTypes = method.getExceptionTypes();
+		Assert.notNull(originalException, "The originalException must not be null.");
+		Assert.notNull(method, "The method must not be null.");
+
+		final Class<?>[] exceptionTypes = method.getExceptionTypes();
 		Throwable t = originalException;
 		while (t != null) {
 			for (Class<?> exceptionType : exceptionTypes) {
@@ -221,7 +228,7 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 	// ------ DisposableBean ------------------------------------------------
 
 	@Override
-	public void destroy() throws Exception {
+	public void destroy() {
 		this.publisherMethods.values().forEach(PublisherMethod::close);
 	}
 
@@ -261,7 +268,7 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 	// ----- inner class PublisherMethod ------------------------------------
 
 	private static final class PublisherMethod implements InitializingBean, AutoCloseable  {
-		protected final Log logger = LogFactory.getLog(getClass());
+		final Log logger = LogFactory.getLog(getClass());
 
 		private final Map<TopicKey, Publisher<Object>> publisherMap = new ConcurrentHashMap<>();
 		private Class<?> returnType;
@@ -441,16 +448,13 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 				try {
 					publisher.flush().get(1, TimeUnit.MINUTES);
 				}
-				catch (Throwable throwable) {
-					this.logger.error("Error flushing publisher", throwable);
+				catch (CancellationException | ExecutionException | InterruptedException | TimeoutException ex) {
+					this.logger.error("Error flushing publisher", ex);
+					if (ex instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
 				}
-
-				try {
-					publisher.close();
-				}
-				catch (Throwable throwable) {
-					this.logger.error("Error closing publisher", throwable);
-				}
+				publisher.close();
 			}
 		}
 	}
