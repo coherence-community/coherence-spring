@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,8 +8,10 @@ package com.oracle.coherence.spring.cache;
 
 import java.time.Duration;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 import com.tangosol.net.NamedCache;
+import com.tangosol.util.ConcurrentMap;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
@@ -72,18 +74,61 @@ public class CoherenceCache implements Cache {
 			return (T) value;
 		}
 		else {
-			this.cache.lock(key);
 			try {
-				final Object value2 = this.cache.get(key);
-				if (value2 != null) {
-					return (T) value2;
+				return this.lockIfNecessary(key, () -> {
+					final Object value2 = this.cache.get(key);
+					if (value2 != null) {
+						return (T) value2;
+					}
+					else {
+						return loadValue(key, valueLoader);
+					}
+				});
+			}
+			catch (Exception ex) {
+				if (ex instanceof ValueRetrievalException) {
+					throw ex;
 				}
 				else {
-					return loadValue(key, valueLoader);
+					throw new ValueRetrievalException(key, valueLoader, ex);
 				}
+			}
+		}
+	}
+
+	private <T> T lockIfNecessary(Object key, Supplier<T> runnable) {
+		if (!this.cacheConfiguration.isUseLocks()) {
+			return runnable.get();
+		}
+
+		final Object lockKey;
+
+		if (this.cacheConfiguration.isLockEntireCache()) {
+			lockKey = ConcurrentMap.LOCK_ALL;
+		}
+		else {
+			lockKey = key;
+		}
+
+		if (this.cache.lock(lockKey, this.cacheConfiguration.getLockTimeout())) {
+			try {
+				return runnable.get();
 			}
 			finally {
 				this.cache.unlock(key);
+			}
+		}
+		else {
+			if (this.cacheConfiguration.isLockEntireCache()) {
+				throw new IllegalStateException(
+						String.format("Unable to lock entire cache within the specified timeout of %sms.",
+								this.cacheConfiguration.getLockTimeout()));
+			}
+			else {
+				throw new IllegalStateException(
+						String.format("Unable to lock key '%s' within the specified timeout of %sms.",
+								key,
+								this.cacheConfiguration.getLockTimeout()));
 			}
 		}
 	}
@@ -104,7 +149,7 @@ public class CoherenceCache implements Cache {
 			value = valueLoader.call();
 		}
 		catch (Exception ex) {
-			throw new IllegalStateException("Executing the callable failed.", ex);
+			throw new ValueRetrievalException(key, valueLoader, ex);
 		}
 		put(key, value);
 		return value;

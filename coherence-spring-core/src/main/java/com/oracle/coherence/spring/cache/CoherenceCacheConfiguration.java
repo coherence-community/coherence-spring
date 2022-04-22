@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -26,7 +26,24 @@ public class CoherenceCacheConfiguration {
 	private boolean useCacheNamePrefix = false;
 
 	/**
-	 * The String to prepend cache names with. Empty by default
+	 * Enabled by default. Lock cache entries. When using Coherence*Extend or gRPC, it is recommended to not use
+	 * locking.
+	 */
+	private boolean useLocks = true;
+
+	/**
+	 * Disabled by default. Locks the entire cache. This is usually not recommended.
+	 */
+	private boolean lockEntireCache = false;
+
+	/**
+	 * The number of milliseconds to continue trying to obtain a lock. When pass zero the lock attempt will to return
+	 * immediately. Passing -1 will block indefinitely until the lock could be obtained. Defaults to 0.
+	 */
+	private long lockTimeout = 0;
+
+	/**
+	 * The String to prepend cache names with. Empty by default.
 	 */
 	private String cacheNamePrefix = "";
 
@@ -79,5 +96,29 @@ public class CoherenceCacheConfiguration {
 		else {
 			return name;
 		}
+	}
+
+	public boolean isUseLocks() {
+		return this.useLocks;
+	}
+
+	public void setUseLocks(boolean useLocks) {
+		this.useLocks = useLocks;
+	}
+
+	public boolean isLockEntireCache() {
+		return this.lockEntireCache;
+	}
+
+	public void setLockEntireCache(boolean lockEntireCache) {
+		this.lockEntireCache = lockEntireCache;
+	}
+
+	public long getLockTimeout() {
+		return this.lockTimeout;
+	}
+
+	public void setLockTimeout(long lockTimeout) {
+		this.lockTimeout = lockTimeout;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -65,6 +65,10 @@ public class CoherenceAutoConfiguration {
 			coherenceCacheConfiguration.setCacheNamePrefix(cacheProperties.getCacheNamePrefix());
 			coherenceCacheConfiguration.setUseCacheNamePrefix(cacheProperties.isUseCacheNamePrefix());
 			coherenceCacheConfiguration.setTimeToLive(cacheProperties.getTimeToLive());
+			coherenceCacheConfiguration.setLockEntireCache(cacheProperties.isLockEntireCache());
+			coherenceCacheConfiguration.setLockTimeout(cacheProperties.getLockTimeout());
+			coherenceCacheConfiguration.setUseLocks(cacheProperties.isUseLocks());
+
 			return new CoherenceCacheManager(coherence, coherenceCacheConfiguration);
 		}
 		else {

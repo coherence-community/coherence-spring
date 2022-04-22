@@ -139,3 +139,33 @@ for the samples is part of the Coherence Spring projects:
 
 If you're using Spring Boot, please continue reading the <<spring-boot.adoc#spring-boot-caching, Spring Boot specific chapter>>
 on caching.
+
+[[spring-cache-locking]]
+== Coherence Caches and Locking
+
+Oracle Coherence supports the explicit concurrency control of cache entries using locks. The configuration class
+`CoherenceCacheConfiguration` provides 3 options to specify the relevant settings:
+
+*useLocks*
+
+First you can specify whether you want to use looks or not. This options defaults to `true`, meaning that locking is
+enabled by default.
+
+IMPORTANT: When using caching via _Coherence*Extend_ or _gRPC_, please disable locking! Locking via Coherence*Extend or
+gRPC is not supported.
+
+*lockTimeout*
+
+When locking cache entries, you can set a cache timeout. The specified value in milliseconds, instructs Coherence how
+long it shall try to acquire a lock the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
+A value of `-1` will cause Coherence to block indefintely. Specifying `0` will cause Oracle Coherence not to wait at all.
+By default, the value is set to `0`.
+
+*lockEntireCache*
+
+While generally not recommended, the option exists to also lock they entire cache (not just the specific cache entry).
+This option defaults to `false`.
+
+For further information, please read the corresponding chapter
+link:{oracle-coherence-docs}develop-applications/performing-transactions.html#GUID-4EAD6E6F-D074-4171-85AE-6F8198DDE33C[Using Explicit Locking for Data Concurrency]
+in the Oracle Coherence reference guide.

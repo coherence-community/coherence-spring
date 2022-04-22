@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -122,6 +122,10 @@ public class CoherencePropertiesTests {
 		assertThat(this.coherenceProperties.getCache().getCacheNamePrefix()).isEqualTo("");
 		assertThat(this.coherenceProperties.getCache().getTimeToLive()).isEqualTo(Duration.ZERO);
 		assertThat(this.coherenceProperties.getCache().isUseCacheNamePrefix()).isFalse();
+
+		assertThat(this.coherenceProperties.getCache().getLockTimeout()).isEqualTo(0L);
+		assertThat(this.coherenceProperties.getCache().isLockEntireCache()).isFalse();
+		assertThat(this.coherenceProperties.getCache().isUseLocks()).isTrue();
 	}
 
 	private void validateConfigUri(String expectedConfigUri, SessionConfiguration sessionConfiguration) {
