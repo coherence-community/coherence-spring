@@ -353,6 +353,23 @@ public class CoherenceProperties {
 		 */
 		private String cacheNamePrefix = "";
 
+		/**
+		 * Enabled by default. Lock cache entries. When using Coherence*Extend or gRPC, it is recommended to not use
+		 * locking.
+		 */
+		private boolean useLocks = true;
+
+		/**
+		 * Disabled by default. Locks the entire cache. This is usually not recommended.
+		 */
+		private boolean lockEntireCache = false;
+
+		/**
+		 * The number of milliseconds to continue trying to obtain a lock. When pass zero the lock attempt will to return
+		 * immediately. Passing -1 will block indefinitely until the lock could be obtained. Defaults to 0.
+		 */
+		private long lockTimeout = 0;
+
 		public Duration getTimeToLive() {
 			return this.timeToLive;
 		}
@@ -375,6 +392,30 @@ public class CoherenceProperties {
 
 		public void setUseCacheNamePrefix(boolean useCacheNamePrefix) {
 			this.useCacheNamePrefix = useCacheNamePrefix;
+		}
+
+		public boolean isUseLocks() {
+			return useLocks;
+		}
+
+		public void setUseLocks(boolean useLocks) {
+			this.useLocks = useLocks;
+		}
+
+		public boolean isLockEntireCache() {
+			return lockEntireCache;
+		}
+
+		public void setLockEntireCache(boolean lockEntireCache) {
+			this.lockEntireCache = lockEntireCache;
+		}
+
+		public long getLockTimeout() {
+			return lockTimeout;
+		}
+
+		public void setLockTimeout(long lockTimeout) {
+			this.lockTimeout = lockTimeout;
 		}
 	}
 

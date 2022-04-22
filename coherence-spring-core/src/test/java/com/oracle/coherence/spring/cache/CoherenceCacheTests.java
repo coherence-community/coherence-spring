@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -16,6 +16,7 @@ import org.springframework.cache.Cache;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.mock;
@@ -147,6 +148,7 @@ public class CoherenceCacheTests {
 	public void testGetUsingValueLoader() {
 		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
 		when(namedCache.get("foo")).thenReturn(null);
+		when(namedCache.lock(eq("foo"), anyLong())).thenReturn(true);
 		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, new CoherenceCacheConfiguration(Duration.ZERO));
 		final String bar = coherenceCache.get("foo", () -> "bar");
 		assertThat(bar).isEqualTo("bar");
@@ -157,6 +159,7 @@ public class CoherenceCacheTests {
 	public void testGetUsingValueLoaderWithValueInCacheAfterLock() {
 		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
 		when(namedCache.get("foo")).thenReturn(null, "secondCallValue");
+		when(namedCache.lock(eq("foo"), anyLong())).thenReturn(true);
 		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, new CoherenceCacheConfiguration(Duration.ZERO));
 		final String bar = coherenceCache.get("foo", () -> fail("Callable should not have been called."));
 		assertThat(bar).isEqualTo("secondCallValue");
@@ -177,15 +180,55 @@ public class CoherenceCacheTests {
 	public void testGetUsingValueLoaderThrowingException() {
 		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
 		when(namedCache.get("foo")).thenReturn(null);
-
+		when(namedCache.lock(eq("foo"), anyLong())).thenReturn(true);
 		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, new CoherenceCacheConfiguration(Duration.ZERO));
 
 		assertThatThrownBy(() -> {
 			coherenceCache.get("foo", () -> {
 				throw new IllegalStateException("No foo.");
 			});
-		}).isInstanceOf(IllegalStateException.class)
-				.hasMessageContaining("Executing the callable failed.");
+		}).isInstanceOf(Cache.ValueRetrievalException.class)
+				.hasMessageContaining("Value for key 'foo' could not be loaded using");
+	}
+
+	@Test
+	public void testGetWithValueLoaderAndLockFailure() {
+		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
+		when(namedCache.get("foo")).thenReturn(null);
+		when(namedCache.lock(eq("foo"), eq(0))).thenReturn(false);
+		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, new CoherenceCacheConfiguration(Duration.ZERO));
+
+		try {
+			coherenceCache.get("foo", () -> "bar");
+		}
+		catch (Cache.ValueRetrievalException ex) {
+			assertThat(ex.getMessage()).contains("Value for key 'foo' could not be loaded using");
+			assertThat(ex.getCause()).isInstanceOf(IllegalStateException.class);
+			assertThat(ex.getCause().getMessage()).contains("Unable to lock key 'foo' within the specified timeout of 0ms.");
+			return;
+		}
+		fail("Expected a ValueRetrievalException to be thrown.");
+	}
+
+	@Test
+	public void testGetWithValueLoaderSpecifiedTimeoutAndLockFailure() {
+		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
+		when(namedCache.get("foo")).thenReturn(null);
+		when(namedCache.lock(eq("foo"), eq(0))).thenReturn(false);
+		final CoherenceCacheConfiguration config = new CoherenceCacheConfiguration(Duration.ZERO);
+		config.setLockTimeout(1234);
+		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, config);
+
+		try {
+			coherenceCache.get("foo", () -> "bar");
+		}
+		catch (Cache.ValueRetrievalException ex) {
+			assertThat(ex.getMessage()).contains("Value for key 'foo' could not be loaded using");
+			assertThat(ex.getCause()).isInstanceOf(IllegalStateException.class);
+			assertThat(ex.getCause().getMessage()).contains("Unable to lock key 'foo' within the specified timeout of 1234ms.");
+			return;
+		}
+		fail("Expected a ValueRetrievalException to be thrown.");
 	}
 
 	final class FooType {
