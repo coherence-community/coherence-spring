@@ -395,7 +395,7 @@ public class CoherenceProperties {
 		}
 
 		public boolean isUseLocks() {
-			return useLocks;
+			return this.useLocks;
 		}
 
 		public void setUseLocks(boolean useLocks) {
@@ -403,7 +403,7 @@ public class CoherenceProperties {
 		}
 
 		public boolean isLockEntireCache() {
-			return lockEntireCache;
+			return this.lockEntireCache;
 		}
 
 		public void setLockEntireCache(boolean lockEntireCache) {
@@ -411,7 +411,7 @@ public class CoherenceProperties {
 		}
 
 		public long getLockTimeout() {
-			return lockTimeout;
+			return this.lockTimeout;
 		}
 
 		public void setLockTimeout(long lockTimeout) {
