@@ -155,6 +155,7 @@ window.onload = function() {
 <ul class="sectlevel1">
 <li><a href="#spring-cache-introduction">1. Introduction</a></li>
 <li><a href="#spring-cache-configuration">2. Configuring Coherence Cache for Spring</a></li>
+<li><a href="#spring-cache-locking">3. Coherence Caches and Locking</a></li>
 </ul>
 </div>
 </div>
@@ -381,10 +382,60 @@ on caching.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="spring-cache-locking"><a class="anchor" href="#spring-cache-locking"></a>3. Coherence Caches and Locking</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Oracle Coherence supports the explicit concurrency control of cache entries using locks. The configuration class
+<code>CoherenceCacheConfiguration</code> provides 3 options to specify the relevant settings:</p>
+</div>
+<div class="paragraph">
+<p><strong>useLocks</strong></p>
+</div>
+<div class="paragraph">
+<p>First you can specify whether you want to use looks or not. This options defaults to <code>true</code>, meaning that locking is
+enabled by default.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When using caching via <em>Coherence*Extend</em> or <em>gRPC</em>, please disable locking! Locking via Coherence*Extend or
+gRPC is not supported.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>lockTimeout</strong></p>
+</div>
+<div class="paragraph">
+<p>When locking cache entries, you can set a cache timeout. The specified value in milliseconds, instructs Coherence how
+long it shall try to acquire a lock the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
+A value of <code>-1</code> will cause Coherence to block indefintely. Specifying <code>0</code> will cause Oracle Coherence not to wait at all.
+By default, the value is set to <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>lockEntireCache</strong></p>
+</div>
+<div class="paragraph">
+<p>While generally not recommended, the option exists to also lock they entire cache (not just the specific cache entry).
+This option defaults to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<p>For further information, please read the corresponding chapter
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.0/develop-applications/performing-transactions.html#GUID-4EAD6E6F-D074-4171-85AE-6F8198DDE33C">Using Explicit Locking for Data Concurrency</a>
+in the Oracle Coherence reference guide.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-25 09:51:38 UTC
+Last updated 2022-04-25 10:19:02 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
