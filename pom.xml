@@ -12,7 +12,7 @@
 
 	<groupId>com.oracle.coherence.spring</groupId>
 	<artifactId>coherence-spring-parent</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Project</name>
@@ -43,15 +43,6 @@
 	</licenses>
 
 	<developers>
-		<developer>
-			<name>Brian Oliver</name>
-			<organization>Oracle Corporation</organization>
-		</developer>
-
-		<developer>
-			<name>Patrick Peralta</name>
-			<organization>Oracle Corporation</organization>
-		</developer>
 
 		<developer>
 			<name>Gunnar Hillert</name>
