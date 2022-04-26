@@ -393,7 +393,7 @@ on caching.</p>
 <p><strong>useLocks</strong></p>
 </div>
 <div class="paragraph">
-<p>First you can specify whether you want to use looks or not. This options defaults to <code>true</code>, meaning that locking is
+<p>This option lets you specify whether you want to use locks or not. This options defaults to <code>true</code>, meaning that locking is
 enabled by default.</p>
 </div>
 <div class="admonitionblock important">
@@ -403,8 +403,7 @@ enabled by default.</p>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-When using caching via <em>Coherence*Extend</em> or <em>gRPC</em>, please disable locking! Locking via Coherence*Extend or
-gRPC is not supported.
+When using caching via <em>Coherence*Extend</em> or <em>gRPC</em>, you should disable locking as it is not supported.
 </td>
 </tr>
 </table>
@@ -414,8 +413,8 @@ gRPC is not supported.
 </div>
 <div class="paragraph">
 <p>When locking cache entries, you can set a cache timeout. The specified value in milliseconds, instructs Coherence how
-long it shall try to acquire a lock the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
-A value of <code>-1</code> will cause Coherence to block indefintely. Specifying <code>0</code> will cause Oracle Coherence not to wait at all.
+long it shall try to acquire a lock for the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
+A value of <code>-1</code> will cause Coherence to block indefinitely. Specifying <code>0</code> will cause Oracle Coherence not to wait at all.
 By default, the value is set to <code>0</code>.</p>
 </div>
 <div class="paragraph">
@@ -435,7 +434,7 @@ in the Oracle Coherence reference guide.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-25 21:05:51 UTC
+Last updated 2022-04-26 03:12:14 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
