@@ -9,6 +9,7 @@ package com.oracle.coherence.spring.cache;
 import java.time.Duration;
 
 import com.tangosol.net.NamedCache;
+import com.tangosol.util.ConcurrentMap;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.cache.Cache;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.mock;
@@ -195,7 +197,7 @@ public class CoherenceCacheTests {
 	public void testGetWithValueLoaderAndLockFailure() {
 		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
 		when(namedCache.get("foo")).thenReturn(null);
-		when(namedCache.lock(eq("foo"), eq(0))).thenReturn(false);
+		when(namedCache.lock(eq("foo"), eq(0L))).thenReturn(false);
 		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, new CoherenceCacheConfiguration(Duration.ZERO));
 
 		try {
@@ -214,7 +216,7 @@ public class CoherenceCacheTests {
 	public void testGetWithValueLoaderSpecifiedTimeoutAndLockFailure() {
 		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
 		when(namedCache.get("foo")).thenReturn(null);
-		when(namedCache.lock(eq("foo"), eq(0))).thenReturn(false);
+		when(namedCache.lock(eq("foo"), eq(0L))).thenReturn(false);
 		final CoherenceCacheConfiguration config = new CoherenceCacheConfiguration(Duration.ZERO);
 		config.setLockTimeout(1234);
 		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, config);
@@ -229,6 +231,20 @@ public class CoherenceCacheTests {
 			return;
 		}
 		fail("Expected a ValueRetrievalException to be thrown.");
+	}
+
+	@Test
+	public void testGetUsingValueLoaderWithLockingEntireCache() {
+		final NamedCache<Object, Object> namedCache = mock(NamedCache.class);
+		when(namedCache.get("foo")).thenReturn(null);
+		when(namedCache.lock(same(ConcurrentMap.LOCK_ALL), eq(123L))).thenReturn(true);
+		final CoherenceCacheConfiguration config = new CoherenceCacheConfiguration(Duration.ZERO);
+		config.setLockTimeout(123L);
+		config.setLockEntireCache(true);
+
+		final CoherenceCache coherenceCache = new CoherenceCache(namedCache, config);
+		final String bar = coherenceCache.get("foo", () -> "bar");
+		assertThat(bar).isEqualTo("bar");
 	}
 
 	final class FooType {
