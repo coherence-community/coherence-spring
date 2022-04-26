@@ -1,6 +1,6 @@
-:snapshot-version: 3.2.0-SNAPSHOT
+:snapshot-version: 3.3.0-SNAPSHOT
 :website: https://spring.coherence.community/
-:releaseVersion: 3.1.0
+:releaseVersion: 3.2.0
 
 = Welcome to the Oracle Coherence Spring Project
 
