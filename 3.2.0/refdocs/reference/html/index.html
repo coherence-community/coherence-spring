@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Coherence Spring Reference Documentation</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body class="book">
+<div id="header">
+<h1>Coherence Spring Reference Documentation</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Version 3.2.0</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><em>What&#8217;s New</em>, <em>Upgrade Notes</em>, <em>Supported Versions</em>, and other topics,
+independent of release cadence, are maintained externally on the project&#8217;s
+<a href="http://coherence-community.github.io/coherence-spring"><strong>Website</strong></a>.</p>
+</div>
+</div>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a href="legal.html#legal">Legal</a> 
+</td>
+<td class="hdlist2">
+<p>Legal information.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="overview.html#overview">Overview</a> 
+</td>
+<td class="hdlist2">
+<p>Introduction to the various Coherence Spring modules and getting started guide.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="quickstart.html#quickstart">Quickstart</a> 
+</td>
+<td class="hdlist2">
+<p>How to get started quickly</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="core.html#spring-core">Coherence Spring Core</a> 
+</td>
+<td class="hdlist2">
+<p>Use Coherence with the Spring Framework</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-boot.html#spring-boot">Spring Boot</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence for Spring Boot users</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-cache.html#spring-cache">Spring Cache</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Cache</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-session.html#spring-session">Spring Session</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Session</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-data.html#spring-data">Spring Data</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Data</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-cloud-config.html#spring-cloud-config">Spring Cloud Config</a> 
+</td>
+<td class="hdlist2">
+<p>Use Coherence with Spring Cloud Config</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Gunnar Hillert, Ryan Lubke</p>
+</div>
+<div class="paragraph">
+<p>Copyright (c) 2013, 2021, Oracle and/or its affiliates.<br>
+Licensed under the Universal Permissive License v 1.0 as shown at <a href="https://oss.oracle.com/licenses/upl" class="bare">https://oss.oracle.com/licenses/upl</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-04-25 22:16:35 -1000
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
