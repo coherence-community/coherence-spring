@@ -148,17 +148,16 @@ Oracle Coherence supports the explicit concurrency control of cache entries usin
 
 *useLocks*
 
-First you can specify whether you want to use looks or not. This options defaults to `true`, meaning that locking is
+This option lets you specify whether you want to use locks or not. This options defaults to `true`, meaning that locking is
 enabled by default.
 
-IMPORTANT: When using caching via _Coherence*Extend_ or _gRPC_, please disable locking! Locking via Coherence*Extend or
-gRPC is not supported.
+IMPORTANT: When using caching via _Coherence*Extend_ or _gRPC_, you should disable locking as it is not supported.
 
 *lockTimeout*
 
 When locking cache entries, you can set a cache timeout. The specified value in milliseconds, instructs Coherence how
-long it shall try to acquire a lock the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
-A value of `-1` will cause Coherence to block indefintely. Specifying `0` will cause Oracle Coherence not to wait at all.
+long it shall try to acquire a lock for the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
+A value of `-1` will cause Coherence to block indefinitely. Specifying `0` will cause Oracle Coherence not to wait at all.
 By default, the value is set to `0`.
 
 *lockEntireCache*

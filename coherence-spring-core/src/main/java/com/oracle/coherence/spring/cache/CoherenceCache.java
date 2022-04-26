@@ -28,6 +28,11 @@ public class CoherenceCache implements Cache {
 	private final NamedCache<Object, Object> cache;
 	private final CoherenceCacheConfiguration cacheConfiguration;
 
+	/**
+	 * Construct the CoherenceCache.
+	 * @param cache must not be null
+	 * @param cacheConfiguration must not be null
+	 */
 	public CoherenceCache(NamedCache<Object, Object> cache, CoherenceCacheConfiguration cacheConfiguration) {
 		super();
 
@@ -66,9 +71,18 @@ public class CoherenceCache implements Cache {
 		return (T) value;
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Return the value to which this cache maps the specified key. If the key does not exist in the cache, the method
+	 * will obtain that value using the provided valueLoader. In that case, the key will be locked, unless
+	 * {@link CoherenceCacheConfiguration#isUseLocks()} returns false.
+	 * @param key might be null. See {@link NamedCache#get(Object)}.
+	 * @param valueLoader must not be null.
+	 * @param <T> type of the return value.
+	 * @return the value from the cache.
+	 */
 	@Override
 	public <T> T get(Object key, Callable<T> valueLoader) {
+		Assert.notNull(valueLoader, "valueLoader must not be null.");
 		final Object value = this.cache.get(key);
 		if (value != null) {
 			return (T) value;
