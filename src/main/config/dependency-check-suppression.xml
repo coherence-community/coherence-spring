@@ -9,4 +9,10 @@
         <cpe>cpe:/a:vmware:spring_framework</cpe>
     </suppress>
 
+    <!-- See https://github.com/spring-projects/spring-framework/issues/24434 -->
+    <suppress>
+        <notes><![CDATA[Ignored since we are not vulnerable]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+        <cve>CVE-2016-1000027</cve>
+    </suppress>
 </suppressions>
