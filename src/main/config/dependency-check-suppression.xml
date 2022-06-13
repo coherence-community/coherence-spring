@@ -3,10 +3,38 @@
 
     <suppress>
         <notes><![CDATA[
-   file name: spring-session-core-2.6.2.jar
+   file name: spring-boot-starter-security-2.7.0.jar
    ]]></notes>
-        <sha1>6a8c45f9d46c40d5e2ac08d88cf94c907bfad8de</sha1>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-security@.*$</packageUrl>
+        <cve>CVE-2022-22976</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-rsa-1.0.10.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-rsa@.*$</packageUrl>
+        <cve>CVE-2022-22976</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-rsa-1.0.10.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-rsa@.*$</packageUrl>
+        <cve>CVE-2022-22978</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-security-2.7.0.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-security@.*$</packageUrl>
+        <cve>CVE-2022-22978</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.1.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <vulnerabilityName>CVE-2020-5408</vulnerabilityName>
     </suppress>
 
     <!-- See https://github.com/spring-projects/spring-framework/issues/24434 -->
