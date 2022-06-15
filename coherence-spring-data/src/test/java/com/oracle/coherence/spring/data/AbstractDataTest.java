@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.data;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Base test class using {@link Book}s for functional validation.
+ * @author  Ryan Lubke
+ * @author  Gunnar Hillert
  */
 public abstract class AbstractDataTest {
 	/**
@@ -52,35 +54,35 @@ public abstract class AbstractDataTest {
 	 * Author: Frank Herbert
 	 */
 	public static final Book DUNE = new Book("Dune", 677, FRANK_HERBERT,
-			new GregorianCalendar(1964, Calendar.AUGUST, 6, 0, 0));
+			LocalDate.of(1964, Month.AUGUST, 6));
 
 	/**
 	 * Book: Dune Messiah
 	 * Author: Frank Herbert
 	 */
 	public static final Book DUNE_MESSIAH = new Book("Dune Messiah", 468, FRANK_HERBERT,
-			new GregorianCalendar(1967, Calendar.JUNE, 6, 0, 0));
+			LocalDate.of(1967, Month.JUNE, 6));
 
 	/**
 	 * Book: The Name of the Wind
 	 * Author: Patrick Rothfuss
 	 */
 	public static final Book NAME_OF_THE_WIND = new Book("The Name of the Wind", 742, PATRICK_ROTHFUSS,
-			new GregorianCalendar(2008, Calendar.MARCH, 6, 0, 0));
+			LocalDate.of(2008, Month.MARCH, 6));
 
 	/**
 	 * Book: It
 	 * Author: Stephen King
 	 */
-	public static final Book IT = new Book("It", 888, STEPHEN_KING, new GregorianCalendar(1967,
-			Calendar.JUNE, 6, 0, 0));
+	public static final Book IT = new Book("It", 888, STEPHEN_KING, LocalDate.of(1967,
+			Month.JUNE, 6));
 
 	/**
 	 * Book: The Hobbit
 	 * Author: John Tolkien
 	 */
-	public static final Book HOBBIT = new Book("The Hobbit", 355, JOHN_TOLKIEN, new GregorianCalendar(1937,
-			Calendar.SEPTEMBER, 21, 0, 0));
+	public static final Book HOBBIT = new Book("The Hobbit", 355, JOHN_TOLKIEN, LocalDate.of(1937,
+			Month.SEPTEMBER, 21));
 
 	/**
 	 * A {@link Set} of {@link Book books} for validating test results.
