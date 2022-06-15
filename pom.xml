@@ -94,8 +94,7 @@
 		<!-- project options -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>8</java.version>
-		<java.version.enforcer>1.8</java.version.enforcer>
+		<java.version>11</java.version>
 		<maven.minimum.version>3.6.0</maven.minimum.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skip-sign-artifacts>true</skip-sign-artifacts>
@@ -126,7 +125,7 @@
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 		<maven-jacoco-plugin.version>0.8.7</maven-jacoco-plugin.version>
-		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
@@ -332,7 +331,7 @@
 									<version>${maven.minimum.version}</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
-									<version>${java.version.enforcer}</version>
+									<version>${java.version}</version>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -345,8 +344,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release>
 				</configuration>
 			</plugin>
 
@@ -526,12 +524,9 @@
 
 	<profiles>
 		<profile>
-			<id>jdk9+</id>
-			<activation>
-				<jdk>[9,)</jdk>
-			</activation>
+			<id>jdk17</id>
 			<properties>
-				<maven.compiler.release>${java.version}</maven.compiler.release>
+				<java.version>17</java.version>
 			</properties>
 		</profile>
 		<profile>

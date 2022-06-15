@@ -18,15 +18,19 @@ on:
 jobs:
   build:
     if: github.repository_owner == 'coherence-community'
+    strategy:
+      matrix:
+        java-version: [ 11, 17 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
-      - name: Set up JDK 11
+      - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v2.5.0
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: ${{ matrix.java-version }}
       - name: Cache SonarCloud packages
+        if: "matrix.java-version == 11"
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
@@ -40,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-
       - name: Build and test with Maven + Sonar
-        if: "github.event_name != 'pull_request'"
+        if: "github.event_name != 'pull_request' && matrix.java-version == 11"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
@@ -51,12 +55,12 @@ jobs:
           SONAR_TOKEN: "${{secrets.SONAR_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-      - name: Build and test with Maven (PR Only)
-        if: "github.event_name == 'pull_request'"
+      - name: Build and test with Maven - ${{ matrix.java-version }}
+        if: "github.event_name == 'pull_request' || (github.event_name != 'pull_request' && matrix.java-version != 11)"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify -B -Pspring -Powasp --settings .mvn/settings.xml
+          ./mvnw clean verify -B -Pspring -Powasp,jdk${{ matrix.java-version }} --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"

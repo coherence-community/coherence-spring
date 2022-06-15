@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -16,10 +16,10 @@ import com.oracle.coherence.spring.data.AbstractDataTest;
 import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.model.BookProjection;
-import com.oracle.coherence.spring.data.model.CalendarProjection;
 import com.oracle.coherence.spring.data.model.NestedBookProjection;
 import com.oracle.coherence.spring.data.model.NestedOpenBookProjection;
 import com.oracle.coherence.spring.data.model.OpenBookProjection;
+import com.oracle.coherence.spring.data.model.PublicationYearClassProjection;
 import com.oracle.coherence.spring.data.model.repositories.BookProjectionRepository;
 import com.oracle.coherence.spring.data.query.QueryFinderTests;
 import org.junit.jupiter.api.Test;
@@ -31,6 +31,11 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Tests for the various Projections, interface-based and class-based projections (DTO).
+ * @author Vaso Putica
+ * @author Gunnar Hillert
+ */
 @SpringJUnitConfig(QueryFinderTests.Config.class)
 @DirtiesContext
 public class ProjectionTest extends AbstractDataTest {
@@ -99,10 +104,10 @@ public class ProjectionTest extends AbstractDataTest {
 
 	@Test
 	public void ensureClassBasedProjection() {
-		List<CalendarProjection> books = this.bookRepository.findByPublished(IT.getPublished());
+		List<PublicationYearClassProjection> books = this.bookRepository.findByPublished(IT.getPublished());
 		assertThat(books.size()).isEqualTo(1);
-		CalendarProjection book = books.get(0);
-		assertThat(book.getPublished()).isEqualByComparingTo(IT.getPublished());
+		PublicationYearClassProjection book = books.get(0);
+		assertThat(book.getPublished()).isEqualTo(IT.getPublished());
 		assertThat(book.getPublicationYear()).isEqualTo(1967);
 	}
 

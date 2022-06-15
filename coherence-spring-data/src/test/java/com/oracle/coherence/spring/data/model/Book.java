@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,7 +8,7 @@ package com.oracle.coherence.spring.data.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,6 +20,8 @@ import org.springframework.data.annotation.Id;
 
 /**
  * An entity for representing a {@code book}.
+ * @author Ryan Lubke
+ * @author Gunnar Hillert
  */
 public class Book implements Cloneable, Serializable {
 	/**
@@ -46,7 +48,7 @@ public class Book implements Cloneable, Serializable {
 	/**
 	 * The {@code book}'s publication date.
 	 */
-	protected Calendar published;
+	protected LocalDate published;
 
 
 	/**
@@ -57,7 +59,7 @@ public class Book implements Cloneable, Serializable {
 	 * @param author    the book's {@link Author author}
 	 * @param published the book's publication date
 	 */
-	public Book(String title, int pages, Author author, Calendar published) {
+	public Book(String title, int pages, Author author, LocalDate published) {
 		this.uuid = new UUID();
 		this.title = title;
 		this.pages = pages;
@@ -172,16 +174,16 @@ public class Book implements Cloneable, Serializable {
 	 * @return the year this {@code book} was published
 	 */
 	public int getPublicationYear() {
-		return this.published.get(Calendar.YEAR);
+		return this.published.getYear();
 	}
 
 	/**
-	 * Returns a {@link Calendar} representing the publication date of the {@code book}.
+	 * Returns a {@link LocalDate} representing the publication date of the {@code book}.
 	 *
-	 * @return a {@link Calendar} representing the publication date of the {@code book}
+	 * @return a {@link LocalDate} representing the publication date of the {@code book}
 	 */
 	@SuppressWarnings("unused")
-	public Calendar getPublished() {
+	public LocalDate getPublished() {
 		return this.published;
 	}
 
