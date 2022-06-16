@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -19,7 +19,7 @@ import com.oracle.coherence.spring.session.events.CoherenceSessionCreatedEventHa
 import com.oracle.coherence.spring.session.events.SessionRemovedMapListener;
 import com.oracle.coherence.spring.session.support.PrincipalNameExtractor;
 import com.tangosol.net.NamedCache;
-import com.tangosol.net.events.internal.NamedEventInterceptor;
+import com.tangosol.net.events.NamedEventInterceptor;
 import com.tangosol.util.Filter;
 import com.tangosol.util.filter.EqualsFilter;
 import org.apache.commons.logging.Log;

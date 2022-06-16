@@ -19,7 +19,7 @@ import com.oracle.coherence.spring.event.mapevent.AnnotatedMapListener;
 import com.oracle.coherence.spring.event.mapevent.MapListenerRegistrationBean;
 import com.oracle.coherence.spring.event.mapevent.MethodMapListener;
 import com.tangosol.net.events.Event;
-import com.tangosol.net.events.internal.NamedEventInterceptor;
+import com.tangosol.net.events.NamedEventInterceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
