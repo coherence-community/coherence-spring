@@ -357,6 +357,11 @@
 						<include>**/*Test.java</include>
 						<include>**/*Tests.java</include>
 					</includes>
+					<systemPropertyVariables>
+						<coherence.grpc.session.default.enabled>false</coherence.grpc.session.default.enabled>
+						<coherence.grpc.session.coherence_extend.enabled>false</coherence.grpc.session.coherence_extend.enabled>
+						<coherence.grpc.session.grpcSession.enabled>false</coherence.grpc.session.grpcSession.enabled>
+					</systemPropertyVariables>
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 				</configuration>

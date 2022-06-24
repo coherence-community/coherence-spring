@@ -24,6 +24,7 @@ import io.grpc.ManagedChannelBuilder;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
  */
 @DirtiesContext
 @SpringJUnitWebConfig
+@Disabled
 class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
 
 	static CoherenceClusterMember server;
