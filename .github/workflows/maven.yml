@@ -40,9 +40,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-m2-
+            ${{ runner.os }}-maven2-
       - name: Build and test with Maven + Sonar
         if: "github.event_name != 'pull_request' && matrix.java-version == 11"
         run: |

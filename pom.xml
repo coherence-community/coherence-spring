@@ -357,6 +357,12 @@
 						<include>**/*Test.java</include>
 						<include>**/*Tests.java</include>
 					</includes>
+					<systemPropertyVariables>
+						<coherence.localhost>127.0.0.1</coherence.localhost>
+						<coherence.ttl>0</coherence.ttl>
+						<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+						<coherence.wka>127.0.0.1</coherence.wka>
+					</systemPropertyVariables>
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 				</configuration>
