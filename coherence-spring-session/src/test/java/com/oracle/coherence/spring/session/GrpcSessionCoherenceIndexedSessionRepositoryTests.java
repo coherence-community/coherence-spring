@@ -22,7 +22,6 @@ import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCohe
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +37,6 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
  */
 @DirtiesContext
 @SpringJUnitWebConfig
-@Disabled
 public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
 
 	static CoherenceClusterMember server;

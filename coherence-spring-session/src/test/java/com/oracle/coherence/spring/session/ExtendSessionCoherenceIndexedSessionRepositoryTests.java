@@ -20,7 +20,6 @@ import com.oracle.coherence.spring.configuration.session.SessionConfigurationBea
 import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +35,6 @@ import static org.hamcrest.CoreMatchers.is;
  */
 @DirtiesContext
 @SpringJUnitWebConfig
-@Disabled
 public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
 
 	public ExtendSessionCoherenceIndexedSessionRepositoryTests() {
