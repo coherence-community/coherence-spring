@@ -61,7 +61,8 @@ to fully utilize the features Coherence for Spring Data has to offer such as:
 - Declarative acceleration and index creation
 - Native asynchronous support
 
-Please also see the {oracle-coherence-repository-docs}[Coherence Repository] documentation for more details on these features.
+Please also see the chapter {oracle-coherence-docs}develop-applications/using-repository-api.html[Using the Repository API]
+of the Coherence reference documentation for more details on these features.
 
 Example extending the blocking `CoherenceRepository` interface:
 

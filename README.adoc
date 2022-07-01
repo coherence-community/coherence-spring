@@ -1,6 +1,6 @@
-:snapshot-version: 3.3.0-SNAPSHOT
+:snapshot-version: 3.3.1-SNAPSHOT
 :website: https://spring.coherence.community/
-:releaseVersion: 3.2.0
+:releaseVersion: 3.3.0
 
 = Welcome to the Oracle Coherence Spring Project
 
@@ -12,7 +12,7 @@ image:https://img.shields.io/twitter/follow/OracleCoherence?style=social[Twitter
 
 The Coherence Spring project provides bootstrapping support of https://coherence.community/[Oracle Coherence] for
 https://spring.io/projects/spring-framework[Spring Framework] and https://spring.io/projects/spring-boot[Spring Boot].
-Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring eco-system:
+Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring ecosystem:
 
 - Spring Data
 - Spring's Cache Abstraction
@@ -49,9 +49,6 @@ In order to build Coherence Spring, you need to have installed:
 
 - https://www.oracle.com/java/technologies/javase-jdk11-downloads.html[JDK 11]
 - https://help.github.com/set-up-git-redirect[Git]
-
-NOTE: When using Coherence Spring merely as a dependency in a project, without intending to build the project from
-source code, then an installed _JDK 8_ version is sufficient.
 
 === Check out sources
 

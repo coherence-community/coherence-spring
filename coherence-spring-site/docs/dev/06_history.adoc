@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2022, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -16,6 +16,26 @@
 
 The following sections outline Coherence Spring project changes in
 reverse chronological order.
+
+=== Version 3.3.0 (July 2022)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0
+
+=== Version 3.2.0 (April 2022)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.2.0
+
+=== Version 3.1.0 (January 2022)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.1.0
+
+=== Version 3.0.0 (September 201)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0
+
+=== Version 3.0.0.M2 (July 2021)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0-M2
 
 === Version 3.0.0.M1 (May 2021)
 

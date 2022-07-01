@@ -77,6 +77,8 @@ implementation("com.oracle.coherence.ce:coherence:{commercial-coherence-version}
 NOTE: Coherence CE versions are available from Maven Central. The commercial versions of Coherence needs to be uploaded
 into your own Maven repository.
 
+IMPORTANT: Coherence Spring requires as a minimum version *Coherence CE* `22.06`.
+
 [[coherence-spring-botstrap]]
 == Bootstrapping Coherence
 
