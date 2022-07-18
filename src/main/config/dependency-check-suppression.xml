@@ -58,4 +58,20 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
         <cve>CVE-2016-1000027</cve>
     </suppress>
+
+    <!-- See https://github.com/jeremylong/DependencyCheck/issues/4671 -->
+    <suppress>
+        <notes><![CDATA[
+        False positive.
+        ]]></notes>
+        <cve>CVE-2022-31569</cve>
+    </suppress>
+
+    <!-- See https://github.com/jeremylong/DependencyCheck/issues/4670 -->
+    <suppress>
+        <notes><![CDATA[
+        False positive.
+        ]]></notes>
+        <cve>CVE-2022-31514</cve>
+    </suppress>
 </suppressions>
