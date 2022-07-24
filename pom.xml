@@ -553,6 +553,7 @@
 							<suppressionFiles>
 								<suppressionFile>${coherence.spring.root}/src/main/config/dependency-check-suppression.xml</suppressionFile>
 							</suppressionFiles>
+							<retireJsUrl>https://raw.githubusercontent.com/RetireJS/retire.js/33b4076ce87f3898b81af4fc1770a7b65aa54bcb/repository/jsrepository.json</retireJsUrl>
 						</configuration>
 						<executions>
 							<execution>
