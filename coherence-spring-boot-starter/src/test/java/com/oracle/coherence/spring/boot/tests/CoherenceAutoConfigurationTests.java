@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -32,6 +32,7 @@ import org.springframework.boot.test.context.ConfigDataApplicationContextInitial
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
@@ -88,6 +89,16 @@ public class CoherenceAutoConfigurationTests {
 			assertThat(context).hasSingleBean(CacheManager.class);
 			assertThat(context).getBean(CacheManager.class).isInstanceOf(CoherenceCacheManager.class);
 		});
+	}
+
+	@Test
+	public void testUserProvidedNonCoherenceCacheManagerExists() {
+		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithNonCoherenceCacheManager.class)
+				.run((context) -> {
+					assertThat(context).hasSingleBean(CoherenceServer.class);
+					assertThat(context).hasSingleBean(CacheManager.class);
+					assertThat(context).getBean(CacheManager.class).isInstanceOf(SimpleCacheManager.class);
+				});
 	}
 
 	@Test
@@ -259,6 +270,15 @@ public class CoherenceAutoConfigurationTests {
 	@Configuration
 	@EnableCaching
 	static class ConfigWithoutCacheManager {
+	}
+
+	@Configuration
+	@EnableCaching
+	static class ConfigWithNonCoherenceCacheManager {
+		@Bean
+		CacheManager cacheManager() {
+			return new SimpleCacheManager();
+		}
 	}
 
 	@Configuration
