@@ -1,13 +1,7 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration,\
-com.oracle.coherence.spring.boot.autoconfigure.session.CoherenceSpringSessionAutoConfiguration,\
-com.oracle.coherence.spring.boot.autoconfigure.metrics.CoherenceMetricsAutoConfiguration,\
-com.oracle.coherence.spring.boot.autoconfigure.data.CoherenceRepositoriesAutoConfiguration
-
 # ConfigData Resolver
 org.springframework.boot.context.config.ConfigDataLocationResolver=\
 com.oracle.coherence.spring.boot.config.CoherenceConfigDataLocationResolver
+
 # ConfigData Loader
 org.springframework.boot.context.config.ConfigDataLoader=\
 com.oracle.coherence.spring.boot.config.CoherenceConfigDataLoader
