@@ -15,7 +15,7 @@
 :coherence-spring: https://spring.coherence.community/
 :coherence-spring-website: {coherence-spring}{coherence-spring-version}/
 :github-tag: master
-:coherence-api: https://coherence.community/22.06/api/java/
+:coherence-api: https://coherence.community/{coherence-version}/api/java/
 :coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/
 :coherence-spring-docs: {coherence-spring-website}refdocs/reference/
 :coherence-spring-api: {coherence-spring-website}refdocs/api/
