@@ -15,8 +15,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import com.oracle.bedrock.testsupport.deferred.Eventually;
 import com.oracle.coherence.spring.annotation.CoherenceTopicListener;

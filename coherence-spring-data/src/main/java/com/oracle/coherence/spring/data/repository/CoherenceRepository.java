@@ -30,6 +30,7 @@ import com.tangosol.util.stream.RemoteStream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -42,7 +43,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 3.0
  */
 public interface CoherenceRepository<T, ID>
-		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID> {
+		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID>, CrudRepository<T, ID> {
 
 	/**
 	 * Return the underlying {@link NamedMap} that backs this {@code Repository}.

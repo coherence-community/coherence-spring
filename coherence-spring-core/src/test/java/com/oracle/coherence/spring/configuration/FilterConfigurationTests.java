@@ -12,7 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.AlwaysFilter;
 import com.oracle.coherence.spring.annotation.FilterBinding;
