@@ -8,7 +8,7 @@ package com.oracle.coherence.spring.samples.hibernate.dao;
 
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import com.oracle.coherence.spring.samples.hibernate.model.Plant;
 

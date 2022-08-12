@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import com.oracle.coherence.spring.CoherenceContext;
 import com.tangosol.net.cache.CacheLoader;

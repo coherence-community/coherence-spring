@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.annotation.CoherencePublisherScan;

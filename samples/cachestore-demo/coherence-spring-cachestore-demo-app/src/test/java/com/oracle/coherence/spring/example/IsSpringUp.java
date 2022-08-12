@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,13 +7,8 @@
 package com.oracle.coherence.spring.example;
 
 import java.util.Map;
-
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.management.ReflectionException;
 
 import com.oracle.bedrock.runtime.concurrent.RemoteCallable;
 import com.tangosol.net.management.MBeanHelper;

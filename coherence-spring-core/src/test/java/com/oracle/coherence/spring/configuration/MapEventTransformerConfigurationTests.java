@@ -11,7 +11,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.MapEventTransformerBinding;
 import com.oracle.coherence.spring.annotation.MapEventTransformerFactory;

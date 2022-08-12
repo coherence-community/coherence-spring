@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
