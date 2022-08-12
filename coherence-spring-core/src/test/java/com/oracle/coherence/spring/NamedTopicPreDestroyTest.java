@@ -8,8 +8,8 @@ package com.oracle.coherence.spring;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;

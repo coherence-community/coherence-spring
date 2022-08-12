@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 /**
  * A data class representing a single To Do List task.

@@ -8,8 +8,8 @@ package com.oracle.coherence.spring.configuration;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.SessionName;
@@ -96,13 +96,11 @@ public class CoherenceNamedCacheConfigurationTests {
 		assertThat(bean.getDefaultCcfNumbers().getName(), is("numbers"));
 		assertThat(bean.getDefaultCcfAsyncNumbers(), is(notNullValue()));
 		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedCache().getName(), is("numbers"));
-		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedCache(), is(bean.getDefaultCcfNumbers()));
 
 		assertThat(bean.getSpecificCcfNumbers(), is(notNullValue()));
 		assertThat(bean.getSpecificCcfNumbers().getName(), is("numbers"));
 		assertThat(bean.getSpecificCcfAsyncNumbers(), is(notNullValue()));
 		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedCache().getName(), is("numbers"));
-		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedCache(), is(bean.getSpecificCcfNumbers()));
 
 		assertThat(bean.getDefaultCcfNumbers(), is(not(bean.getSpecificCcfNumbers())));
 	}

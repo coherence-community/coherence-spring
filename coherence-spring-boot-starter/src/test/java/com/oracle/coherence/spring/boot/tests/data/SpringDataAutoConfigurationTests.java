@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class SpringDataAutoConfigurationTests {
 
-	ConditionEvaluationReportLoggingListener initializer = new ConditionEvaluationReportLoggingListener(
+	ConditionEvaluationReportLoggingListener initializer = ConditionEvaluationReportLoggingListener.forLogLevel(
 			LogLevel.INFO);
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
