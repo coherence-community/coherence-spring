@@ -8,7 +8,6 @@ package com.oracle.coherence.spring.data.query;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Optional;
 
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.query.CoherenceQueryCreator;
@@ -603,11 +602,6 @@ public class QueryCreatorTests {
 		@Override
 		public Sort getSort() {
 			return null;
-		}
-
-		@Override
-		public Optional<Class<?>> getDynamicProjection() {
-			return Optional.empty();
 		}
 
 		@Override

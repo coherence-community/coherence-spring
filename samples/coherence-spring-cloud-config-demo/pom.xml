@@ -23,7 +23,7 @@
 	<description>Demo project for Coherence Spring using Spring Cloud Config Server</description>
 
 	<properties>
-		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<spring-cloud.version>2022.0.0-M4</spring-cloud.version>
 	</properties>
 
 	<modules>

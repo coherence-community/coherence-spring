@@ -11,8 +11,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.inject.Scope;
-import javax.inject.Singleton;
+import jakarta.inject.Scope;
+import jakarta.inject.Singleton;
 
 import com.oracle.coherence.spring.messaging.CoherencePublisherScanRegistrar;
 

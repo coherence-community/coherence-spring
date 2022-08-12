@@ -8,7 +8,7 @@ package com.oracle.coherence.spring.configuration;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.ChainedExtractor;
 import com.oracle.coherence.spring.annotation.ExtractorFactory;

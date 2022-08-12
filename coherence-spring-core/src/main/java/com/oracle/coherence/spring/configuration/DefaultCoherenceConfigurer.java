@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;

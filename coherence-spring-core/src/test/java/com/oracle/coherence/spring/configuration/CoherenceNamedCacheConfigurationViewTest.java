@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.AlwaysFilter;
 import com.oracle.coherence.spring.annotation.ChainedExtractor;

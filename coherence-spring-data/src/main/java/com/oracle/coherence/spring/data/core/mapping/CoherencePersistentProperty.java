@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -21,22 +21,23 @@ import org.springframework.util.ClassUtils;
  * Coherence implementation of {@link PersistentProperty}.
  *
  * @author Ryan Lubke
+ * @author Gunnar Hillert
  * @since 3.0
  */
 public class CoherencePersistentProperty
 		extends AnnotationBasedPersistentProperty<CoherencePersistentProperty> {
 
 	/**
-	 * Eventually consistent flag indicating the check for javax.persistence has been
+	 * Eventually consistent flag indicating that the check for {@code jakarta.persistence} has been
 	 * made.
 	 */
-	private boolean javaxPersistenceChecked;
+	private boolean jakartaPersistenceChecked;
 
 	/**
-	 * The {@code javax.persistence.Id} annotation if found.  This is a fallback
+	 * The {@code jakarta.persistence.Id} annotation if found. This is a fallback
 	 * to {@link Id}.
 	 */
-	private Class javaxPersistenceId;
+	private Class jakartaPersistenceId;
 
 	public CoherencePersistentProperty(Property property,
 			PersistentEntity<?, CoherencePersistentProperty> owner, SimpleTypeHolder simpleTypeHolder) {
@@ -55,17 +56,17 @@ public class CoherencePersistentProperty
 			return true;
 		}
 		else {
-			if (!this.javaxPersistenceChecked) {
-				this.javaxPersistenceChecked = true;
+			if (!this.jakartaPersistenceChecked) {
+				this.jakartaPersistenceChecked = true;
 				try {
-					this.javaxPersistenceId =
-							ClassUtils.forName("javax.persistence.Id", Base.getContextClassLoader());
+					this.jakartaPersistenceId =
+							ClassUtils.forName("jakarta.persistence.Id", Base.getContextClassLoader());
 				}
 				catch (ClassNotFoundException ignored) {
 				}
 			}
-			if (this.javaxPersistenceId != null) {
-				return findAnnotation(this.javaxPersistenceId) != null;
+			if (this.jakartaPersistenceId != null) {
+				return findAnnotation(this.jakartaPersistenceId) != null;
 			}
 			return false;
 		}
