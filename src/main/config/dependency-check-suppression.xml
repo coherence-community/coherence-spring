@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 
     <suppress>
@@ -40,5 +47,14 @@
     <suppress>
         <notes><![CDATA[protobuf-java-3.21.3.jar via Coherence gRPC]]></notes>
         <cve>CVE-2022-3171</cve>
+    </suppress>
+
+    <!-- via Spring Boot 3.0.0-M4 -->
+    <suppress>
+        <notes><![CDATA[
+   file name: snakeyaml-1.30.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-25857</cve>
     </suppress>
 </suppressions>

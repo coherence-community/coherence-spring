@@ -1,7 +1,7 @@
 ﻿# This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: CI Coherence Spring
+name: CI Coherence Spring 4.0.x
 on:
   push:
     branches:
@@ -23,7 +23,7 @@ jobs:
     if: github.repository_owner == 'coherence-community'
     strategy:
       matrix:
-        java-version: [ 11, 17 ]
+        java-version: [ 17, 18 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.2
@@ -51,7 +51,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -Pspring-repo -Pcoverage --settings .mvn/settings.xml
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=4.0.x -B -Pspring -Powasp -Pspring-repo -Pcoverage --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
@@ -59,11 +59,11 @@ jobs:
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       - name: Build and test with Maven - ${{ matrix.java-version }}
-        if: "github.event_name == 'pull_request' || (github.event_name != 'pull_request' && matrix.java-version != 11)"
+        if: "github.event_name == 'pull_request' || (github.event_name != 'pull_request' && matrix.java-version != 17)"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify -B -Pspring -Powasp,jdk${{ matrix.java-version }} --settings .mvn/settings.xml
+          ./mvnw clean verify -B -Pspring,spring-repo -Powasp,jdk${{ matrix.java-version }} --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"

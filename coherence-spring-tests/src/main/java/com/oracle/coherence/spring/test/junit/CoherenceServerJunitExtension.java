@@ -13,14 +13,14 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
 import io.github.classgraph.ClassGraph;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides an embedded Coherence Cluster as a Junit5 extension.
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 public class CoherenceServerJunitExtension implements ParameterResolver,
 		BeforeAllCallback, AfterAllCallback {
 
-	protected static final Log logger = LogFactory.getLog(CoherenceServerJunitExtension.class);
+	protected static final Logger logger = LoggerFactory.getLogger(CoherenceServerJunitExtension.class);
 
 	private final String configUri;
 	private final boolean grpcEnabled;
@@ -68,6 +68,7 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
+		System.setProperty("coherence.grpc.server.port", "1408");
 		System.setProperty("coherence.log", "slf4j");
 		System.setProperty("coherence.grpc.enabled", String.valueOf(this.grpcEnabled));
 		System.setProperty("coherence.grpc.server.port", "1408");

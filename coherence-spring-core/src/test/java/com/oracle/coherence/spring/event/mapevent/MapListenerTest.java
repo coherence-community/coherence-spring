@@ -9,7 +9,7 @@ package com.oracle.coherence.spring.event.mapevent;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.bedrock.testsupport.deferred.Eventually;
 import com.oracle.coherence.spring.annotation.Name;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -42,7 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		final BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(
 				authenticationManagerBean(), basicAuthenticationEntryPoint());
-		http.antMatcher("/**")
+		http.securityContext().requireExplicitSave(false)
+			.and()
+			.antMatcher("/**")
 				.addFilterAfter(customAuthFilter(), RequestHeaderAuthenticationFilter.class)
 				.addFilterAfter(basicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 				.csrf().disable()

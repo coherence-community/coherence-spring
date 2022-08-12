@@ -9,8 +9,8 @@ package com.oracle.coherence.spring.configuration;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.SessionName;

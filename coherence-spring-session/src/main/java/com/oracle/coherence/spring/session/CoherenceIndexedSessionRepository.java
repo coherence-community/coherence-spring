@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 import com.oracle.coherence.spring.session.events.CoherenceSessionCreatedEventHandler;
 import com.oracle.coherence.spring.session.events.SessionRemovedMapListener;

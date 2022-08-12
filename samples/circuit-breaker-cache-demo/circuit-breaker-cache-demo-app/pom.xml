@@ -23,7 +23,7 @@
 
 	<properties>
 		<coherence.spring.root>${basedir}/../../..</coherence.spring.root>
-		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
+		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
 	</properties>
 
 	<dependencies>

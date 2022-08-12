@@ -126,9 +126,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javaee-api.version}</version>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>${jakartaee-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -168,7 +168,7 @@
 						</goals>
 						<phase>prepare-package</phase>
 						<configuration>
-							<source>8</source>
+							<source>17</source>
 							<includeDependencySources>true</includeDependencySources>
 							<dependencySourceIncludes>
 								<dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
@@ -178,11 +178,9 @@
 							<quiet>true</quiet>
 							<stylesheetfile>${basedir}/src/main/javadoc/spring-javadoc.css</stylesheetfile>
 							<links>
-								<link>https://docs.oracle.com/javase/8/docs/api/</link>
-								<link>https://docs.oracle.com/javaee/7/api/</link>
+								<link>https://docs.oracle.com/javase/17/docs/api/</link>
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
-							<additionalJOption>--no-module-directories</additionalJOption>
 							<bottom>
 								Copyright © 2013, 2022, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
 							</bottom>
