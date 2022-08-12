@@ -8,14 +8,15 @@ package com.oracle.coherence.spring.example.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * A simple representation of a person.
  *
  * @author Jonathan Knight 2021.08.17
+ * @author Gunnar Hillert
  */
 // # tag::person[]
 @Entity

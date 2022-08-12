@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import com.oracle.coherence.spring.data.model.Address;
 import com.oracle.coherence.spring.data.model.Author;

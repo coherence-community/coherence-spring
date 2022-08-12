@@ -117,14 +117,14 @@
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<dependency-check-maven.version>7.1.1</dependency-check-maven.version>
+		<dependency-check-maven.version>7.1.2</dependency-check-maven.version>
 		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-		<maven-jacoco-plugin.version>0.8.7</maven-jacoco-plugin.version>
+		<maven-jacoco-plugin.version>0.8.8</maven-jacoco-plugin.version>
 		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -146,25 +146,30 @@
 		<assertj.version>3.20.2</assertj.version>
 		<awaitility.version>4.1.0</awaitility.version>
 		<bedrock.version>6.0.0</bedrock.version>
-		<coherence.version>22.06.1</coherence.version>
+		<coherence.version>22.09-SNAPSHOT</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
+		<hibernate.version>5.6.10.Final</hibernate.version>
 		<hsqldb.version>2.6.0</hsqldb.version>
-		<javaee-api.version>8.0.1</javaee-api.version>
-		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-		<javax.inject.version>1</javax.inject.version>
+		<jackson-datatype.version>2.13.3</jackson-datatype.version>
+		<jakartaee-api.version>9.1.0</jakartaee-api.version>
+		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
+		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
+		<jakarta.inject.version>2.0.1</jakarta.inject.version>
 		<junit.version>5.7.2</junit.version>
 		<log4j.version>2.17.2</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>5.3.22</org.springframework.version>
-		<org.springframework.data.version>2021.2.2</org.springframework.data.version>
+		<org.springframework.version>6.0.0-M5</org.springframework.version>
+		<org.springframework.data.version>2022.0.0-M5</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<spring-boot.version>2.7.1</spring-boot.version>
-		<spring-session.version>2.6.3</spring-session.version>
-		<spring-security.version>5.7.1</spring-security.version>
-		<tomcat.version>9.0.63</tomcat.version>
+		<slf4j-api.version>1.7.32</slf4j-api.version>
+		<spring-boot.version>3.0.0-M4</spring-boot.version>
+		<spring-data-bom.version>2022.0.0-M5</spring-data-bom.version>
+		<spring-session.version>3.0.0-M1</spring-session.version>
+		<spring-security.version>6.0.0-M5</spring-security.version>
+		<tomcat.version>10.0.23</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -531,9 +536,9 @@
 
 	<profiles>
 		<profile>
-			<id>jdk17</id>
+			<id>jdk18</id>
 			<properties>
-				<java.version>17</java.version>
+				<java.version>18</java.version>
 			</properties>
 		</profile>
 		<profile>
@@ -579,6 +584,31 @@
 					</snapshots>
 				</repository>
 			</repositories>
+		</profile>
+		<profile>
+			<id>spring-repo</id>
+			<repositories>
+				<repository>
+					<id>spring-milestone</id>
+					<name>Spring Milestone Repository</name>
+					<url>https://repo.spring.io/milestone</url>
+				</repository>
+				<repository>
+					<id>coherence-snapshots</id>
+					<name>Coherence Snapshots Repository</name>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>spring-milestone</id>
+					<name>Spring Milestone Repository</name>
+					<url>https://repo.spring.io/milestone</url>
+				</pluginRepository>
+			</pluginRepositories>
 		</profile>
 		<profile>
 			<id>versions</id>
