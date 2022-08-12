@@ -56,6 +56,7 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 				CacheConfig.of("server-coherence-cache-config.xml"),
 				LocalHost.only(),
 				SystemProperty.of("tangosol.pof.enabled", "true"),
+				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				IPv4Preferred.yes(),
 				DisplayName.of("server"));
 

@@ -6,7 +6,7 @@
  */
 package com.oracle.coherence.spring.configuration;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import com.oracle.coherence.common.base.Classes;
 import com.oracle.coherence.spring.CoherenceServer;

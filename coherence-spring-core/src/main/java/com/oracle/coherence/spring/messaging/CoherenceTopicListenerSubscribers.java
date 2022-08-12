@@ -22,8 +22,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PreDestroy;
-import javax.inject.Named;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Named;
 
 import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
 import com.oracle.coherence.spring.annotation.CommitStrategy;

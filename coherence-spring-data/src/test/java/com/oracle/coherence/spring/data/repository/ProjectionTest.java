@@ -9,7 +9,7 @@ package com.oracle.coherence.spring.data.repository;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.data.AbstractDataTest;

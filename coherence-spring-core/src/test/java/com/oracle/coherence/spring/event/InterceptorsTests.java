@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
