@@ -1,0 +1,11 @@
+coherence:
+  sessions:
+    client:
+      - name: default
+        config: "remote-cache-config.xml"
+spring:
+  datasource:
+    url: jdbc:hsqldb:hsql://localhost:9001/maindb
+    hikari:
+      username: sa
+      password: ""

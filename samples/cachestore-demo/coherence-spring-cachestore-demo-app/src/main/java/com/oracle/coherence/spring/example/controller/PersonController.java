@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,8 +8,10 @@ package com.oracle.coherence.spring.example.controller;
 
 import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
 import com.oracle.coherence.spring.example.model.Person;
+import com.oracle.coherence.spring.example.model.PersonRepository;
 import com.tangosol.net.NamedMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
  * Explicit controller API for People.
  *
  * @author Jonathan Knight 2021.08.17
+ * @author Gunnar Hillert
  */
 // # tag::code[]
 @RestController
@@ -36,6 +39,9 @@ public class PersonController {
 	 */
 	@CoherenceMap
 	private NamedMap<Long, Person> people;
+
+	@Autowired
+	private PersonRepository personRepository;
 
 	/**
 	 * Create a {@link Person} in the cache.
@@ -72,5 +78,12 @@ public class PersonController {
 		return person;
 	}
 
+	@GetMapping("/db/{personId}")
+	public Person getPersonFromDb(@PathVariable("personId") Long personId) {
+		Person person = this.personRepository.findById(personId).orElseThrow(() -> {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person " + personId + " does not exist");
+		});
+		return person;
+	}
 }
 // # end::code[]

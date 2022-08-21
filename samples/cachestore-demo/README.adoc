@@ -1,4 +1,19 @@
 = Coherence Spring JPA Repository CacheStore Demo
 
-Please see the Chapter **Cache Store** of the Coherence Spring reference documentation for detailed instructions.
+== Overview
+
+In this demo we show how to use the Coherence Spring Cache Store. The demo is split into multiple Maven modules in order
+to show-case `2` use-cases:
+
+* Embedded Coherence
+* Use a remote Coherence instance cache using
+  https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/introduction-coherenceextend.html[Coherence*Extend]
+
+The Maven Project is structured as follows:
+
+* *coherence-cachestore-demo-app* Main entry point for the demo using an embedded Coherence instance
+* *coherence-cachestore-demo-server* Remote Coherence server
+* *coherence-cachestore-demo-core* Used to share common code between the local app and the remote Coherence server version.
+
+For further information, the Chapter **Cache Store** of the Coherence Spring reference documentation for detailed instructions.
 

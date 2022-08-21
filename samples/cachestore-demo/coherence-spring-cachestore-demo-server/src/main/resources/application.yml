@@ -1,0 +1,28 @@
+debug: false
+server:
+  port: 8081
+logging:
+  level:
+    com.oracle.coherence: DEBUG
+coherence:
+  sessions:
+    server:
+      - name: default
+        config: "coherence-cache-config.xml"
+spring:
+  datasource:
+    url: jdbc:hsqldb:hsql://localhost:9001/maindb
+    hikari:
+      username: sa
+      password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+#      hibernate.dialect: HSQLDialect
+      hibernate.show_sql: false
+      hibernate.use_sql_comments: false
+      hibernate.format_sql: true
+    database-platform: org.hibernate.dialect.HSQLDialect
+

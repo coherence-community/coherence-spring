@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) 2022, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+  <caching-scheme-mapping>
+    <cache-mapping>
+      <cache-name>people</cache-name>
+      <scheme-name>db-scheme</scheme-name>
+      <init-params>
+        <init-param>
+          <param-name>repository-bean</param-name>
+          <param-value>personRepository</param-value>
+        </init-param>
+      </init-params>
+    </cache-mapping>
+  </caching-scheme-mapping>
+
+  <caching-schemes>
+    <distributed-scheme>
+      <scheme-name>db-scheme</scheme-name>
+      <service-name>StorageService</service-name>
+      <backing-map-scheme>
+        <read-write-backing-map-scheme>
+          <internal-cache-scheme>
+            <local-scheme/>
+          </internal-cache-scheme>
+          <cachestore-scheme>
+            <spring:bean>{repository-bean}</spring:bean>
+          </cachestore-scheme>
+        </read-write-backing-map-scheme>
+      </backing-map-scheme>
+      <autostart>true</autostart>
+    </distributed-scheme>
+
+    <proxy-scheme>
+         <service-name>ExtendTcpCacheService</service-name>
+         <autostart>true</autostart>
+    </proxy-scheme>
+  </caching-schemes>
+</cache-config>

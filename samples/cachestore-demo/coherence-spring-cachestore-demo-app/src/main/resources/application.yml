@@ -12,3 +12,4 @@ spring:
       hibernate.show_sql: false
       hibernate.use_sql_comments: false
       hibernate.format_sql: true
+    database-platform: org.hibernate.dialect.HSQLDialect

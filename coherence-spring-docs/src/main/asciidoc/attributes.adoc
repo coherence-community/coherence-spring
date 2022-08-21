@@ -33,8 +33,9 @@
 
 :sources-root-samples: {coherence-spring-code}tree/master/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
-:include-source-code-samples-cachestore: {sources-root-samples}cachestore-demo/src/main/java/com/oracle/coherence/spring/example/
-:include-source-code-samples-cachestore-resources: {sources-root-samples}cachestore-demo/src/main/resources/
+:include-source-code-samples-cachestore: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-core/src/main/java/com/oracle/coherence/spring/example/
+:include-source-code-samples-cachestore-app: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/java/com/oracle/coherence/spring/example/
+:include-source-code-samples-cachestore-resources: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/resources/
 
 :spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/
 :spring-api:  https://docs.spring.io/spring-framework/docs/current/javadoc-api/
