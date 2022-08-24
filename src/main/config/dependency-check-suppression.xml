@@ -74,4 +74,13 @@
         ]]></notes>
         <cve>CVE-2022-31514</cve>
     </suppress>
+
+    <!-- grpc - via Coherence -->
+    <suppress>
+        <notes><![CDATA[
+        file name: opentracing-grpc-0.2.3.jar
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.opentracing\.contrib/opentracing\-grpc@.*$</packageUrl>
+        <cpe>cpe:/a:grpc:grpc</cpe>
+    </suppress>
 </suppressions>
