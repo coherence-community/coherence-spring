@@ -12,7 +12,7 @@
 
 	<groupId>com.oracle.coherence.spring</groupId>
 	<artifactId>coherence-spring-parent</artifactId>
-	<version>3.3.1-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Project</name>
