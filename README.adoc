@@ -1,3 +1,4 @@
+:4x-version: 4.0.0-SNAPSHOT
 :snapshot-version: 3.3.1-SNAPSHOT
 :website: https://spring.coherence.community/
 :releaseVersion: 3.3.0
@@ -27,6 +28,7 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 |=======
 |*{releaseVersion}* | {website}{releaseVersion}[Website] |{website}{releaseVersion}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{releaseVersion}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{releaseVersion}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{releaseVersion}/refdocs/api/index.html[API Doc.]
 |*{snapshot-version}* | {website}{snapshot-version}[Website] |{website}{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{snapshot-version}/refdocs/api/index.html[API Doc.]
+|*{4x-version}* | {website}{4x-version}[Website] |{website}{4x-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{4x-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{4x-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{4x-version}/refdocs/api/index.html[API Doc.]
 |=======
 
 NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
