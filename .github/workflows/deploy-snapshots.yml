@@ -5,7 +5,7 @@
 # The "build" job only runs if the "CI Coherence Spring" action completed successfully.
 # The deployed artifacts will be built from the same commit that the "CI Coherence Spring" action used.
 #
-name: Deploy to Maven Central
+name: Deploy to Maven Central 4.0.x
 
 on:
   workflow_run:
