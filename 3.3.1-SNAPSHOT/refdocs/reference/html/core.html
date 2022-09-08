@@ -318,26 +318,14 @@ window.onload = function() {
 </li>
 <li><a href="#coherence-spring-cachestore">11. Cache Store</a>
 <ul class="sectlevel2">
-<li><a href="#coherence-spring-cachestore-sample">11.1. JPA Repository CacheStore Demo</a>
+<li><a href="#coherence-spring-cachestore-demo">11.1. JPA Repository CacheStore Demo</a>
 <ul class="sectlevel3">
-<li><a href="#coherence-spring-cachestore-sample-shared-code">11.1.1. Shared Code</a>
-<ul class="sectlevel4">
-<li><a href="#writing-a-jpa-repository-cachestore">11.1.1.1. Writing a JPA Repository CacheStore</a></li>
-</ul>
-</li>
-<li><a href="#embedded-coherence">11.1.2. Embedded Coherence</a>
-<ul class="sectlevel4">
-<li><a href="#configure-the-cachestore-in-coherence">11.1.2.1. Configure the CacheStore in Coherence</a></li>
-<li><a href="#running-the-embedded-sample">11.1.2.2. Running the Embedded Sample</a></li>
-</ul>
-</li>
-<li><a href="#using-the-cachestore-via-coherenceextend">11.1.3. Using the CacheStore via Coherence*Extend</a>
-<ul class="sectlevel4">
-<li><a href="#building">11.1.3.1. Building</a></li>
-<li><a href="#running-the-remote-sample">11.1.3.2. Running the Remote Sample</a></li>
-<li><a href="#inspecting-the-database">11.1.3.3. Inspecting the Database</a></li>
-</ul>
-</li>
+<li><a href="#coherence-spring-cachestore-demo-model">11.1.1. Data Model</a></li>
+<li><a href="#coherence-spring-cachestore-demo-jpa-repository">11.1.2. Writing a JPA Repository CacheStore</a></li>
+<li><a href="#coherence-spring-cachestore-demo-embedded">11.1.3. Embedded Coherence</a></li>
+<li><a href="#coherence-spring-cachestore-demo-running-embedded">11.1.4. Running the Embedded Sample</a></li>
+<li><a href="#coherence-spring-cachestore-demo-coherence-extend">11.1.5. Using Coherence*Extend</a></li>
+<li><a href="#coherence-spring-cachestore-demo-inspect-database">11.1.6. Inspecting the Database</a></li>
 </ul>
 </li>
 </ul>
@@ -3813,11 +3801,11 @@ Spring will do the rest.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>CacheLoader</code> - an application developer writes an implementation of a <code>CacheLoader</code> to read data from a database for
+<p><a href="https://coherence.community/22.06.1/api/java/com/tangosol/net/cache/CacheLoader.html">CacheLoader</a> - an application developer writes an implementation of a <code>CacheLoader</code> to read data from a database for
 a given key (or keys), convert it to entities that are then loaded into a cache for the given keys.</p>
 </li>
 <li>
-<p><code>CacheStore</code> - whilst a <code>CacheLoader</code> only loads from a database into a cache, a <code>CacheStore</code> (which extends
+<p><a href="https://coherence.community/22.06.1/api/java/com/tangosol/net/cache/CacheStore.html">CacheStore</a> - whilst a <code>CacheLoader</code> only loads from a database into a cache, a <code>CacheStore</code> (which extends
 <code>CacheLoader</code>) also stores cached entities back to the database, or for entries deleted from the cache, erases the
 corresponding values from the database. The parallels between a <code>CacheLoader</code> or <code>CacheStore</code> and a <code>JpaRepository</code>
 should be pretty obvious.</p>
@@ -3830,22 +3818,20 @@ should be pretty obvious.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>com.oracle.coherence.spring.cachestore.JpaRepositoryCacheLoader</code>, which extends both <code>JpaRepository</code> and <code>CacheLoader</code></p>
+<p><a href="https://spring.coherence.community/3.3.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/cachestore/JpaRepositoryCacheLoader.html">JpaRepositoryCacheLoader</a>, which extends both <code>JpaRepository</code> and <code>CacheLoader</code></p>
 </li>
 <li>
-<p><code>com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore</code>, which extends both <code>JpaRepository</code> and <code>CacheStore</code>.</p>
+<p><a href="https://spring.coherence.community/3.3.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/cachestore/JpaRepositoryCacheStore.html">JpaRepositoryCacheStore</a>, which extends both <code>JpaRepository</code> and <code>CacheStore</code>.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>To create a JPA repository cache loader or cache store, all a developer needs to do is extend the relevant interface
-<code>JpaRepositoryCacheLoader</code> or <code>JpaRepositoryCacheStore</code> with the correct generic parameters.</p>
-</div>
-<div class="paragraph">
-<p>We will illustrate the use of Cache Stores using the following example.</p>
+<code>JpaRepositoryCacheLoader</code> or <code>JpaRepositoryCacheStore</code> with the correct generic parameters. We will illustrate the use
+of Cache Stores using the following example.</p>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-cachestore-sample"><a class="anchor" href="#coherence-spring-cachestore-sample"></a>11.1. JPA Repository CacheStore Demo</h3>
+<h3 id="coherence-spring-cachestore-demo"><a class="anchor" href="#coherence-spring-cachestore-demo"></a>11.1. JPA Repository CacheStore Demo</h3>
 <div class="paragraph">
 <p>In this demo we are show-casing how to use Spring Data JPA repository beans as Coherence CacheStores in
 applications using the <a href="https://github.com/coherence-community/coherence-spring">Coherence Spring project</a>.</p>
@@ -3859,13 +3845,13 @@ applications using the <a href="https://github.com/coherence-community/coherence
 <p>Embedded Coherence</p>
 </li>
 <li>
-<p>Use a remote Coherence instance cache using
+<p>Connect to a remote Coherence instance cache using
 <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/introduction-coherenceextend.html">Coherence*Extend</a></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The Maven Project is structured as follows:</p>
+<p>The Maven Project is structured into the following modules:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3873,17 +3859,18 @@ applications using the <a href="https://github.com/coherence-community/coherence
 <p><strong>coherence-cachestore-demo-app</strong> Main entry point for the demo using an embedded Coherence instance</p>
 </li>
 <li>
-<p><strong>coherence-cachestore-demo-server</strong> Remote Coherence server</p>
+<p><strong>coherence-cachestore-demo-server</strong> Remote Coherence server we will connect to using Coherence*Extend</p>
 </li>
 <li>
-<p><strong>coherence-cachestore-demo-core</strong> Used to share common code between the local app and the remote Coherence server version.</p>
+<p><strong>coherence-cachestore-demo-core</strong> Contains common code shared between the local app and the remote Coherence server version</p>
 </li>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-sample-shared-code"><a class="anchor" href="#coherence-spring-cachestore-sample-shared-code"></a>11.1.1. Shared Code</h4>
+<h4 id="coherence-spring-cachestore-demo-model"><a class="anchor" href="#coherence-spring-cachestore-demo-model"></a>11.1.1. Data Model</h4>
 <div class="paragraph">
-<p>At its core, the sample has a simple class called <code>Person</code> annotated with JPA annotations:</p>
+<p>At its core (and in the <code>coherence-cachestore-demo-core</code> module), the application has a simple class called <code>Person</code> that
+is annotated with basic JPA annotations:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3948,13 +3935,14 @@ public class Person implements Serializable {
 </div>
 </div>
 <div class="paragraph">
-<p>The identifier of a <code>Person</code> is defined as a <code>Long</code> so in our Coherence application we would put these <code>Person</code>
+<p>The identifier of a <code>Person</code> is defined as <code>Long</code>, so in our Coherence-based application we would put these <code>Person</code>
 instances into a Coherence <code>NamedMap&lt;Long, Person&gt;</code>.</p>
 </div>
-<div class="sect4">
-<h5 id="writing-a-jpa-repository-cachestore"><a class="anchor" href="#writing-a-jpa-repository-cachestore"></a>11.1.1.1. Writing a JPA Repository CacheStore</h5>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-cachestore-demo-jpa-repository"><a class="anchor" href="#coherence-spring-cachestore-demo-jpa-repository"></a>11.1.2. Writing a JPA Repository CacheStore</h4>
 <div class="paragraph">
-<p>To write a JPA repository <code>CacheStore</code> that can be used by our people cache we just need to write a simple Spring Data
+<p>To write a JPA repository <code>CacheStore</code> that can be used by our people cache we need to create a simple Spring Data
 repository interface:</p>
 </div>
 <div class="listingblock">
@@ -3973,22 +3961,20 @@ public interface PersonRepository extends JpaRepositoryCacheStore&lt;Person, Lon
 actually generating the implementation of the interface, and supplying that implementation as a bean.</p>
 </div>
 </div>
-</div>
 <div class="sect3">
-<h4 id="embedded-coherence"><a class="anchor" href="#embedded-coherence"></a>11.1.2. Embedded Coherence</h4>
+<h4 id="coherence-spring-cachestore-demo-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-embedded"></a>11.1.3. Embedded Coherence</h4>
 <div class="paragraph">
-<p>In the embedded Coherence CacheStore demo we use an embedded Coherence instance and the Coherence instance will start
-as part of the application.</p>
-</div>
-<div class="sect4">
-<h5 id="configure-the-cachestore-in-coherence"><a class="anchor" href="#configure-the-cachestore-in-coherence"></a>11.1.2.1. Configure the CacheStore in Coherence</h5>
-<div class="paragraph">
-<p>To use a <code>CacheStore</code> in Coherence it needs to be configured in the Coherence cache configuration file.
-To use the repository bean as a <code>CacheStore</code> we will make use of the Coherence Spring feature that allows injection of
-Spring beans into the cache configuration file.</p>
+<p>In the embedded Coherence CacheStore demo we use a co-located Coherence instance that will start
+as part of the application itself.</p>
 </div>
 <div class="paragraph">
-<p>To use Spring bean injection in the configuration file we need to declare the custom namespace in the root XML element.</p>
+<p>To use a <code>CacheStore</code> in Coherence, it needs to be configured in the Coherence cache configuration file, which in the
+embedded use-case is <code>coherence-cache-config.xml</code>. In order to use the repository bean as a <code>CacheStore</code>, we will make
+use of the Coherence Spring feature that allows injection of Spring beans into the cache configuration file.</p>
+</div>
+<div class="paragraph">
+<p>To use Spring bean injection in the configuration file we need to declare a custom namespace in the root XML element that
+references the Coherence Spring <code>NamespaceHandler</code>.</p>
 </div>
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
@@ -4006,7 +3992,7 @@ The custom namespace handler allows us to use elements of the form <code>&lt;spr
 configuration that Coherence normally allows an <code>&lt;instance&gt;</code> element or a <code>&lt;class-scheme&gt;</code> element.</p>
 </div>
 <div class="paragraph">
-<p>We can add a scheme to the <code>&lt;cache-schemes&gt;</code> section of the configuration that uses the repository bean.</p>
+<p>Thus, we can add a scheme to the <code>&lt;cache-schemes&gt;</code> section of the configuration that uses the repository bean.</p>
 </div>
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
@@ -4034,10 +4020,8 @@ configuration that Coherence normally allows an <code>&lt;instance&gt;</code> el
 In this case we have not used the name of the repository bean directly, we have used a parameter named <code>repository-bean</code>
 (XML values in curly-brackets in the <code>&lt;spring:bean&gt;</code> element are treated as parameter macros). This allows us to map
 multiple caches to the same scheme each with a different cache store - this is quite a common approach in Coherence for
-a number of elements that may be configured in a scheme per-cache.</p>
-</div>
-<div class="paragraph">
-<p>We can also now add the cache mapping for our <code>people</code> cache that will use the scheme above.</p>
+a number of elements that may be configured in a scheme per-cache. We can now also add the cache mapping for our <code>people</code>
+cache that will use the scheme above.</p>
 </div>
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
@@ -4078,7 +4062,7 @@ bean name we could specify a name in the <code>@Repository</code> annotation on 
 <div class="paragraph">
 <p>If we had another cache with a different cache store, for example if we had an entity called <code>Location</code> with a repository
 cache store class called <code>LocationRepository</code>, the bean name would default to <code>locationRepository</code>, and we could add the
-following mapping.</p>
+following mapping:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4095,13 +4079,11 @@ following mapping.</p>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="running-the-embedded-sample"><a class="anchor" href="#running-the-embedded-sample"></a>11.1.2.2. Running the Embedded Sample</h5>
+<div class="sect3">
+<h4 id="coherence-spring-cachestore-demo-running-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-running-embedded"></a>11.1.4. Running the Embedded Sample</h4>
 <div class="paragraph">
-<p>This sample is just a simple Spring Boot application that exposes two endpoints to create/update people and get people by id.</p>
-</div>
-<div class="paragraph">
-<p>The controller class is very simple:</p>
+<p>This sample is just a simple Spring Boot application that exposes two endpoints to create/update people and get people by id.
+The controller class for the two endpoints is very simple:</p>
 </div>
 <div class="listingblock">
 <div class="title">PersonController.java</div>
@@ -4233,15 +4215,12 @@ Date: Thu, 19 Aug 2021 16:13:47 GMT
 </div>
 </div>
 </div>
-</div>
 <div class="sect3">
-<h4 id="using-the-cachestore-via-coherenceextend"><a class="anchor" href="#using-the-cachestore-via-coherenceextend"></a>11.1.3. Using the CacheStore via Coherence*Extend</h4>
+<h4 id="coherence-spring-cachestore-demo-coherence-extend"><a class="anchor" href="#coherence-spring-cachestore-demo-coherence-extend"></a>11.1.5. Using Coherence*Extend</h4>
 <div class="paragraph">
 <p>This is the slightly more complex version of the CacheStore demo. Instead of using an embedded version Coherence, we
-will have a remote Coherence instance. The actual application will connect to Coherence via Coherence*Extend.</p>
+will have a remote Coherence instance and the actual application will connect to Coherence via Coherence*Extend.</p>
 </div>
-<div class="sect4">
-<h5 id="building"><a class="anchor" href="#building"></a>11.1.3.1. Building</h5>
 <div class="paragraph">
 <p>We can build the example using Maven from the root directory of Coherence Spring:</p>
 </div>
@@ -4251,9 +4230,6 @@ will have a remote Coherence instance. The actual application will connect to Co
 ./mvnw clean install -pl :coherence-spring-cachestore-demo-app -am -DskipTests</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="running-the-remote-sample"><a class="anchor" href="#running-the-remote-sample"></a>11.1.3.2. Running the Remote Sample</h5>
 <div class="paragraph">
 <p>We now have to start the Coherence Server as well as the Coherence Client App. We run both apps using Spring Boot. Let&#8217;s
 start with the Coherence Server:</p>
@@ -4265,7 +4241,8 @@ start with the Coherence Server:</p>
 </div>
 <div class="paragraph">
 <p>Next we start the client app. It is actually the same app as used in the embedded Coherence use-case. However, we will
-specify an additional Spring Boot profile, instructing the app to connect to the Coherence server in client more via Coherence*Extend:</p>
+specify an additional Spring Boot profile, instructing the app to connect to the Coherence server in client mode via
+Coherence*Extend:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4273,14 +4250,18 @@ specify an additional Spring Boot profile, instructing the app to connect to the
 --Dspring.profiles.active=remote</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="inspecting-the-database"><a class="anchor" href="#inspecting-the-database"></a>11.1.3.3. Inspecting the Database</h5>
 <div class="paragraph">
-<p>In the remote Coherence CacheStore demo, HSQL will be instantiated via the server module. In oder to be able to inspect
-the data in the data more easily, we start HSQL in server mode. This allows you to inspect the database data via SQL tools
-such as the open-source <a href="https://dbeaver.io/">DBeaver</a>.</p>
+<p>By activating the <code>remote</code> Spring Boot profile, we will configure Coherence for client mode and we reference a different
+Cache Configuration XML file called <code>remote-cache-config.xml</code>.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="coherence-spring-cachestore-demo-inspect-database"><a class="anchor" href="#coherence-spring-cachestore-demo-inspect-database"></a>11.1.6. Inspecting the Database</h4>
+<div class="paragraph">
+<p>In the remote Coherence CacheStore demo, HSQL will be instantiated via the server module. This allow the app as well as
+the server to access the HSQL database instance. That way we can also inspect
+the data in the data more easily as we can inspect the database data via SQL tools
+such as the open-source <a href="https://dbeaver.io/">DBeaver</a>.</p>
 </div>
 </div>
 </div>
@@ -4289,7 +4270,7 @@ such as the open-source <a href="https://dbeaver.io/">DBeaver</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-08 05:58:26 UTC
+Last updated 2022-09-08 09:03:24 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
