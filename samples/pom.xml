@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>coherence-spring-parent</artifactId>
-		<version>3.3.1-SNAPSHOT</version>
+		<version>3.3.1</version>
 	</parent>
 
 	<artifactId>samples</artifactId>
