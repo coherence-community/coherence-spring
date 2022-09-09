@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Coherence Spring Cache</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body id="spring-cache" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Cache</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-cache-introduction">1. Introduction</a></li>
+<li><a href="#spring-cache-configuration">2. Configuring Coherence Cache for Spring</a></li>
+<li><a href="#spring-cache-locking">3. Coherence Caches and Locking</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Cache module. It explains how to use
+Coherence&#8217;s support for the Spring Framework&#8217;s <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Cache Abstraction</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-cache-introduction"><a class="anchor" href="#spring-cache-introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring provides its own cache abstraction, allowing you to add caching to
+Java methods. Coherence Spring provides an implementation of this abstraction for
+Oracle Coherence.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring&#8217;s Cache abstraction also supports <a href="https://jcp.org/en/jsr/detail?id=107">JSR-107</a> which is also supported by
+Oracle Coherence. As such you have another alternative for setting up caching.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you are using JPA/Hibernate you may also consider using the Coherence support for Hibernate&#8217;s second-level cache SPI,
+which is provided by the <a href="https://github.com/coherence-community/coherence-hibernate">Coherence Hibernate project</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-cache-configuration"><a class="anchor" href="#spring-cache-configuration"></a>2. Configuring Coherence Cache for Spring</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As a start, please familiarize yourself with Spring&#8217;s Cache Abstraction by reading the following resources:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache">Cache Abstraction chapter</a> in the core Spring Framework reference guide</p>
+</li>
+<li>
+<p>Spring Boot&#8217;s reference documentation&#8217;s <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching">support regarding caching</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Spring&#8217;s cache abstraction for Coherence will be automatically enabled as soon as you specify <code>@EnableCaching</code> in your
+applications configuration classes. In that case a <code>CoherenceCacheManager</code> bean implementation is registered as
+<code>CacheManager</code>. Of course, you can define your own <code>CacheManager</code> as well, but in that case auto-configuration will back-off.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The autoconfiguration logic is defined in class
+<a href="https://spring.coherence.community/3.3.0.1/refdocs/api/com/oracle/coherence/spring/configuration/EnableCoherenceImportBeanDefinitionRegistrar.html">EnableCoherenceImportBeanDefinitionRegistrar</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Defining your own CacheManager</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+@EnableCaching
+public class CacheConfiguration {
+    @Bean
+    public CacheManager cacheManager(Coherence coherence) {
+      return new CoherenceCacheManager(coherenceInstance);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd"&gt;
+
+  &lt;cache:annotation-driven/&gt;
+
+  &lt;bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager"&gt;
+    &lt;constructor-arg ref="coherenceInstance"/&gt;
+  &lt;/bean&gt;
+&lt;/beans&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When the <code>CacheManager</code> gets instantiated it is configured with default settings that then get applied for all underlying
+caches being created and used. Those settings are defined using the <code>CoherenceCacheConfiguration</code> object. If not specified
+as a second (optional) constructor argument to the <code>CoherenceCacheManager</code>, a default instance is created.</p>
+</div>
+<div class="paragraph">
+<p>Thus, you can customize certain cache properties when instantiating the <code>CoherenceCacheManager</code> by providing
+your own <code>CoherenceCacheConfiguration</code> instance as a second constructor argument. For example, you can set the
+<code>time-to-live</code> (ttl) property to specify that caches shall expire after a certain period.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By default, the underling <code>time-to-live</code> property for caches used for the Spring cache abstraction is <code>0</code>. This means
+that cache entries typically do not expire. <strong>However</strong>, you can also specify cache expiration settings via the
+<code>coherence-cache-config.xml</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. Defining a CacheManager with additional cache configuration</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+@EnableCaching
+public class CacheConfiguration {
+    @Bean
+    public CacheManager cacheManager(Coherence coherence) {
+        CoherenceCacheConfiguration cacheConfiguration =
+                    new CoherenceCacheConfiguration(Duration.ofMillis(1234));
+        return new CoherenceCacheManager(coherenceInstance, cacheConfiguration);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache https://www.springframework.org/schema/cache/spring-cache.xsd"&gt;
+
+  &lt;cache:annotation-driven/&gt;
+
+  &lt;bean id="cacheManager" class="com.oracle.coherence.spring.cache.CoherenceCacheManager"&gt;
+    &lt;constructor-arg ref="coherenceInstance"/&gt;
+    &lt;constructor-arg&gt;
+        &lt;bean class="com.oracle.coherence.spring.cache.CoherenceCacheConfiguration"&gt;
+            &lt;constructor-arg&gt;
+                &lt;bean class="java.time.Duration" factory-method="ofMillis"&gt;
+                    &lt;constructor-arg value="1234"/&gt;
+                &lt;/bean&gt;
+            &lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+    &lt;/constructor-arg&gt;
+  &lt;/bean&gt;
+&lt;/beans&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You don&#8217;t need to define a <code>CoherenceCacheManager</code> to configure the default configuration. You can also just define
+a <code>CoherenceCacheConfiguration</code> bean in your Spring application context. As long as there is only a single bean of that
+type defined, the default <code>CoherenceCacheManager</code> that is being implicitly created will use that bean.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Please consult the <a href="quickstart.html#quickstart">Quickstart chapter</a> to see an example using Spring&#8217;s cache abstraction support with
+Spring Boot. Coherence Spring also provides an example of using Spring Framework (without Spring Boot). The source code
+for the samples is part of the Coherence Spring projects:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/coherence-community/coherence-spring/tree/master/samples/coherence-spring-demo/coherence-spring-demo-classic">coherence-spring-demo-classic</a></p>
+</li>
+<li>
+<p><a href="https://github.com/coherence-community/coherence-spring/tree/master/samples/coherence-spring-demo/coherence-spring-demo-boot">coherence-spring-demo-boot</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re using Spring Boot, please continue reading the <a href="spring-boot.html#spring-boot-caching">Spring Boot specific chapter</a>
+on caching.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-cache-locking"><a class="anchor" href="#spring-cache-locking"></a>3. Coherence Caches and Locking</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Oracle Coherence supports the explicit concurrency control of cache entries using locks. The configuration class
+<code>CoherenceCacheConfiguration</code> provides 3 options to specify the relevant settings:</p>
+</div>
+<div class="paragraph">
+<p><strong>useLocks</strong></p>
+</div>
+<div class="paragraph">
+<p>This option lets you specify whether you want to use locks or not. This options defaults to <code>true</code>, meaning that locking is
+enabled by default.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When using caching via <em>Coherence*Extend</em> or <em>gRPC</em>, you should disable locking as it is not supported.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>lockTimeout</strong></p>
+</div>
+<div class="paragraph">
+<p>When locking cache entries, you can set a cache timeout. The specified value in milliseconds, instructs Coherence how
+long it shall try to acquire a lock for the cache entry. If a timeout occurs, Coherence Spring will throw an exception.
+A value of <code>-1</code> will cause Coherence to block indefinitely. Specifying <code>0</code> will cause Oracle Coherence not to wait at all.
+By default, the value is set to <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>lockEntireCache</strong></p>
+</div>
+<div class="paragraph">
+<p>While generally not recommended, the option exists to also lock they entire cache (not just the specific cache entry).
+This option defaults to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<p>For further information, please read the corresponding chapter
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/performing-transactions.html#GUID-4EAD6E6F-D074-4171-85AE-6F8198DDE33C">Using Explicit Locking for Data Concurrency</a>
+in the Oracle Coherence reference guide.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-09-09 11:59:53 -1000
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
