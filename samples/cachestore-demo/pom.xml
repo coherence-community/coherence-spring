@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>3.3.0</version>
+		<version>3.3.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>coherence-spring-cachestore-demo</artifactId>
