@@ -83,12 +83,25 @@
         <packageUrl regex="true">^pkg:maven/io\.opentracing\.contrib/opentracing\-grpc@.*$</packageUrl>
         <cpe>cpe:/a:grpc:grpc</cpe>
     </suppress>
-    
+
     <suppress>
         <notes><![CDATA[
    file name: snakeyaml-1.30.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
         <cve>CVE-2022-25857</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        Waiting for Jackson 2.14 to be released.
+        ]]></notes>
+        <cve>CVE-2022-42003</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Waiting for Jackson 2.14 to be released.
+        ]]></notes>
+        <cve>CVE-2022-42004</cve>
     </suppress>
 </suppressions>
