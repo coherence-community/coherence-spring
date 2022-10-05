@@ -155,13 +155,13 @@
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<javax.inject.version>1</javax.inject.version>
 		<junit.version>5.7.2</junit.version>
-		<log4j.version>2.18.0</log4j.version>
+		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>5.3.22</org.springframework.version>
-		<org.springframework.data.version>2021.2.2</org.springframework.data.version>
+		<org.springframework.version>5.3.23</org.springframework.version>
+		<org.springframework.data.version>2021.2.3</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<spring-boot.version>2.7.1</spring-boot.version>
+		<spring-boot.version>2.7.4</spring-boot.version>
 		<spring-session.version>2.6.3</spring-session.version>
 		<spring-security.version>5.7.1</spring-security.version>
 		<tomcat.version>9.0.63</tomcat.version>
