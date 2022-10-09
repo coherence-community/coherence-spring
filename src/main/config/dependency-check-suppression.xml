@@ -104,4 +104,8 @@
         ]]></notes>
         <cve>CVE-2022-42004</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[Test and sample dependency. Waiting for release hsqldb 2.7.1]]></notes>
+        <cve>CVE-2022-41853</cve>
+    </suppress>
 </suppressions>
