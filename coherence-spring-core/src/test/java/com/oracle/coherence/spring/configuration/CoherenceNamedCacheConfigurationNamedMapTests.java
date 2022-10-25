@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.configuration;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -76,20 +77,32 @@ class CoherenceNamedCacheConfigurationNamedMapTests {
 	}
 
 	@Test
-	void shouldInjectCachesFromDifferentSessions() {
+	void shouldInjectCachesFromDifferentSessions() throws ExecutionException, InterruptedException {
 		DifferentSessionBean bean = this.ctx.getBean(DifferentSessionBean.class);
 
 		assertThat(bean.getDefaultCcfNumbers(), is(notNullValue()));
 		assertThat(bean.getDefaultCcfNumbers().getName(), is("numbers"));
 		assertThat(bean.getDefaultCcfAsyncNumbers(), is(notNullValue()));
 		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedMap().getName(), is("numbers"));
-		assertThat(bean.getDefaultCcfAsyncNumbers().getNamedMap(), is(bean.getDefaultCcfNumbers()));
+
+		bean.getDefaultCcfAsyncNumbers().getNamedMap().put("foo", "bar");
+
+		assertThat(bean.getDefaultCcfAsyncNumbers().size().get(), is(1));
+		assertThat(bean.getDefaultCcfNumbers().size(), is(1));
+		assertThat(bean.getDefaultCcfAsyncNumbers().get("foo").get(), is("bar"));
+		assertThat(bean.getDefaultCcfNumbers().get("foo"), is("bar"));
 
 		assertThat(bean.getSpecificCcfNumbers(), is(notNullValue()));
 		assertThat(bean.getSpecificCcfNumbers().getName(), is("numbers"));
+
+		bean.getSpecificCcfNumbers().put("foo", 1234);
 		assertThat(bean.getSpecificCcfAsyncNumbers(), is(notNullValue()));
-		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedMap().getName(), is("numbers"));
-		assertThat(bean.getSpecificCcfAsyncNumbers().getNamedMap(), is(bean.getSpecificCcfNumbers()));
+
+		assertThat(bean.getSpecificCcfAsyncNumbers().size().get(), is(1));
+		assertThat(bean.getSpecificCcfNumbers().size(), is(1));
+
+		assertThat(bean.getSpecificCcfAsyncNumbers().get("foo").get(), is(1234));
+		assertThat(bean.getSpecificCcfNumbers().get("foo"), is(1234));
 
 		assertThat(bean.getDefaultCcfNumbers(), is(not(bean.getSpecificCcfNumbers())));
 	}

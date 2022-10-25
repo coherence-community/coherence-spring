@@ -58,6 +58,7 @@ public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractC
 				LocalHost.only(),
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.grpc.enabled", true),
+				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				DisplayName.of("server"));
 
 		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> isGrpcPortInUse());

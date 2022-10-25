@@ -317,7 +317,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithDefaultStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyDefault");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService());
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -333,7 +333,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithSyncStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentySync");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService());
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -349,7 +349,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithAsyncStrategy() {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyAsync");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService());
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -365,7 +365,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithManualStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyManual");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService());
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
