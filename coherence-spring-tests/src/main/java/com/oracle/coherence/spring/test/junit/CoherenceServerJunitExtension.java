@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -59,6 +59,8 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		System.setProperty("coherence.log", "slf4j");
+		System.setProperty("coherence.log.level", "6");
+		System.setProperty("coherence.grpc.server.port", "1408");
 		if (logger.isInfoEnabled()) {
 			logger.info("JunitExtension - Starting up Coherence...");
 		}
