@@ -43,6 +43,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>2.7.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

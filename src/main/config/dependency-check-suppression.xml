@@ -3,53 +3,11 @@
 
     <suppress>
         <notes><![CDATA[
-   file name: spring-security-crypto-5.7.2.jar
-   ]]></notes>
+        see https://github.com/jeremylong/DependencyCheck/issues/4528
+        file name: spring-security-crypto-5.7.4.jar
+        ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <vulnerabilityName>CVE-2020-5408</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.63.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
-        <cve>CVE-2022-34305</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.63.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-jasper@.*$</packageUrl>
-        <cve>CVE-2022-34305</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.63.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
-        <cve>CVE-2022-34305</cve>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-   file name: log4j-api-2.17.2.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-api@.*$</packageUrl>
-        <cve>CVE-2022-33915</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: log4j-core-2.17.1.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-core@.*$</packageUrl>
-        <cve>CVE-2022-33915</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: log4j-jul-2.17.1.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-jul@.*$</packageUrl>
-        <cve>CVE-2022-33915</cve>
     </suppress>
 
     <!-- See https://github.com/spring-projects/spring-framework/issues/24434 -->
@@ -70,28 +28,15 @@
 
     <suppress>
         <notes><![CDATA[
-   file name: snakeyaml-1.30.jar
-   ]]></notes>
+        False positive:
+          - https://bitbucket.org/snakeyaml/snakeyaml/issues/548/nist-nvd-entry-cve-2022-38752
+          - https://github.com/jeremylong/DependencyCheck/issues/4990
+        file name: snakeyaml-1.30.jar
+        ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2022-25857</cve>
+        <cve>CVE-2022-38752</cve>
     </suppress>
 
-    <suppress>
-        <notes><![CDATA[
-        Waiting for Jackson 2.14 to be released.
-        ]]></notes>
-        <cve>CVE-2022-42003</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-        Waiting for Jackson 2.14 to be released.
-        ]]></notes>
-        <cve>CVE-2022-42004</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[Test and sample dependency. Waiting for release hsqldb 2.7.1]]></notes>
-        <cve>CVE-2022-41853</cve>
-    </suppress>
     <suppress>
         <notes><![CDATA[protobuf-java-3.21.3.jar via Coherence gRPC]]></notes>
         <cve>CVE-2022-3171</cve>
