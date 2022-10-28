@@ -12,11 +12,11 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>spring-session-demo-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>spring-session-demo-app</artifactId>
-	<version>3.3.2</version>
+	<version>3.3.3-SNAPSHOT</version>
 
 	<name>Spring Session Demo - App</name>
 	<description>Demo project for Spring Session</description>
@@ -55,12 +55,12 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>3.3.2</version>
+			<version>3.3.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-session</artifactId>
-			<version>3.3.2</version>
+			<version>3.3.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.ce</groupId>
