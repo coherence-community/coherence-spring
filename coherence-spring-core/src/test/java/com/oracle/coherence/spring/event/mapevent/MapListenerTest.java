@@ -4,29 +4,22 @@
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
-package com.oracle.coherence.spring.event;
+package com.oracle.coherence.spring.event.mapevent;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import com.oracle.bedrock.testsupport.deferred.Eventually;
-import com.oracle.coherence.spring.annotation.MapEventTransformerBinding;
-import com.oracle.coherence.spring.annotation.MapEventTransformerFactory;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
+import com.oracle.coherence.spring.event.EventsHelper;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
-import com.tangosol.util.InvocableMap;
 import com.tangosol.util.MapEvent;
-import com.tangosol.util.MapEventTransformer;
 import data.Person;
 import data.PhoneNumber;
 import org.apache.commons.logging.Log;
@@ -80,8 +73,8 @@ class MapListenerTest {
 		people.put("lisa", new Person("Lisa", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));
 		people.put("maggie", new Person("Maggie", "Simpson", LocalDate.now(), new PhoneNumber(1, "555-123-9999")));
 
-		people.invoke("homer", new Uppercase());
-		people.invoke("bart", new Uppercase());
+		people.invoke("homer", new UppercaseEntryProcessor());
+		people.invoke("bart", new UppercaseEntryProcessor());
 
 		people.remove("bart");
 		people.remove("marge");
@@ -122,57 +115,6 @@ class MapListenerTest {
 		assertThat(transformedEvents.get(2).getNewValue(), is("BART"));
 		assertThat(transformedEvents.get(3).getNewValue(), is("LISA"));
 		assertThat(transformedEvents.get(4).getNewValue(), is("MAGGIE"));
-	}
-
-	// ---- helper classes --------------------------------------------------
-
-	public static class Uppercase
-			implements InvocableMap.EntryProcessor<String, Person, Object> {
-		@Override
-		public Object process(InvocableMap.Entry<String, Person> entry) {
-			Person p = entry.getValue();
-			p.setLastName(p.getLastName().toUpperCase());
-			entry.setValue(p);
-			return null;
-		}
-	}
-
-	@Inherited
-	@MapEventTransformerBinding
-	@Documented
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface UppercaseName {
-	}
-
-
-	@UppercaseName
-	public static class UppercaseTransformerFactory implements MapEventTransformerFactory<UppercaseName, String, Person, String> {
-		@Override
-		public MapEventTransformer<String, Person, String> create(UppercaseName annotation) {
-			return new UppercaseNameTransformer();
-		}
-	}
-
-	/**
-	 * A custom implementation of a {@link MapEventTransformer}.
-	 */
-	static class UppercaseNameTransformer implements MapEventTransformer<String, Person, String> {
-
-		@Override
-		@SuppressWarnings("unchecked")
-		public MapEvent<String, String> transform(MapEvent<String, Person> event) {
-			String sOldName = transform(event.getOldValue());
-			String sNewName = transform(event.getNewValue());
-			return new MapEvent<String, String>(event.getMap(), event.getId(), event.getKey(), sOldName, sNewName);
-		}
-
-		String transform(Person person) {
-			if (person == null) {
-				return null;
-			}
-			String name = person.getFirstName();
-			return (name != null) ? name.toUpperCase() : null;
-		}
 	}
 
 	@Configuration
