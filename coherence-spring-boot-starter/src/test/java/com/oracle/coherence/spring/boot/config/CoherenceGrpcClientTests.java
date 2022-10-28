@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -11,7 +11,7 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,8 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Gunnar Hillert
  *
  */
-@ExtendWith(CoherenceServerJunitExtension.class)
 public class CoherenceGrpcClientTests {
+
+	@RegisterExtension
+	static CoherenceServerJunitExtension coherenceServerJunitExtension =
+			new CoherenceServerJunitExtension(true);
 
 	final Coherence coherence;
 

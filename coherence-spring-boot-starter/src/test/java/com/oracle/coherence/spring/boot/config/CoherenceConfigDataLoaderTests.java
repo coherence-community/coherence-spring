@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -11,7 +11,7 @@ import java.util.Map;
 import com.oracle.coherence.spring.test.junit.CoherenceServerJunitExtension;
 import com.tangosol.net.Coherence;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Gunnar Hillert
  *
  */
-@ExtendWith(CoherenceServerJunitExtension.class)
 @SpringBootTest(classes = {
 		CoherenceConfigDataLoaderTests.DataLoaderConfig.class,
 		CoherenceConfigClientProperties.class
@@ -35,6 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("custom")
 @DirtiesContext
 public class CoherenceConfigDataLoaderTests {
+
+	@RegisterExtension
+	static CoherenceServerJunitExtension coherenceServerJunitExtension =
+			new CoherenceServerJunitExtension(true);
 
 	@Autowired
 	Environment env;

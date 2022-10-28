@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Gunnar Hillert
  */
 @SpringJUnitConfig(GrpcSessionBeanTests.Config.class)
-@ExtendWith(CoherenceServerJunitExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext
 public class GrpcSessionBeanTests {
+
+	@RegisterExtension
+	static CoherenceServerJunitExtension coherenceServerJunitExtension =
+			new CoherenceServerJunitExtension(true);
 
 	final Coherence coherence;
 

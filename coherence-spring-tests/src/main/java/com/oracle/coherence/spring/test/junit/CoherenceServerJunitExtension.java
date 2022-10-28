@@ -34,15 +34,22 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 	protected static final Log logger = LogFactory.getLog(CoherenceServerJunitExtension.class);
 
 	private final String configUri;
+	private final boolean grpcEnabled;
 
 	private Coherence coherence;
 
-	public CoherenceServerJunitExtension() {
+	public CoherenceServerJunitExtension(boolean grpcEnabled) {
 		this.configUri = "coherence-cache-config.xml";
+		this.grpcEnabled = grpcEnabled;
+	}
+
+	public CoherenceServerJunitExtension() {
+		this(false);
 	}
 
 	public CoherenceServerJunitExtension(String configUri) {
 		this.configUri = configUri;
+		this.grpcEnabled = false;
 	}
 
 	@Override
@@ -51,6 +58,7 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 		this.coherence.whenClosed().join();
 
 		System.clearProperty("coherence.log");
+		System.clearProperty("coherence.grpc.enabled");
 		System.clearProperty("coherence.grpc.server.port");
 
 		if (logger.isInfoEnabled()) {
@@ -61,6 +69,7 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		System.setProperty("coherence.log", "slf4j");
+		System.setProperty("coherence.grpc.enabled", String.valueOf(this.grpcEnabled));
 		System.setProperty("coherence.grpc.server.port", "1408");
 
 		if (logger.isInfoEnabled()) {
