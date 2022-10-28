@@ -28,7 +28,8 @@ title="Maven"
 &lt;/dependencies&gt;</markup>
 
 <div class="admonition note">
-<p class="admonition-inline">Instead of Coherence CE you can also specify the commercial version of Coherence.</p>
+<p class="admonition-inline">Instead of Coherence CE you can also specify the commercial version of Coherence. The minimum supported commercial
+version is Oracle Coherence <code>14.1.1.2206</code> Feature Pack.</p>
 </div>
 <p>This will be enough to start up a default instance of Coherence with default settings. E.g., inject Coherence beans into
 your Spring Controllers, Services and other components:</p>
