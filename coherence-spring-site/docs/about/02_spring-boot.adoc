@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2022, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -35,7 +35,8 @@ Add the Coherence Spring Boot Starter to your generated app's `pom.xml`:
 </dependencies>
 ----
 
-NOTE: Instead of Coherence CE you can also specify the commercial version of Coherence.
+NOTE: Instead of Coherence CE you can also specify the commercial version of Coherence. The minimum supported commercial
+version is Oracle Coherence `14.1.1.2206` Feature Pack.
 
 This will be enough to start up a default instance of Coherence with default settings. E.g., inject Coherence beans into
 your Spring Controllers, Services and other components:
