@@ -45,12 +45,14 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 		this.configUri = configUri;
 	}
 
-
 	@Override
 	public void afterAll(ExtensionContext context) {
-		this.coherence.getCluster().shutdown();
-		this.coherence.close();
+		Coherence.closeAll();
+		this.coherence.whenClosed().join();
+
 		System.clearProperty("coherence.log");
+		System.clearProperty("coherence.grpc.server.port");
+
 		if (logger.isInfoEnabled()) {
 			logger.info("Shutting down Coherence complete.");
 		}
@@ -59,11 +61,12 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		System.setProperty("coherence.log", "slf4j");
-		System.setProperty("coherence.log.level", "6");
 		System.setProperty("coherence.grpc.server.port", "1408");
+
 		if (logger.isInfoEnabled()) {
 			logger.info("JunitExtension - Starting up Coherence...");
 		}
+
 		final SessionConfiguration.Builder sessionConfigurationBuilder = (SessionConfiguration.Builder) getFromTestClassloader(SessionConfiguration.class)
 				.getMethod("builder")
 				.invoke(null);
