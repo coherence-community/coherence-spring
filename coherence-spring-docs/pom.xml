@@ -52,14 +52,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-java-client</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
@@ -140,7 +140,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-micrometer</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>

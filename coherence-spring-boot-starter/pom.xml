@@ -40,7 +40,7 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
@@ -62,7 +62,7 @@
 			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-java-client</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
@@ -80,7 +80,7 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-grpc-proxy</artifactId>
 			<version>${coherence.version}</version>
 			<scope>test</scope>
@@ -163,7 +163,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-micrometer</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>

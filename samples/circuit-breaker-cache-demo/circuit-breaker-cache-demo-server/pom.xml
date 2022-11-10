@@ -40,7 +40,7 @@
 			<version>3.3.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence</artifactId>
 			<version>${coherence.version}</version>
 		</dependency>
