@@ -3,18 +3,21 @@
 
 name: CI Coherence Spring
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 5 * * *"
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - '[1-9]+.[0-9]+.x'
   pull_request:
+    branches:
+      - master
+      - '[1-9]+.[0-9]+.x'
     types:
       - opened
       - synchronized
       - committed
-    branches:
-      - '*'
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
 jobs:
   build:
     if: github.repository_owner == 'coherence-community'
@@ -30,7 +33,7 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java-version }}
       - name: Cache SonarCloud packages
-        if: "matrix.java-version == 11"
+        if: "matrix.java-version == 17"
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
@@ -44,11 +47,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven2-
       - name: Build and test with Maven + Sonar
-        if: "github.event_name != 'pull_request' && matrix.java-version == 11"
+        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -B -Pspring -Powasp -Pcoverage --settings .mvn/settings.xml
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -Pspring-repo -Pcoverage --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
