@@ -41,4 +41,18 @@
         <notes><![CDATA[protobuf-java-3.21.3.jar via Coherence gRPC]]></notes>
         <cve>CVE-2022-3171</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: protobuf-java-3.21.3.jar
+   ]]></notes>
+        <cve>CVE-2022-3509</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: snakeyaml-1.33.jar
+   ]]></notes>
+        <cve>CVE-2022-41854</cve>
+    </suppress>
 </suppressions>

@@ -1,0 +1,17 @@
+name: Schedule Nightly Builds
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [4.0.x]
+    steps:
+      - uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: CI Coherence Spring
+          ref: ${{ matrix.branch }}
