@@ -9,7 +9,7 @@ name: Deploy to Maven Central 4.0.x
 
 on:
   workflow_run:
-    workflows: ["CI Coherence Spring"]
+    workflows: [CI Coherence Spring]
     branches:
       - master
       - '[1-9]+.[0-9]+.x'
@@ -50,7 +50,7 @@ jobs:
         git config --global user.email "github-action@users.noreply.github.com"
         git config --global user.name "GitHub Action"
         ./mvnw clean install -B -Pspring,spring-repo -Powasp --settings .mvn/settings.xml
-        ./mvnw deploy -B -Pspring,spring-repo -Powasp --settings .mvn/settings.xml
+        ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
     - name: Clean Maven cache
       run: |
         find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr

@@ -624,7 +624,9 @@
 		<profile>
 			<id>spring-repo</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!skipSpringRepo</name>
+				</property>
 			</activation>
 			<repositories>
 				<repository>
