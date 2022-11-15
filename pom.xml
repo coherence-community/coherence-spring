@@ -153,7 +153,7 @@
 		<hibernate.version>5.6.10.Final</hibernate.version>
 		<hsqldb.version>2.7.1</hsqldb.version>
 		<jackson-datatype.version>2.14.0</jackson-datatype.version>
-		<jakartaee-api.version>9.1.0</jakartaee-api.version>
+		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
@@ -165,12 +165,12 @@
 		<org.springframework.data.version>2022.0.0-RC2</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<slf4j-api.version>1.7.32</slf4j-api.version>
+		<slf4j-api.version>2.0.3</slf4j-api.version>
 		<spring-boot.version>3.0.0-RC2</spring-boot.version>
 		<spring-data-bom.version>2022.0.0-RC2</spring-data-bom.version>
 		<spring-session.version>3.0.0-RC2</spring-session.version>
 		<spring-security.version>6.0.0-M5</spring-security.version>
-		<tomcat.version>10.0.27</tomcat.version>
+		<tomcat.version>10.1.1</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -623,6 +623,9 @@
 		</profile>
 		<profile>
 			<id>spring-repo</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<repositories>
 				<repository>
 					<id>spring-milestone</id>
