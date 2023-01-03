@@ -69,4 +69,17 @@
        ]]></notes>
         <cve>CVE-2022-45047</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+       file name: netty-transport-4.1.85.Final.jar
+       ]]></notes>
+        <cve>CVE-2022-41881</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+       file name: protobuf-java-3.21.3.jar
+       ]]></notes>
+        <cve>CVE-2022-3510</cve>
+    </suppress>
 </suppressions>
