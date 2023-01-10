@@ -8,22 +8,6 @@
 
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
 
-    <suppress>
-        <notes><![CDATA[
-        see https://github.com/jeremylong/DependencyCheck/issues/4528
-        file name: spring-security-crypto-5.7.4.jar
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
-        <vulnerabilityName>CVE-2020-5408</vulnerabilityName>
-    </suppress>
-
-    <!-- See https://github.com/spring-projects/spring-framework/issues/24434 -->
-    <suppress>
-        <notes><![CDATA[Ignored since we are not vulnerable]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-
     <!-- grpc - via Coherence -->
     <suppress>
         <notes><![CDATA[
@@ -31,17 +15,6 @@
         ]]></notes>
         <packageUrl regex="true">^pkg:maven/io\.opentracing\.contrib/opentracing\-grpc@.*$</packageUrl>
         <cpe>cpe:/a:grpc:grpc</cpe>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        False positive:
-          - https://bitbucket.org/snakeyaml/snakeyaml/issues/548/nist-nvd-entry-cve-2022-38752
-          - https://github.com/jeremylong/DependencyCheck/issues/4990
-        file name: snakeyaml-1.30.jar
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2022-38752</cve>
     </suppress>
 
     <suppress>
@@ -61,6 +34,12 @@
        file name: snakeyaml-1.33.jar
        ]]></notes>
         <cve>CVE-2022-1471</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+       file name: snakeyaml-1.33.jar
+       ]]></notes>
+        <cve>CVE-2022-3064</cve>
     </suppress>
 
     <suppress>

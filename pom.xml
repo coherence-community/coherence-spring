@@ -117,7 +117,7 @@
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<dependency-check-maven.version>7.3.0</dependency-check-maven.version>
+		<dependency-check-maven.version>7.4.4</dependency-check-maven.version>
 		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
@@ -137,14 +137,14 @@
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
-		<checkstyle.version>8.45.1</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.29</spring-javaformat-checkstyle.version>
+		<checkstyle.version>10.6.0</checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.35</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.5.1</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.20.2</assertj.version>
-		<awaitility.version>4.1.0</awaitility.version>
+		<assertj.version>3.24.1</assertj.version>
+		<awaitility.version>4.2.0</awaitility.version>
 		<bedrock.version>6.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>22.09</coherence.version>
@@ -152,16 +152,16 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>5.6.10.Final</hibernate.version>
 		<hsqldb.version>2.7.1</hsqldb.version>
-		<jackson-datatype.version>2.14.0</jackson-datatype.version>
+		<jackson-datatype.version>2.14.1</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jakarta.inject.version>2.0.1</jakarta.inject.version>
-		<junit.version>5.7.2</junit.version>
+		<junit.version>5.9.1</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>6.0.0</org.springframework.version>
+		<org.springframework.version>6.0.2</org.springframework.version>
 		<org.springframework.data.version>2022.0.0</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
@@ -169,8 +169,8 @@
 		<spring-boot.version>3.0.0</spring-boot.version>
 		<spring-data-bom.version>2022.0.0</spring-data-bom.version>
 		<spring-session.version>3.0.0</spring-session.version>
-		<spring-security.version>6.0.0</spring-security.version>
-		<tomcat.version>10.1.1</tomcat.version>
+		<spring-security.version>6.0.1</spring-security.version>
+		<tomcat.version>10.1.4</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -262,11 +262,6 @@
 				<groupId>org.apache.tomcat.embed</groupId>
 				<artifactId>tomcat-embed-websocket</artifactId>
 				<version>${tomcat.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.yaml</groupId>
-				<artifactId>snakeyaml</artifactId>
-				<version>1.33</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
