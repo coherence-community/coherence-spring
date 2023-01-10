@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,14 +8,13 @@ package com.oracle.coherence.spring.configuration;
 
 import java.util.Arrays;
 
-import jakarta.inject.Inject;
-
 import com.oracle.coherence.spring.annotation.ChainedExtractor;
 import com.oracle.coherence.spring.annotation.ExtractorFactory;
 import com.oracle.coherence.spring.annotation.PofExtractor;
 import com.oracle.coherence.spring.annotation.PropertyExtractor;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.ValueExtractor;
+import jakarta.inject.Inject;
 
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.config.BeanDefinition;

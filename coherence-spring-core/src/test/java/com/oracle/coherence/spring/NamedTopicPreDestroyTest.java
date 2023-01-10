@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,9 +8,6 @@ package com.oracle.coherence.spring;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
-
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
@@ -18,6 +15,8 @@ import com.oracle.coherence.spring.configuration.session.SessionType;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.topic.Publisher;
 import com.tangosol.net.topic.Subscriber;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

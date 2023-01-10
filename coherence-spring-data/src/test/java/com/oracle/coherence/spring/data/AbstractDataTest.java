@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -14,13 +14,12 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.Resource;
-
 import com.oracle.coherence.spring.data.model.Address;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.net.NamedMap;
 import com.tangosol.util.UUID;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.BeforeEach;
 
 /**

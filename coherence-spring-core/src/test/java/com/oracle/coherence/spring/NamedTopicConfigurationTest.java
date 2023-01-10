@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -10,9 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.PropertyExtractor;
@@ -27,6 +24,8 @@ import com.tangosol.net.topic.Publisher;
 import com.tangosol.net.topic.Subscriber;
 import data.Person;
 import data.PhoneNumber;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

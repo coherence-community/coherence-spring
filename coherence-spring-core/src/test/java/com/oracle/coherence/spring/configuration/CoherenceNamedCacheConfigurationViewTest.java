@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -10,9 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.annotation.Resource;
-import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.AlwaysFilter;
 import com.oracle.coherence.spring.annotation.ChainedExtractor;
@@ -36,6 +33,8 @@ import com.tangosol.util.ObservableMap;
 import com.tangosol.util.QueryMap;
 import data.Person;
 import data.PhoneNumber;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;

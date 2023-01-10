@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -14,8 +14,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.ChainedExtractor;
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
@@ -34,6 +32,7 @@ import com.tangosol.util.MapIndex;
 import com.tangosol.util.ValueExtractor;
 import data.Person;
 import data.PhoneNumber;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

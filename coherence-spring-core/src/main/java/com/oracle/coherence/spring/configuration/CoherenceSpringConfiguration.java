@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.configuration;
-
-import jakarta.annotation.PostConstruct;
 
 import com.oracle.coherence.common.base.Classes;
 import com.oracle.coherence.spring.CoherenceServer;
@@ -24,6 +22,7 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.OperationalContext;
 import com.tangosol.net.Session;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

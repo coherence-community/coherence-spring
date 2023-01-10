@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,8 +12,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
-import jakarta.inject.Inject;
-
 import com.oracle.coherence.spring.annotation.AlwaysFilter;
 import com.oracle.coherence.spring.annotation.FilterBinding;
 import com.oracle.coherence.spring.annotation.FilterFactory;
@@ -22,6 +20,7 @@ import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.tangosol.util.Filter;
 import com.tangosol.util.QueryHelper;
 import com.tangosol.util.filter.AllFilter;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;

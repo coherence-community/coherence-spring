@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.PostConstruct;
-
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionType;
@@ -23,6 +21,7 @@ import com.oracle.coherence.spring.event.CoherenceEventListenerCandidates;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.CoherenceConfiguration;
 import com.tangosol.net.SessionConfiguration;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
