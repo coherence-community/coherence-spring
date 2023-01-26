@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2023, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -165,7 +165,7 @@
 		<spring-boot.version>2.7.5</spring-boot.version>
 		<spring-session.version>2.6.3</spring-session.version>
 		<spring-security.version>5.7.5</spring-security.version>
-		<tomcat.version>9.0.68</tomcat.version>
+		<tomcat.version>9.0.71</tomcat.version>
 	</properties>
 
 	<distributionManagement>
