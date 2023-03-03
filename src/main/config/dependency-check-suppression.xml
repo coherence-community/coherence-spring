@@ -61,4 +61,10 @@
        ]]></notes>
         <cve>CVE-2022-3510</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+       file name: jackson-core-2.14.2.jar
+       ]]></notes>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
 </suppressions>
