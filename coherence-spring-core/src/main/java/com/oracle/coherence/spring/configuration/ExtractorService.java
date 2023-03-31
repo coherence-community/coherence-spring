@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,21 +8,23 @@ package com.oracle.coherence.spring.configuration;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
 import com.oracle.coherence.spring.annotation.ExtractorFactory;
 import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtils;
+import com.oracle.coherence.spring.configuration.support.CommonExtractorFactories;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.ValueExtractor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Service that supports the {@link ExtractorConfiguration}.
@@ -32,10 +34,41 @@ import org.springframework.util.StringUtils;
  */
 public class ExtractorService {
 
-	final ConfigurableApplicationContext applicationContext;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExtractorService.class);
+
+	private final ConfigurableApplicationContext applicationContext;
+
+	private final Map<String, ExtractorFactory> extractorFactories;
 
 	public ExtractorService(ConfigurableApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+		this.extractorFactories = CommonExtractorFactories.getExtractorFactories();
+	}
+
+	private ValueExtractor getExtractorFromApplicationContext(Annotation coherenceAnnotation) {
+		Assert.notNull(coherenceAnnotation, "coherenceAnnotation must not be null.");
+
+		final Class extractorFactoryClass = ExtractorFactory.class;
+		final String[] beanNames = this.applicationContext.getBeanNamesForType(ExtractorFactory.class);
+		LOGGER.debug("Found {} beans in the application context for bean type {}", beanNames.length, extractorFactoryClass.getName());
+
+		final Collection<ExtractorFactory> beans = CoherenceAnnotationUtils.getBeansOfTypeWithAnnotation(
+				this.applicationContext,
+				extractorFactoryClass,
+				coherenceAnnotation.annotationType());
+
+		final List<ValueExtractor> foundExtractors = beans.stream()
+				.map((extractorFactory) -> extractorFactory.create(coherenceAnnotation))
+				.collect(Collectors.toList());
+
+		if (!foundExtractors.isEmpty() && foundExtractors.size() == 1) {
+			return foundExtractors.iterator().next();
+		}
+		else if (foundExtractors.size() > 1) {
+			throw new IllegalStateException(String.format("Needed 1 but found %s beans annotated with '%s'",
+					foundExtractors.size(), coherenceAnnotation.annotationType().getName()));
+		}
+		return null;
 	}
 
 	/**
@@ -48,45 +81,8 @@ public class ExtractorService {
 	 */
 	ValueExtractor<?, ?> getExtractor(InjectionPoint injectionPoint, boolean returnNullIfNotFound) {
 		Assert.notNull(injectionPoint, "injectionPoint must not be null.");
-
-		final List<Annotation> extractorAnnotations = CoherenceAnnotationUtils.getAnnotationsMarkedWithMarkerAnnotation(injectionPoint, ExtractorBinding.class);
-
-		final List<ValueExtractor<?, ?>> valueExtractors = new ArrayList<>();
-
-		if (!CollectionUtils.isEmpty(extractorAnnotations)) {
-			for (Annotation annotation : extractorAnnotations) {
-				final Class<? extends Annotation> annotationType = annotation.annotationType();
-				final Map<String, Object> beans = this.applicationContext.getBeansWithAnnotation(annotationType);
-
-				if (beans.isEmpty()) {
-					throw new IllegalStateException(String.format("No bean annotated with '%s' found.", annotationType.getCanonicalName()));
-				}
-				else if (beans.size() > 1) {
-					throw new IllegalStateException(String.format("Needed 1 but found %s beans annotated with '%s': %s.",
-							beans.size(), annotationType.getCanonicalName(), StringUtils.collectionToCommaDelimitedString(beans.keySet())));
-				}
-				@SuppressWarnings({"unchecked", "rawtypes"})
-				final ExtractorFactory<Annotation, Object, Object> extractorFactory = (ExtractorFactory) beans.values().iterator().next();
-				valueExtractors.add(extractorFactory.create(annotation));
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		final ValueExtractor<Object, Object>[] valueExtractorsAsArray = valueExtractors.toArray(new ValueExtractor[0]);
-		if (valueExtractorsAsArray.length == 0) {
-			if (returnNullIfNotFound) {
-				return null;
-			}
-			else {
-				throw new IllegalStateException("Unsatisfied dependency - no ExtractorFactory bean found annotated with "); // + bindings);
-			}
-		}
-		else if (valueExtractorsAsArray.length == 1) {
-			return valueExtractorsAsArray[0];
-		}
-		else {
-			return Extractors.multi(valueExtractorsAsArray);
-		}
+		final List<Annotation> annotations = CoherenceAnnotationUtils.getAnnotationsMarkedWithMarkerAnnotation(injectionPoint, ExtractorBinding.class);
+		return this.resolve(annotations);
 	}
 
 	/**
@@ -107,21 +103,22 @@ public class ExtractorService {
 	 * @return a {@link ValueExtractor} implementation created from the specified qualifiers.
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public <T, E> ValueExtractor<T, E> resolve(Set<Annotation> annotations) {
+	public <T, E> ValueExtractor<T, E> resolve(Collection<Annotation> annotations) {
 		final List<ValueExtractor> list = new ArrayList<>();
 
 		for (Annotation annotation : annotations) {
-			final Class<? extends Annotation> annotationType = annotation.annotationType();
-
-			final ExtractorFactory<Annotation, Object, Object> extractorFactory =
-					CoherenceAnnotationUtils.getSingleBeanWithAnnotation(this.applicationContext, annotationType);
-
-			final ValueExtractor extractor = extractorFactory.create(annotation);
-			if (extractor == null) {
-				throw new IllegalStateException("Unsatisfied dependency - no extractor could be created by "
-						+ extractorFactory + " extractor factory.");
+			ValueExtractor extractor = this.getExtractorFromApplicationContext(annotation);
+			if (extractor != null) {
+				list.add(extractor);
+				continue;
 			}
-			list.add(extractor);
+
+			final Class<? extends Annotation> annotationType = annotation.annotationType();
+			final ExtractorFactory filterFactory = this.extractorFactories.get(annotationType.getName());
+			if (filterFactory == null) {
+				throw new IllegalStateException(String.format("No filterFactory found for annotation %s.", annotationType.getCanonicalName()));
+			}
+			list.add(filterFactory.create(annotation));
 		}
 
 		ValueExtractor[] aExtractors = list.toArray(new ValueExtractor[0]);

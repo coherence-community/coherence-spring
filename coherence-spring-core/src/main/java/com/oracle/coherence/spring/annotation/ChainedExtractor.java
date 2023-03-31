@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -47,9 +47,6 @@ public @interface ChainedExtractor {
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface Extractors {
-
-		// Dummy field - without it, the annotation does not work with Spring
-		String can_be_anything() default "";
 
 		/**
 		 * An array of {@link ChainedExtractor}s.
