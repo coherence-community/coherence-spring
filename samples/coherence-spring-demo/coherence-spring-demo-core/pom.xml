@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>coherence-spring-demo-parent</artifactId>
-		<version>3.3.3-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>coherence-spring-demo-core</artifactId>
@@ -20,30 +20,12 @@
 	<name>Coherence Spring Demo - Core</name>
 	<description>Common code for the Coherence Spring Demo</description>
 
-	<properties>
-		<maven.minimum.version>3.6.0</maven.minimum.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-		<java.version>8</java.version>
-		<spring-data-bom.version>2021.2.3</spring-data-bom.version>
-		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
-		<hibernate.version>5.6.11.Final</hibernate.version>
-		<jackson-datatype.version>2.14.2</jackson-datatype.version>
-
-		<maven.minimum.version>3.6.0</maven.minimum.version>
-
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
-		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-bom</artifactId>
-				<version>${spring-data-bom.version}</version>
+				<version>${org.springframework.data.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
@@ -76,7 +58,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<artifactId>hibernate-core-jakarta</artifactId>
 			<version>${hibernate.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -115,7 +97,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>${maven.enforcer.plugin.version}</version>
+				<version>${maven-enforcer-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>enforce-plugin-versions</id>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,9 +12,14 @@ import com.oracle.coherence.spring.samples.session.filter.JsonUsernamePasswordAu
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
@@ -31,30 +36,37 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Override
-	@SuppressWarnings("java:S4502") // SONAR
-	public void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
+	@Bean
+	public SecurityFilterChain filterChain(
+			AuthenticationManager authenticationManager,
+			HttpSecurity http) throws Exception {
 		final BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(
-				authenticationManagerBean(), basicAuthenticationEntryPoint());
-		http.antMatcher("/**")
-				.addFilterAfter(customAuthFilter(), RequestHeaderAuthenticationFilter.class)
+				authenticationManager, basicAuthenticationEntryPoint());
+		http.securityContext().requireExplicitSave(false)
+				.and()
+				.addFilterAfter(customAuthFilter(authenticationManager), RequestHeaderAuthenticationFilter.class)
 				.addFilterAfter(basicAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 				.csrf().disable()
 				.requestCache().disable()
-				.authorizeRequests()
-						.antMatchers("/login").permitAll()
-					.anyRequest().authenticated()
+				.authorizeHttpRequests()
+				.requestMatchers("/login").permitAll()
+				.anyRequest().authenticated()
 				.and()
 				.exceptionHandling()
 				.defaultAuthenticationEntryPointFor(basicAuthenticationEntryPoint(), AnyRequestMatcher.INSTANCE)
 				.and()
 				.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+		return http.build();
 	}
 
 	private AuthenticationSuccessHandler authenticationSuccessHandler() {
@@ -69,16 +81,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public UsernamePasswordAuthenticationFilter customAuthFilter() throws Exception {
+	public UsernamePasswordAuthenticationFilter customAuthFilter(AuthenticationManager authenticationManager) throws Exception {
 		final UsernamePasswordAuthenticationFilter authenticationFilter = new JsonUsernamePasswordAuthenticationFilter(this.objectMapper);
 		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
 		authenticationFilter.setUsernameParameter("username");
 		authenticationFilter.setPasswordParameter("password");
-		authenticationFilter.setAuthenticationManager(authenticationManagerBean());
+		authenticationFilter.setAuthenticationManager(authenticationManager);
 		authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
 		authenticationFilter.setSessionAuthenticationStrategy(new ChangeSessionIdAuthenticationStrategy());
 
 		return authenticationFilter;
 	}
 
+	@Bean
+	public InMemoryUserDetailsManager userDetailsService() {
+		UserDetails user = User.withDefaultPasswordEncoder()
+				.username("coherence")
+				.password("rocks")
+				.roles("USER")
+				.build();
+		return new InMemoryUserDetailsManager(user);
+	}
 }

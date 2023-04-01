@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>coherence-spring-parent</artifactId>
-		<version>3.3.3-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>coherence-spring-session</artifactId>
@@ -63,9 +63,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet-api.version}</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>${jakarta.servlet-api.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -75,15 +75,15 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javaee-api.version}</version>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>${jakartaee-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>${javax.annotation-api.version}</version>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -133,9 +133,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.bedrock.coherence</groupId>
-			<artifactId>coherence-14.1.1-testing-support</artifactId>
-			<version>${bedrock.version}</version>
+			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence-bedrock-testing-support</artifactId>
+			<version>${coherence.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

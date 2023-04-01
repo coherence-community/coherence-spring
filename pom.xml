@@ -12,7 +12,7 @@
 
 	<groupId>com.oracle.coherence.spring</groupId>
 	<artifactId>coherence-spring-parent</artifactId>
-	<version>3.3.3-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Project</name>
@@ -117,14 +117,14 @@
 		<flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<dependency-check-maven.version>7.3.0</dependency-check-maven.version>
+		<dependency-check-maven.version>7.4.4</dependency-check-maven.version>
 		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-		<maven-jacoco-plugin.version>0.8.7</maven-jacoco-plugin.version>
+		<maven-jacoco-plugin.version>0.8.8</maven-jacoco-plugin.version>
 		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -137,35 +137,40 @@
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
-		<checkstyle.version>8.45.1</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.29</spring-javaformat-checkstyle.version>
+		<checkstyle.version>10.6.0</checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.35</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.5.1</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.20.2</assertj.version>
-		<awaitility.version>4.1.0</awaitility.version>
+		<assertj.version>3.24.1</assertj.version>
+		<awaitility.version>4.2.0</awaitility.version>
 		<bedrock.version>6.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
-		<coherence.version>22.06.2</coherence.version>
+		<coherence.version>22.09</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
+		<hibernate.version>5.6.10.Final</hibernate.version>
 		<hsqldb.version>2.7.1</hsqldb.version>
-		<javaee-api.version>8.0.1</javaee-api.version>
-		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-		<javax.inject.version>1</javax.inject.version>
-		<junit.version>5.7.2</junit.version>
+		<jackson-datatype.version>2.14.1</jackson-datatype.version>
+		<jakartaee-api.version>10.0.0</jakartaee-api.version>
+		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
+		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
+		<jakarta.inject.version>2.0.1</jakarta.inject.version>
+		<junit.version>5.9.1</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>5.3.23</org.springframework.version>
-		<org.springframework.data.version>2021.2.5</org.springframework.data.version>
+		<org.springframework.version>6.0.7</org.springframework.version>
+		<org.springframework.data.version>2022.0.0</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<spring-boot.version>2.7.5</spring-boot.version>
-		<spring-session.version>2.6.3</spring-session.version>
-		<spring-security.version>5.7.5</spring-security.version>
-		<tomcat.version>9.0.71</tomcat.version>
+		<slf4j-api.version>2.0.3</slf4j-api.version>
+		<spring-boot.version>3.0.0</spring-boot.version>
+		<spring-data-bom.version>2022.0.0</spring-data-bom.version>
+		<spring-session.version>3.0.0</spring-session.version>
+		<spring-security.version>6.0.1</spring-security.version>
+		<tomcat.version>10.1.4</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -259,9 +264,9 @@
 				<version>${tomcat.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.yaml</groupId>
-				<artifactId>snakeyaml</artifactId>
-				<version>1.33</version>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-datatype.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -562,9 +567,9 @@
 
 	<profiles>
 		<profile>
-			<id>jdk17</id>
+			<id>jdk18</id>
 			<properties>
-				<java.version>17</java.version>
+				<java.version>18</java.version>
 			</properties>
 		</profile>
 		<profile>
@@ -610,6 +615,36 @@
 					</snapshots>
 				</repository>
 			</repositories>
+		</profile>
+		<profile>
+			<id>spring-repo</id>
+			<activation>
+				<property>
+					<name>!skipSpringRepo</name>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>spring-milestone</id>
+					<name>Spring Milestone Repository</name>
+					<url>https://repo.spring.io/milestone</url>
+				</repository>
+				<repository>
+					<id>coherence-snapshots</id>
+					<name>Coherence Snapshots Repository</name>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>spring-milestone</id>
+					<name>Spring Milestone Repository</name>
+					<url>https://repo.spring.io/milestone</url>
+				</pluginRepository>
+			</pluginRepositories>
 		</profile>
 		<profile>
 			<id>versions</id>

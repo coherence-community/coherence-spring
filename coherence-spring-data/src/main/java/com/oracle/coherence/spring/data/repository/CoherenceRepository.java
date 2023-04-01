@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -30,6 +30,7 @@ import com.tangosol.util.stream.RemoteStream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -39,10 +40,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @param <ID> the type of the id of the entity the repository manages
  *
  * @author Ryan Lubke
+ * @author Gunnar Hillert
  * @since 3.0
  */
 public interface CoherenceRepository<T, ID>
-		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID> {
+		extends PagingAndSortingRepository<T, ID>, ListenerSupport<T, ID>, CrudRepository<T, ID> {
 
 	/**
 	 * Return the underlying {@link NamedMap} that backs this {@code Repository}.

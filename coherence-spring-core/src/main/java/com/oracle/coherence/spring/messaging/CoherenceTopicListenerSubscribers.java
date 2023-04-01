@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -22,9 +22,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PreDestroy;
-import javax.inject.Named;
-
 import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
 import com.oracle.coherence.spring.annotation.CommitStrategy;
 import com.oracle.coherence.spring.annotation.ExtractorBinding;
@@ -42,6 +39,8 @@ import com.tangosol.net.topic.Publisher;
 import com.tangosol.net.topic.Subscriber;
 import com.tangosol.util.Filter;
 import com.tangosol.util.ValueExtractor;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Named;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import reactor.core.publisher.Flux;

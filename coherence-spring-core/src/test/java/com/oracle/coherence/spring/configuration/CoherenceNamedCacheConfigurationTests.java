@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -8,9 +8,6 @@ package com.oracle.coherence.spring.configuration;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import javax.annotation.Resource;
-import javax.inject.Inject;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.SessionName;
@@ -25,6 +22,8 @@ import com.tangosol.util.ConcurrentMap;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.ObservableMap;
 import com.tangosol.util.QueryMap;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 

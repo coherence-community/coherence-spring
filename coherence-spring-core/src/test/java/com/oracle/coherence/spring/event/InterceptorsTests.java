@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import javax.inject.Inject;
 
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
@@ -49,6 +47,7 @@ import com.tangosol.net.events.partition.cache.EntryProcessorEvent;
 import com.tangosol.util.InvocableMap;
 import data.Person;
 import data.PhoneNumber;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

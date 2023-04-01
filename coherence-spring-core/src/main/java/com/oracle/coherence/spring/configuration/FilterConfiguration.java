@@ -6,15 +6,9 @@
  */
 package com.oracle.coherence.spring.configuration;
 
-import com.oracle.coherence.spring.annotation.AlwaysFilter;
-import com.oracle.coherence.spring.annotation.FilterFactory;
-import com.oracle.coherence.spring.annotation.WhereFilter;
 import com.tangosol.util.Filter;
-import com.tangosol.util.Filters;
-import com.tangosol.util.QueryHelper;
 
 import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -45,36 +39,6 @@ public class FilterConfiguration {
 	FilterConfiguration(ConfigurableApplicationContext ctx, FilterService filterService) {
 		this.filterService = filterService;
 		this.ctx = ctx;
-	}
-
-	/**
-	 * Produce a {@link FilterFactory} that produces an instance of an
-	 * {@link com.tangosol.util.filter.AlwaysFilter}.
-	 * @return a {@link FilterFactory} that produces an instance of an
-	 *         {@link com.tangosol.util.filter.AlwaysFilter}
-	 */
-	@Bean
-	@AlwaysFilter
-	FilterFactory<AlwaysFilter, ?> alwaysFactory() {
-		return (annotation) -> Filters.always();
-	}
-
-	/**
-	 * Produce a {@link FilterFactory} that produces an instance of a
-	 * {@link com.tangosol.util.Filter} created from a CohQL where clause.
-	 * @return a {@link FilterFactory} that produces an instance of an
-	 *         {@link com.tangosol.util.Filter} created from a CohQL
-	 *         where clause
-	 */
-	@Bean
-	@WhereFilter("")
-	@SuppressWarnings("unchecked")
-	@Qualifier
-	FilterFactory<WhereFilter, ?> whereFactory() {
-		return (annotation) -> {
-			String sWhere = annotation.value();
-			return sWhere.trim().isEmpty() ? Filters.always() : QueryHelper.createFilter(annotation.value());
-		};
 	}
 
 	/**

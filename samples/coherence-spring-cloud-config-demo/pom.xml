@@ -12,18 +12,18 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>3.3.3-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>coherence-spring-cloud-config-demo-parent</artifactId>
-	<version>3.3.3-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Cloud Config Demo - Parent</name>
 	<description>Demo project for Coherence Spring using Spring Cloud Config Server</description>
 
 	<properties>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud.version>2022.0.0</spring-cloud.version>
 	</properties>
 
 	<modules>

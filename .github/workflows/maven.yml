@@ -12,7 +12,7 @@ jobs:
     if: github.repository_owner == 'coherence-community'
     strategy:
       matrix:
-        java-version: [ 11, 17 ]
+        java-version: [ 17, 19 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.2
@@ -59,7 +59,7 @@ jobs:
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       - name: Deploy Snapshots
-        if: "github.event_name != 'pull_request' && matrix.java-version == 11"
+        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"

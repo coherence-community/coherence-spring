@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2022, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
-    <logger name="Coherence" level="WARN" />
+    <logger name="Coherence" level="INFO" />
     <logger name="com.oracle.coherence.spring" level="INFO" />
     <logger name="org.springframework" level="WARN" />
     <root level="INFO" />

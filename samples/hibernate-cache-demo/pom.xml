@@ -12,19 +12,19 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>3.3.3-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>hibernate-cache-demo</artifactId>
-	<version>3.3.3-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 
 	<name>Hibernate Cache Demo - App</name>
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
 
 	<properties>
-		<coherence-hibernate.version>2.3.0</coherence-hibernate.version>
+		<coherence-hibernate.version>2.3.1</coherence-hibernate.version>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
-		<hibernate.version>5.6.11.Final</hibernate.version>
+		<hibernate.version>5.6.14.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -32,6 +32,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>${spring-boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate.orm</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -46,7 +52,7 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>3.3.3-SNAPSHOT</version>
+			<version>4.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${coherence.groupId}</groupId>
@@ -66,7 +72,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<artifactId>hibernate-core-jakarta</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
