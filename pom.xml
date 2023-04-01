@@ -150,7 +150,7 @@
 		<coherence.version>22.09</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<hibernate.version>5.6.10.Final</hibernate.version>
+		<hibernate.version>5.6.15.Final</hibernate.version>
 		<hsqldb.version>2.7.1</hsqldb.version>
 		<jackson-datatype.version>2.14.1</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
@@ -162,15 +162,15 @@
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
 		<org.springframework.version>6.0.7</org.springframework.version>
-		<org.springframework.data.version>2022.0.0</org.springframework.data.version>
+		<org.springframework.data.version>2022.0.4</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<slf4j-api.version>2.0.3</slf4j-api.version>
-		<spring-boot.version>3.0.0</spring-boot.version>
-		<spring-data-bom.version>2022.0.0</spring-data-bom.version>
+		<spring-boot.version>3.0.5</spring-boot.version>
+		<spring-data-bom.version>2022.0.4</spring-data-bom.version>
 		<spring-session.version>3.0.0</spring-session.version>
-		<spring-security.version>6.0.1</spring-security.version>
-		<tomcat.version>10.1.4</tomcat.version>
+		<spring-security.version>6.0.2</spring-security.version>
+		<tomcat.version>10.1.7</tomcat.version>
 	</properties>
 
 	<distributionManagement>
