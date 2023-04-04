@@ -40,7 +40,7 @@ Chapter of the Reference Guide.
 
 [CARD]
 .To Do List
-[icon=format_list_bulleted,link=https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server,link-type=url]
+[icon=format_list_bulleted,link=https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server,link-type=url]
 --
 Sample Application.
 --

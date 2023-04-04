@@ -26,5 +26,5 @@ Once you have these installed building the entire source tree is as simple as ex
 ----
 
 For detailed instructions, please see the main
-https://github.com/coherence-community/coherence-spring/blob/master/README.adoc[README] of the Coherence Spring source
+https://github.com/coherence-community/coherence-spring/blob/main/README.adoc[README] of the Coherence Spring source
 code repository.

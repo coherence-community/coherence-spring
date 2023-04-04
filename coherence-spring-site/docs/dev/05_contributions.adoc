@@ -24,7 +24,7 @@ We would love your contributions to the Coherence Spring project!
 === Becoming a Contributor
 
 The details of how to contribute to Coherence Spring are detailed in
-https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md[CONTRIBUTING.md]
+https://github.com/coherence-community/coherence-spring/blob/main/CONTRIBUTING.md[CONTRIBUTING.md]
 in the Coherence Spring GitHub repository.
 
 === Useful Information

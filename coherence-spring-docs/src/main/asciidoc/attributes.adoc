@@ -14,7 +14,7 @@
 
 :coherence-spring: https://spring.coherence.community/
 :coherence-spring-website: {coherence-spring}{coherence-spring-version}/
-:github-tag: master
+:github-tag: main
 :coherence-api: https://coherence.community/{coherence-version}/api/java/
 :coherence-docs: https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/
 :coherence-spring-docs: {coherence-spring-website}refdocs/reference/
@@ -31,7 +31,7 @@
 
 :hibernate-docs: https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html
 
-:sources-root-samples: {coherence-spring-code}tree/master/samples/
+:sources-root-samples: {coherence-spring-code}tree/main/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 :include-source-code-samples-cachestore: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-core/src/main/java/com/oracle/coherence/spring/example/
 :include-source-code-samples-cachestore-app: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/java/com/oracle/coherence/spring/example/

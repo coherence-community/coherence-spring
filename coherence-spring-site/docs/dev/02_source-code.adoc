@@ -22,10 +22,10 @@ https://github.com/coherence-community/coherence-spring
 Alternatively, if you're not using or want to avoid setting up http://git-scm.com[git], you
 can download a zip containing the latest development branch from here:
 
-https://github.com/coherence-community/coherence-spring/archive/master.zip
+https://github.com/coherence-community/coherence-spring/archive/main.zip
 
 [IMPORTANT]
 ====
 *Pull Requests* are welcome! Just make sure to become an official
-https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md[contributor].
+https://github.com/coherence-community/coherence-spring/blob/main/CONTRIBUTING.md[contributor].
 ====

@@ -67,7 +67,7 @@ way to see a working solution quickly. Particularly if you are relatively new to
 <<spring-boot.adoc#spring-boot>> chapter next.
 
 NOTE: Another great example application is the Spring Boot implementation of the
-https://github.com/coherence-community/todo-list-example/tree/master/java[To-do List application].
+https://github.com/coherence-community/todo-list-example/tree/main/java[To-do List application].
 
 The reference documentation makes a distinction between
 {spring-framework}[Spring Framework] and {spring-boot-website}[Spring Boot]. At its very core, Spring Framework provides

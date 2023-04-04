@@ -108,7 +108,7 @@
 		<!-- source code repository information -->
 		<source.owner>coherence-community</source.owner>
 		<source.repository>coherence-spring</source.repository>
-		<source.branch>master</source.branch>
+		<source.branch>main</source.branch>
 
 		<!-- plugin dependency versions (alphabetically) -->
 		<asciidoctor-maven-plugin.version>1.6.0</asciidoctor-maven-plugin.version>
@@ -147,7 +147,7 @@
 		<awaitility.version>4.2.0</awaitility.version>
 		<bedrock.version>6.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
-		<coherence.version>22.09</coherence.version>
+		<coherence.version>23.03</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>5.6.15.Final</hibernate.version>

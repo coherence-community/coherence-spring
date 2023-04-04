@@ -48,5 +48,5 @@ private NamedCache<Long, String> namedCache;
 ----
 
 In order to dive deeper, please see the link:refdocs/reference/html/quickstart.html[Quickstart Guide], the
-https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server[To-do List Sample], and also
+https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server[To-do List Sample], and also
 refer to the link:refdocs/reference/html/index.html[reference guide].

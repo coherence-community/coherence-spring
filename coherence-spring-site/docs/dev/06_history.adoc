@@ -77,7 +77,7 @@ of configuration data
 * Add Quickstart Sample (Classic Spring + Spring Boot) and reference guide chapter
 * Add Spring Cloud Config demo
 * Add CI workflow using GitHub Actions
-* Add Coherence https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server[To Do List Example Application]
+* Add Coherence https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server[To Do List Example Application]
 for Spring Boot (separate repository)
 * Update to the latest dependencies
   - Oracle Coherence `21.06-M2`

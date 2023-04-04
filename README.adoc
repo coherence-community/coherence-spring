@@ -1,7 +1,8 @@
-:4x-version: 4.0.0-SNAPSHOT
-:snapshot-version: 3.3.3-SNAPSHOT
+:main-release-version: 4.0.0-SNAPSHOT
+:main-snapshot-version: 4.0.0-SNAPSHOT
 :website: https://spring.coherence.community/
-:releaseVersion: 3.3.2
+:3x-release-version: 3.3.2
+:3x-snapshot-version: 3.3.3-SNAPSHOT
 
 = Welcome to the Oracle Coherence Spring Project
 
@@ -11,14 +12,16 @@ image:https://img.shields.io/badge/Coherence-Join%20Slack-brightgreen[Chat with 
 image:https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence[Stack Exchange questions,link=https://stackoverflow.com/questions/tagged/oracle-coherence]
 image:https://img.shields.io/twitter/follow/OracleCoherence?style=social[Twitter Follow,link=https://twitter.com/OracleCoherence]
 
-The Coherence Spring project provides bootstrapping support of https://coherence.community/[Oracle Coherence] for
+The *Coherence Spring* project provides bootstrapping support of https://coherence.community/[Oracle Coherence] for
 https://spring.io/projects/spring-framework[Spring Framework] and https://spring.io/projects/spring-boot[Spring Boot].
 Coherence Spring also provides a set of components to aid in the integration of Oracle Coherence and various other projects of the Spring ecosystem:
 
 - Spring Data
 - Spring's Cache Abstraction
-- Spring Boot Config API + Spring Cloud Config Server
 - Spring Session
+
+Furthermore, the project also provides various examples to show-case the integration of Oracle Coherence into Spring-based
+projects.
 
 == Documentation
 
@@ -26,13 +29,24 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 
 [width="75%"]
 |=======
-|*{releaseVersion}* | {website}{releaseVersion}[Website] |{website}{releaseVersion}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{releaseVersion}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{releaseVersion}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{releaseVersion}/refdocs/api/index.html[API Doc.]
-|*{snapshot-version}* | {website}{snapshot-version}[Website] |{website}{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{snapshot-version}/refdocs/api/index.html[API Doc.]
-|*{4x-version}* | {website}{4x-version}[Website] |{website}{4x-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{4x-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{4x-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{4x-version}/refdocs/api/index.html[API Doc.]
+|*{main-release-version}* | {website}{main-release-version}[Website] |{website}{main-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{3x-release-version}* | {website}{3x-release-version}[Website] |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
+|*{3x-snapshot-version}* | {website}{snapshot-version}[Website] |{website}{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{snapshot-version}/refdocs/api/index.html[API Doc.]
 |=======
 
 NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
 http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
+
+== Supported Versions
+
+[width="75%", cols="1,1,1,1,1,^1,1"]
+|===
+|Coherence Spring          | Java | Coherence CE | Spring | Boot | Jakarta | Git Branch/Tag
+
+|*{main-snapshot-version}* | `17` | `23.03`      | `6.x` | `3.x` | ✔       | `main`
+|*{3x-release-version}*    | `11` | `22.06`      | `5.x` | `2.x` |         | `3.3.3`
+|*{3x-snapshot-version}*   | `11` | `22.06`      | `5.x` | `2.x` |         | `3.3.x`
+|===
 
 == Quick Start
 
@@ -41,7 +55,7 @@ https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsing
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
-https://github.com/coherence-community/coherence-spring/tree/master/samples[samples] module.
+https://github.com/coherence-community/coherence-spring/tree/main/samples[samples] module.
 
 == Building from Source
 

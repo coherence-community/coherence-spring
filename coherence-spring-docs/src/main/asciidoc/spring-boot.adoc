@@ -523,7 +523,7 @@ documentation.
 === Hibernate Second Level Cache Example
 
 The Coherence Spring source code repository also provides an
-{coherence-spring-code}tree/master/samples/hibernate-cache-demo[example application], illustrating the Coherence support for
+{coherence-spring-code}tree/main/samples/hibernate-cache-demo[example application], illustrating the Coherence support for
 Hibernate's Second Level caching using https://spring.io/projects/spring-boot[Spring Boot].
 
 The example application has 1 REST endpoint that can persist, retrieve and delete a `Plant` object with taxonomic properties
