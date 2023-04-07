@@ -59,7 +59,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server"><div class="card__link-hover"/>
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">

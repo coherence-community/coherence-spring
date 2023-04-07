@@ -10,12 +10,12 @@
 <p>Alternatively, if you&#8217;re not using or want to avoid setting up <a id="" title="" target="_blank" href="http://git-scm.com">git</a>, you
 can download a zip containing the latest development branch from here:</p>
 
-<p><a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/archive/master.zip">https://github.com/coherence-community/coherence-spring/archive/master.zip</a></p>
+<p><a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/archive/main.zip">https://github.com/coherence-community/coherence-spring/archive/main.zip</a></p>
 
 <div class="admonition important">
 <p class="admonition-textlabel">Important</p>
 <p ><p><strong>Pull Requests</strong> are welcome! Just make sure to become an official
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md">contributor</a>.</p>
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/main/CONTRIBUTING.md">contributor</a>.</p>
 </p>
 </div>
 </div>

@@ -23,7 +23,7 @@ title="Maven"
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.09&lt;/version&gt;
+        &lt;version&gt;23.03&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</markup>
 
@@ -41,7 +41,7 @@ lang="java"
 private NamedCache&lt;Long, String&gt; namedCache;</markup>
 
 <p>In order to dive deeper, please see the <a id="" title="" target="_blank" href="refdocs/reference/html/quickstart.html">Quickstart Guide</a>, the
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server">To-do List Sample</a>, and also
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server">To-do List Sample</a>, and also
 refer to the <a id="" title="" target="_blank" href="refdocs/reference/html/index.html">reference guide</a>.</p>
 
 </div>

@@ -20,7 +20,7 @@ lang="bash"
 >./mvnw clean package -Pspring</markup>
 
 <p>For detailed instructions, please see the main
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/master/README.adoc">README</a> of the Coherence Spring source
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/main/README.adoc">README</a> of the Coherence Spring source
 code repository.</p>
 
 </doc-view>

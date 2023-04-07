@@ -169,7 +169,7 @@ of configuration data</p>
 
 </li>
 <li>
-<p>Add Coherence <a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/master/java/spring-server">To Do List Example Application</a>
+<p>Add Coherence <a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server">To Do List Example Application</a>
 for Spring Boot (separate repository)</p>
 
 </li>

@@ -15,7 +15,7 @@ Coherence Spring project.</p>
 <h3 id="_becoming_a_contributor">Becoming a Contributor</h3>
 <div class="section">
 <p>The details of how to contribute to Coherence Spring are detailed in
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
+<a id="" title="" target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>
 in the Coherence Spring GitHub repository.</p>
 
 </div>
