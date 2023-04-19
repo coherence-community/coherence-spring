@@ -17,26 +17,6 @@
         <cve>CVE-2016-1000027</cve>
     </suppress>
 
-    <!-- grpc - via Coherence -->
-    <suppress>
-        <notes><![CDATA[
-        file name: opentracing-grpc-0.2.3.jar
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/io\.opentracing\.contrib/opentracing\-grpc@.*$</packageUrl>
-        <cpe>cpe:/a:grpc:grpc</cpe>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        False positive:
-          - https://bitbucket.org/snakeyaml/snakeyaml/issues/548/nist-nvd-entry-cve-2022-38752
-          - https://github.com/jeremylong/DependencyCheck/issues/4990
-        file name: snakeyaml-1.30.jar
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2022-38752</cve>
-    </suppress>
-
     <suppress>
         <notes><![CDATA[protobuf-java-3.21.3.jar via Coherence gRPC]]></notes>
         <cve>CVE-2022-3171</cve>
@@ -56,39 +36,15 @@
 
     <suppress>
         <notes><![CDATA[
-   file name: snakeyaml-1.33.jar
-   ]]></notes>
-        <cve>CVE-2022-41854</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
        file name: snakeyaml-1.33.jar
        ]]></notes>
         <cve>CVE-2022-1471</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
-       file name: snakeyaml-1.33.jar
-       ]]></notes>
-        <cve>CVE-2022-3064</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
        file name: sshd-core-2.8.0.jar
        ]]></notes>
         <cve>CVE-2022-45047</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-       file name: netty-transport-4.1.85.Final.jar
-       ]]></notes>
-        <cve>CVE-2022-41881</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-       file name: jackson-core-2.14.2.jar
-       ]]></notes>
-        <cve>CVE-2022-45688</cve>
     </suppress>
     <suppress>
         <cve>CVE-2023-20863</cve>
