@@ -17,7 +17,4 @@
        ]]></notes>
         <cve>CVE-2022-1471</cve>
     </suppress>
-    <suppress>
-        <cve>CVE-2023-20863</cve>
-    </suppress>
 </suppressions>
