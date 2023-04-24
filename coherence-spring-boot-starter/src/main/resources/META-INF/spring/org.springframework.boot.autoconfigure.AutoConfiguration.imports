@@ -1,4 +1,0 @@
-com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration
-com.oracle.coherence.spring.boot.autoconfigure.session.CoherenceSpringSessionAutoConfiguration
-com.oracle.coherence.spring.boot.autoconfigure.metrics.CoherenceMetricsAutoConfiguration
-com.oracle.coherence.spring.boot.autoconfigure.data.CoherenceRepositoriesAutoConfiguration
