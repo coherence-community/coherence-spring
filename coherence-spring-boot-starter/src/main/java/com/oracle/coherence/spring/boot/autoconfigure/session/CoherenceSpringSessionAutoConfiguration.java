@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -13,7 +13,6 @@ import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import com.oracle.coherence.spring.session.config.annotation.web.http.CoherenceHttpSessionConfiguration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -23,6 +22,7 @@ import org.springframework.boot.autoconfigure.session.SessionProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.session.SessionRepository;
 
 /**
@@ -32,7 +32,7 @@ import org.springframework.session.SessionRepository;
  * @since 3.0
  */
 @AutoConfigureAfter(CoherenceAutoConfiguration.class)
-@AutoConfiguration
+@Configuration
 @EnableConfigurationProperties(CoherenceSpringSessionProperties.class)
 @Conditional(CoherenceSpringSessionCondition.class)
 @ConditionalOnClass(CoherenceIndexedSessionRepository.class)
@@ -40,7 +40,7 @@ import org.springframework.session.SessionRepository;
 @ConditionalOnProperty(name = "coherence.spring.session.enabled", havingValue = "true", matchIfMissing = true)
 public class CoherenceSpringSessionAutoConfiguration {
 
-	@AutoConfiguration
+	@Configuration(proxyBeanMethods = false)
 	@AutoConfigureBefore(name = "org.springframework.boot.actuate.autoconfigure.session.SessionsEndpointAutoConfiguration")
 	public static class SpringBootCoherenceHttpSessionConfiguration extends CoherenceHttpSessionConfiguration {
 

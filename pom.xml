@@ -562,6 +562,13 @@
 
 	<profiles>
 		<profile>
+			<id>springboot2_6</id>
+			<properties>
+				<spring-boot.version>2.6.14</spring-boot.version>
+				<org.springframework.version>5.3.24</org.springframework.version>
+			</properties>
+		</profile>
+		<profile>
 			<id>jdk17</id>
 			<properties>
 				<java.version>17</java.version>
