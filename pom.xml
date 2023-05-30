@@ -161,16 +161,16 @@
 		<junit.version>5.9.1</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>6.0.8</org.springframework.version>
-		<org.springframework.data.version>2022.0.4</org.springframework.data.version>
+		<org.springframework.version>6.0.9</org.springframework.version>
+		<org.springframework.data.version>2022.0.6</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<slf4j-api.version>2.0.3</slf4j-api.version>
 		<spring-boot.version>3.0.7</spring-boot.version>
 		<spring-data-bom.version>2022.0.4</spring-data-bom.version>
 		<spring-session.version>3.0.1</spring-session.version>
-		<spring-security.version>6.0.3</spring-security.version>
-		<tomcat.version>10.1.7</tomcat.version>
+		<spring-security.version>6.1.0</spring-security.version>
+		<tomcat.version>10.1.9</tomcat.version>
 	</properties>
 
 	<distributionManagement>
