@@ -151,7 +151,8 @@
 			<artifactId>spring-doc-resources</artifactId>
 			<version>${spring-doc-resources.version}</version>
 			<type>zip</type>
-			<optional>true</optional>
+			<scope>system</scope>
+			<systemPath>${coherence.spring.root}/lib/spring-doc-resources-0.2.5.zip</systemPath>
 		</dependency>
 	</dependencies>
 
@@ -257,11 +258,15 @@
 						<groupId>io.spring.asciidoctor</groupId>
 						<artifactId>spring-asciidoctor-extensions-block-switch</artifactId>
 						<version>${spring-asciidoctor-extensions.version}</version>
+						<scope>system</scope>
+						<systemPath>${coherence.spring.root}/lib/spring-asciidoctor-extensions-block-switch-0.5.0.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>io.spring.asciidoctor</groupId>
 						<artifactId>spring-asciidoctor-extensions-spring-boot</artifactId>
 						<version>${spring-asciidoctor-extensions.version}</version>
+						<scope>system</scope>
+						<systemPath>${coherence.spring.root}/lib/spring-asciidoctor-extensions-spring-boot-0.5.0.jar</systemPath>
 					</dependency>
 				</dependencies>
 				<executions>
