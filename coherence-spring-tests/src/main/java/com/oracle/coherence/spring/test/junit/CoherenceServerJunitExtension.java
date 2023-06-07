@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
 public class CoherenceServerJunitExtension implements ParameterResolver,
 		BeforeAllCallback, AfterAllCallback {
 
+	/**
+	 * Logger declaration.
+	 */
 	protected static final Logger logger = LoggerFactory.getLogger(CoherenceServerJunitExtension.class);
 
 	private final String configUri;
@@ -38,15 +41,28 @@ public class CoherenceServerJunitExtension implements ParameterResolver,
 
 	private Coherence coherence;
 
+	/**
+	 * Initialize CoherenceServerJunitExtension.
+	 * @param grpcEnabled if true, will set `coherence.grpc.enabled` to true
+	 */
 	public CoherenceServerJunitExtension(boolean grpcEnabled) {
 		this.configUri = "coherence-cache-config.xml";
 		this.grpcEnabled = grpcEnabled;
 	}
 
+	/**
+	 * Initialize CoherenceServerJunitExtension. Will
+	 * implicitly set {@link CoherenceServerJunitExtension#grpcEnabled} to false.
+	 */
 	public CoherenceServerJunitExtension() {
 		this(false);
 	}
 
+	/**
+	 * Initialize CoherenceServerJunitExtension. Will
+	 * implicitly set {@link CoherenceServerJunitExtension#grpcEnabled} to false.
+	 * @param configUri specify the Coherence cache config XML file
+	 */
 	public CoherenceServerJunitExtension(String configUri) {
 		this.configUri = configUri;
 		this.grpcEnabled = false;

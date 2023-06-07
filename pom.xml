@@ -292,6 +292,7 @@
 						<source>${java.version}</source>
 						<target>${java.version}</target>
                         <testCompilerArgument>-parameters</testCompilerArgument>
+						<showDeprecation>true</showDeprecation>
 					</configuration>
 				</plugin>
 				<plugin>
