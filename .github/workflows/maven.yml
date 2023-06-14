@@ -1,4 +1,4 @@
-﻿# This workflow will build a Java project with Maven
+# This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 name: CI Coherence Spring
 run-name: ${{ github.event.head_commit.message }} [${{ github.event_name }}][${{ github.ref_name }}]
@@ -24,13 +24,13 @@ jobs:
           java-version: ${{ matrix.java-version }}
       - name: Cache SonarCloud packages
         if: "matrix.java-version == 17"
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Cache Maven packages
-        uses: actions/cache@v3.0.6
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
