@@ -99,7 +99,7 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 
 | coherence.sessions.<type>
 | N/A
-| Indicates the type of the session. One of the following: `grpc`, `server`, `client`
+| Indicates the type of the session. One of the following: `grpc` (deprecated), `server`, `client`
 
 | coherence.sessions.<type>[0].name
 |
@@ -131,11 +131,16 @@ No messages are emitted if `-1` is specified. More log messages are emitted as t
 
 - {coherence-spring-api}com/oracle/coherence/spring/configuration/session/AbstractSessionConfigurationBean.html[AbstractSessionConfigurationBean]
 - {coherence-spring-api}com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html[SessionConfigurationBean]
-- {coherence-spring-api}com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html[GrpcSessionConfigurationBean]
+- {coherence-spring-api}com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html[GrpcSessionConfigurationBean] (deprecated)
 
 IMPORTANT: Many properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property `coherence.properties.*` are configured, the Spring Boot
 property is used.
+
+IMPORTANT: As of Coherence Spring `4.0`, the `GrpcSessionConfigurationBean` has been deprecated. Please use the
+`SessionConfigurationBean` in that case. Since Coherence `22.06.2`, relevant gRPC configuration can be configured directly in
+the `coherence-cache-config.xml` file as described in the Coherence reference guide chapter
+{oracle-coherence-docs}develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D[Configuring the Coherence gRPC Client].
 
 If the provided Spring Boot configuration properties are not sufficient for your needs, you can also specify any of
 the native Coherence properties. For a list of available native properties, please consult the reference guide chapter on

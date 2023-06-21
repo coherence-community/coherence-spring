@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -33,9 +33,14 @@ import org.springframework.context.ConfigurableApplicationContext;
  * the default session named {@link com.tangosol.net.Coherence#DEFAULT_NAME}.
  * @author Gunnar Hillert
  * @since 3.0
- *
  * @see GrpcSessionConfiguration
+ * @see ClientSessionConfigurationBean
+ * @deprecated As of 4.0 please configure the Grpc Client using the coherence-cache-config.xml
  */
+@Deprecated(
+		since = "4.0.0",
+		forRemoval = true
+)
 public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBean {
 
 	/**
@@ -75,14 +80,13 @@ public class GrpcSessionConfigurationBean extends AbstractSessionConfigurationBe
 
 	@Override
 	public Optional<SessionConfiguration> getConfiguration() {
-		if (this.getType() != SessionType.GRPC) {   //TODO
+		if (this.getType() != SessionType.GRPC) {
 			return Optional.empty();
 		}
 
 		GrpcSessionConfiguration.Builder builder;
 
 		if (this.channelName == null || this.channelName.trim().isEmpty()) {
-			//TODO builder = GrpcSessionConfiguration.builder(GrpcSessionConfiguration.DEFAULT_HOST);
 			builder = GrpcSessionConfiguration.builder();
 		}
 		else {
