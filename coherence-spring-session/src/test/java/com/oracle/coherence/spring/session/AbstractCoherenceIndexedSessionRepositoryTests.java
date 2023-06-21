@@ -1,14 +1,11 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.session;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Map;
 
 import com.tangosol.net.Coherence;
@@ -315,22 +312,4 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 		this.repository.deleteById(session.getId());
 		assertThat(this.repository.findById(session.getId())).isNull();
 	}
-
-	/**
-	 * Helper method to determine if the default gRPC port is available or not.
-	 * @return true if the gRPC port is bound and thus unavailable
-	 */
-	protected static boolean isGrpcPortInUse() {
-
-		boolean result = false;
-
-		try {
-			(new Socket(InetAddress.getLoopbackAddress(), 1408)).close();
-			result = true;
-		}
-		catch (IOException ex) {
-		}
-		return result;
-	}
-
 }

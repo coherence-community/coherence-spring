@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -276,12 +276,18 @@ public class CoherenceProperties {
 	public static class SessionProperties {
 
 		/**
-		 * Session configuration.
+		 * gRPC Session configuration.
+		 * @deprecated As of 4.0 please use the {@code client} property and configure the relevant gRPC configuration
+		 * properties directly via {@code coherence-cache-config.xml}.
 		 */
+		@Deprecated(
+				since = "4.0.0",
+				forRemoval = true
+		)
 		private List<GrpcSessionConfigurationBean> grpc;
 
 		/**
-		 * Session configuration.
+		 * Client Session configuration.
 		 */
 		private List<ClientSessionConfigurationBean> client;
 
@@ -290,10 +296,18 @@ public class CoherenceProperties {
 		 */
 		private List<ServerSessionConfigurationBean> server;
 
+		@Deprecated(
+				since = "4.0.0",
+				forRemoval = true
+		)
 		public List<GrpcSessionConfigurationBean> getGrpc() {
 			return this.grpc;
 		}
 
+		@Deprecated(
+				since = "4.0.0",
+				forRemoval = true
+		)
 		public void setGrpc(List<GrpcSessionConfigurationBean> grpc) {
 			this.grpc = grpc;
 		}

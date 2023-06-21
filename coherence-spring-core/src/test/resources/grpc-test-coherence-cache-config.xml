@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright (c) 2023, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
+<cache-config
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+	xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+	<caching-scheme-mapping>
+		<cache-mapping>
+			<cache-name>fooMap</cache-name>
+			<scheme-name>remote-grpc</scheme-name>
+		</cache-mapping>
+	</caching-scheme-mapping>
+
+	<caching-schemes>
+		<remote-grpc-cache-scheme>
+			<scheme-name>remote-grpc</scheme-name>
+			<service-name>RemoteGrpcCache</service-name>
+			<cluster-name>GrpcSessionTestsCluster</cluster-name>
+		</remote-grpc-cache-scheme>
+	</caching-schemes>
+
+</cache-config>

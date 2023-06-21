@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -19,6 +19,7 @@ import com.oracle.coherence.grpc.proxy.GrpcServerController;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
 import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
+import com.oracle.coherence.spring.test.utils.NetworkUtils;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.awaitility.Awaitility;
@@ -60,7 +61,7 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 				IPv4Preferred.yes(),
 				DisplayName.of("server"));
 
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
 	}
 
 	@AfterAll
@@ -70,7 +71,7 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 		if (server != null) {
 			server.close();
 		}
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isGrpcPortInUse());
 	}
 
 	@Configuration
