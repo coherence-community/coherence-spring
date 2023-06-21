@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -18,9 +18,9 @@ import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.DisplayName;
 import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionType;
 import com.oracle.coherence.spring.test.utils.NetworkUtils;
-import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
@@ -42,20 +41,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Gunnar Hillert
  */
-@SpringJUnitConfig(GrpcSessionBeanTests.Config.class)
+@SpringJUnitConfig(GrpcSessionTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource(properties = {
 		"coherence.tcmp.enabled = 'false'"
 })
 @DirtiesContext
-public class GrpcSessionBeanTests {
+public class GrpcSessionTests {
+
 	static CoherenceClusterMember server;
 
-	@CoherenceCache(session = GrpcSessionConfigurationBean.DEFAULT_SESSION_NAME)
+	@CoherenceCache
 	private NamedCache<String, String> fooMap;
-
-	@Autowired
-	Coherence coherence;
 
 	@BeforeAll
 	static void setup() throws Exception {
@@ -84,7 +81,7 @@ public class GrpcSessionBeanTests {
 	@Order(1)
 	public void testBasicGrpcClient() throws Exception {
 		this.fooMap.put("foo", "bar");
-		final Map<String, String> mapFromCoherence = server.getSession().getMap("fooMap");
+		final Map<String, String> mapFromCoherence = this.server.getSession().getMap("fooMap");
 		assertEquals("bar", mapFromCoherence.get("foo"));
 	}
 
@@ -92,9 +89,11 @@ public class GrpcSessionBeanTests {
 	@EnableCoherence
 	static class Config {
 		@Bean
-		GrpcSessionConfigurationBean grpcSessionConfigurationBean() {
-			final GrpcSessionConfigurationBean sessionConfigurationBean = new GrpcSessionConfigurationBean();
-			sessionConfigurationBean.setName(GrpcSessionConfigurationBean.DEFAULT_SESSION_NAME);
+		SessionConfigurationBean grpcSessionConfigurationBean() {
+			final SessionConfigurationBean sessionConfigurationBean = new SessionConfigurationBean();
+			sessionConfigurationBean.setName(SessionConfigurationBean.DEFAULT_SESSION_NAME);
+			sessionConfigurationBean.setConfig("grpc-test-coherence-cache-config.xml");
+			sessionConfigurationBean.setType(SessionType.CLIENT);
 			return sessionConfigurationBean;
 		}
 	}

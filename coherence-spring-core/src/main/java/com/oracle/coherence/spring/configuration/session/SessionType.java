@@ -31,7 +31,12 @@ public enum SessionType {
 
 	/**
 	 * The session is a gRPC client session.
+	 * @deprecated use {@link SessionType#CLIENT} instead
 	 */
+	@Deprecated(
+			since = "4.0.0",
+			forRemoval = true
+	)
 	GRPC,
 
 	/**
