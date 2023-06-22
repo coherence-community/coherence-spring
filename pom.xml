@@ -158,7 +158,7 @@
 		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jakarta.inject.version>2.0.1</jakarta.inject.version>
-		<junit.version>5.9.1</junit.version>
+		<junit.version>5.9.3</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
 		<org.springframework.version>6.0.9</org.springframework.version>
