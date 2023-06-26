@@ -1,0 +1,49 @@
+name: CI - Pull Request
+on:
+  pull_request:
+jobs:
+  build:
+    strategy:
+      matrix:
+        java-version: [ 17, 20 ]
+    runs-on: macos-latest
+    permissions:
+      checks: write
+      contents: read
+      issues: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3.5.3
+        name: 📥 Checkout repository
+        with:
+          fetch-depth: 0
+      - name: 🔧 Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v3.11.0
+        with:
+          distribution: 'oracle'
+          java-version: ${{ matrix.java-version }}
+      - name: 🫙 Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven2-
+      - name: 🛠 Build and test with ☕ Java ${{ matrix.java-version }}
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          ./mvnw clean install -B -Powasp -Pjdk${{ matrix.java-version }}
+        env:
+          GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
+          HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
+      - name: 📊 Publish Test Report
+        if: always()
+        uses: mikepenz/action-junit-report@v3
+        with:
+          check_name: Java CI / Test Report (${{ matrix.java-version }})
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          check_retries: 'true'
+      - name: 🧹 Clean Maven cache
+        run: |
+          find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
