@@ -22,4 +22,9 @@
        ]]></notes>
         <cve>CVE-2023-35116</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[ guava-31.1-jre.jar
+       ]]></notes>
+        <cve>CVE-2023-2976</cve>
+    </suppress>
 </suppressions>

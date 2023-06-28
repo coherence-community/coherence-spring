@@ -13,7 +13,7 @@ jobs:
     if: github.repository_owner == 'coherence-community'
     strategy:
       matrix:
-        java-version: [ 17, 19 ]
+        java-version: [ 17, 20 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
@@ -36,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven2-
-      - name: Build and test with Maven + Sonar
+      - name: Build and test with Maven + Sonar - ${{ matrix.java-version }}
         if: "github.event_name != 'pull_request' && matrix.java-version == 17"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
