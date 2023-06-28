@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -Pspring-repo -Pcoverage --settings .mvn/settings.xml
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Pspring-repo -Pcoverage --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
@@ -52,20 +52,20 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Pspring -Powasp,jdk${{ matrix.java-version }} --settings .mvn/settings.xml
+          ./mvnw clean install -B -Pspring -Pjdk${{ matrix.java-version }} --settings .mvn/settings.xml
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-      - name: Deploy Snapshots
-        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
-        env:
-          MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
-          MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
-          MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-        run: ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+#      - name: Deploy Snapshots
+#        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
+#        env:
+#          MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
+#          MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
+#          MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+#        run: ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
           find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
