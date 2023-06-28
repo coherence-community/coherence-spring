@@ -63,7 +63,7 @@ https://github.com/coherence-community/coherence-spring/tree/main/samples[sample
 
 In order to build Coherence Spring, you need to have installed:
 
-- https://www.oracle.com/java/technologies/javase-jdk11-downloads.html[JDK 11]
+- https://www.oracle.com/java/technologies/downloads/#java17[JDK 17]
 - https://help.github.com/set-up-git-redirect[Git]
 
 === Check out sources
