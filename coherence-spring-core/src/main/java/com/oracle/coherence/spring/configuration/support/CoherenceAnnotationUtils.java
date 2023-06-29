@@ -114,8 +114,9 @@ public final class CoherenceAnnotationUtils {
 				final AnnotatedBeanDefinition annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
 				final Object beanDefinitionMetadataSource = annotatedBeanDefinition.getSource();
 
-				if (beanDefinitionMetadataSource != null && beanDefinitionMetadataSource instanceof MethodMetadata) {
-					final MethodMetadata beanMethodMetadata = (MethodMetadata) beanDefinition.getSource();
+				if (beanDefinitionMetadataSource != null && beanDefinitionMetadataSource instanceof MethodMetadata
+						&& annotatedBeanDefinition.getSource() != null) {
+					final MethodMetadata beanMethodMetadata = (MethodMetadata) annotatedBeanDefinition.getSource();
 					boolean foundAnnotation = beanMethodMetadata.getAnnotations().isPresent(annotationType);
 
 					if (foundAnnotation) {
@@ -127,7 +128,7 @@ public final class CoherenceAnnotationUtils {
 					}
 				}
 
-				AnnotationMetadata classLevelAnnotationMetadata = annotatedBeanDefinition.getMetadata();
+				final AnnotationMetadata classLevelAnnotationMetadata = annotatedBeanDefinition.getMetadata();
 				boolean foundAnnotation = classLevelAnnotationMetadata.getAnnotations().isPresent(annotationType);
 
 				if (foundAnnotation) {

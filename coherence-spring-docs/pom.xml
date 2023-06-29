@@ -183,7 +183,7 @@
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
 							<bottom>
-								Copyright © 2013, 2022, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
+								Copyright © 2013, 2023, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
 							</bottom>
 						</configuration>
 					</execution>
@@ -212,7 +212,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>copy-asciidoc-resources</id>
@@ -361,7 +360,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
+				<version>${maven-antrun-plugin.version}</version>
 				<dependencies>
 					<dependency>
 						<groupId>ant-contrib</groupId>
@@ -431,7 +430,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>${build-helper-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-zip</id>

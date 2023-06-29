@@ -29,7 +29,7 @@
 :github-wiki: https://github.com/{github-repo}/wiki/
 :github-releases: https://github.com/{github-repo}/releases/
 
-:hibernate-docs: https://docs.jboss.org/hibernate/orm/5.5/userguide/html_single/Hibernate_User_Guide.html
+:hibernate-docs: https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html
 
 :sources-root-samples: {coherence-spring-code}tree/main/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/

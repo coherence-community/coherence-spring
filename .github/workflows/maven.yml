@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven2-
       - name: Build and test with Maven + Sonar - ${{ matrix.java-version }}
-        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
+        if: "matrix.java-version == 17"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
@@ -49,6 +49,7 @@ jobs:
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       - name: Build and test with Maven - ${{ matrix.java-version }}
+        if: "matrix.java-version != 17"
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
@@ -60,7 +61,7 @@ jobs:
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       - name: Deploy Snapshots
-        if: "github.event_name != 'pull_request' && matrix.java-version == 17"
+        if: "matrix.java-version == 17"
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
