@@ -165,7 +165,7 @@
 		<spring-boot.version>2.7.12</spring-boot.version>
 		<spring-session.version>2.6.3</spring-session.version>
 		<spring-security.version>5.7.8</spring-security.version>
-		<tomcat.version>9.0.74</tomcat.version>
+		<tomcat.version>9.0.76</tomcat.version>
 	</properties>
 
 	<distributionManagement>

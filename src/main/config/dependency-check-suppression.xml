@@ -69,4 +69,9 @@
        ]]></notes>
         <cve>CVE-2023-34462</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[ guava-30.0-jre.jar
+       ]]></notes>
+        <cve>CVE-2023-2976</cve>
+    </suppress>
 </suppressions>
