@@ -19,7 +19,7 @@ function createConfig() {
         },
         navTitle: 'Oracle Coherence Spring',
         navIcon: null,
-        navLogo: 'images/logo.png'
+        navLogo: 'images/logo.svg'
     };
 }
 
@@ -36,7 +36,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('about-01_overview', '/about/01_overview', {})
+            component: loadPage('about-01_overview', 'about/01_overview', {})
         },
         {
             path: '/about/02_spring-boot',
@@ -49,7 +49,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('about-02_spring-boot', '/about/02_spring-boot', {})
+            component: loadPage('about-02_spring-boot', 'about/02_spring-boot', {})
         },
         {
             path: '/dev/01_license',
@@ -62,7 +62,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-01_license', '/dev/01_license', {})
+            component: loadPage('dev-01_license', 'dev/01_license', {})
         },
         {
             path: '/dev/02_source-code',
@@ -75,7 +75,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-02_source-code', '/dev/02_source-code', {})
+            component: loadPage('dev-02_source-code', 'dev/02_source-code', {})
         },
         {
             path: '/dev/03_build-instructions',
@@ -88,7 +88,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-03_build-instructions', '/dev/03_build-instructions', {})
+            component: loadPage('dev-03_build-instructions', 'dev/03_build-instructions', {})
         },
         {
             path: '/dev/04_issue-tracking',
@@ -101,7 +101,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-04_issue-tracking', '/dev/04_issue-tracking', {})
+            component: loadPage('dev-04_issue-tracking', 'dev/04_issue-tracking', {})
         },
         {
             path: '/dev/05_contributions',
@@ -114,7 +114,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-05_contributions', '/dev/05_contributions', {})
+            component: loadPage('dev-05_contributions', 'dev/05_contributions', {})
         },
         {
             path: '/dev/06_history',
@@ -127,7 +127,7 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-06_history', '/dev/06_history', {})
+            component: loadPage('dev-06_history', 'dev/06_history', {})
         },
         {
             path: '/dev/07_getting-help',
@@ -140,100 +140,180 @@ function createRoutes(){
                 customLayout: null,
                 hasNav: true
             },
-            component: loadPage('dev-07_getting-help', '/dev/07_getting-help', {})
+            component: loadPage('dev-07_getting-help', 'dev/07_getting-help', {})
         },
         {
-            path: '/', redirect: '/about/01_overview'
+            path: '/', redirect: 'about/01_overview'
         },
         {
             path: '*', redirect: '/'
         }
     ];
 }
-
 function createNav(){
     return [
-        { header: 'Project Website' },
         {
-            title: 'Getting Started',
-            action: 'assistant',
-            group: '/about',
+            type: 'groups',
             items: [
-                { href: '/about/01_overview', title: 'Overview' },
-                { href: '/about/02_spring-boot', title: 'Spring Boot' }
-            ]
-        },
-        {
-            title: 'Development',
-            action: 'fa-code',
-            group: '/dev',
-            items: [
-                { href: '/dev/01_license', title: 'License' },
-                { href: '/dev/02_source-code', title: 'Source Code' },
-                { href: '/dev/03_build-instructions', title: 'Building' },
-                { href: '/dev/04_issue-tracking', title: 'Issue Tracking' },
-                { href: '/dev/05_contributions', title: 'Contributing' },
-                { href: '/dev/06_history', title: 'Change History' },
-                { href: '/dev/07_getting-help', title: 'Getting Help' }
-            ]
-        },
-        { divider: true },
-        { header: 'Reference Documentation' },
-        {
-            title: 'HTML',
-            action: 'fa-html5',
-            href: 'refdocs/reference/html/index.html',
-            target: '_blank'
-        },
-        {
-            title: 'Single Page',
-            action: 'fa-html5',
-            href: 'refdocs/reference/htmlsingle/index.html',
-            target: '_blank'
-        },
-        {
-            title: 'PDF',
-            action: 'picture_as_pdf',
-            href: 'refdocs/reference/pdf/coherence-spring-reference.pdf',
-            target: '_blank'
-        },
-        {
-            title: 'Javadocs',
-            action: 'code',
-            href: 'refdocs/api/index.html',
-            target: '_blank'
-        },
-        { divider: true },
-        { header: 'Additional Resources' },
-        {
-            title: 'Slack',
-            action: 'fa-slack',
-            href: 'https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE',
-            target: '_blank'
-        },
-        {
-            title: 'Coherence Web Site',
-            action: 'fa-globe',
-            href: 'https://coherence.community/',
-            target: '_blank'
-        },
-        {
-            title: 'Coherence Hibernate',
-            action: 'fa-globe',
-            href: 'https://hibernate.coherence.community/',
-            target: '_blank'
-        },
-        {
-            title: 'GitHub',
-            action: 'fa-github-square',
-            href: 'https://github.com/coherence-community/coherence-spring/',
-            target: '_blank'
-        },
-        {
-            title: 'Twitter',
-            action: 'fa-twitter-square',
-            href: 'https://twitter.com/OracleCoherence/',
-            target: '_blank'
+                {
+                    type: 'group',
+                    title: 'Project Website',
+                    group: '/about',
+                    items: [
+                        {
+                            type: 'menu',
+                            title: 'Getting Started',
+                            group: '/about',
+                            items: [
+                                {
+                                    type: 'page',
+                                    title: 'Overview',
+                                    to: '/about/01_overview',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Spring Boot',
+                                    to: '/about/02_spring-boot',
+                                    action: null
+                                }
+                            ],
+                            action: 'assistant'
+                        },
+                        {
+                            type: 'menu',
+                            title: 'Development',
+                            group: '/dev',
+                            items: [
+                                {
+                                    type: 'page',
+                                    title: 'License',
+                                    to: '/dev/01_license',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Source Code',
+                                    to: '/dev/02_source-code',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Building',
+                                    to: '/dev/03_build-instructions',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Issue Tracking',
+                                    to: '/dev/04_issue-tracking',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Contributing',
+                                    to: '/dev/05_contributions',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Change History',
+                                    to: '/dev/06_history',
+                                    action: null
+                                },
+                                {
+                                    type: 'page',
+                                    title: 'Getting Help',
+                                    to: '/dev/07_getting-help',
+                                    action: null
+                                }
+                            ],
+                            action: 'fa-code'
+                        }
+                    ],
+                    action: null
+                },
+                {
+                    type: 'group',
+                    title: 'Reference Documentation',
+                    group: '/docs',
+                    items: [
+                        {
+                            type: 'link',
+                            title: 'HTML',
+                            href: 'refdocs/reference/html/index.html',
+                            target: '_blank',
+                            action: 'fa-html5'
+                        },
+                        {
+                            type: 'link',
+                            title: 'Single Page',
+                            href: 'refdocs/reference/htmlsingle/index.html',
+                            target: '_blank',
+                            action: 'fa-html5'
+                        },
+                        {
+                            type: 'link',
+                            title: 'PDF',
+                            href: 'refdocs/reference/pdf/coherence-spring-reference.pdf',
+                            target: '_blank',
+                            action: 'picture_as_pdf'
+                        },
+                        {
+                            type: 'link',
+                            title: 'Javadocs',
+                            href: 'refdocs/api/index.html',
+                            target: '_blank',
+                            action: 'code'
+                        }
+                    ],
+                    action: null
+                },
+                {
+                    type: 'group',
+                    title: 'Additional Resources',
+                    group: null,
+                    items: [
+                        {
+                            type: 'link',
+                            title: 'Slack',
+                            href: 'https://join.slack.com/t/oraclecoherence/shared_invite/enQtNzcxNTQwMTAzNjE4LTJkZWI5ZDkzNGEzOTllZDgwZDU3NGM2YjY5YWYwMzM3ODdkNTU2NmNmNDFhOWIxMDZlNjg2MzE3NmMxZWMxMWE',
+                            target: '_blank',
+                            action: 'fa-slack'
+                        },
+                        {
+                            type: 'link',
+                            title: 'Coherence Web Site',
+                            href: 'https://coherence.community/',
+                            target: '_blank',
+                            action: 'fa-globe'
+                        },
+                        {
+                            type: 'link',
+                            title: 'Coherence Hibernate',
+                            href: 'https://hibernate.coherence.community/',
+                            target: '_blank',
+                            action: 'fa-globe'
+                        },
+                        {
+                            type: 'link',
+                            title: 'GitHub',
+                            href: 'https://github.com/coherence-community/coherence-spring/',
+                            target: '_blank',
+                            action: 'fa-github-square'
+                        },
+                        {
+                            type: 'link',
+                            title: 'Twitter',
+                            href: 'https://twitter.com/OracleCoherence/',
+                            target: '_blank',
+                            action: 'fa-twitter-square'
+                        }
+                    ],
+                    action: null
+                }
+            ],
+            action: null
         }
     ];
 }

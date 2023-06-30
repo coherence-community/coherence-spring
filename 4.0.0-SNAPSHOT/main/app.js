@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2018, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,35 @@
  * limitations under the License.
  */
 
-/* global Vue, releases, Vuex, Vuetify, superagent */
+/* global Vue, releases, Vuex, Vuetify, superagent, createRoutes, createConfig, createNav, VueRouter */
 
 const config = createConfig();
 const navItems = createNav();
 const searchIndex = new Promise(function(resolve, reject){
     superagent.get("main/search-index.json").end(function (error, response) {
-      if(error){
-        reject("unable to load search index: " + error);
-        return;
-      }
-      resolve(JSON.parse(response.text));
+        if (error) {
+            reject("unable to load search index: " + error);
+        } else {
+            resolve(JSON.parse(response.text));
+        }
     });
 });
 
 function main() {
 
     // add components
-    for (var compKey in window.allComponents) {
-        comp = window.allComponents[compKey];
+    for (let compKey in window.allComponents) {
+        const comp = window.allComponents[compKey];
         comp.init();
     }
 
+    // noinspection JSUnresolvedVariable
     Vuetify.default(window.Vue, {
         theme: config.theme
     });
 
     Vue.use(Vuex);
+    // noinspection JSUnresolvedVariable,JSUnresolvedFunction
     const store = new Vuex.Store({
         state: {
             isSearching: false,
@@ -81,6 +83,7 @@ function main() {
     const router = new VueRouter({ routes: createRoutes() });
     sync(store, router);
 
+    // noinspection JSUnresolvedFunction
     new Vue({
         router,
         store

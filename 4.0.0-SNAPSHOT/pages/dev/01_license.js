@@ -3,7 +3,7 @@
 <h2 id="_license">License</h2>
 <div class="section">
 <p>Oracle licenses the Oracle Coherence Spring project under the
-<a id="" title="" target="_blank" href="https://oss.oracle.com/licenses/upl/">The Universal Permissive License (UPL), Version 1.0</a></p>
+<a target="_blank" href="https://oss.oracle.com/licenses/upl/">The Universal Permissive License (UPL), Version 1.0</a></p>
 
 
 <h3 id="_the_universal_permissive_license_upl_version_1_0">The Universal Permissive License (UPL), Version 1.0</h3>
@@ -41,5 +41,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</p>
 
 </div>
+
 </div>
+
 </doc-view>

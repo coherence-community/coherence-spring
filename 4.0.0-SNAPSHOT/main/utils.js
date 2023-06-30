@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2018, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,23 @@
  */
 
 /* global superagent, Vue */
+
+function hue(color) {
+    switch (color) {
+        case 'purple':
+            return 420;
+        case 'darken-3 pink':
+            return 480;
+        case 'indigo':
+            return 370;
+        case 'cyan':
+            return 337;
+        case 'teal':
+            return 315;
+        default:
+            return 0;
+    }
+}
 
 function createPageTemplateElt(id, text){
     if(document.getElementById(id) === null){
@@ -51,7 +68,7 @@ function loadPage(id, targetPath, compDef, customJsPath) {
             }
 
             // download the template
-            const page = "pages" + targetPath + ".js";
+            const page = "pages/" + targetPath + ".js";
             superagent.get(page).end(function (error, response) {
 
                 // error loading page

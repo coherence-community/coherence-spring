@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2018, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,86 +18,7 @@
 
 window.allComponents['docToolbar'] = {
     init: function(){
-        // create a script element
-        const scriptElt = document.createElement("script");
-        scriptElt.id = "doc-toolbar";
-        scriptElt.type = "text/x-template";
-        scriptElt.text =
-        `<div>
-            <v-toolbar fixed dark app :color="$store.state.currentColor" id="main-toolbar">
-            <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
-            <v-btn icon large @click="setIsSearching(true)">
-                <v-icon>search</v-icon>
-            </v-btn>
-            <v-slide-x-reverse-transition mode="out-in">
-                <v-toolbar-title
-                style="position: relative"
-                v-bind:key="$store.state.h1" class="d-flex" v-html="$store.state.h1"></v-toolbar-title>
-            </v-slide-x-reverse-transition>
-            </v-toolbar>
-            <v-toolbar :color="$store.state.currentColor"
-            fixed
-            dark
-            app
-            :manual-scroll="!$store.state.isSearching"
-            ref="toolbar"
-            flat>
-              <div v-if="$store.state.isSearching" class="search-container">
-                <v-text-field
-                    placeholder="Search"
-                    prepend-icon="search"
-                    id="search"
-                    clearable
-                    single-line
-                    solo
-                    key="search"
-                    v-model="search"
-                    ref="search"
-                    autocapitalize="off"
-                    autocorrect="off"
-                    autocomplete="off"
-                    spellcheck="false"
-                    class="search-input"
-                    light>
-                </v-text-field>
-
-                <div class="search-overlay" @click="setIsSearching(false)"></div>
-                <div class="search-output">
-                  <div class="search-result-meta">{{searchMeta}}</div>
-                  <div class="search-result">
-                    <ol>
-                      <li v-for="result in results">
-                        <router-link @click.native="setIsSearching(false)"
-                                     :to="result.doc.location"
-                                     :title="result.doc.title">
-                            <article>
-                                <h1 v-html="result.doc.h1"></h1>
-                                <p v-if="result.doc.text" v-html="result.doc.text"></p>
-                            </article>
-                        </router-link>
-                        <router-link v-for="section in result.sections"
-                                     :key="section.location"
-                                     @click.native="setIsSearching(false)"
-                                     :to="section.location"
-                                     :title="section.title">
-                            <article>
-                                <h1 v-html="section.h1"></h1>
-                                <p v-html="section.text"></p>
-                            </article>
-                        </router-link>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </v-toolbar>
-        </div>`;
-
-        // insert it in the document
-        const firstScriptElt = document.getElementsByTagName('script')[0];
-        firstScriptElt.parentNode.insertBefore(scriptElt, firstScriptElt);
-
-        var messages = {
+        const messages = {
             placeholder: "Type to start searching",
             none: "No matching documents",
             one: "1 matching document",
@@ -107,15 +28,85 @@ window.allComponents['docToolbar'] = {
         const truncate = (string, n) => {
             let i = n;
             if (string.length > i) {
-                while (string[i] !== " " && --i > 0)
-                    ;
+                while (string[i] !== " " && --i > 0) {}
                 return `${string.substring(0, i)}...`;
             }
             return string;
         };
 
+        // noinspection HtmlUnknownAttribute
         Vue.component('docToolbar', {
-            template: '#doc-toolbar',
+            template: `
+                <div>
+                    <v-toolbar fixed dark app :color="$store.state.currentColor" id="main-toolbar">
+                    <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
+                    <v-btn icon large @click="setIsSearching(true)">
+                        <v-icon>search</v-icon>
+                    </v-btn>
+                    <v-slide-x-reverse-transition mode="out-in">
+                        <v-toolbar-title
+                        style="position: relative"
+                        v-bind:key="$store.state.h1" class="d-flex" v-html="$store.state.h1"></v-toolbar-title>
+                    </v-slide-x-reverse-transition>
+                    </v-toolbar>
+                    <v-toolbar :color="$store.state.currentColor"
+                    fixed
+                    dark
+                    app
+                    :manual-scroll="!$store.state.isSearching"
+                    ref="toolbar"
+                    flat>
+                      <div v-if="$store.state.isSearching" class="search-container">
+                        <v-text-field
+                            placeholder="Search"
+                            prepend-icon="search"
+                            id="search"
+                            clearable
+                            single-line
+                            solo
+                            key="search"
+                            v-model="search"
+                            ref="search"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            autocomplete="off"
+                            spellcheck="false"
+                            class="search-input"
+                            light>
+                        </v-text-field>
+        
+                        <div class="search-overlay" @click="setIsSearching(false)"></div>
+                        <div class="search-output">
+                          <div class="search-result-meta">{{searchMeta}}</div>
+                          <div class="search-result">
+                            <ol>
+                              <li v-for="result in results">
+                                <router-link @click.native="setIsSearching(false)"
+                                             :to="result.doc.location"
+                                             :title="result.doc.title">
+                                    <article>
+                                        <h1 v-html="result.doc.h1"></h1>
+                                        <p v-if="result.doc.text" v-html="result.doc.text"></p>
+                                    </article>
+                                </router-link>
+                                <router-link v-for="section in result.sections"
+                                             :key="section.location"
+                                             @click.native="setIsSearching(false)"
+                                             :to="section.location"
+                                             :title="section.title">
+                                    <article>
+                                        <h1 v-html="section.h1"></h1>
+                                        <p v-html="section.text"></p>
+                                    </article>
+                                </router-link>
+                              </li>
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                    </v-toolbar>
+                </div>
+            `,
             data: function () {
                 return{
                     results: [],
@@ -149,20 +140,17 @@ window.allComponents['docToolbar'] = {
                                 this.value_.toLowerCase().split(" ")
                                         .filter(Boolean)
                                         .forEach(term => {
+                                            // noinspection JSUnresolvedVariable
                                             query.term(term, {wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING});
                                         });
                             })
 
                             /* Process query results */
                             .reduce((items, item) => {
+                                // noinspection JSUnresolvedVariable
                                 const doc = this.docs_.get(item.ref);
-                                //if (doc.parent) {
-                                //  const ref = doc.parent.location
-                                //  items.set(ref, (items.get(ref) || []).concat(item))
-                                //} else {
                                 const ref = doc.location;
                                 items.set(ref, (items.get(ref) || []));
-                                //}
                                 return items;
                             }, new Map);
 
@@ -171,20 +159,21 @@ window.allComponents['docToolbar'] = {
                     this.value_.toLowerCase().split(" ")
                             .filter(Boolean)
                             .forEach(query => {
+                                // noinspection JSUnresolvedVariable
                                 matches.push(new RegExp(`(|${lunr.tokenizer.separator})(${query})`, "img"));
                             });
 
                     const highlight = (_, separator, token) =>
                             `${separator}<em>${token}</em>`;
 
-                    /* Reset stack and render results */
+                    // render results
                     this.results = [];
                     result.forEach((items, ref) => {
                         const doc = this.docs_.get(ref);
 
                         const entry = {};
 
-                        /* render article */
+                        // render article
                         entry.doc = {};
                         entry.doc.location = doc.location;
                         entry.doc.title = doc.title;
@@ -195,8 +184,10 @@ window.allComponents['docToolbar'] = {
                             entry.doc.text = entry.doc.text.replace(match, highlight);
                         });
 
-                        /* render sections */
+                        // render sections
+                        // noinspection JSUnresolvedVariable
                         entry.sections = items.map(item => {
+                            // noinspection JSUnresolvedVariable
                             const section = this.docs_.get(item.ref);
                             const sectionEntry = {};
                             sectionEntry.location = section.location;
@@ -213,7 +204,7 @@ window.allComponents['docToolbar'] = {
                         this.results.push(entry);
                     });
 
-                    /* Update search metadata */
+                    // Update search metadata
                     switch (result.size) {
                         case 0:
                             this.searchMeta = messages.none;
@@ -239,10 +230,14 @@ window.allComponents['docToolbar'] = {
                     });
                 },
                 setIsSearching(val) {
+                    // noinspection JSUnresolvedVariable
                     this.$refs.toolbar.isScrolling = !val;
+                    // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
                     this.$store.commit('sitegen/ISSEARCHING', val);
                     if (val) {
+                        // noinspection JSUnresolvedFunction
                         this.$nextTick(() => {
+                            // noinspection JSUnresolvedVariable
                             this.$refs.search.focus();
                         });
                     } else {
@@ -250,16 +245,17 @@ window.allComponents['docToolbar'] = {
                     }
                 },
                 initDocSearch(search_index) {
-                    /* Preprocess and index sections and documents */
+                    // Preprocess and index sections and documents
+                    // noinspection JSUnresolvedVariable
                     const data = search_index.docs;
                     this.docs_ = data.reduce((docs, doc) => {
                         const [path, hash] = doc.location.split("#");
 
-                        /* Associate section with parent document */
+                        // Associate section with parent document
                         if (hash) {
                             doc.parent = docs.get(path);
 
-                            /* Override page title with document title if first section */
+                            // Override page title with document title if first section
                             if (doc.parent && !doc.parent.done) {
                                 doc.parent.title = doc.title;
                                 doc.parent.text = doc.text;
@@ -267,45 +263,48 @@ window.allComponents['docToolbar'] = {
                             }
                         }
 
-                        /* Index sections and documents, but skip top-level headline */
+                        // Index sections and documents, but skip top-level headline
                         if (!doc.parent || doc.parent.title !== doc.title)
                             docs.set(doc.location, doc);
                         return docs;
                     }, new Map);
 
                     /* eslint-disable no-invalid-this */
-                    const docs = this.docs_,
-                            lang = this.lang_;
+                    const docs = this.docs_;
 
-                    /* Create stack and index */
-                    this.stack_ = [];
+                    // Create index
                     this.index_ = lunr(function () {
+                        // noinspection JSUnresolvedVariable
                         const filters = {
                             "search.pipeline.trimmer": lunr.trimmer,
                             "search.pipeline.stopwords": lunr.stopWordFilter
                         };
 
-                        /* Disable stop words filter and trimmer, if desired */
+                        // Disable stop words filter and trimmer, if desired
                         const pipeline = Object.keys(filters).reduce((result, name) => {
                             result.push(filters[name]);
                             return result;
                         }, []);
 
-                        /* Remove stemmer, as it cripples search experience */
+                        // Remove stemmer, as it cripples search experience
+                        // noinspection JSUnresolvedVariable
                         this.pipeline.reset();
                         if (pipeline)
+                            // noinspection JSUnresolvedVariable
                             this.pipeline.add(...pipeline);
 
-                        /* Index fields */
+                        // Index fields
                         this.field("title", {boost: 10});
                         this.field("text");
+                        // noinspection JSUnresolvedFunction
                         this.ref("location");
 
-                        /* Index documents */
+                        // Index documents
                         docs.forEach(doc => this.add(doc));
                     });
                 },
                 toggleSidebar() {
+                    // noinspection JSUnresolvedVariable, JSCheckFunctionSignatures
                     this.$store.commit('vuetify/SIDEBAR', !this.$store.state.sidebar);
                 }
             }

@@ -7,7 +7,7 @@ dedicated auto-configuration support for Spring Boot as well support for Spring 
 and support for Spring Boot&#8217;s new ConfigData API to use Coherence as a source of configuration data.</p>
 
 <p>Getting your first Coherence powered Spring Boot application off the ground could not be easier. Create a basic Spring
-Boot app using <a id="" title="" target="_blank" href="https://start.spring.io/">start.spring.io</a>.</p>
+Boot app using <a target="_blank" href="https://start.spring.io/">start.spring.io</a>.</p>
 
 <p>Add the Coherence Spring Boot Starter to your generated app&#8217;s <code>pom.xml</code>:</p>
 
@@ -18,12 +18,12 @@ title="Maven"
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
-        &lt;version&gt;4.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;version&gt;${project.version}&lt;/version&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;23.03&lt;/version&gt;
+        &lt;version&gt;${coherence.version}&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</markup>
 
@@ -31,6 +31,7 @@ title="Maven"
 <p class="admonition-inline">Instead of Coherence CE you can also specify the commercial version of Coherence. The minimum supported commercial
 version is Oracle Coherence <code>14.1.1.2206</code> Feature Pack.</p>
 </div>
+
 <p>This will be enough to start up a default instance of Coherence with default settings. E.g., inject Coherence beans into
 your Spring Controllers, Services and other components:</p>
 
@@ -40,9 +41,10 @@ lang="java"
 >@CoherenceCache("myCacheName")
 private NamedCache&lt;Long, String&gt; namedCache;</markup>
 
-<p>In order to dive deeper, please see the <a id="" title="" target="_blank" href="refdocs/reference/html/quickstart.html">Quickstart Guide</a>, the
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server">To-do List Sample</a>, and also
-refer to the <a id="" title="" target="_blank" href="refdocs/reference/html/index.html">reference guide</a>.</p>
+<p>In order to dive deeper, please see the <a target="_blank" href="refdocs/reference/html/quickstart.html">Quickstart Guide</a>, the
+<a target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server">To-do List Sample</a>, and also
+refer to the <a target="_blank" href="refdocs/reference/html/index.html">reference guide</a>.</p>
 
 </div>
+
 </doc-view>

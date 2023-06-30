@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2018, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,45 +18,40 @@
 
 window.allComponents["defaultView"] = {
     init: function(){
-        // create a script element
-        const scriptElt = document.createElement("script");
-        scriptElt.id = "default-view";
-        scriptElt.type = "text/x-template";
-        scriptElt.text =
-        `<v-app light>
-            <docNav></docNav>
-            <docToolbar></docToolbar>
-            <v-content>
-            <v-container fluid>
-                <v-slide-x-reverse-transition mode="out-in" @after-leave="afterLeave">
-                <router-view></router-view>
-                </v-slide-x-reverse-transition>
-            </v-container>
-            </v-content>
-            <docFooter></docFooter>
-        </v-app>`;
-
-        // insert it in the document
-        const firstScriptElt = document.getElementsByTagName('script')[0];
-        firstScriptElt.parentNode.insertBefore(scriptElt, firstScriptElt);
-
         window.scrollFix = function (hashtag) {
-                var element = document.querySelector(hashtag);
-                if(element){
-                    var initialY = window.pageYOffset;
-                    var elementY = initialY + element.getBoundingClientRect().top;
-                    var targetY = document.body.scrollHeight - elementY < window.innerHeight
-                        ? document.body.scrollHeight - window.innerHeight
-                        : elementY;
+            let element = document.querySelector(hashtag);
+            if (element) {
+                // noinspection JSDeprecatedSymbols
+                let initialY = window.pageYOffset;
+                let elementY = initialY + element.getBoundingClientRect().top;
+                let targetY = document.body.scrollHeight - elementY < window.innerHeight
+                    ? document.body.scrollHeight - window.innerHeight
+                    : elementY;
 
-                    // offset
-                    targetY -= 75;
-                    window.scrollTo(0, targetY);
-                }
+                // offset
+                targetY -= 75;
+                window.scrollTo(0, targetY);
+            }
         };
 
         Vue.component('defaultView', {
-            template: '#default-view',
+            template: `
+                <v-app light>
+                    <doc-nav></doc-nav>
+                    <doc-toolbar></doc-toolbar>
+                    <v-content>
+                    <v-container fluid>
+                        <v-slide-x-reverse-transition
+                            mode="out-in" 
+                            @after-leave="afterLeave"
+                        >
+                            <router-view></router-view>
+                        </v-slide-x-reverse-transition>
+                    </v-container>
+                    </v-content>
+                    <docFooter></docFooter>
+                </v-app>
+            `,
             mounted () {
               if (this.$route.hash) {
                 setTimeout(() => scrollFix(this.$route.hash), 2);

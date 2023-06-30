@@ -3,11 +3,12 @@
 <h2 id="_overview">Overview</h2>
 <div class="section">
 <p>The Coherence Spring project provides mechanisms for application developers to integrate
-<a id="" title="" target="_blank" href="https://coherence.community/">Oracle Coherence</a> and <a id="" title="" target="_blank" href="https://spring.io/">Spring-based</a> applications. Coherence Spring not
+<a target="_blank" href="https://coherence.community/">Oracle Coherence</a> and <a target="_blank" href="https://spring.io/">Spring-based</a> applications. Coherence Spring not
 only provides foundational support for Spring Framework and Spring Boot but also direct integrations for various Spring
 portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.</p>
 
 </div>
+
 
 <h2 id="_get_started">Get Started</h2>
 <div class="section">
@@ -38,12 +39,10 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="refdocs/reference/html/quickstart.html"><div class="card__link-hover"/>
+<a target="_blank" href="refdocs/reference/html/quickstart.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
-<v-avatar size="150px">
-<v-icon class="xxx-large">arrow_circle_up</v-icon>
-</v-avatar>
+<img width="150" height="150" src="./images/logo-with-padding.svg"/>
 </v-layout>
 <div class="px-3">
 <v-divider class="indigo lighten-4"/>
@@ -59,7 +58,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server"><div class="card__link-hover"/>
+<a target="_blank" href="https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -82,7 +81,9 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-container>
 </v-flex>
 </v-layout>
+
 </div>
+
 
 <h2 id="_reference_documentation">Reference Documentation</h2>
 <div class="section">
@@ -92,7 +93,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 <v-layout row wrap class="pillars">
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="refdocs/reference/html/index.html"><div class="card__link-hover"/>
+<a target="_blank" href="refdocs/reference/html/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -113,7 +114,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="refdocs/reference/htmlsingle/index.html"><div class="card__link-hover"/>
+<a target="_blank" href="refdocs/reference/htmlsingle/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -134,7 +135,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="refdocs/reference/pdf/coherence-spring-reference.pdf"><div class="card__link-hover"/>
+<a target="_blank" href="refdocs/reference/pdf/coherence-spring-reference.pdf"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -155,7 +156,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-flex>
 <v-flex xs12 sm4 lg3>
 <v-card>
-<a id="" title="" target="_blank" href="refdocs/api/index.html"><div class="card__link-hover"/>
+<a target="_blank" href="refdocs/api/index.html"><div class="card__link-hover"/>
 </a>
 <v-layout align-center justify-center class="">
 <v-avatar size="150px">
@@ -178,5 +179,7 @@ portfolio projects, including <em>Spring Data</em> and <em>Spring Session</em>.<
 </v-container>
 </v-flex>
 </v-layout>
+
 </div>
+
 </doc-view>

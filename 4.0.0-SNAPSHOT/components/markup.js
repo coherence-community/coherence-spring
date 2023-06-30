@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Oracle and/or its affiliates.
+ * Copyright (c) 2018, 2022 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,31 +18,24 @@
 
 window.allComponents["markup"] = {
     init: function(){
-        // create a script element
-        const scriptElt = document.createElement("script");
-        scriptElt.id = "markup";
-        scriptElt.type = "text/x-template";
-        scriptElt.text =
-        `<div class="markup-container">
-            <div v-if="title" class="block-title"><span v-html="title"></span></div>
-            <div class="markup" v-bind:data-lang="lang">
-               <pre><code v-bind:class="lang" ref="markup"><slot/></code></pre>
-               <div class="markup__copy">
-                   <v-icon v-on:click="copyMarkup">content_copy</v-icon>
-                   <v-slide-x-reverse-transition mode="out-in">
-                   <span class="markup__copy__message"
-                         :class="{'markup__copy__message--active': copied}">Copied</span>
-                   </v-slide-x-reverse-transition>
-               </div>
-            </div>
-        </div>`;
-
-        // insert it in the document
-        const firstScriptElt = document.getElementsByTagName('script')[0];
-        firstScriptElt.parentNode.insertBefore(scriptElt, firstScriptElt);
-
+        // noinspection HtmlUnknownAttribute
         Vue.component('markup', {
-            template: '#markup',
+            template: `
+                <div class="markup-container">
+                    <div v-if="title" class="block-title">
+                        <span v-html="title"/>
+                    </div>
+                    <div class="markup" v-bind:data-lang="lang">
+                       <pre><code v-bind:class="lang" ref="markup"><slot/></code></pre>
+                       <div class="markup__copy">
+                           <v-icon v-on:click="copyMarkup">content_copy</v-icon>
+                           <v-slide-x-reverse-transition mode="out-in">
+                           <span class="markup__copy__message"
+                                 :class="{'markup__copy__message--active': copied}">Copied</span>
+                           </v-slide-x-reverse-transition>
+                       </div>
+                    </div>
+                </div>`,
             data: function() {
               return {
                 copied: false,
@@ -60,15 +53,19 @@ window.allComponents["markup"] = {
               }
             },
             mounted: function () {
-              hljs.highlightBlock(this.$refs.markup);
+                // noinspection JSUnresolvedFunction,JSUnresolvedVariable
+                hljs.highlightBlock(this.$refs.markup);
             },
             methods: {
               copyMarkup () {
-                const markup = this.$refs.markup;
+                // noinspection JSUnresolvedVariable
+                  const markup = this.$refs.markup;
                 markup.setAttribute('contenteditable', 'true');
                 markup.focus();
-                document.execCommand('selectAll', false, null);
-                this.copied = document.execCommand('copy');
+                // noinspection JSDeprecatedSymbols
+                  document.execCommand('selectAll', false, null);
+                // noinspection JSDeprecatedSymbols
+                  this.copied = document.execCommand('copy');
                 markup.removeAttribute('contenteditable');
                 setTimeout(() => this.copied = false, 2000);
               }
