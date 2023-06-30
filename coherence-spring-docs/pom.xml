@@ -152,7 +152,7 @@
 			<version>${spring-doc-resources.version}</version>
 			<type>zip</type>
 			<scope>system</scope>
-			<systemPath>${coherence.spring.root}/lib/spring-doc-resources-0.2.5.zip</systemPath>
+			<systemPath>${coherence.spring.root}/lib/spring-doc-resources-${spring-doc-resources.version}.zip</systemPath>
 		</dependency>
 	</dependencies>
 
@@ -169,7 +169,7 @@
 						</goals>
 						<phase>prepare-package</phase>
 						<configuration>
-							<source>17</source>
+							<source>${java.version}</source>
 							<includeDependencySources>true</includeDependencySources>
 							<dependencySourceIncludes>
 								<dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
@@ -177,7 +177,6 @@
 							<sourceFileExcludes>com/oracle/coherence/spring/docs/**/*.java</sourceFileExcludes>
 							<attach>false</attach>
 							<quiet>true</quiet>
-							<stylesheetfile>${basedir}/src/main/javadoc/spring-javadoc.css</stylesheetfile>
 							<links>
 								<link>https://docs.oracle.com/javase/17/docs/api/</link>
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>

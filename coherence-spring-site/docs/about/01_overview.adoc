@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2023, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -26,14 +26,14 @@ portfolio projects, including _Spring Data_ and _Spring Session_.
 
 [CARD]
 .Spring Boot
-[icon=power_settings_new,link=about/02_spring-boot.adoc]
+[icon=power_settings_new,link=02_spring-boot.adoc]
 --
 Minimum Configuration
 --
 
 [CARD]
 .Quickstart
-[icon=arrow_circle_up,link=refdocs/reference/html/quickstart.html,link-type=url]
+[image=logo-with-padding.svg,link=refdocs/reference/html/quickstart.html,link-type=url]
 --
 Chapter of the Reference Guide.
 --
