@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -28,8 +28,8 @@ import com.oracle.coherence.spring.annotation.WhereFilter;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.tangosol.internal.net.topic.impl.paged.PagedTopicCaches;
 import com.tangosol.internal.net.topic.impl.paged.model.SubscriberGroupId;
-import com.tangosol.net.CacheService;
 import com.tangosol.net.Coherence;
+import com.tangosol.net.PagedTopicService;
 import com.tangosol.net.topic.NamedTopic;
 import com.tangosol.net.topic.Publisher;
 import com.tangosol.net.topic.Subscriber;
@@ -54,6 +54,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * @author Vaso Putica
+ * @author Gunnar Hillert
+ */
 @SpringJUnitConfig(CoherenceTopicListenerTest.Config.class)
 @DirtiesContext
 class CoherenceTopicListenerTest {
@@ -317,7 +321,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithDefaultStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyDefault");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (PagedTopicService) topic.getService());
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -333,7 +337,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithSyncStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentySync");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (PagedTopicService) topic.getService());
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -349,7 +353,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithAsyncStrategy() {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyAsync");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (PagedTopicService) topic.getService());
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {
@@ -365,7 +369,7 @@ class CoherenceTopicListenerTest {
 	@Test
 	void shouldCommitWithManualStrategy() throws Exception {
 		NamedTopic<String> topic = this.coherence.getSession().getTopic("TwentyManual");
-		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (CacheService) topic.getService(), null);
+		PagedTopicCaches caches = new PagedTopicCaches(topic.getName(), (PagedTopicService) topic.getService());
 		SubscriberGroupId groupId = SubscriberGroupId.withName(ListenerSix.GROUP_ID);
 
 		try (Publisher<String> publisher = topic.createPublisher()) {

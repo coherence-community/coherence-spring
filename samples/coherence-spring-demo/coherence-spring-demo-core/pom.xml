@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -26,10 +26,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<java.version>8</java.version>
-		<spring-data-bom.version>2021.2.3</spring-data-bom.version>
+		<spring-data-bom.version>2021.2.13</spring-data-bom.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
-		<hibernate.version>5.6.11.Final</hibernate.version>
-		<jackson-datatype.version>2.14.2</jackson-datatype.version>
+		<hibernate.version>5.6.15.Final</hibernate.version>
+		<jackson-datatype.version>2.15.2</jackson-datatype.version>
 
 		<maven.minimum.version>3.6.0</maven.minimum.version>
 

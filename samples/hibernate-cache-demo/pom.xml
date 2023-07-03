@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -22,9 +22,9 @@
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
 
 	<properties>
-		<coherence-hibernate.version>2.3.0</coherence-hibernate.version>
+		<coherence-hibernate.version>2.3.3</coherence-hibernate.version>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
-		<hibernate.version>5.6.11.Final</hibernate.version>
+		<hibernate.version>5.6.15.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
