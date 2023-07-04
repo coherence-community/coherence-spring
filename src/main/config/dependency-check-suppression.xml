@@ -74,4 +74,9 @@
        ]]></notes>
         <cve>CVE-2023-2976</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[ jszip.js - We should not be affected as it is only used for the static Javadocs
+       ]]></notes>
+        <cve>CVE-2022-48285</cve>
+    </suppress>
 </suppressions>
