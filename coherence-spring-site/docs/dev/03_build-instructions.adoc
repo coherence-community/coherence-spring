@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2023, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -14,7 +14,7 @@
 
 To build the Coherence Spring project you need to have the following software installed:
 
-- http://www.oracle.com/technetwork/java/javase/downloads/index.html[Java SE Development Kit 11].
+- http://www.oracle.com/technetwork/java/javase/downloads/index.html[Java SE Development Kit 17].
 - http://maven.apache.org/[Apache Maven]
 
 Once you have these installed building the entire source tree is as simple as executing the following shell command

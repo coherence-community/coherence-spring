@@ -17,6 +17,22 @@
 The following sections outline Coherence Spring project changes in
 reverse chronological order.
 
+=== Version 4.0.0 (July 2023)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v4.0.0
+
+=== Version 3.3.3 (July 2023)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.3
+
+=== Version 3.3.2 (November 2022)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.2
+
+=== Version 3.3.1 (September 2022)
+
+https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.1
+
 === Version 3.3.0 (July 2022)
 
 https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0
