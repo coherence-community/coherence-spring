@@ -20,7 +20,7 @@ http://coherence-community.github.io/coherence-spring[*Website*].
 <<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data
 <<spring-cloud-config.adoc#spring-cloud-config, Spring Cloud Config>> :: Use Coherence with Spring Cloud Config
 
-Gunnar Hillert, Ryan Lubke
+Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight
 
-Copyright (c) 2013, 2021, Oracle and/or its affiliates. +
+Copyright (c) 2013, 2023, Oracle and/or its affiliates. +
 Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
