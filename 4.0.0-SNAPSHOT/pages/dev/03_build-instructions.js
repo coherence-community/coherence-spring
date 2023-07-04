@@ -3,7 +3,7 @@
 
 <ul class="ulist">
 <li>
-<p><a target="_blank" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE Development Kit 11</a>.</p>
+<p><a target="_blank" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE Development Kit 17</a>.</p>
 
 </li>
 <li>

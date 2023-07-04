@@ -6,6 +6,34 @@
 reverse chronological order.</p>
 
 
+<h3 id="_version_4_0_0_july_2023">Version 4.0.0 (July 2023)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v4.0.0" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v4.0.0</a></p>
+
+</div>
+
+
+<h3 id="_version_3_3_3_july_2023">Version 3.3.3 (July 2023)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.3" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.3</a></p>
+
+</div>
+
+
+<h3 id="_version_3_3_2_november_2022">Version 3.3.2 (November 2022)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.2" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.2</a></p>
+
+</div>
+
+
+<h3 id="_version_3_3_1_september_2022">Version 3.3.1 (September 2022)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.1" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.1</a></p>
+
+</div>
+
+
 <h3 id="_version_3_3_0_july_2022">Version 3.3.0 (July 2022)</h3>
 <div class="section">
 <p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0</a></p>
