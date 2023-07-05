@@ -27,7 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
  * @author  Ryan Lubke
  * @author  Gunnar Hillert
  */
-public abstract class AbstractDataTest {
+public abstract class AbstractDataTests {
 	/**
 	 * Author: Frank Herbert
 	 */

@@ -37,9 +37,9 @@ import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 @WebAppConfiguration
 @SpringBootTest(classes = {
 		ServletWebServerFactoryAutoConfiguration.class,
-		CoherenceEventListenerTest.Config.class
+		CoherenceEventListenerTests.Config.class
 })
-public class CoherenceEventListenerTest {
+public class CoherenceEventListenerTests {
 
 	@Autowired
 	private Coherence coherence;

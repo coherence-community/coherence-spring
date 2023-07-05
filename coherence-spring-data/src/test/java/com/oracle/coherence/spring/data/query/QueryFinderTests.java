@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.data.AbstractDataTest;
+import com.oracle.coherence.spring.data.AbstractDataTests;
 import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.model.repositories.BookRepository;
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig(QueryFinderTests.Config.class)
 @DirtiesContext
-public class QueryFinderTests extends AbstractDataTest {
+public class QueryFinderTests extends AbstractDataTests {
 
 	@Inject
 	protected BookRepository bookRepository;

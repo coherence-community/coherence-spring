@@ -41,13 +41,13 @@ import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 /**
  * @author Gunnar Hillert
  */
-@SpringJUnitConfig(MapListenerTest.Config.class)
+@SpringJUnitConfig(MapListenerTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MapListenerTest {
+class MapListenerTests {
 
-	private static final Log logger = LogFactory.getLog(MapListenerTest.class);
+	private static final Log logger = LogFactory.getLog(MapListenerTests.class);
 
 	@Inject
 	@Name("test")

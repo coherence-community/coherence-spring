@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -22,7 +22,7 @@
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
 
 	<properties>
-		<coherence-hibernate.version>2.3.2</coherence-hibernate.version>
+		<coherence-hibernate.version>3.0.0-SNAPSHOT</coherence-hibernate.version>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
 	</properties>
 
@@ -66,23 +66,23 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.hibernate</groupId>
-			<artifactId>coherence-hibernate-cache-53</artifactId>
+			<artifactId>coherence-hibernate-cache-6</artifactId>
 			<version>${coherence-hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core-jakarta</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.23.1-GA</version>
+			<version>${javassist.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>2.4.4</version>
+			<version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.data.AbstractDataTest;
+import com.oracle.coherence.spring.data.AbstractDataTests;
 import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.model.BookProjection;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringJUnitConfig(QueryFinderTests.Config.class)
 @DirtiesContext
-public class ProjectionTest extends AbstractDataTest {
+public class ProjectionTests extends AbstractDataTests {
 	@Inject
 	protected BookProjectionRepository bookRepository;
 
@@ -171,18 +171,18 @@ public class ProjectionTest extends AbstractDataTest {
 		List<BookProjection> books = this.bookRepository.findBy(Sort.by(Sort.Direction.DESC, "pages"));
 		assertThat(books.size()).isEqualTo(4);
 		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
-		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.NAME_OF_THE_WIND.getTitle());
-		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
-		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
-		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTest.HOBBIT.getTitle());
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTests.NAME_OF_THE_WIND.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
+		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTests.HOBBIT.getTitle());
 
 		books = this.bookRepository.findByOrderByPagesAsc();
 		assertThat(books.size()).isEqualTo(4);
 		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
-		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.HOBBIT.getTitle());
-		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
-		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
-		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTest.NAME_OF_THE_WIND.getTitle());
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTests.HOBBIT.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(2).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
+		assertThat(books.get(3).getTitle()).isEqualTo(AbstractDataTests.NAME_OF_THE_WIND.getTitle());
 	}
 
 	@Test
@@ -190,13 +190,13 @@ public class ProjectionTest extends AbstractDataTest {
 		List<BookProjection> books = this.bookRepository.findByAuthorOrderByPagesAsc(FRANK_HERBERT);
 		assertThat(books.size()).isEqualTo(2);
 		assertThat(books.get(0)).isInstanceOf(BookProjection.class);
-		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
-		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
 
 		List<NestedBookProjection> nestedBooks = this.bookRepository.findByAuthor(FRANK_HERBERT, Sort.by(Sort.Direction.ASC, "pages"));
 		assertThat(nestedBooks.size()).isEqualTo(2);
-		assertThat(nestedBooks.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
-		assertThat(nestedBooks.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
+		assertThat(nestedBooks.get(0).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
+		assertThat(nestedBooks.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
 	}
 
 	@Test
@@ -204,14 +204,14 @@ public class ProjectionTest extends AbstractDataTest {
 		List<NestedBookProjection> books = this.bookRepository.findByAuthorOrderByPagesDesc(FRANK_HERBERT);
 		assertThat(books.size()).isEqualTo(2);
 		assertThat(books.get(0)).isInstanceOf(NestedBookProjection.class);
-		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
-		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
 
 		books = this.bookRepository.findByAuthor(FRANK_HERBERT, Sort.by(Sort.Direction.DESC, "pages"));
 		assertThat(books.size()).isEqualTo(2);
 		assertThat(books.get(0)).isInstanceOf(NestedBookProjection.class);
-		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTest.DUNE.getTitle());
-		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTest.DUNE_MESSIAH.getTitle());
+		assertThat(books.get(0).getTitle()).isEqualTo(AbstractDataTests.DUNE.getTitle());
+		assertThat(books.get(1).getTitle()).isEqualTo(AbstractDataTests.DUNE_MESSIAH.getTitle());
 	}
 
 	@Test

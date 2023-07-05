@@ -134,13 +134,13 @@
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-		<nexus-staging-maven-plugin.version>1.6.12</nexus-staging-maven-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
 		<checkstyle.version>10.6.0</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.35</spring-javaformat-checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.39</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.5.0</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
@@ -152,7 +152,7 @@
 		<coherence.version>23.03</coherence.version>
 		<classgraph.version>4.8.115</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<hibernate.version>5.6.15.Final</hibernate.version>
+		<hibernate.version>6.2.6.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
 		<jackson-datatype.version>2.15.2</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
@@ -160,19 +160,22 @@
 		<jakarta.persistence-api.version>3.0.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jakarta.inject.version>2.0.1</jakarta.inject.version>
+		<javassist.version>3.29.2-GA</javassist.version>
 		<junit.version>5.9.3</junit.version>
 		<log4j.version>2.19.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>6.0.9</org.springframework.version>
-		<org.springframework.data.version>2022.0.6</org.springframework.data.version>
+		<modelmapper.version>3.1.1</modelmapper.version>
+		<org.springframework.version>6.0.10</org.springframework.version>
+		<org.springframework.data.version>2023.0.1</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<slf4j-api.version>2.0.3</slf4j-api.version>
 		<spring-boot.version>3.1.1</spring-boot.version>
+		<spring-cloud.version>2022.0.3</spring-cloud.version>
 		<spring-data-bom.version>2022.0.4</spring-data-bom.version>
 		<spring-session.version>3.0.1</spring-session.version>
-		<spring-security.version>6.1.0</spring-security.version>
-		<tomcat.version>10.1.9</tomcat.version>
+		<spring-security.version>6.1.1</spring-security.version>
+		<tomcat.version>10.1.10</tomcat.version>
 	</properties>
 
 	<distributionManagement>

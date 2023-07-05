@@ -24,11 +24,12 @@ import com.tangosol.util.filter.NotFilter;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ParameterAccessor;
 import org.springframework.data.repository.query.parser.PartTree;
 
-import static com.oracle.coherence.spring.data.AbstractDataTest.FRANK_HERBERT;
+import static com.oracle.coherence.spring.data.AbstractDataTests.FRANK_HERBERT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -592,6 +593,11 @@ public class QueryCreatorTests {
 
 		SimpleParameterAccessor(Object... values) {
 			this.values = values;
+		}
+
+		@Override
+		public ScrollPosition getScrollPosition() {
+				return null;
 		}
 
 		@Override

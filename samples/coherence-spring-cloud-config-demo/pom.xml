@@ -22,10 +22,6 @@
 	<name>Coherence Spring Cloud Config Demo - Parent</name>
 	<description>Demo project for Coherence Spring using Spring Cloud Config Server</description>
 
-	<properties>
-		<spring-cloud.version>2022.0.3</spring-cloud.version>
-	</properties>
-
 	<modules>
 		<module>coherence-spring-cloud-config-demo-app</module>
 		<module>coherence-spring-cloud-config-demo-server</module>

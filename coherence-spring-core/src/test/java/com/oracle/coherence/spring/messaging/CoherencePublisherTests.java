@@ -34,9 +34,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@SpringJUnitConfig(CoherencePublisherTest.Config.class)
+@SpringJUnitConfig(CoherencePublisherTests.Config.class)
 @DirtiesContext
-public class CoherencePublisherTest {
+public class CoherencePublisherTests {
 
 	@Autowired
 	Coherence coherence;

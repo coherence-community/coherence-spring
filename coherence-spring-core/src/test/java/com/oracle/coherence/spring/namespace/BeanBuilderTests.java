@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author rl
  * @since 3.0
  */
-@SpringJUnitConfig(BeanBuilderTest.Config.class)
+@SpringJUnitConfig(BeanBuilderTests.Config.class)
 @DirtiesContext
-class BeanBuilderTest {
+class BeanBuilderTests {
 
 
 	@Autowired

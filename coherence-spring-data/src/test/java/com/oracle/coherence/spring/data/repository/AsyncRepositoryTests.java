@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.data.AbstractDataTest;
+import com.oracle.coherence.spring.data.AbstractDataTests;
 import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
@@ -57,7 +57,7 @@ import static org.assertj.core.data.Percentage.withPercentage;
 
 @SpringJUnitConfig(AsyncRepositoryTests.Config.class)
 @DirtiesContext
-public class AsyncRepositoryTests extends AbstractDataTest {
+public class AsyncRepositoryTests extends AbstractDataTests {
 
 	@SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection", "CdiInjectionPointsInspection"})
 	@Inject
@@ -974,7 +974,7 @@ public class AsyncRepositoryTests extends AbstractDataTest {
 	// ----- helper methods -------------------------------------------------
 
 	Filter<Author> author() {
-		return equal("author", AbstractDataTest.FRANK_HERBERT);
+		return equal("author", AbstractDataTests.FRANK_HERBERT);
 	}
 
 	@Configuration

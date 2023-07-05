@@ -36,9 +36,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author rl
  * @since 3.0
  */
-@SpringJUnitConfig(NamespaceHandlerTest.Config.class)
+@SpringJUnitConfig(NamespaceHandlerTests.Config.class)
 @DirtiesContext
-class NamespaceHandlerTest {
+class NamespaceHandlerTests {
 
 	ExtensibleConfigurableCacheFactory eccf;
 

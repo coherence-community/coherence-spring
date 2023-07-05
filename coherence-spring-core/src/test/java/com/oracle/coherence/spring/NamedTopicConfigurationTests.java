@@ -43,9 +43,9 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-@SpringJUnitConfig(NamedTopicConfigurationTest.Config.class)
+@SpringJUnitConfig(NamedTopicConfigurationTests.Config.class)
 @DirtiesContext
-public class NamedTopicConfigurationTest {
+public class NamedTopicConfigurationTests {
 	@Inject
 	ApplicationContext ctx;
 

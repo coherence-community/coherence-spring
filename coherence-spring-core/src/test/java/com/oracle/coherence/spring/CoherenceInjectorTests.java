@@ -34,9 +34,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author rl
  * @since 3.0
  */
-@SpringJUnitConfig(CoherenceInjectorTest.Config.class)
+@SpringJUnitConfig(CoherenceInjectorTests.Config.class)
 @DirtiesContext
-class CoherenceInjectorTest {
+class CoherenceInjectorTests {
 
 	@Test
 	void shouldInjectAfterDeserialization() {

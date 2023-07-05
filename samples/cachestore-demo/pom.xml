@@ -28,12 +28,6 @@
         <module>coherence-spring-cachestore-demo-server</module>
     </modules>
 
-    <properties>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -46,7 +40,7 @@
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>2.7.2</version>
+                <version>${hsqldb.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

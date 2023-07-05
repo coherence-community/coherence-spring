@@ -21,9 +21,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Unit tests for {@link CoherenceContext}.
  */
-@SpringJUnitConfig(CoherenceContextTest.Config.class)
+@SpringJUnitConfig(CoherenceContextTests.Config.class)
 @DirtiesContext
-public class CoherenceContextTest {
+public class CoherenceContextTests {
 
 	@Autowired
 	private ApplicationContext applicationContext;

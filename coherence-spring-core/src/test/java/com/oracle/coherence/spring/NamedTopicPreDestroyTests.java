@@ -30,7 +30,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class NamedTopicPreDestroyTest {
+class NamedTopicPreDestroyTests {
 
 	AnnotationConfigApplicationContext ctx;
 

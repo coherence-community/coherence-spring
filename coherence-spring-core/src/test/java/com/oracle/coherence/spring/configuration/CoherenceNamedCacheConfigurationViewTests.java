@@ -54,9 +54,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@SpringJUnitConfig(CoherenceNamedCacheConfigurationViewTest.Config.class)
+@SpringJUnitConfig(CoherenceNamedCacheConfigurationViewTests.Config.class)
 @DirtiesContext
-class CoherenceNamedCacheConfigurationViewTest {
+class CoherenceNamedCacheConfigurationViewTests {
 
 	@Inject
 	ApplicationContext ctx;
