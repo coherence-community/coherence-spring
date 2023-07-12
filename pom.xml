@@ -168,7 +168,7 @@
 		<modelmapper.version>3.1.1</modelmapper.version>
 		<org.springframework.version>6.0.10</org.springframework.version>
 		<org.springframework.data.version>2023.0.1</org.springframework.data.version>
-		<reactor.version>3.4.9</reactor.version>
+		<reactor.version>3.5.8</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<slf4j-api.version>2.0.3</slf4j-api.version>
 		<spring-boot.version>3.1.1</spring-boot.version>
