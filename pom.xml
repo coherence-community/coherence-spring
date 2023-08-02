@@ -162,9 +162,9 @@
 		<org.springframework.data.version>2021.2.13</org.springframework.data.version>
 		<reactor.version>3.4.9</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<spring-boot.version>2.7.13</spring-boot.version>
+		<spring-boot.version>2.7.14</spring-boot.version>
 		<spring-session.version>2.6.3</spring-session.version>
-		<spring-security.version>5.7.8</spring-security.version>
+		<spring-security.version>5.7.10</spring-security.version>
 		<tomcat.version>9.0.76</tomcat.version>
 	</properties>
 
