@@ -5141,7 +5141,8 @@ Session using the <code>@EnableCoherenceHttpSession</code> annotation.</p>
         session = "coherence_session",           <i class="conum" data-value="2"></i><b>(2)</b>
         cache = "spring:session:sessions",       <i class="conum" data-value="3"></i><b>(3)</b>
         flushMode = FlushMode.ON_SAVE,           <i class="conum" data-value="4"></i><b>(4)</b>
-        sessionTimeoutInSeconds = 1800           <i class="conum" data-value="5"></i><b>(5)</b>
+        sessionTimeoutInSeconds = 1800,          <i class="conum" data-value="5"></i><b>(5)</b>
+        useEntryProcessor = true                 <i class="conum" data-value="6"></i><b>(6)</b>
 )
 static class CoherenceSessionConfig {
 }</code></pre>
@@ -5169,6 +5170,10 @@ static class CoherenceSessionConfig {
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>The session timeout. Optional. Defaults to <code>1800</code> seconds (<code>30</code> minutes)</td>
 </tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>When doing HTTP session updates, shall we use a Coherence entry processor? The default is {@code true}.</td>
+</tr>
 </table>
 </div>
 <div class="paragraph">
@@ -5176,6 +5181,11 @@ static class CoherenceSessionConfig {
 server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
 you may need <code>Coherence Spring Session</code>, <code>Spring Security Core</code>, <code>Spring Security Web</code>. Please also ensure that dependency
 version between Coherence server and application clients matches exactly.</p>
+</div>
+<div class="paragraph">
+<p>An alternative is to set <code>useEntryProcessor</code> to <code>false</code>. This is less efficient as the entire session has to be sent over
+the wire when updating session properties. The positive side effect is that your Coherence server instance will not need
+to be aware of the additional dependencies on its classpath.</p>
 </div>
 </div>
 <div class="sect2">
@@ -5282,6 +5292,10 @@ require an authenticated user using the session cookie or the <code>username</co
 </div>
 <div class="sect3">
 <h4 id="spring-session-sample-start-remote-coherence"><a class="anchor" href="#spring-session-sample-start-remote-coherence"></a>5.3.2. Spring Session with Remote Coherence Instances</h4>
+<div class="paragraph">
+<p>In this variation of the examle, we will start 1 central Coherence Server and the application will access that remote
+Coherence instance as a Coherence*Extend client.</p>
+</div>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
@@ -5300,9 +5314,32 @@ require an authenticated user using the session cookie or the <code>username</co
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-server-3.3.4-SNAPSHOT.jar
- $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-3.3.4-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-3.3.4-SNAPSHOT.jar
+ $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-3.3.4-SNAPSHOT.jar --spring.profiles.active=coherence-client</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>By default, Coherence Spring Session uses a Coherence Entry Processor to perform updates to the persisted HTTP Session. This
+will prevent the entire session to be sent over the wire. A drawback of that approach is that the Coherence instance needs
+to be aware of Coherence Spring classes for serialization purposes.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can also set the Coherence Spring Session property <code>coherence.spring.session.use-entry-processor</code> and
+set it to <code>false</code> (It is <code>true</code> by default) in the client application <code>spring-session-demo-app</code>. With that in place, you
+can now remove the relevant Maven dependencies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>spring-security-web</p>
+</li>
+<li>
+<p>coherence-spring-session</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>from the server application module <code>spring-session-demo-server</code> and the application will still work.</p>
 </div>
 </div>
 <div class="sect3">
@@ -6893,6 +6930,11 @@ class. Auto-configuration will back-off in certain situations:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ON_SET_ATTRIBUTE</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The session save mode determines how session changes are tracked and saved to the session store.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">coherence.spring.session.use-entry-processor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, a Coherence Entry Processor will be used for handling updates to the persisted HTTP session.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -7313,7 +7355,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-09 05:12:33 UTC
+Last updated 2023-08-09 06:55:21 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
