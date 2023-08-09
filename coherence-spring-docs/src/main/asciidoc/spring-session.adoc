@@ -58,7 +58,8 @@ Session using the `@EnableCoherenceHttpSession` annotation.
         session = "coherence_session",           // <2>
         cache = "spring:session:sessions",       // <3>
         flushMode = FlushMode.ON_SAVE,           // <4>
-        sessionTimeoutInSeconds = 1800           // <5>
+        sessionTimeoutInSeconds = 1800,          // <5>
+        useEntryProcessor = true                 // <6>
 )
 static class CoherenceSessionConfig {
 }
@@ -68,11 +69,16 @@ static class CoherenceSessionConfig {
 <3> The name of the cache to use. Optional. Defaults to `spring:session:sessions`.
 <4> The FlushMode to use. Optional. Defaults to `FlushMode.ON_SAVE`.
 <5> The session timeout. Optional. Defaults to `1800` seconds (`30` minutes)
+<6> When doing HTTP session updates, shall we use a Coherence entry processor? The default is {@code true}.
 
 Are you running Coherence as a dedicated server instance? Then you need to make sure that your Coherence
 server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
 you may need `Coherence Spring Session`, `Spring Security Core`, `Spring Security Web`. Please also ensure that dependency
 version between Coherence server and application clients matches exactly.
+
+An alternative is to set `useEntryProcessor` to `false`. This is less efficient as the entire session has to be sent over
+the wire when updating session properties. The positive side effect is that your Coherence server instance will not need
+to be aware of the additional dependencies on its classpath.
 
 [[spring-session-pof]]
 == POF Serialization
@@ -149,6 +155,9 @@ $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-se
 [[spring-session-sample-start-remote-coherence]]
 === Spring Session with Remote Coherence Instances
 
+In this variation of the examle, we will start 1 central Coherence Server and the application will access that remote
+Coherence instance as a Coherence*Extend client.
+
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
@@ -166,9 +175,22 @@ Now we are ready to run the application. We will activate the `coherence-client`
 .Run the Spring Boot application
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-server-{coherence-spring-version}.jar
-$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-{coherence-spring-version}.jar
+$ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-{coherence-spring-version}.jar
+$ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-{coherence-spring-version}.jar --spring.profiles.active=coherence-client
 ----
+
+By default, Coherence Spring Session uses a Coherence Entry Processor to perform updates to the persisted HTTP Session. This
+will prevent the entire session to be sent over the wire. A drawback of that approach is that the Coherence instance needs
+to be aware of Coherence Spring classes for serialization purposes.
+
+Alternatively, you can also set the Coherence Spring Session property `coherence.spring.session.use-entry-processor` and
+set it to `false` (It is `true` by default) in the client application `spring-session-demo-app`. With that in place, you
+can now remove the relevant Maven dependencies:
+
+- spring-security-web
+- coherence-spring-session
+
+from the server application module `spring-session-demo-server` and the application will still work.
 
 [[spring-session-sample-rest-endpoints]]
 === Accessing the REST Endpoints

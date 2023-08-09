@@ -708,6 +708,10 @@ The following Coherence-specific configuration properties are available:
 | `ON_SET_ATTRIBUTE`
 | The session save mode determines how session changes are tracked and saved to the session store.
 
+| coherence.spring.session.use-entry-processor
+| `true`
+| If true, a Coherence Entry Processor will be used for handling updates to the persisted HTTP session.
+
 |===
 
 [[spring-boot-messaging]]

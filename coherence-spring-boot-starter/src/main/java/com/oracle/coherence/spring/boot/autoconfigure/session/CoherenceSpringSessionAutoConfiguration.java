@@ -55,7 +55,7 @@ public class CoherenceSpringSessionAutoConfiguration {
 			setSessionMapName(coherenceSpringSessionProperties.getMapName());
 			setFlushMode(coherenceSpringSessionProperties.getFlushMode());
 			setSaveMode(coherenceSpringSessionProperties.getSaveMode());
+			setUseEntryProcessor(coherenceSpringSessionProperties.getUseEntryProcessor());
 		}
-
 	}
 }
