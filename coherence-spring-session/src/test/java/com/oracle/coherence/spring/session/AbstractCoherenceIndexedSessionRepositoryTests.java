@@ -42,6 +42,8 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 	protected String expectedCacheName;
 
+	protected boolean expectedToUseEntryProcessor = true;
+
 	@Autowired
 	private Coherence coherenceInstance;
 
@@ -49,6 +51,11 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 	private CoherenceIndexedSessionRepository repository;
 
 	protected String sessionName;
+
+	@Test
+	void verifyCoherenceIndexedSessionRepositoryProperties() {
+		assertThat(this.repository.isUseEntryProcessor()).isEqualTo(this.expectedToUseEntryProcessor);
+	}
 
 	@Test
 	void createAndDestroyCoherenceSession() {

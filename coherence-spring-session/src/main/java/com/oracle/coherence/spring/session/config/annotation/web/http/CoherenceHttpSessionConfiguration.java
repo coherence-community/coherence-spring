@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -60,6 +60,8 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	private FlushMode flushMode = FlushMode.ON_SAVE;
 	private SaveMode saveMode = SaveMode.ON_SET_ATTRIBUTE;
 
+	private boolean useEntryProcessor = true;
+
 	private Coherence coherence;
 
 	private IndexResolver<Session> indexResolver;
@@ -104,6 +106,7 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		}
 		this.flushMode = attributes.getEnum("flushMode");
 		this.saveMode = attributes.getEnum("saveMode");
+		this.useEntryProcessor = attributes.getBoolean("useEntryProcessor");
 	}
 
 	@Autowired(required = false)
@@ -133,6 +136,10 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		this.saveMode = saveMode;
 	}
 
+	public void setUseEntryProcessor(boolean useEntryProcessor) {
+		this.useEntryProcessor = useEntryProcessor;
+	}
+
 	private CoherenceIndexedSessionRepository createCoherenceIndexedSessionRepository() {
 		if (logger.isInfoEnabled()) {
 			logger.info("Creating CoherenceIndexedSessionRepository...");
@@ -156,6 +163,7 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 		sessionRepository.setDefaultMaxInactiveInterval(Duration.ofSeconds(this.maxInactiveIntervalInSeconds));
 		sessionRepository.setFlushMode(this.flushMode);
 		sessionRepository.setSaveMode(this.saveMode);
+		sessionRepository.setUseEntryProcessor(this.useEntryProcessor);
 		this.sessionRepositoryCustomizers
 				.forEach((sessionRepositoryCustomizer) -> sessionRepositoryCustomizer.customize(sessionRepository));
 		return sessionRepository;

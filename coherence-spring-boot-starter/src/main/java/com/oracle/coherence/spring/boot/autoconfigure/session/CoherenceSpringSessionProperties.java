@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -38,6 +38,11 @@ public class CoherenceSpringSessionProperties {
 	 */
 	private SaveMode saveMode = SaveMode.ON_SET_ATTRIBUTE;
 
+	/**
+	 * Shall a Coherence Entry Processor be used for handling updates to the persisted HTTP session? Defaults to true.
+	 */
+	private boolean useEntryProcessor = true;
+
 	public String getMapName() {
 		return this.mapName;
 	}
@@ -62,4 +67,11 @@ public class CoherenceSpringSessionProperties {
 		this.saveMode = saveMode;
 	}
 
+	public boolean getUseEntryProcessor() {
+		return this.useEntryProcessor;
+	}
+
+	public void setUseEntryProcessor(boolean useEntryProcessor) {
+		this.useEntryProcessor = useEntryProcessor;
+	}
 }
