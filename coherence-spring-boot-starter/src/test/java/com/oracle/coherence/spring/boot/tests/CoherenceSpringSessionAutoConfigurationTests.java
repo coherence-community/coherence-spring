@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -9,6 +9,7 @@ package com.oracle.coherence.spring.boot.tests;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.boot.autoconfigure.session.CoherenceSpringSessionAutoConfiguration;
+import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -53,4 +54,36 @@ public class CoherenceSpringSessionAutoConfigurationTests {
 				.run((context) -> assertThat(context).hasSingleBean(SessionRepository.class));
 	}
 
+	@Test
+	void testAutoConfigurationWithUseEntryProcessorTrue() {
+		this.contextRunner.withPropertyValues("coherence.spring.session.use-entry-processor=true")
+				.run((context) -> {
+					assertThat(context).hasSingleBean(SessionRepository.class);
+					final CoherenceIndexedSessionRepository sessionRepository =
+							context.getBean(CoherenceIndexedSessionRepository.class);
+					assertThat(sessionRepository.isUseEntryProcessor()).isTrue();
+				});
+	}
+
+	@Test
+	void testAutoConfigurationWithUseEntryProcessorTrueButNotSet() {
+		this.contextRunner.withPropertyValues("coherence.spring.session.enabled=true")
+				.run((context) -> {
+					assertThat(context).hasSingleBean(SessionRepository.class);
+					final CoherenceIndexedSessionRepository sessionRepository =
+							context.getBean(CoherenceIndexedSessionRepository.class);
+					assertThat(sessionRepository.isUseEntryProcessor()).isTrue();
+				});
+	}
+
+	@Test
+	void testAutoConfigurationWithUseEntryProcessorFalse() {
+		this.contextRunner.withPropertyValues("coherence.spring.session.use-entry-processor=false")
+				.run((context) -> {
+					assertThat(context).hasSingleBean(SessionRepository.class);
+					final CoherenceIndexedSessionRepository sessionRepository =
+							context.getBean(CoherenceIndexedSessionRepository.class);
+					assertThat(sessionRepository.isUseEntryProcessor()).isFalse();
+				});
+	}
 }
