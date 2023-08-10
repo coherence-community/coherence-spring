@@ -31,7 +31,7 @@
 
 :hibernate-docs: https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html
 
-:sources-root-samples: {coherence-spring-code}tree/main/samples/
+:git-sources-samples: {coherence-spring-code}tree/main/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
 :include-source-code-samples-cachestore: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-core/src/main/java/com/oracle/coherence/spring/example/
 :include-source-code-samples-cachestore-app: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/java/com/oracle/coherence/spring/example/
