@@ -2437,7 +2437,7 @@ Coherence*Extend:
 [source,bash,subs="verbatim,quotes,attributes"]
 ----
 java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-app/target/coherence-spring-cachestore-demo-app-{coherence-spring-version}.jar \
---Dspring.profiles.active=remote
+--spring.profiles.active=remote
 ----
 
 By activating the `remote` Spring Boot profile, we will configure Coherence for client mode and we reference a different
