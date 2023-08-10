@@ -216,7 +216,7 @@ This is where the circuit breaker pattern can be quite helpful, allowing you to 
 configurable fallback methods. Spring Boot has excellent support via {resilience4j-website}[Resilience4j], a fault
 tolerance library.
 
-Coherence Spring includes an link:{sources-root-samples}circuit-breaker-cache-demo[example application] that illustrates
+Coherence Spring includes an link:{git-sources-samples}circuit-breaker-cache-demo[example application] that illustrates
 a basic circuit breaker use-case via Resilience4j. In this example a Spring Boot-based application has REST endpoints
 to retrieve Books:
 
