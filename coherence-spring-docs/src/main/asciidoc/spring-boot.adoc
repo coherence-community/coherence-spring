@@ -726,7 +726,7 @@ Support for injecting Coherence Publishers is enabled automatically by adding th
 By default, base package to scan for link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisher.html[@CoherencePublisher]
 annotated interfaces is derived from the main class annotated with `@SpringBootApplication`. Base package can be overridden
 by annotating configuration class with link:{coherence-spring-api}com/oracle/coherence/spring/annotation/CoherencePublisherScan.html[@CoherencePublisherScan]
-as described at <<coherence-spring-messaging-with-coherence-topics, Messaging with Coherence Topics>>.
+as described at xref:core.adoc#coherence-spring-messaging-with-coherence-topics[Messaging with Coherence Topics].
 
 [[spring-boot-metrics]]
 == Coherence Metrics

@@ -278,7 +278,7 @@
 							<backend>html5</backend>
 							<sourceDocumentExtensions>
 								<sourceDocumentExtension>.adoc</sourceDocumentExtension>
-								<sourceDocumentExtension>.htmladoc</sourceDocumentExtension>
+								<sourceDocumentExtension>htmladoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/html</outputDirectory>
 							<sourceHighlighter>highlight.js</sourceHighlighter>
@@ -310,7 +310,7 @@
 						<configuration>
 							<backend>html5</backend>
 							<sourceDocumentExtensions>
-								<sourceDocumentExtension>.htmlsingleadoc</sourceDocumentExtension>
+								<sourceDocumentExtension>htmlsingleadoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/htmlsingle</outputDirectory>
 							<sourceHighlighter>highlight.js</sourceHighlighter>
@@ -344,6 +344,9 @@
 								<sourceDocumentExtension>pdfadoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/pdf</outputDirectory>
+							<attributes>
+								<imagesdir>./images</imagesdir>
+							</attributes>
 							<resources>
 								<resource>
 									<directory>${refdocs.build.directory}</directory>

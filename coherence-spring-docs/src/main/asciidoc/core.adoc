@@ -1943,7 +1943,7 @@ which also has takes an optional value to specify the underlying cache/map name 
 <4> Note that the `NamedMap` generics are now `Long` and `String` instead of `Long` and `Plant` as the `Plant` values
 from the underlying cache are transformed into `String` values by extracting just the name property.
 
-[[coherence-spring-messaging-with-coherence-topics]]
+[id=coherence-spring-messaging-with-coherence-topics]
 == Messaging with Coherence Topics
 
 Spring Coherence integration provides support for message driven applications by virtue of Coherence topics.
