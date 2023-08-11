@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="generator" content="Asciidoctor 2.0.10">
 <title>Coherence Spring Data</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -199,7 +199,7 @@ $(globalSwitch);
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
     &lt;version&gt;4.0.1-SNAPSHOT&lt;/version&gt;
@@ -209,7 +209,7 @@ $(globalSwitch);
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")</code></pre>
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")</code></pre>
 </div>
 </div>
 </div>
@@ -228,7 +228,7 @@ section will assume some familiarity with Spring Data.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
     // ...
 }</code></pre>
 </div>
@@ -272,7 +272,7 @@ of the Coherence reference documentation for more details on these features.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 
 // ...
 
@@ -286,7 +286,7 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
 
 // ...
 
@@ -305,7 +305,7 @@ If this is not desired, the name may instead be passed by the <code>@CoherenceMa
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
 import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 
 // ...
@@ -333,7 +333,7 @@ entity&#8217;s id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Person implements Serializable {
+<pre class="highlight"><code class="language-java" data-lang="java">public class Person implements Serializable {
     @org.springframework.data.annotation.Id
     protected String id;
 
@@ -353,7 +353,7 @@ annotation. A simple configuration example would be:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
 
 // ...
@@ -379,7 +379,7 @@ For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.util.UUID;
@@ -399,7 +399,7 @@ of these methods, please use Spring&#8217;s <a href="https://spring.io/guides/gs
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
@@ -422,7 +422,7 @@ public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository&l
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -451,7 +451,7 @@ among other things, to transfer a subset of the entities properties when <code>c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+<pre class="highlight"><code class="language-java" data-lang="java">@Entity
 public class Book implements Cloneable, Serializable {
     @Id
     protected final UUID uuid;
@@ -478,7 +478,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface to retrieve a subset of attributes</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndPages {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndPages {
 
     String getTitle();
     int getPages();
@@ -488,7 +488,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A repository using an interface based projection with a query method</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 
     List&lt;BookTitleAndPages&gt; findByTitle(String title);
 }</code></pre>
@@ -503,7 +503,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface to retrieve a subset of attributes</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookSummary {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookSummary {
 
     String getTitle();
     int getPages();
@@ -524,7 +524,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A closed projection</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndPages {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndPages {
 
     String getTitle();
     int getPages();
@@ -540,7 +540,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">An open projection</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndAuthor {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndAuthor {
 
     @Value("#{target.author.firstName + ' - ' + target.title}")
     String getTitleAndAuthor();
@@ -556,7 +556,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface using a default method for custom logic</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndAuthor {
+<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndAuthor {
 
     default String getTitleAndAuthor() {
         return getAuthor().getFirstName().concat(' - ').concat(getTitle());
@@ -570,7 +570,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface using a default method for custom logic</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
 class MyBean {
 
     String getTitleAndAuthor(Book book) {
@@ -591,7 +591,7 @@ interface BookTitleAndAuthor {
 <div class="listingblock">
 <div class="title">A sample Book object</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface NameOnly {
+<pre class="highlight"><code class="language-java" data-lang="java">interface NameOnly {
 
     @Value("args[0] + ' ' + #{target.author.firstName}")
     String getHonorificName(String honorific);
@@ -624,7 +624,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A projection interface using nullable wrappers</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface TitleOnly {
+<pre class="highlight"><code class="language-java" data-lang="java">interface TitleOnly {
 
     Optional&lt;String&gt; getTitle();
 }</code></pre>
@@ -645,7 +645,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A projecting DTO</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class BookTitleAndPages {
+<pre class="highlight"><code class="language-java" data-lang="java">class BookTitleAndPages {
     private final String title;
     private final int pages;
 
@@ -675,7 +675,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A repository using a dynamic projection parameter</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap("book")
+<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap("book")
 interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 
     &lt;T&gt; Collection&lt;T&gt; findByTitle(String title, Class&lt;T&gt; type);
@@ -685,7 +685,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">Using a repository with dynamic projections</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Collection&lt;BookSummary&gt; aggregates = books.findByTitle("Shadow", BookSummary.class);
+<pre class="highlight"><code class="language-java" data-lang="java">Collection&lt;BookSummary&gt; aggregates = books.findByTitle("Shadow", BookSummary.class);
 
 Collection&lt;BookTitleAndPages&gt; aggregates = books.findByTitle("Remember", BookTitleAndPages.class);</code></pre>
 </div>
@@ -696,13 +696,10 @@ Collection&lt;BookTitleAndPages&gt; aggregates = books.findByTitle("Remember", B
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-11 11:04:30 UTC
+Last updated 2023-08-11 11:10:38 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
-<script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>

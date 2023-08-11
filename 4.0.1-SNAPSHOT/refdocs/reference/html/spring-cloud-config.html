@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="generator" content="Asciidoctor 2.0.10">
 <title>Coherence Spring Cloud Config</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -196,7 +196,7 @@ externalize some Coherence configuration using Spring Cloud Config. The source c
 <div class="listingblock">
 <div class="title">Clone the Spring Cloud Config demo project</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+<pre class="highlight"><code class="language-shell" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
  $ cd coherence-spring</code></pre>
 </div>
 </div>
@@ -220,7 +220,7 @@ under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>.
 <div class="listingblock">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;    <i class="conum" data-value="1"></i><b>(1)</b>
 &lt;/dependency&gt;
@@ -249,7 +249,7 @@ under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>.
 <div class="listingblock">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;version&gt;{coherence-spring.version}&lt;/version&gt;
@@ -303,7 +303,7 @@ the configuration data.</p>
 <div class="listingblock">
 <div class="title">Set up the Config Data</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cd /path/to/git/repo
+<pre class="highlight"><code class="language-shell" data-lang="shell"> $ cd /path/to/git/repo
  $ mkdir coherence-spring-config-repository
  $ cd coherence-spring-config-repository
  $ git init</code></pre>
@@ -315,7 +315,7 @@ the configuration data.</p>
 <div class="listingblock">
 <div class="title">config-client.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=6                                           <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-properties" data-lang="properties"> coherence.logging.severity-level=6                                           <i class="conum" data-value="1"></i><b>(1)</b>
  coherence.logging.destination=slf4j                                          <i class="conum" data-value="2"></i><b>(2)</b>
 
  coherence.properties.coherence.cluster=Demo Cluster                          <i class="conum" data-value="3"></i><b>(3)</b>
@@ -393,7 +393,7 @@ reports are located at <code>coherence-23.03.jar/reports</code></td>
 <div class="listingblock">
 <div class="title">Start the Spring Cloud Config Server</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
+<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
  $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
  $ java -jar coherence-spring-cloud-config-demo-server-4.0.1-SNAPSHOT.jar \n
      --spring.cloud.config.server.git.uri=file:///path/to/git/repo</code></pre>
@@ -402,7 +402,7 @@ reports are located at <code>coherence-23.03.jar/reports</code></td>
 <div class="listingblock">
 <div class="title">Start the Coherence Spring Application</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
+<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
  $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
  $ java -jar coherence-spring-cloud-config-demo-app-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
@@ -457,7 +457,7 @@ property as well.</p>
 <div class="listingblock">
 <div class="title">Equivalent Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"> coherence.logging.severity-level=5
+<pre class="highlight"><code class="language-properties" data-lang="properties"> coherence.logging.severity-level=5
  coherence.logging.destination=log4j
 
  coherence.log.level=5
@@ -481,13 +481,10 @@ Please also see <a href="spring-boot.html#spring-boot-config-data-api">Coherence
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-11 11:04:30 UTC
+Last updated 2023-08-11 11:10:38 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
-<script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>
