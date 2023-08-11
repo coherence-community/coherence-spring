@@ -88,7 +88,7 @@ Build the entire project using https://maven.apache.org/[Maven]:
 
 [source,bash]
 ----
-./mvnw clean package -Pspring
+./mvnw clean package
 ----
 
 ==== Offline Builds
@@ -99,28 +99,28 @@ you may have to provide additional command line arguments:
 
 [source,bash]
 ----
-./mvnw clean package -Pspring -DargLine="-Dcoherence.localhost=127.0.0.1 -Djava.net.preferIPv4Stack=true"
+./mvnw clean package -DargLine="-Dcoherence.localhost=127.0.0.1 -Djava.net.preferIPv4Stack=true"
 ----
 
 === Build the Documentation
 
 [source,bash]
 ----
-./mvnw clean package -pl coherence-spring-docs -Pspring
+./mvnw clean package -pl coherence-spring-docs
 ----
 
 === Build the project website
 
 [source,bash]
 ----
-./mvnw clean install -pl coherence-spring-site -Pspring
+./mvnw clean install -pl coherence-spring-site
 ----
 
 === Deploy the project website
 
 [source,bash]
 ----
-./mvnw deploy -pl coherence-spring-site -Pspring
+./mvnw deploy -pl coherence-spring-site
 ----
 
 == Getting Support
