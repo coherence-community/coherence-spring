@@ -22,7 +22,7 @@ Once you have these installed building the entire source tree is as simple as ex
 
 [source,bash]
 ----
-./mvnw clean package -Pspring
+./mvnw clean package
 ----
 
 For detailed instructions, please see the main
