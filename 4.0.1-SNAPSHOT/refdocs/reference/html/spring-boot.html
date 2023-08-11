@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 1.5.8">
 <title>Coherence Spring Boot</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -183,7 +183,7 @@ as the desired version of Coherence.</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -200,7 +200,7 @@ as the desired version of Coherence.</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03")
 }</code></pre>
@@ -234,7 +234,7 @@ class for further configuration. The YAML configuration for Spring Boot&#8217;s 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">coherence:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
   logging:
     destination: slf4j
     logger-name: MyCoherence
@@ -426,7 +426,7 @@ properties will be applied, e.g., the name of the application used to fetch remo
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
   config:
     import: "coherence:"
 coherence:
@@ -554,7 +554,7 @@ the Spring cache until the connection to the Coherence server has been restored.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
 mvn spring-boot:run</code></pre>
 </div>
 </div>
@@ -563,7 +563,7 @@ mvn spring-boot:run</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
 mvn spring-boot:run</code></pre>
 </div>
 </div>
@@ -581,7 +581,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">List all books</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books"</code></pre>
@@ -592,7 +592,7 @@ from the database. But at this point the collection of books is added to the Coh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">Cache entry for key 'SimpleKey []' found in cache 'allBooks'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key 'SimpleKey []' found in cache 'allBooks'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -604,7 +604,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">Get a single book</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books/1"</code></pre>
@@ -615,7 +615,7 @@ from the database. But at this point the collection of books is added to the Coh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">Cache entry for key '1' found in cache 'books'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cache entry for key '1' found in cache 'books'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -624,7 +624,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">Evict book with id <code>1</code> from the Coherence Cache</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X DELETE "http://localhost:8090/api/books/1"</code></pre>
@@ -638,7 +638,7 @@ with id <code>42</code> will cause a <code>BusinessException</code> to be thrown
 <div class="listingblock">
 <div class="title">Get a single book throwing a business exception</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books/42"</code></pre>
@@ -681,7 +681,7 @@ the JSON response is still the same (The book data is returned). However, when y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -708,7 +708,7 @@ health-endpoint as well as its circuit breaker events endpoint:</p>
 <div class="listingblock">
 <div class="title">Spring Boot Health Endpoint</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "status":"UP",
   "components":{
     "circuitBreakers":{
@@ -766,7 +766,7 @@ health-endpoint as well as its circuit breaker events endpoint:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">management.endpoints.web.exposure.include: "*"
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management.endpoints.web.exposure.include: "*"
 management.endpoint.health.show-details: always</code></pre>
 </div>
 </div>
@@ -790,7 +790,7 @@ for this application.</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
     &lt;artifactId&gt;resilience4j-spring-boot2&lt;/artifactId&gt;
     &lt;version&gt;1.7.1&lt;/version&gt;
@@ -800,7 +800,7 @@ for this application.</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")</code></pre>
 </div>
 </div>
 </div>
@@ -814,7 +814,7 @@ the <code>@CircuitBreaker</code> annotations, e.g.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Cacheable("allBooks")
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Cacheable("allBooks")
 @CircuitBreaker(name = "coherence", fallbackMethod = "getAllBooksFallback")
 @Override
 public List&lt;Book&gt; getAllBooks() {
@@ -864,7 +864,7 @@ Boot as it is not needed:</p>
 <div class="listingblock">
 <div class="title">Disable CoherenceAutoConfiguration</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
 public class HibernateApplication {
     public static void main(String[] args) {
         SpringApplication.run(HibernateApplication.class, args);
@@ -882,7 +882,7 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
 <div class="listingblock">
 <div class="title">RegionFactory Configuration using YAML</div>
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
   application:
     name: Your Spring Boot App
   jpa:
@@ -923,7 +923,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Example of a <code>Plant</code> JSON response</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -934,7 +934,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -943,7 +943,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -952,7 +952,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Add a plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X POST --data '{"genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}' \
@@ -962,7 +962,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">List all plants</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants"</code></pre>
@@ -971,7 +971,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Get a single plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants/1"</code></pre>
@@ -980,7 +980,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Delete a plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X DELETE "http://localhost:9090/plants/1"</code></pre>
@@ -993,7 +993,7 @@ from the second level cache as illustrated by the printed out cache statistics.<
 <div class="listingblock">
 <div class="title">Hibernate Cache Statistics</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
 27579 nanoseconds spent acquiring 1 JDBC connections;
 0 nanoseconds spent releasing 0 JDBC connections;
 0 nanoseconds spent preparing 0 JDBC statements;
@@ -1014,7 +1014,7 @@ class has a custom query using such a hint for illustration purposes:</p>
 <div class="listingblock">
 <div class="title">Using Query Hints</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
 @Query("select p from Plant p")
 List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 </div>
@@ -1025,7 +1025,7 @@ List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 <div class="listingblock">
 <div class="title">List all plants</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants?use-cache=true"</code></pre>
@@ -1053,7 +1053,7 @@ project:</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -1075,7 +1075,7 @@ project:</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-session:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03")
@@ -1153,7 +1153,7 @@ class. Auto-configuration will back-off in certain situations:</p>
 By default, base package to scan for <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>
 annotated interfaces is derived from the main class annotated with <code>@SpringBootApplication</code>. Base package can be overridden
 by annotating configuration class with <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisherScan.html">@CoherencePublisherScan</a>
-as described at <a href="core.html#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
+as described at <a href="#coherence-spring-messaging-with-coherence-topics">Messaging with Coherence Topics</a>.</p>
 </div>
 </div>
 </div>
@@ -1169,7 +1169,7 @@ as described at <a href="core.html#coherence-spring-messaging-with-coherence-top
 <div class="listingblock">
 <div class="title">application.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">management:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">management:
   metrics:
     enable:
       coherence: false</code></pre>
@@ -1190,7 +1190,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -1212,7 +1212,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03")
@@ -1235,10 +1235,13 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-11 10:45:38 UTC
+Last updated 2023-08-11 11:04:30 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 </body>
 </html>
