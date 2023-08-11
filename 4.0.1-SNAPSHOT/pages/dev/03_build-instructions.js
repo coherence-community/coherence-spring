@@ -18,7 +18,7 @@
 <markup
 lang="bash"
 
->./mvnw clean package -Pspring</markup>
+>./mvnw clean package</markup>
 
 <p>For detailed instructions, please see the main
 <a target="_blank" href="https://github.com/coherence-community/coherence-spring/blob/main/README.adoc">README</a> of the Coherence Spring source
