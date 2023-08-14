@@ -176,7 +176,7 @@
 		<spring-data-bom.version>2022.0.4</spring-data-bom.version>
 		<spring-session.version>3.0.1</spring-session.version>
 		<spring-security.version>6.1.2</spring-security.version>
-		<tomcat.version>10.1.10</tomcat.version>
+		<tomcat.version>10.1.11</tomcat.version>
 	</properties>
 
 	<distributionManagement>
