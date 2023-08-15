@@ -554,8 +554,7 @@ the Spring cache until the connection to the Coherence server has been restored.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
-mvn spring-boot:run</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -563,13 +562,12 @@ mvn spring-boot:run</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
-mvn spring-boot:run</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>When the application starts, <code>2</code> books are added not only to the persistence store (HSQLDB) but also to the Coherence cache.
-However, this is not true for the retrieve of all books in this example.</p>
+However, this is not true for the retrieval of all books in this example.</p>
 </div>
 <div class="paragraph">
 <p><strong>Get all books</strong></p>
@@ -592,7 +590,7 @@ from the database. But at this point the collection of books is added to the Coh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">Cache entry for key 'SimpleKey []' found in cache 'allBooks'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">No cache entry for key 'SimpleKey []' in cache(s) [allBooks]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -676,8 +674,19 @@ included in the list of <code>ignoreExceptions</code> via <code>application.yaml
 </table>
 </div>
 <div class="paragraph">
-<p>Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id <code>1</code>. As you see,
-the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:</p>
+<p>Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id <code>1</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Get a single book again</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you see, the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -792,15 +801,15 @@ for this application.</p>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
-    &lt;artifactId&gt;resilience4j-spring-boot2&lt;/artifactId&gt;
-    &lt;version&gt;1.7.1&lt;/version&gt;
+    &lt;artifactId&gt;resilience4j-spring-boot3&lt;/artifactId&gt;
+    &lt;version&gt;2.1.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")</code></pre>
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")</code></pre>
 </div>
 </div>
 </div>
@@ -1235,7 +1244,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-15 23:00:10 UTC
+Last updated 2023-08-15 22:59:51 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
