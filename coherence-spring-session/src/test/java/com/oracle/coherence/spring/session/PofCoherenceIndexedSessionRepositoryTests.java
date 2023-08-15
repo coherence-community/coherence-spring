@@ -56,10 +56,13 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 		server = platform.launch(CoherenceClusterMember.class,
 				CacheConfig.of("server-coherence-cache-config.xml"),
 				LocalHost.only(),
-				SystemProperty.of("tangosol.pof.enabled", "true"),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				IPv4Preferred.yes(),
-				DisplayName.of("server"));
+				SystemProperty.of("coherence.cluster", "PofCoherenceIndexedSessionRepositoryTestsCluster"),
+				SystemProperty.of("coherence.grpc.enabled", true),
+				SystemProperty.of("coherence.grpc.server.port", "1408"),
+				SystemProperty.of("coherence.wka", "127.0.0.1"),
+				DisplayName.of("server"),
+				SystemProperty.of("tangosol.pof.enabled", "true"));
 
 		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
 	}
