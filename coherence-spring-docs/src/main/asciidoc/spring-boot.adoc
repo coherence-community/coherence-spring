@@ -248,20 +248,18 @@ Let's first run the server:
 
 [source,bash]
 ----
-cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
-mvn spring-boot:run
+./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server
 ----
 
 Now we need to run the actual application:
 
 [source,bash]
 ----
-cd samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
-mvn spring-boot:run
+./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app
 ----
 
 When the application starts, `2` books are added not only to the persistence store (HSQLDB) but also to the Coherence cache.
-However, this is not true for the retrieve of all books in this example.
+However, this is not true for the retrieval of all books in this example.
 
 *Get all books*
 
@@ -281,7 +279,7 @@ Thus, when you retrieve the list of books again, you will see in the logs:
 
 [source,bash]
 ----
-Cache entry for key 'SimpleKey []' found in cache 'allBooks'
+No cache entry for key 'SimpleKey []' in cache(s) [allBooks]
 ----
 
 *Get a Single Book*
@@ -343,8 +341,18 @@ included in the list of `ignoreExceptions` via `application.yaml`:
 will also trigger the execution of fallBack methods, but it will not change the state of the circuit breaker.
 ====
 
-Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id `1`. As you see,
-the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:
+Next, we will first shut down the Coherence server, and then we try to retrieve a single book with id `1`:
+
+.Get a single book again
+[source,bash,indent=,subs="verbatim,quotes,attributes"]
+----
+curl -i \
+  -H "Accept: application/json" \
+  -H "Content-Type:application/json" \
+  -X GET "http://localhost:8090/api/books/1"
+----
+
+As you see, the JSON response is still the same (The book data is returned). However, when you look at the logs, you will see:
 
 [source,bash]
 ----
@@ -436,7 +444,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 ----
 <dependency>
     <groupId>io.github.resilience4j</groupId>
-    <artifactId>resilience4j-spring-boot2</artifactId>
+    <artifactId>resilience4j-spring-boot3</artifactId>
     <version>{resilience4j-version}</version>
 </dependency>
 ----
@@ -444,7 +452,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 .Gradle
 [source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
 ----
-implementation("io.github.resilience4j:resilience4j-spring-boot2:{resilience4j-version}")
+implementation("io.github.resilience4j:resilience4j-spring-boot3:{resilience4j-version}")
 ----
 ====
 
