@@ -111,7 +111,7 @@
 		<source.branch>main</source.branch>
 
 		<!-- plugin dependency versions (alphabetically) -->
-		<asciidoctor-maven-plugin.version>2.1.0</asciidoctor-maven-plugin.version>
+		<asciidoctor-maven-plugin.version>2.2.4</asciidoctor-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
 		<doxia-module-markdown.version>1.0</doxia-module-markdown.version>
 		<exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
