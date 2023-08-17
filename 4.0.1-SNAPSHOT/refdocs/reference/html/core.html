@@ -180,129 +180,130 @@ $(globalSwitch);
 </li>
 </ul>
 </li>
-<li><a href="#coherence-spring-events">7. Events</a>
+<li><a href="#injecting-spring-beans-into-coherence-managed-objects">7. Injecting Spring Beans into Coherence-Managed Objects</a></li>
+<li><a href="#coherence-spring-events">8. Events</a>
 <ul class="sectlevel2">
-<li><a href="#coherence-spring-events-mapevent-listeners">7.1. MapEvent Listeners</a>
+<li><a href="#coherence-spring-events-mapevent-listeners">8.1. MapEvent Listeners</a>
 <ul class="sectlevel3">
-<li><a href="#mapevent-observer-methods">7.1.1. MapEvent Observer Methods</a>
+<li><a href="#mapevent-observer-methods">8.1.1. MapEvent Observer Methods</a>
 <ul class="sectlevel4">
-<li><a href="#specify-the-mapcache-name-2">7.1.1.1. Specify the Map/Cache name</a></li>
-<li><a href="#specify-the-cache-service-name">7.1.1.2. Specify the Cache Service name</a></li>
-<li><a href="#specify-the-owning-session-name-2">7.1.1.3. Specify the Owning Session Name</a></li>
+<li><a href="#specify-the-mapcache-name-2">8.1.1.1. Specify the Map/Cache name</a></li>
+<li><a href="#specify-the-cache-service-name">8.1.1.2. Specify the Cache Service name</a></li>
+<li><a href="#specify-the-owning-session-name-2">8.1.1.3. Specify the Owning Session Name</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-events-mapevent-listeners-specific-events">7.1.2. Receive Specific Event Types</a></li>
-<li><a href="#coherence-spring-events-mapevent-listeners-filtering-events">7.1.3. Filtering Events</a></li>
-<li><a href="#coherence-spring-events-mapevent-listeners-transforming-events">7.1.4. Transforming Events</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-specific-events">8.1.2. Receive Specific Event Types</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-filtering-events">8.1.3. Filtering Events</a></li>
+<li><a href="#coherence-spring-events-mapevent-listeners-transforming-events">8.1.4. Transforming Events</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-events-event-interceptors">7.2. Coherence Event Interceptors</a>
+<li><a href="#coherence-spring-events-event-interceptors">8.2. Coherence Event Interceptors</a>
 <ul class="sectlevel3">
-<li><a href="#event-types">7.2.1. Event Types</a></li>
-<li><a href="#coherence-lifecycle-events">7.2.2. Coherence Lifecycle Events</a>
+<li><a href="#event-types">8.2.1. Event Types</a></li>
+<li><a href="#coherence-lifecycle-events">8.2.2. Coherence Lifecycle Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-lifecycleevent-types">7.2.2.1. Receive Specific LifecycleEvent Types</a></li>
-<li><a href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance">7.2.2.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</a></li>
+<li><a href="#receive-specific-lifecycleevent-types">8.2.2.1. Receive Specific LifecycleEvent Types</a></li>
+<li><a href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance">8.2.2.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</a></li>
 </ul>
 </li>
-<li><a href="#session-lifecycle-events">7.2.3. Session Lifecycle Events</a>
+<li><a href="#session-lifecycle-events">8.2.3. Session Lifecycle Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-sessionlifecycleevent-types">7.2.3.1. Receive Specific SessionLifecycleEvent Types</a></li>
-<li><a href="#receive-sessionlifecycleevents-for-a-specific-session-instance">7.2.3.2. Receive SessionLifecycleEvents for a Specific Session Instance</a></li>
+<li><a href="#receive-specific-sessionlifecycleevent-types">8.2.3.1. Receive Specific SessionLifecycleEvent Types</a></li>
+<li><a href="#receive-sessionlifecycleevents-for-a-specific-session-instance">8.2.3.2. Receive SessionLifecycleEvents for a Specific Session Instance</a></li>
 </ul>
 </li>
-<li><a href="#configurablecachefactory-lifecycle-events">7.2.4. ConfigurableCacheFactory Lifecycle Events</a>
+<li><a href="#configurablecachefactory-lifecycle-events">8.2.4. ConfigurableCacheFactory Lifecycle Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-coherencelifecycleevent-types">7.2.4.1. Receive Specific CoherenceLifecycleEvent Types</a></li>
-<li><a href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance-2">7.2.4.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</a></li>
+<li><a href="#receive-specific-coherencelifecycleevent-types">8.2.4.1. Receive Specific CoherenceLifecycleEvent Types</a></li>
+<li><a href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance-2">8.2.4.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</a></li>
 </ul>
 </li>
-<li><a href="#cache-lifecycle-events">7.2.5. Cache Lifecycle Events</a>
+<li><a href="#cache-lifecycle-events">8.2.5. Cache Lifecycle Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-cachelifecycleevent-types">7.2.5.1. Receive Specific CacheLifecycleEvent Types</a></li>
-<li><a href="#receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache">7.2.5.2. Receive CacheLifecycleEvents for a Specific NamedMap or NamedCache</a></li>
-<li><a href="#receive-cachelifecycleevents-from-a-specific-cache-service">7.2.5.3. Receive CacheLifecycleEvents from a Specific Cache Service</a></li>
-<li><a href="#receive-cachelifecycleevents-from-a-specific-session">7.2.5.4. Receive CacheLifecycleEvents from a Specific Session</a></li>
+<li><a href="#receive-specific-cachelifecycleevent-types">8.2.5.1. Receive Specific CacheLifecycleEvent Types</a></li>
+<li><a href="#receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache">8.2.5.2. Receive CacheLifecycleEvents for a Specific NamedMap or NamedCache</a></li>
+<li><a href="#receive-cachelifecycleevents-from-a-specific-cache-service">8.2.5.3. Receive CacheLifecycleEvents from a Specific Cache Service</a></li>
+<li><a href="#receive-cachelifecycleevents-from-a-specific-session">8.2.5.4. Receive CacheLifecycleEvents from a Specific Session</a></li>
 </ul>
 </li>
-<li><a href="#entry-events">7.2.6. Entry Events</a>
+<li><a href="#entry-events">8.2.6. Entry Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-entryevent-types">7.2.6.1. Receive Specific EntryEvent Types</a></li>
-<li><a href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache">7.2.6.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</a></li>
-<li><a href="#receive-entryprocessorevents-from-a-specific-cache-service">7.2.6.3. Receive EntryProcessorEvents from a Specific Cache Service</a></li>
-<li><a href="#receive-entryprocessorevents-from-a-specific-session">7.2.6.4. Receive EntryProcessorEvents from a Specific Session</a></li>
+<li><a href="#receive-specific-entryevent-types">8.2.6.1. Receive Specific EntryEvent Types</a></li>
+<li><a href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache">8.2.6.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</a></li>
+<li><a href="#receive-entryprocessorevents-from-a-specific-cache-service">8.2.6.3. Receive EntryProcessorEvents from a Specific Cache Service</a></li>
+<li><a href="#receive-entryprocessorevents-from-a-specific-session">8.2.6.4. Receive EntryProcessorEvents from a Specific Session</a></li>
 </ul>
 </li>
-<li><a href="#entryprocessor-events">7.2.7. EntryProcessor Events</a>
+<li><a href="#entryprocessor-events">8.2.7. EntryProcessor Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-entryprocessorevent-types">7.2.7.1. Receive Specific EntryProcessorEvent Types</a></li>
-<li><a href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2">7.2.7.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</a></li>
-<li><a href="#receive-entryprocessorevents-from-a-specific-cache-service-2">7.2.7.3. Receive EntryProcessorEvents from a Specific Cache Service</a></li>
-<li><a href="#receive-entryprocessorevents-from-a-specific-session-2">7.2.7.4. Receive EntryProcessorEvents from a Specific Session</a></li>
+<li><a href="#receive-specific-entryprocessorevent-types">8.2.7.1. Receive Specific EntryProcessorEvent Types</a></li>
+<li><a href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2">8.2.7.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</a></li>
+<li><a href="#receive-entryprocessorevents-from-a-specific-cache-service-2">8.2.7.3. Receive EntryProcessorEvents from a Specific Cache Service</a></li>
+<li><a href="#receive-entryprocessorevents-from-a-specific-session-2">8.2.7.4. Receive EntryProcessorEvents from a Specific Session</a></li>
 </ul>
 </li>
-<li><a href="#partition-level-transaction-events">7.2.8. Partition Level Transaction Events</a>
+<li><a href="#partition-level-transaction-events">8.2.8. Partition Level Transaction Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-transactionevent-types">7.2.8.1. Receive Specific TransactionEvent Types</a></li>
-<li><a href="#receive-transactionevent-from-a-specific-cache-service">7.2.8.2. Receive TransactionEvent from a Specific Cache Service</a></li>
+<li><a href="#receive-specific-transactionevent-types">8.2.8.1. Receive Specific TransactionEvent Types</a></li>
+<li><a href="#receive-transactionevent-from-a-specific-cache-service">8.2.8.2. Receive TransactionEvent from a Specific Cache Service</a></li>
 </ul>
 </li>
-<li><a href="#partition-transfer-events">7.2.9. Partition Transfer Events</a>
+<li><a href="#partition-transfer-events">8.2.9. Partition Transfer Events</a>
 <ul class="sectlevel4">
-<li><a href="#receive-specific-transferevent-types">7.2.9.1. Receive Specific TransferEvent Types</a></li>
-<li><a href="#receive-transferevent-from-a-specific-cache-service">7.2.9.2. Receive TransferEvent from a Specific Cache Service</a></li>
+<li><a href="#receive-specific-transferevent-types">8.2.9.1. Receive Specific TransferEvent Types</a></li>
+<li><a href="#receive-transferevent-from-a-specific-cache-service">8.2.9.2. Receive TransferEvent from a Specific Cache Service</a></li>
 </ul>
 </li>
-<li><a href="#unsolicited-commit-events">7.2.10. Unsolicited Commit Events</a></li>
+<li><a href="#unsolicited-commit-events">8.2.10. Unsolicited Commit Events</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#coherence-spring-filter-binding-annotations">8. Filter Binding Annotations</a>
+<li><a href="#coherence-spring-filter-binding-annotations">9. Filter Binding Annotations</a>
 <ul class="sectlevel2">
-<li><a href="#create-the-filter-binding-annotation">8.1. Create the filter binding annotation</a></li>
-<li><a href="#create-the-filterfactory">8.2. Create the <code>FilterFactory</code></a></li>
-<li><a href="#annotate-the-injection-point">8.3. Annotate the Injection Point</a></li>
+<li><a href="#create-the-filter-binding-annotation">9.1. Create the filter binding annotation</a></li>
+<li><a href="#create-the-filterfactory">9.2. Create the <code>FilterFactory</code></a></li>
+<li><a href="#annotate-the-injection-point">9.3. Annotate the Injection Point</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-extractor-binding-annotations">9. Extractor Binding Annotations</a>
+<li><a href="#coherence-spring-extractor-binding-annotations">10. Extractor Binding Annotations</a>
 <ul class="sectlevel2">
-<li><a href="#create-the-extractor-binding-annotation">9.1. Create the extractor binding annotation</a></li>
-<li><a href="#create-the-extractorfactory">9.2. Create the <code>ExtractorFactory</code></a></li>
-<li><a href="#annotate-the-injection-point-2">9.3. Annotate the Injection Point</a></li>
+<li><a href="#create-the-extractor-binding-annotation">10.1. Create the extractor binding annotation</a></li>
+<li><a href="#create-the-extractorfactory">10.2. Create the <code>ExtractorFactory</code></a></li>
+<li><a href="#annotate-the-injection-point-2">10.3. Annotate the Injection Point</a></li>
 </ul>
 </li>
-<li><a href="#coherence-spring-messaging-with-coherence-topics">10. Messaging with Coherence Topics</a>
+<li><a href="#coherence-spring-messaging-with-coherence-topics">11. Messaging with Coherence Topics</a>
 <ul class="sectlevel2">
-<li><a href="#define-publishers-coherencepublisher">10.1. Define Publishers - @CoherencePublisher</a></li>
-<li><a href="#reactive-and-non-blocking-method-definitions">10.2. Reactive and Non-Blocking Method Definitions</a>
+<li><a href="#define-publishers-coherencepublisher">11.1. Define Publishers - @CoherencePublisher</a></li>
+<li><a href="#reactive-and-non-blocking-method-definitions">11.2. Reactive and Non-Blocking Method Definitions</a>
 <ul class="sectlevel3">
-<li><a href="#mono-value-and-return-type">10.2.1. Mono Value and Return Type</a></li>
-<li><a href="#reactor-flux-value-and-return-type">10.2.2. Reactor Flux Value and Return Type</a></li>
-<li><a href="#future-return-type">10.2.3. Future Return Type</a></li>
+<li><a href="#mono-value-and-return-type">11.2.1. Mono Value and Return Type</a></li>
+<li><a href="#reactor-flux-value-and-return-type">11.2.2. Reactor Flux Value and Return Type</a></li>
+<li><a href="#future-return-type">11.2.3. Future Return Type</a></li>
 </ul>
 </li>
-<li><a href="#define-subscribers-coherencetopiclistener">10.3. Define Subscribers - @CoherenceTopicListener</a></li>
-<li><a href="#method-parameter-bindings">10.4. Method Parameter Bindings</a></li>
-<li><a href="#committing-messages">10.5. Committing Messages</a>
+<li><a href="#define-subscribers-coherencetopiclistener">11.3. Define Subscribers - @CoherenceTopicListener</a></li>
+<li><a href="#method-parameter-bindings">11.4. Method Parameter Bindings</a></li>
+<li><a href="#committing-messages">11.5. Committing Messages</a>
 <ul class="sectlevel3">
-<li><a href="#default-commit-behaviour">10.5.1. Default Commit Behaviour</a></li>
-<li><a href="#setting-commit-strategy">10.5.2. Setting Commit Strategy</a></li>
-<li><a href="#forwarding-messages-with-sendto">10.5.3. Forwarding Messages with @SendTo</a></li>
+<li><a href="#default-commit-behaviour">11.5.1. Default Commit Behaviour</a></li>
+<li><a href="#setting-commit-strategy">11.5.2. Setting Commit Strategy</a></li>
+<li><a href="#forwarding-messages-with-sendto">11.5.3. Forwarding Messages with @SendTo</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#coherence-spring-cachestore">11. Cache Store</a>
+<li><a href="#coherence-spring-cachestore">12. Cache Store</a>
 <ul class="sectlevel2">
-<li><a href="#coherence-spring-cachestore-demo">11.1. JPA Repository CacheStore Demo</a>
+<li><a href="#coherence-spring-cachestore-demo">12.1. JPA Repository CacheStore Demo</a>
 <ul class="sectlevel3">
-<li><a href="#coherence-spring-cachestore-demo-model">11.1.1. Data Model</a></li>
-<li><a href="#coherence-spring-cachestore-demo-jpa-repository">11.1.2. Writing a JPA Repository CacheStore</a></li>
-<li><a href="#coherence-spring-cachestore-demo-embedded">11.1.3. Embedded Coherence</a></li>
-<li><a href="#coherence-spring-cachestore-demo-running-embedded">11.1.4. Running the Embedded Sample</a></li>
-<li><a href="#coherence-spring-cachestore-demo-coherence-extend">11.1.5. Using Coherence*Extend</a></li>
-<li><a href="#coherence-spring-cachestore-demo-inspect-database">11.1.6. Inspecting the Database</a></li>
+<li><a href="#coherence-spring-cachestore-demo-model">12.1.1. Data Model</a></li>
+<li><a href="#coherence-spring-cachestore-demo-jpa-repository">12.1.2. Writing a JPA Repository CacheStore</a></li>
+<li><a href="#coherence-spring-cachestore-demo-embedded">12.1.3. Embedded Coherence</a></li>
+<li><a href="#coherence-spring-cachestore-demo-running-embedded">12.1.4. Running the Embedded Sample</a></li>
+<li><a href="#coherence-spring-cachestore-demo-coherence-extend">12.1.5. Using Coherence*Extend</a></li>
+<li><a href="#coherence-spring-cachestore-demo-inspect-database">12.1.6. Inspecting the Database</a></li>
 </ul>
 </li>
 </ul>
@@ -1477,7 +1478,131 @@ private Subscriber&lt;Order&gt; orders;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-events"><a class="anchor" href="#coherence-spring-events"></a>7. Events</h2>
+<h2 id="injecting-spring-beans-into-coherence-managed-objects"><a class="anchor" href="#injecting-spring-beans-into-coherence-managed-objects"></a>7. Injecting Spring Beans into Coherence-Managed Objects</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coherence has many server-side extension points, which enable you to customize application behavior in different ways,
+typically by configuring their extensions within various sections of the cache configuration file. For example, you can
+implement event interceptors and cache stores to handle server-side events and integrate with external data stores
+and other services. In the previous chapter, you learned how you can inject Coherence-managed objects into your
+Spring-managed beans. However, the reverse is possible as well. Coherence Spring also provides the ability to inject
+Spring beans into these Coherence-managed extension points using the custom configuration namespace handler.</p>
+</div>
+<div class="listingblock">
+<div class="title">coherence-cache-config.xml with Spring NamespaceHandler</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After you have declared the handler for the Spring namespace above, you can specify the <code>&lt;spring:bean&gt;</code> element in any
+place where you would normally use the <code>&lt;class-name&gt;</code> or <code>&lt;class-factory-name&gt;</code> elements:</p>
+</div>
+<div class="listingblock">
+<div class="title">Using Spring bean references in coherence-cache-config.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;?xml version="1.0"?&gt;
+&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+        xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+        xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;
+
+    &lt;interceptors&gt;
+        &lt;interceptor&gt;
+            &lt;instance&gt;
+                &lt;spring:bean&gt;registrationListener&lt;/spring:bean&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;/instance&gt;
+        &lt;/interceptor&gt;
+        &lt;interceptor&gt;
+            &lt;instance&gt;
+                &lt;spring:bean&gt;activationListener&lt;/spring:bean&gt;
+            &lt;/instance&gt;
+        &lt;/interceptor&gt;
+    &lt;/interceptors&gt;
+
+    &lt;caching-scheme-mapping&gt;
+        &lt;cache-mapping&gt;
+            &lt;cache-name&gt;*&lt;/cache-name&gt;
+            &lt;scheme-name&gt;distributed-scheme&lt;/scheme-name&gt;
+            &lt;init-params&gt;
+                &lt;init-param&gt;
+                    &lt;param-name&gt;partitionListener-bean&lt;/param-name&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+                    &lt;param-value&gt;partitionListener&lt;/param-value&gt;
+                &lt;/init-param&gt;
+            &lt;/init-params&gt;
+            &lt;interceptors&gt;
+                &lt;interceptor&gt;
+                    &lt;instance&gt;
+                        &lt;spring:bean&gt;cacheListener&lt;/spring:bean&gt;
+                    &lt;/instance&gt;
+                &lt;/interceptor&gt;
+            &lt;/interceptors&gt;
+        &lt;/cache-mapping&gt;
+    &lt;/caching-scheme-mapping&gt;
+
+    &lt;caching-schemes&gt;
+        &lt;distributed-scheme&gt;
+            &lt;scheme-name&gt;distributed-scheme&lt;/scheme-name&gt;
+            &lt;service-name&gt;PartitionedCache&lt;/service-name&gt;
+            &lt;local-storage system-property="coherence.distributed.localstorage"&gt;true&lt;/local-storage&gt;
+            &lt;partition-listener&gt;
+                &lt;spring:bean&gt;{partitionListener-bean}&lt;/spring:bean&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+            &lt;/partition-listener&gt;
+            &lt;member-listener&gt;
+                &lt;spring:bean&gt;memberListener&lt;/spring:bean&gt;
+            &lt;/member-listener&gt;
+            &lt;backing-map-scheme&gt;
+                &lt;local-scheme/&gt;
+            &lt;/backing-map-scheme&gt;
+            &lt;autostart&gt;true&lt;/autostart&gt;
+            &lt;interceptors&gt;
+                &lt;interceptor&gt;
+                    &lt;instance&gt;
+                        &lt;spring:bean&gt;storageListener&lt;/spring:bean&gt;
+                    &lt;/instance&gt;
+                &lt;/interceptor&gt;
+            &lt;/interceptors&gt;
+        &lt;/distributed-scheme&gt;
+    &lt;/caching-schemes&gt;
+&lt;/cache-config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specifying the name of the Spring bean that you want to reference.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The name of Spring beans can also be parameterized. Let&#8217;s create a parameter named <code>partitionListener-bean</code> with the name of the Spring bean as its value.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Here we reference the parameter named <code>partitionListener-bean</code> and its value will be used.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Please also take a look at the chapter discussing the
+<a href="#coherence-spring-cachestore-demo">Coherence Spring Cachestore Demo</a> as it uses Spring-managed beans.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coherence-spring-events"><a class="anchor" href="#coherence-spring-events"></a>8. Events</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Event driven patterns are a common way to build scalable applications and microservices. Coherence produces a number of
@@ -1555,7 +1680,7 @@ void onEvent(CoherenceLifecycleEvent event) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-events-mapevent-listeners"><a class="anchor" href="#coherence-spring-events-mapevent-listeners"></a>7.1. MapEvent Listeners</h3>
+<h3 id="coherence-spring-events-mapevent-listeners"><a class="anchor" href="#coherence-spring-events-mapevent-listeners"></a>8.1. MapEvent Listeners</h3>
 <div class="paragraph">
 <p>Listening for changes to data in Coherence is a common use case in applications. Typically, this involves creating an
 implementation of a <a href="https://coherence.community/23.03.1/api/java/com/tangosol/util/MapListener.html">MapListener</a> and adding that listener to a
@@ -1563,7 +1688,7 @@ implementation of a <a href="https://coherence.community/23.03.1/api/java/com/ta
 annotated observer methods that will receive the respective events.</p>
 </div>
 <div class="sect3">
-<h4 id="mapevent-observer-methods"><a class="anchor" href="#mapevent-observer-methods"></a>7.1.1. MapEvent Observer Methods</h4>
+<h4 id="mapevent-observer-methods"><a class="anchor" href="#mapevent-observer-methods"></a>8.1.1. MapEvent Observer Methods</h4>
 <div class="paragraph">
 <p>A <a href="https://coherence.community/23.03.1/api/java/com/tangosol/util/MapEvent.html">MapEvent</a> observer method is a method on a Spring bean that is
 annotated with <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -1620,7 +1745,7 @@ public class PersonEventHandler {
 over what events are received from where.</p>
 </div>
 <div class="sect4">
-<h5 id="specify-the-mapcache-name-2"><a class="anchor" href="#specify-the-mapcache-name-2"></a>7.1.1.1. Specify the Map/Cache name</h5>
+<h5 id="specify-the-mapcache-name-2"><a class="anchor" href="#specify-the-mapcache-name-2"></a>8.1.1.1. Specify the Map/Cache name</h5>
 <div class="paragraph">
 <p>By default, a <code>MapEvent</code> observer method would receive events for all maps/caches. In practice though, this would not be
 a very common use case, and typically you would want an observer method to listen to events that are for specific caches.
@@ -1690,7 +1815,7 @@ from.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="specify-the-cache-service-name"><a class="anchor" href="#specify-the-cache-service-name"></a>7.1.1.2. Specify the Cache Service name</h5>
+<h5 id="specify-the-cache-service-name"><a class="anchor" href="#specify-the-cache-service-name"></a>8.1.1.2. Specify the Cache Service name</h5>
 <div class="paragraph">
 <p>In the previous section we showed to restrict received events to a specific map or cache name. Events can also be restricted
 to only events from a specific <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/introduction-coherence-clusters.html#GUID-62A54E60-E964-4DFE-BE7F-CA7ADA93354E">cache service</a>.
@@ -1756,7 +1881,7 @@ services, the events can be restricted to just specific services using the
 </div>
 </div>
 <div class="sect4">
-<h5 id="specify-the-owning-session-name-2"><a class="anchor" href="#specify-the-owning-session-name-2"></a>7.1.1.3. Specify the Owning Session Name</h5>
+<h5 id="specify-the-owning-session-name-2"><a class="anchor" href="#specify-the-owning-session-name-2"></a>8.1.1.3. Specify the Owning Session Name</h5>
 <div class="paragraph">
 <p>In applications that use multiple <code>Sessions</code>, there may be a situation where more than one session has a map with
 the same name. In those cases an observer method may need to restrict the events it receives to a specific session.
@@ -1854,7 +1979,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-events-mapevent-listeners-specific-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-specific-events"></a>7.1.2. Receive Specific Event Types</h4>
+<h4 id="coherence-spring-events-mapevent-listeners-specific-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-specific-events"></a>8.1.2. Receive Specific Event Types</h4>
 <div class="paragraph">
 <p>There are three types of event that a <code>MapEvent</code> observer method can receive:</p>
 </div>
@@ -1943,7 +2068,7 @@ the following annotations:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-events-mapevent-listeners-filtering-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-filtering-events"></a>7.1.3. Filtering Events</h4>
+<h4 id="coherence-spring-events-mapevent-listeners-filtering-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-filtering-events"></a>8.1.3. Filtering Events</h4>
 <div class="paragraph">
 <p>The <code>MapEvents</code> received by an observer method can be further restricted by applying a filter. Filters are applied by
 annotating the method with a <a href="#coherence-spring-filter-binding-annotations">filter binding</a> annotation, which is a link
@@ -1999,7 +2124,7 @@ of the <code>age</code> property of the entry value is <code>&gt;= 18</code>.</p
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-events-mapevent-listeners-transforming-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-transforming-events"></a>7.1.4. Transforming Events</h4>
+<h4 id="coherence-spring-events-mapevent-listeners-transforming-events"><a class="anchor" href="#coherence-spring-events-mapevent-listeners-transforming-events"></a>8.1.4. Transforming Events</h4>
 <div class="paragraph">
 <p>In some use-cases the <code>MapEvent</code> observer method does not require the whole map or cache value to process, it might only
 require one, or a few, properties of the value, or it might require some calculated value. This can be achieved by
@@ -2112,7 +2237,7 @@ to the method.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="coherence-spring-events-event-interceptors"><a class="anchor" href="#coherence-spring-events-event-interceptors"></a>7.2. Coherence Event Interceptors</h3>
+<h3 id="coherence-spring-events-event-interceptors"><a class="anchor" href="#coherence-spring-events-event-interceptors"></a>8.2. Coherence Event Interceptors</h3>
 <div class="paragraph">
 <p>Coherence produces many events in response to various server-side and client-side actions. For example, <em>Lifecycle events</em>
 for Coherence itself, maps and cache, <em>Entry events</em> when data in maps and caches changes, <em>Partition events</em> for
@@ -2130,7 +2255,7 @@ can be further controlled by applying other annotations to the method or event p
 vary depending on the type of the event.</p>
 </div>
 <div class="sect3">
-<h4 id="event-types"><a class="anchor" href="#event-types"></a>7.2.1. Event Types</h4>
+<h4 id="event-types"><a class="anchor" href="#event-types"></a>8.2.1. Event Types</h4>
 <div class="paragraph">
 <p>The different types of event that can be observed are listed below:</p>
 </div>
@@ -2192,7 +2317,7 @@ is created, truncated, or destroyed.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-lifecycle-events"><a class="anchor" href="#coherence-lifecycle-events"></a>7.2.2. Coherence Lifecycle Events</h4>
+<h4 id="coherence-lifecycle-events"><a class="anchor" href="#coherence-lifecycle-events"></a>8.2.2. Coherence Lifecycle Events</h4>
 <div class="paragraph">
 <p><a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> are emitted to indicate the lifecycle of a <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instance.</p>
 </div>
@@ -2216,7 +2341,7 @@ public void onEvent(LifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-lifecycleevent-types"><a class="anchor" href="#receive-specific-lifecycleevent-types"></a>7.2.2.1. Receive Specific LifecycleEvent Types</h5>
+<h5 id="receive-specific-lifecycleevent-types"><a class="anchor" href="#receive-specific-lifecycleevent-types"></a>8.2.2.1. Receive Specific LifecycleEvent Types</h5>
 <div class="paragraph">
 <p>There are four different types of <code>LifecycleEvent</code>.
 By adding the corresponding annotation to the method parameter the method will only receive the specified events.</p>
@@ -2247,7 +2372,7 @@ public void onEvent(@Activated @Disposing LifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-coherencelifecycleevents-for-a-specific-coherence-instance"><a class="anchor" href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance"></a>7.2.2.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</h5>
+<h5 id="receive-coherencelifecycleevents-for-a-specific-coherence-instance"><a class="anchor" href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance"></a>8.2.2.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</h5>
 <div class="paragraph">
 <p>Each <code>Coherence</code> instance in an application has a unique name. The observer method can be annotated to only receive events associated with a specific <code>Coherence</code> instance by using the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a> annotation.</p>
 </div>
@@ -2276,7 +2401,7 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 </div>
 </div>
 <div class="sect3">
-<h4 id="session-lifecycle-events"><a class="anchor" href="#session-lifecycle-events"></a>7.2.3. Session Lifecycle Events</h4>
+<h4 id="session-lifecycle-events"><a class="anchor" href="#session-lifecycle-events"></a>8.2.3. Session Lifecycle Events</h4>
 <div class="paragraph">
 <p><a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvents</a> are emitted to indicate
 the lifecycle event of a <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/Session.html">Session</a> instance.</p>
@@ -2301,7 +2426,7 @@ public void onEvent(SessionLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-sessionlifecycleevent-types"><a class="anchor" href="#receive-specific-sessionlifecycleevent-types"></a>7.2.3.1. Receive Specific SessionLifecycleEvent Types</h5>
+<h5 id="receive-specific-sessionlifecycleevent-types"><a class="anchor" href="#receive-specific-sessionlifecycleevent-types"></a>8.2.3.1. Receive Specific SessionLifecycleEvent Types</h5>
 <div class="paragraph">
 <p>There are four different types of <code>SessionLifecycleEvent</code>.
 By adding the corresponding annotation to the method parameter the method will only receive the specified events.</p>
@@ -2335,7 +2460,7 @@ public void onEvent(@Started @Stopped SessionLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-sessionlifecycleevents-for-a-specific-session-instance"><a class="anchor" href="#receive-sessionlifecycleevents-for-a-specific-session-instance"></a>7.2.3.2. Receive SessionLifecycleEvents for a Specific Session Instance</h5>
+<h5 id="receive-sessionlifecycleevents-for-a-specific-session-instance"><a class="anchor" href="#receive-sessionlifecycleevents-for-a-specific-session-instance"></a>8.2.3.2. Receive SessionLifecycleEvents for a Specific Session Instance</h5>
 <div class="paragraph">
 <p>Each <code>Session</code> instance in an application has a name. The observer method can be annotated to only receive events
 associated with a specific <code>Session</code> instance by using the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a> annotation.</p>
@@ -2365,7 +2490,7 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) SessionLifecycleEvent event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="configurablecachefactory-lifecycle-events"><a class="anchor" href="#configurablecachefactory-lifecycle-events"></a>7.2.4. ConfigurableCacheFactory Lifecycle Events</h4>
+<h4 id="configurablecachefactory-lifecycle-events"><a class="anchor" href="#configurablecachefactory-lifecycle-events"></a>8.2.4. ConfigurableCacheFactory Lifecycle Events</h4>
 <div class="paragraph">
 <p><a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvents</a> are emitted to
 indicate the lifecycle of a <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/Coherence.html">Coherence</a> instance.</p>
@@ -2391,7 +2516,7 @@ public void onEvent(CoherenceLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-coherencelifecycleevent-types"><a class="anchor" href="#receive-specific-coherencelifecycleevent-types"></a>7.2.4.1. Receive Specific CoherenceLifecycleEvent Types</h5>
+<h5 id="receive-specific-coherencelifecycleevent-types"><a class="anchor" href="#receive-specific-coherencelifecycleevent-types"></a>8.2.4.1. Receive Specific CoherenceLifecycleEvent Types</h5>
 <div class="paragraph">
 <p>There are four different types of <code>CoherenceLifecycleEvent</code>.
 By adding the corresponding annotation to the method parameter the method will only receive the specified events.</p>
@@ -2425,7 +2550,7 @@ public void onEvent(@Started @Stopped CoherenceLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-coherencelifecycleevents-for-a-specific-coherence-instance-2"><a class="anchor" href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance-2"></a>7.2.4.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</h5>
+<h5 id="receive-coherencelifecycleevents-for-a-specific-coherence-instance-2"><a class="anchor" href="#receive-coherencelifecycleevents-for-a-specific-coherence-instance-2"></a>8.2.4.2. Receive CoherenceLifecycleEvents for a Specific Coherence Instance</h5>
 <div class="paragraph">
 <p>Each <code>Coherence</code> instance in an application has a unique name. The observer method can be annotated to only receive events associated with a specific <code>Coherence</code> instance by using the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/Name.html">@Name</a> annotation.</p>
 </div>
@@ -2454,7 +2579,7 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 </div>
 </div>
 <div class="sect3">
-<h4 id="cache-lifecycle-events"><a class="anchor" href="#cache-lifecycle-events"></a>7.2.5. Cache Lifecycle Events</h4>
+<h4 id="cache-lifecycle-events"><a class="anchor" href="#cache-lifecycle-events"></a>8.2.5. Cache Lifecycle Events</h4>
 <div class="paragraph">
 <p><a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> are emitted to indicate the lifecycle of a cache instance.</p>
 </div>
@@ -2474,7 +2599,7 @@ public void onEvent(CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-cachelifecycleevent-types"><a class="anchor" href="#receive-specific-cachelifecycleevent-types"></a>7.2.5.1. Receive Specific CacheLifecycleEvent Types</h5>
+<h5 id="receive-specific-cachelifecycleevent-types"><a class="anchor" href="#receive-specific-cachelifecycleevent-types"></a>8.2.5.1. Receive Specific CacheLifecycleEvent Types</h5>
 <div class="paragraph">
 <p>There are three types of `CacheLifecycleEvent:</p>
 </div>
@@ -2504,7 +2629,7 @@ public void onEvent(@Created @Destroyed CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache"><a class="anchor" href="#receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache"></a>7.2.5.2. Receive CacheLifecycleEvents for a Specific NamedMap or NamedCache</h5>
+<h5 id="receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache"><a class="anchor" href="#receive-cachelifecycleevents-for-a-specific-namedmap-or-namedcache"></a>8.2.5.2. Receive CacheLifecycleEvents for a Specific NamedMap or NamedCache</h5>
 <div class="paragraph">
 <p>To only receive events for a specific <code>NamedMap</code> annotate the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/MapName.html">@MapName</a> annotation.
@@ -2527,7 +2652,7 @@ public void onEvent(@MapName("orders") CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-cachelifecycleevents-from-a-specific-cache-service"><a class="anchor" href="#receive-cachelifecycleevents-from-a-specific-cache-service"></a>7.2.5.3. Receive CacheLifecycleEvents from a Specific Cache Service</h5>
+<h5 id="receive-cachelifecycleevents-from-a-specific-cache-service"><a class="anchor" href="#receive-cachelifecycleevents-from-a-specific-cache-service"></a>8.2.5.3. Receive CacheLifecycleEvents from a Specific Cache Service</h5>
 <div class="paragraph">
 <p>Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/ServiceName.html">@ServiceName</a> annotation.</p>
@@ -2545,7 +2670,7 @@ public void onEvent(@ServiceName("StorageService") CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-cachelifecycleevents-from-a-specific-session"><a class="anchor" href="#receive-cachelifecycleevents-from-a-specific-session"></a>7.2.5.4. Receive CacheLifecycleEvents from a Specific Session</h5>
+<h5 id="receive-cachelifecycleevents-from-a-specific-session"><a class="anchor" href="#receive-cachelifecycleevents-from-a-specific-session"></a>8.2.5.4. Receive CacheLifecycleEvents from a Specific Session</h5>
 <div class="paragraph">
 <p>A typical use case is to obtain <code>NamedCache</code> and <code>NamedMap</code> instances from a <code>Session</code>. It is possible to restrict events received by a method to only those related to caches owned by a specific <code>Session</code> by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a> annotation.</p>
@@ -2564,7 +2689,7 @@ public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="entry-events"><a class="anchor" href="#entry-events"></a>7.2.6. Entry Events</h4>
+<h4 id="entry-events"><a class="anchor" href="#entry-events"></a>8.2.6. Entry Events</h4>
 <div class="paragraph">
 <p>An <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> is emitted when
 a <a href="https://coherence.community/23.03.1/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These
@@ -2588,7 +2713,7 @@ public void onEvent(EntryEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-entryevent-types"><a class="anchor" href="#receive-specific-entryevent-types"></a>7.2.6.1. Receive Specific EntryEvent Types</h5>
+<h5 id="receive-specific-entryevent-types"><a class="anchor" href="#receive-specific-entryevent-types"></a>8.2.6.1. Receive Specific EntryEvent Types</h5>
 <div class="paragraph">
 <p>There are a number of different <code>EntryEvent</code> types.</p>
 </div>
@@ -2648,7 +2773,7 @@ as the pre-events are executing on the Cache Service thread so cannot call into 
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache"><a class="anchor" href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache"></a>7.2.6.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</h5>
+<h5 id="receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache"><a class="anchor" href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache"></a>8.2.6.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</h5>
 <div class="paragraph">
 <p>To only receive events for a specific <code>NamedMap</code> annotate the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/MapName.html">@MapName</a> annotation.
@@ -2671,7 +2796,7 @@ public void onEvent(@MapName("orders") EntryProcessorEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-from-a-specific-cache-service"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-cache-service"></a>7.2.6.3. Receive EntryProcessorEvents from a Specific Cache Service</h5>
+<h5 id="receive-entryprocessorevents-from-a-specific-cache-service"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-cache-service"></a>8.2.6.3. Receive EntryProcessorEvents from a Specific Cache Service</h5>
 <div class="paragraph">
 <p>Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/ServiceName.html">@ServiceName</a> annotation.</p>
@@ -2689,7 +2814,7 @@ public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-from-a-specific-session"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-session"></a>7.2.6.4. Receive EntryProcessorEvents from a Specific Session</h5>
+<h5 id="receive-entryprocessorevents-from-a-specific-session"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-session"></a>8.2.6.4. Receive EntryProcessorEvents from a Specific Session</h5>
 <div class="paragraph">
 <p>A typical use case is to obtain <code>NamedCache</code> and <code>NamedMap</code> instances from a <code>Session</code>. It is possible to restrict events received by a method to only those related to caches owned by a specific <code>Session</code> by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a> annotation.</p>
@@ -2708,7 +2833,7 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="entryprocessor-events"><a class="anchor" href="#entryprocessor-events"></a>7.2.7. EntryProcessor Events</h4>
+<h4 id="entryprocessor-events"><a class="anchor" href="#entryprocessor-events"></a>8.2.7. EntryProcessor Events</h4>
 <div class="paragraph">
 <p>An <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.</p>
 </div>
@@ -2728,7 +2853,7 @@ public void onEvent(EntryProcessorEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-entryprocessorevent-types"><a class="anchor" href="#receive-specific-entryprocessorevent-types"></a>7.2.7.1. Receive Specific EntryProcessorEvent Types</h5>
+<h5 id="receive-specific-entryprocessorevent-types"><a class="anchor" href="#receive-specific-entryprocessorevent-types"></a>8.2.7.1. Receive Specific EntryProcessorEvent Types</h5>
 <div class="paragraph">
 <p>There are a number of different <code>EntryProcessorEvent</code> types.</p>
 </div>
@@ -2772,7 +2897,7 @@ public void onEvent(@Executed EntryProcessorEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2"><a class="anchor" href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2"></a>7.2.7.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</h5>
+<h5 id="receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2"><a class="anchor" href="#receive-entryprocessorevents-for-a-specific-namedmap-or-namedcache-2"></a>8.2.7.2. Receive EntryProcessorEvents for a Specific NamedMap or NamedCache</h5>
 <div class="paragraph">
 <p>To only receive events for a specific <code>NamedMap</code> annotate the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/MapName.html">@MapName</a> annotation.
@@ -2795,7 +2920,7 @@ public void onEvent(@MapName("orders") EntryProcessorEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-from-a-specific-cache-service-2"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-cache-service-2"></a>7.2.7.3. Receive EntryProcessorEvents from a Specific Cache Service</h5>
+<h5 id="receive-entryprocessorevents-from-a-specific-cache-service-2"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-cache-service-2"></a>8.2.7.3. Receive EntryProcessorEvents from a Specific Cache Service</h5>
 <div class="paragraph">
 <p>Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/ServiceName.html">@ServiceName</a> annotation.</p>
@@ -2813,7 +2938,7 @@ public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-entryprocessorevents-from-a-specific-session-2"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-session-2"></a>7.2.7.4. Receive EntryProcessorEvents from a Specific Session</h5>
+<h5 id="receive-entryprocessorevents-from-a-specific-session-2"><a class="anchor" href="#receive-entryprocessorevents-from-a-specific-session-2"></a>8.2.7.4. Receive EntryProcessorEvents from a Specific Session</h5>
 <div class="paragraph">
 <p>A typical use case is to obtain <code>NamedCache</code> and <code>NamedMap</code> instances from a <code>Session</code>. It is possible to restrict events received by a method to only those related to caches owned by a specific <code>Session</code> by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a> annotation.</p>
@@ -2832,7 +2957,7 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="partition-level-transaction-events"><a class="anchor" href="#partition-level-transaction-events"></a>7.2.8. Partition Level Transaction Events</h4>
+<h4 id="partition-level-transaction-events"><a class="anchor" href="#partition-level-transaction-events"></a>8.2.8. Partition Level Transaction Events</h4>
 <div class="paragraph">
 <p>A <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> is emitted in relation to all mutations in a single partition in response to executing a single request.
 These are commonly referred to as partition level transactions.
@@ -2857,7 +2982,7 @@ public void onEvent(TransactionEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-transactionevent-types"><a class="anchor" href="#receive-specific-transactionevent-types"></a>7.2.8.1. Receive Specific TransactionEvent Types</h5>
+<h5 id="receive-specific-transactionevent-types"><a class="anchor" href="#receive-specific-transactionevent-types"></a>8.2.8.1. Receive Specific TransactionEvent Types</h5>
 <div class="paragraph">
 <p>There are a number of different <code>TransactionEvent</code> types.</p>
 </div>
@@ -2887,7 +3012,7 @@ public void onEvent(@Committed TransactionEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-transactionevent-from-a-specific-cache-service"><a class="anchor" href="#receive-transactionevent-from-a-specific-cache-service"></a>7.2.8.2. Receive TransactionEvent from a Specific Cache Service</h5>
+<h5 id="receive-transactionevent-from-a-specific-cache-service"><a class="anchor" href="#receive-transactionevent-from-a-specific-cache-service"></a>8.2.8.2. Receive TransactionEvent from a Specific Cache Service</h5>
 <div class="paragraph">
 <p>Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/ServiceName.html">@ServiceName</a> annotation.</p>
@@ -2906,7 +3031,7 @@ public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="partition-transfer-events"><a class="anchor" href="#partition-transfer-events"></a>7.2.9. Partition Transfer Events</h4>
+<h4 id="partition-transfer-events"><a class="anchor" href="#partition-transfer-events"></a>8.2.9. Partition Transfer Events</h4>
 <div class="paragraph">
 <p>A <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of <a href="https://coherence.community/23.03.1/api/java/com/tangosol/util/BinaryEntry.html">BinaryEntry</a> instances that are being transferred.</p>
 </div>
@@ -2938,7 +3063,7 @@ public void onEvent(TransferEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-specific-transferevent-types"><a class="anchor" href="#receive-specific-transferevent-types"></a>7.2.9.1. Receive Specific TransferEvent Types</h5>
+<h5 id="receive-specific-transferevent-types"><a class="anchor" href="#receive-specific-transferevent-types"></a>8.2.9.1. Receive Specific TransferEvent Types</h5>
 <div class="paragraph">
 <p>There are a number of different <code>TransferEvent</code> types.</p>
 </div>
@@ -3002,7 +3127,7 @@ public void onEvent(@Lost TransferEvent event) {
 </div>
 </div>
 <div class="sect4">
-<h5 id="receive-transferevent-from-a-specific-cache-service"><a class="anchor" href="#receive-transferevent-from-a-specific-cache-service"></a>7.2.9.2. Receive TransferEvent from a Specific Cache Service</h5>
+<h5 id="receive-transferevent-from-a-specific-cache-service"><a class="anchor" href="#receive-transferevent-from-a-specific-cache-service"></a>8.2.9.2. Receive TransferEvent from a Specific Cache Service</h5>
 <div class="paragraph">
 <p>Caches are owned by a Cache Service, it is possible to restrict events received by a method to only those related to caches owned by a specific service by annotating the method parameter with the
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/ServiceName.html">@ServiceName</a> annotation.</p>
@@ -3021,7 +3146,7 @@ public void onEvent(@ServiceName("StorageService") TransferEvent event) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="unsolicited-commit-events"><a class="anchor" href="#unsolicited-commit-events"></a>7.2.10. Unsolicited Commit Events</h4>
+<h4 id="unsolicited-commit-events"><a class="anchor" href="#unsolicited-commit-events"></a>8.2.10. Unsolicited Commit Events</h4>
 <div class="paragraph">
 <p>An <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.</p>
 </div>
@@ -3048,7 +3173,7 @@ public void onEvent(UnsolicitedCommitEvent event) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-filter-binding-annotations"><a class="anchor" href="#coherence-spring-filter-binding-annotations"></a>8. Filter Binding Annotations</h2>
+<h2 id="coherence-spring-filter-binding-annotations"><a class="anchor" href="#coherence-spring-filter-binding-annotations"></a>9. Filter Binding Annotations</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Filter binding annotations are normal annotations that are themselves annotated with the
@@ -3082,7 +3207,7 @@ large palm trees (any palm tree larger than 20 meters). We would need a <code>Fi
 <code>plantType == PlantType.PALM &amp;&amp; height &gt;= 20</code>.</p>
 </div>
 <div class="sect2">
-<h3 id="create-the-filter-binding-annotation"><a class="anchor" href="#create-the-filter-binding-annotation"></a>8.1. Create the filter binding annotation</h3>
+<h3 id="create-the-filter-binding-annotation"><a class="anchor" href="#create-the-filter-binding-annotation"></a>9.1. Create the filter binding annotation</h3>
 <div class="paragraph">
 <p>First create a simple annotation, it could be called something like <code>PlantNameExtractor</code></p>
 </div>
@@ -3118,7 +3243,7 @@ public @interface LargePalmTrees {               <i class="conum" data-value="2"
 </div>
 </div>
 <div class="sect2">
-<h3 id="create-the-filterfactory"><a class="anchor" href="#create-the-filterfactory"></a>8.2. Create the <code>FilterFactory</code></h3>
+<h3 id="create-the-filterfactory"><a class="anchor" href="#create-the-filterfactory"></a>9.2. Create the <code>FilterFactory</code></h3>
 <div class="paragraph">
 <p>Now create the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/FilterFactory.html">FilterFactory</a> implementation
 that will produce instances of the required <code>Filter</code>.</p>
@@ -3234,7 +3359,7 @@ up as a Spring bean</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="annotate-the-injection-point"><a class="anchor" href="#annotate-the-injection-point"></a>8.3. Annotate the Injection Point</h3>
+<h3 id="annotate-the-injection-point"><a class="anchor" href="#annotate-the-injection-point"></a>9.3. Annotate the Injection Point</h3>
 <div class="paragraph">
 <p>Now the application code where the view is to be injected can use the custom filter binding annotation.</p>
 </div>
@@ -3268,7 +3393,7 @@ which also has takes an optional value to specify the name of the cache.</td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-extractor-binding-annotations"><a class="anchor" href="#coherence-spring-extractor-binding-annotations"></a>9. Extractor Binding Annotations</h2>
+<h2 id="coherence-spring-extractor-binding-annotations"><a class="anchor" href="#coherence-spring-extractor-binding-annotations"></a>10. Extractor Binding Annotations</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>ValueExtractor binding annotations are normal annotations that are themselves annotated with the
@@ -3300,7 +3425,7 @@ plant instances. Each plant has a <code>name</code> property that we will use fo
 extracts the <code>name</code> property and the resulting map of plant names can be injected into our Spring beans.</p>
 </div>
 <div class="sect2">
-<h3 id="create-the-extractor-binding-annotation"><a class="anchor" href="#create-the-extractor-binding-annotation"></a>9.1. Create the extractor binding annotation</h3>
+<h3 id="create-the-extractor-binding-annotation"><a class="anchor" href="#create-the-extractor-binding-annotation"></a>10.1. Create the extractor binding annotation</h3>
 <div class="paragraph">
 <p>First create a simple annotation called <code>PlantName</code></p>
 </div>
@@ -3343,7 +3468,7 @@ public @interface PlantNameExtractor {           <i class="conum" data-value="2"
 </div>
 </div>
 <div class="sect2">
-<h3 id="create-the-extractorfactory"><a class="anchor" href="#create-the-extractorfactory"></a>9.2. Create the <code>ExtractorFactory</code></h3>
+<h3 id="create-the-extractorfactory"><a class="anchor" href="#create-the-extractorfactory"></a>10.2. Create the <code>ExtractorFactory</code></h3>
 <div class="paragraph">
 <p>Now create the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/ExtractorFactory.html">ExtractorFactory</a>
 implementation that will produce instances of the required <code>ValueExtractor</code>.</p>
@@ -3389,7 +3514,7 @@ In this case the annotation has no values, but if it did we could access those v
 </div>
 </div>
 <div class="sect2">
-<h3 id="annotate-the-injection-point-2"><a class="anchor" href="#annotate-the-injection-point-2"></a>9.3. Annotate the Injection Point</h3>
+<h3 id="annotate-the-injection-point-2"><a class="anchor" href="#annotate-the-injection-point-2"></a>10.3. Annotate the Injection Point</h3>
 <div class="paragraph">
 <p>Now the application code where the view is to be injected can use the custom extractor binding annotation.</p>
 </div>
@@ -3431,7 +3556,7 @@ from the underlying cache are transformed into <code>String</code> values by ext
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-messaging-with-coherence-topics"><a class="anchor" href="#coherence-spring-messaging-with-coherence-topics"></a>10. Messaging with Coherence Topics</h2>
+<h2 id="coherence-spring-messaging-with-coherence-topics"><a class="anchor" href="#coherence-spring-messaging-with-coherence-topics"></a>11. Messaging with Coherence Topics</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring Coherence integration provides support for message driven applications by virtue of Coherence topics.</p>
@@ -3446,7 +3571,7 @@ from the underlying cache are transformed into <code>String</code> values by ext
 <p>With Spring Coherence Messaging publishers and subscribers beans are created by writing suitably annotated interfaces.</p>
 </div>
 <div class="sect2">
-<h3 id="define-publishers-coherencepublisher"><a class="anchor" href="#define-publishers-coherencepublisher"></a>10.1. Define Publishers - @CoherencePublisher</h3>
+<h3 id="define-publishers-coherencepublisher"><a class="anchor" href="#define-publishers-coherencepublisher"></a>11.1. Define Publishers - @CoherencePublisher</h3>
 <div class="paragraph">
 <p>To create a topic Publisher that sends messages, you can simply define an interface that is annotated with
 <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherencePublisher.html">@CoherencePublisher</a>. Also, your
@@ -3515,7 +3640,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="reactive-and-non-blocking-method-definitions"><a class="anchor" href="#reactive-and-non-blocking-method-definitions"></a>10.2. Reactive and Non-Blocking Method Definitions</h3>
+<h3 id="reactive-and-non-blocking-method-definitions"><a class="anchor" href="#reactive-and-non-blocking-method-definitions"></a>11.2. Reactive and Non-Blocking Method Definitions</h3>
 <div class="paragraph">
 <p>The <code>@CoherencePublisher</code> annotation supports the definition of reactive return types (such as Reactor <code>Flux</code>) as well as Futures.</p>
 </div>
@@ -3523,7 +3648,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 <p>The following sections cover possible method signatures and behaviour:</p>
 </div>
 <div class="sect3">
-<h4 id="mono-value-and-return-type"><a class="anchor" href="#mono-value-and-return-type"></a>10.2.1. Mono Value and Return Type</h4>
+<h4 id="mono-value-and-return-type"><a class="anchor" href="#mono-value-and-return-type"></a>11.2.1. Mono Value and Return Type</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Mono&lt;Publisher.Status&gt; sendBook(Mono&lt;Book&gt; book);</code></pre>
@@ -3534,7 +3659,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="reactor-flux-value-and-return-type"><a class="anchor" href="#reactor-flux-value-and-return-type"></a>10.2.2. Reactor Flux Value and Return Type</h4>
+<h4 id="reactor-flux-value-and-return-type"><a class="anchor" href="#reactor-flux-value-and-return-type"></a>11.2.2. Reactor Flux Value and Return Type</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Flux&lt;Publisher.Status&gt; sendBooks(Flux&lt;Book&gt; book);</code></pre>
@@ -3545,7 +3670,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="future-return-type"><a class="anchor" href="#future-return-type"></a>10.2.3. Future Return Type</h4>
+<h4 id="future-return-type"><a class="anchor" href="#future-return-type"></a>11.2.3. Future Return Type</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Future&lt;Publisher.Status&gt; sendBooks(Mono&lt;Book&gt; book);</code></pre>
@@ -3557,7 +3682,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="define-subscribers-coherencetopiclistener"><a class="anchor" href="#define-subscribers-coherencetopiclistener"></a>10.3. Define Subscribers - @CoherenceTopicListener</h3>
+<h3 id="define-subscribers-coherencetopiclistener"><a class="anchor" href="#define-subscribers-coherencetopiclistener"></a>11.3. Define Subscribers - @CoherenceTopicListener</h3>
 <div class="paragraph">
 <p>To listen to Coherence topic messages you can use the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> annotation to define a message listener.</p>
 </div>
@@ -3598,7 +3723,7 @@ public class ProductListener {
 </div>
 </div>
 <div class="sect2">
-<h3 id="method-parameter-bindings"><a class="anchor" href="#method-parameter-bindings"></a>10.4. Method Parameter Bindings</h3>
+<h3 id="method-parameter-bindings"><a class="anchor" href="#method-parameter-bindings"></a>11.4. Method Parameter Bindings</h3>
 <div class="paragraph">
 <p>When using a Coherence topic <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> directly in application code, the <code>receive</code> method returns an <a href="https://coherence.community/23.03.1/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a>, which contains the message value and metadata. The annotated subscriber method can take various parameter types that will bind to the element itself or to the message.</p>
 </div>
@@ -3619,12 +3744,12 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="committing-messages"><a class="anchor" href="#committing-messages"></a>10.5. Committing Messages</h3>
+<h3 id="committing-messages"><a class="anchor" href="#committing-messages"></a>11.5. Committing Messages</h3>
 <div class="paragraph">
 <p>An important part of Coherence topic subscribers is committing messages to notify the server that they have been processed and guaranteeing at least once delivery. When using Micronaut Coherence messaging every message will be committed after the handler method has successfully processed the message. This behaviour can be controlled by adding a commit strategy to the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> annotation.</p>
 </div>
 <div class="sect3">
-<h4 id="default-commit-behaviour"><a class="anchor" href="#default-commit-behaviour"></a>10.5.1. Default Commit Behaviour</h4>
+<h4 id="default-commit-behaviour"><a class="anchor" href="#default-commit-behaviour"></a>11.5.1. Default Commit Behaviour</h4>
 <div class="paragraph">
 <p>If no <code>commitStrategy</code> field has been provided to the <code>@CoherenceTopicListener</code> annotation the default behaviour is to synchronously call <code>Element.commit()</code> for every message received.</p>
 </div>
@@ -3642,7 +3767,7 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="setting-commit-strategy"><a class="anchor" href="#setting-commit-strategy"></a>10.5.2. Setting Commit Strategy</h4>
+<h4 id="setting-commit-strategy"><a class="anchor" href="#setting-commit-strategy"></a>11.5.2. Setting Commit Strategy</h4>
 <div class="paragraph">
 <p>The <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> <code>commitStrategy</code> field is an enumeration of type <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CommitStrategy.html">CommitStrategy</a> with three values, <code>SYNC</code>, <code>ASYNC</code> and <code>MANUAL</code>.</p>
 </div>
@@ -3702,7 +3827,7 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="forwarding-messages-with-sendto"><a class="anchor" href="#forwarding-messages-with-sendto"></a>10.5.3. Forwarding Messages with @SendTo</h4>
+<h4 id="forwarding-messages-with-sendto"><a class="anchor" href="#forwarding-messages-with-sendto"></a>11.5.3. Forwarding Messages with @SendTo</h4>
 <div class="paragraph">
 <p>On any <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/CoherenceTopicListener.html">@CoherenceTopicListener</a> method that returns a value, you can use the @SendTo annotation to forward the return value to the topic or topics specified by the @SendTo annotation.</p>
 </div>
@@ -3788,7 +3913,7 @@ public class ProductListener {
 </div>
 </div>
 <div class="sect1">
-<h2 id="coherence-spring-cachestore"><a class="anchor" href="#coherence-spring-cachestore"></a>11. Cache Store</h2>
+<h2 id="coherence-spring-cachestore"><a class="anchor" href="#coherence-spring-cachestore"></a>12. Cache Store</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Coherence Spring provides dedicated support for database-backed caches using JPA. Spring Data&#8217;s
@@ -3831,8 +3956,20 @@ should be pretty obvious.</p>
 <code>JpaRepositoryCacheLoader</code> or <code>JpaRepositoryCacheStore</code> with the correct generic parameters. We will illustrate the use
 of Cache Stores using the following example.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please also look at the reference documentation chapter <a href="#injecting-spring-beans-into-coherence-managed-objects">Injecting Spring Beans into Coherence-Managed Objects</a>.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="coherence-spring-cachestore-demo"><a class="anchor" href="#coherence-spring-cachestore-demo"></a>11.1. JPA Repository CacheStore Demo</h3>
+<h3 id="coherence-spring-cachestore-demo"><a class="anchor" href="#coherence-spring-cachestore-demo"></a>12.1. JPA Repository CacheStore Demo</h3>
 <div class="paragraph">
 <p>In this demo we are show-casing how to use Spring Data JPA repository beans as Coherence CacheStores in
 applications using the <a href="https://github.com/coherence-community/coherence-spring">Coherence Spring project</a>.</p>
@@ -3868,7 +4005,7 @@ applications using the <a href="https://github.com/coherence-community/coherence
 </ul>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-model"><a class="anchor" href="#coherence-spring-cachestore-demo-model"></a>11.1.1. Data Model</h4>
+<h4 id="coherence-spring-cachestore-demo-model"><a class="anchor" href="#coherence-spring-cachestore-demo-model"></a>12.1.1. Data Model</h4>
 <div class="paragraph">
 <p>At its core (and in the <code>coherence-cachestore-demo-core</code> module), the application has a simple class called <code>Person</code> that
 is annotated with basic JPA annotations:</p>
@@ -3941,7 +4078,7 @@ instances into a Coherence <code>NamedMap&lt;Long, Person&gt;</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-jpa-repository"><a class="anchor" href="#coherence-spring-cachestore-demo-jpa-repository"></a>11.1.2. Writing a JPA Repository CacheStore</h4>
+<h4 id="coherence-spring-cachestore-demo-jpa-repository"><a class="anchor" href="#coherence-spring-cachestore-demo-jpa-repository"></a>12.1.2. Writing a JPA Repository CacheStore</h4>
 <div class="paragraph">
 <p>To write a JPA repository <code>CacheStore</code> that can be used by our people cache we need to create a simple Spring Data
 repository interface:</p>
@@ -3963,7 +4100,7 @@ actually generating the implementation of the interface, and supplying that impl
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-embedded"></a>11.1.3. Embedded Coherence</h4>
+<h4 id="coherence-spring-cachestore-demo-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-embedded"></a>12.1.3. Embedded Coherence</h4>
 <div class="paragraph">
 <p>In the embedded Coherence CacheStore demo we use a co-located Coherence instance that will start
 as part of the application itself.</p>
@@ -4081,7 +4218,7 @@ following mapping:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-running-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-running-embedded"></a>11.1.4. Running the Embedded Sample</h4>
+<h4 id="coherence-spring-cachestore-demo-running-embedded"><a class="anchor" href="#coherence-spring-cachestore-demo-running-embedded"></a>12.1.4. Running the Embedded Sample</h4>
 <div class="paragraph">
 <p>This sample is just a simple Spring Boot application that exposes two endpoints to create/update people and get people by id.
 The controller class for the two endpoints is very simple:</p>
@@ -4217,7 +4354,7 @@ Date: Thu, 19 Aug 2021 16:13:47 GMT
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-coherence-extend"><a class="anchor" href="#coherence-spring-cachestore-demo-coherence-extend"></a>11.1.5. Using Coherence*Extend</h4>
+<h4 id="coherence-spring-cachestore-demo-coherence-extend"><a class="anchor" href="#coherence-spring-cachestore-demo-coherence-extend"></a>12.1.5. Using Coherence*Extend</h4>
 <div class="paragraph">
 <p>This is the slightly more complex version of the CacheStore demo. Instead of using an embedded version Coherence, we
 will have a remote Coherence instance and the actual application will connect to Coherence via Coherence*Extend.</p>
@@ -4257,7 +4394,7 @@ Cache Configuration XML file called <code>remote-cache-config.xml</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="coherence-spring-cachestore-demo-inspect-database"><a class="anchor" href="#coherence-spring-cachestore-demo-inspect-database"></a>11.1.6. Inspecting the Database</h4>
+<h4 id="coherence-spring-cachestore-demo-inspect-database"><a class="anchor" href="#coherence-spring-cachestore-demo-inspect-database"></a>12.1.6. Inspecting the Database</h4>
 <div class="paragraph">
 <p>In the remote Coherence CacheStore demo, HSQL will be instantiated via the server module. This allow the app as well as
 the server to access the HSQL database instance. That way we can also inspect
@@ -4271,7 +4408,7 @@ such as the open-source <a href="https://dbeaver.io/">DBeaver</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-17 06:15:18 UTC
+Last updated 2023-08-17 06:56:53 UTC
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">
