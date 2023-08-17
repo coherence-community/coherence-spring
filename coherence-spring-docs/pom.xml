@@ -281,7 +281,6 @@
 								<sourceDocumentExtension>htmladoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/html</outputDirectory>
-							<sourceHighlighter>highlight.js</sourceHighlighter>
 							<doctype>book</doctype>
 							<attributes>
 								<highlightjsdir>js/highlight</highlightjsdir>
@@ -289,6 +288,7 @@
 								<linkcss>true</linkcss>
 								<imagesdir>./images</imagesdir>
 								<icons>font</icons>
+								<source-highlighter>highlight.js</source-highlighter>
 								<stylesdir>css/</stylesdir>
 								<stylesheet>spring.css</stylesheet>
 								<attribute-missing>warn</attribute-missing>
@@ -313,7 +313,6 @@
 								<sourceDocumentExtension>htmlsingleadoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/htmlsingle</outputDirectory>
-							<sourceHighlighter>highlight.js</sourceHighlighter>
 							<doctype>book</doctype>
 							<attributes>
 								<highlightjsdir>js/highlight</highlightjsdir>
@@ -321,6 +320,7 @@
 								<linkcss>true</linkcss>
 								<imagesdir>./images</imagesdir>
 								<icons>font</icons>
+								<source-highlighter>highlight.js</source-highlighter>
 								<stylesdir>css/</stylesdir>
 								<stylesheet>spring.css</stylesheet>
 							</attributes>
@@ -346,6 +346,7 @@
 							<outputDirectory>${project.build.directory}/generated-docs/reference/pdf</outputDirectory>
 							<attributes>
 								<imagesdir>./images</imagesdir>
+								<source-highlighter>coderay</source-highlighter>
 							</attributes>
 							<resources>
 								<resource>
