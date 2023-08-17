@@ -598,7 +598,7 @@ GitHub repository.</p>
 <div class="listingblock">
 <div class="title">Clone GitHub Repository</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ git clone https://github.com/coherence-community/coherence-spring.git
  $ cd coherence-spring</code></pre>
 </div>
 </div>
@@ -652,7 +652,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Build the project</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -661,7 +661,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 </div>
@@ -674,7 +674,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Create the first event</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -691,7 +691,7 @@ returned and printed to the console:</p>
 <div class="listingblock">
 <div class="title">Return result of the created event</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json"> {
+<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs"> {
    "id" : 1,
    "title" : "First Event",
    "date" : "2020-11-30T00:00:00.000+00:00"
@@ -715,7 +715,7 @@ providing numerous statistical information regarding the cache.</p>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -741,7 +741,7 @@ as it provides some additional insights and visualizations.
 <div class="listingblock">
 <div class="title">Retrieve Event</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -761,7 +761,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 <div class="listingblock">
 <div class="title">Evict Event</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request DELETE 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request DELETE 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -770,7 +770,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 <div class="listingblock">
 <div class="title">Retrieve Event</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -780,14 +780,14 @@ can, for example, add people:</p>
 <div class="listingblock">
 <div class="title">Add people</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
  curl --request POST 'http://localhost:8080/api/people?firstName=Alan&amp;lastName=Turing&amp;age=41'</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">List people</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -796,7 +796,7 @@ can, for example, add people:</p>
 <div class="listingblock">
 <div class="title">Assign People to Events</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people/2/add-to-event/1'
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/people/2/add-to-event/1'
  curl --request POST 'http://localhost:8080/api/people/3/add-to-event/1'</code></pre>
 </div>
 </div>
@@ -815,7 +815,7 @@ dependency as well as the desired dependency for Coherence.</p>
 <div class="listingblock">
 <div class="title">POM configuration</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
      &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; <i class="conum" data-value="1"></i><b>(1)</b>
      &lt;version&gt;4.0.1-SNAPSHOT&lt;/version&gt;
@@ -846,7 +846,7 @@ use the <code>spring-boot-starter-cache</code> dependency as well:</p>
 <div class="listingblock">
 <div class="title">POM configuration for Spring Cache Abstraction</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;dependency&gt;
      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
      &lt;artifactId&gt;spring-boot-starter-cache&lt;/artifactId&gt;
  &lt;/dependency&gt;</code></pre>
@@ -858,7 +858,7 @@ use the <code>spring-boot-starter-cache</code> dependency as well:</p>
 <div class="listingblock">
 <div class="title">Spring Boot App configuration</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"> @SpringBootApplication
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs"> @SpringBootApplication
  @EnableCaching                                             <i class="conum" data-value="1"></i><b>(1)</b>
  public class CoherenceSpringBootDemoApplication {
 
@@ -908,7 +908,7 @@ Coherence dependencies to your build configuration:</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-spring-core&lt;/artifactId&gt;
     &lt;version&gt;4.0.1-SNAPSHOT&lt;/version&gt;
@@ -918,7 +918,7 @@ Coherence dependencies to your build configuration:</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-core:4.0.1-SNAPSHOT")</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">implementation("com.oracle.coherence.spring:coherence-spring-core:4.0.1-SNAPSHOT")</code></pre>
 </div>
 </div>
 </div>
@@ -934,7 +934,7 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
     &lt;version&gt;23.03.1&lt;/version&gt;
@@ -944,7 +944,7 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:23.03.1")</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">implementation("com.oracle.coherence.ce:coherence:23.03.1")</code></pre>
 </div>
 </div>
 </div>
@@ -958,7 +958,7 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
     &lt;version&gt;14.1.1.2206&lt;/version&gt;
@@ -968,7 +968,7 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:14.1.1.2206")</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">implementation("com.oracle.coherence.ce:coherence:14.1.1.2206")</code></pre>
 </div>
 </div>
 </div>
@@ -1059,7 +1059,7 @@ to set the session type but also to specify a custom Coherence configuration fil
 <div class="listingblock">
 <div class="title">SessionConfigurationBean</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"> @Bean
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs"> @Bean
  SessionConfigurationBean sessionConfigurationBeanDefault() {
      final SessionConfigurationBean sessionConfigurationBean =
              new SessionConfigurationBean();
@@ -1232,7 +1232,7 @@ limitations, for instance, not being usable for constructor injection.</p>
 <div class="listingblock">
 <div class="title">Example of using the @Resource annotation</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Resource(name = COHERENCE_CACHE_BEAN_NAME)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @Resource(name = COHERENCE_CACHE_BEAN_NAME)
     private NamedCache numbers;                  <i class="conum" data-value="1"></i><b>(1)</b>
 
     @Resource(name = COHERENCE_CACHE_BEAN_NAME)
@@ -1296,7 +1296,7 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 <div class="listingblock">
 <div class="title">Example of using the  @CoherenceCache annotation</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceCache
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceCache
     private NamedCache numbers;                  <i class="conum" data-value="1"></i><b>(1)</b>
 
     @CoherenceCache("numbers")                   <i class="conum" data-value="2"></i><b>(2)</b>
@@ -1366,7 +1366,7 @@ add the <code>CoherenceGenericConverter</code> manually will be logged.</p>
 <div class="listingblock">
 <div class="title">Manually adding the <code>CoherenceGenericConverter</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Bean
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @Bean
     public ConversionService conversionService() {
         DefaultFormattingConversionService conversionService =
             new DefaultFormattingConversionService();
@@ -1397,7 +1397,7 @@ the same applies when injecting a constructor or method parameter:</p>
 <div class="listingblock">
 <div class="title">Example of constructor injection of a NamedMap</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Service
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Service
 public class SomeService {
 
     public SomeService(@CoherenceMap("people") NamedMap&lt;String, Person&gt; map) {
@@ -1428,7 +1428,7 @@ article <a href="https://www.baeldung.com/java-parameter-reflection">Method Para
 <div class="listingblock">
 <div class="title">Example of using the @Name annotation</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceMap
 @Name("people")
 private NamedMap&lt;String, Person&gt; map;</code></pre>
 </div>
@@ -1466,7 +1466,7 @@ following example injects a <code>NamedMap</code> from an underlying cache named
 <div class="listingblock">
 <div class="title">Example of using the @SessionName annotation</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceMap
 @SessionName("Catalog")
 @Name("products")
 private NamedMap&lt;String, Product&gt; map;</code></pre>
@@ -1478,7 +1478,7 @@ private NamedMap&lt;String, Product&gt; map;</code></pre>
 <div class="listingblock">
 <div class="title">Example of using the @CoherenceMap annotation with the session parameter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap(name="products", session="Catalog")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceMap(name="products", session="Catalog")
 private NamedMap&lt;String, Product&gt; map;</code></pre>
 </div>
 </div>
@@ -1488,7 +1488,7 @@ private NamedMap&lt;String, Product&gt; map;</code></pre>
 <div class="listingblock">
 <div class="title">Example of using @CoherenceMap with session parameter in a constructor</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Controller
 public class CatalogController {
 
     public CatalogController(@CoherenceMap(name="products", session="Catalog")
@@ -1520,7 +1520,7 @@ the following annotations:</p>
 <div class="listingblock">
 <div class="title">Injecting an AsyncNamedMap</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceAsyncMap("people")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceAsyncMap("people")
 private AsyncNamedMap&lt;String, Person&gt; map;</code></pre>
 </div>
 </div>
@@ -1536,7 +1536,7 @@ point. A view is a sub-set of the data in an underlying cache, controlled by a
 <div class="listingblock">
 <div class="title">Injecting an AsyncNamedMap</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap("people")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceMap("people")
 @View                                            <i class="conum" data-value="1"></i><b>(1)</b>
 private NamedMap&lt;String, Person&gt; map;</code></pre>
 </div>
@@ -1576,7 +1576,7 @@ CohQL where-clause, in this case <code>lastName == 'Simpson'</code>.</p>
 <div class="listingblock">
 <div class="title">Injecting a @CoherenceMap with @WhereFilter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
     @View                                                    <i class="conum" data-value="2"></i><b>(2)</b>
     @WhereFilter("lastName = 'Simpson'")                     <i class="conum" data-value="3"></i><b>(3)</b>
     private NamedMap&lt;String, Person&gt; allSimpsons;            <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
@@ -1608,7 +1608,7 @@ CohQL where-clause, in this case <code>lastName == 'Simpson'</code>.</p>
 <div class="listingblock">
 <div class="title">@WhereFilter with a more complex CohQL expression</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceMap("people")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceMap("people")
     @View
     @WhereFilter("lastName = 'Simpson' and age &gt; 10")        <i class="conum" data-value="1"></i><b>(1)</b>
     private NamedMap&lt;String, Person&gt; simpsons;</code></pre>
@@ -1663,7 +1663,7 @@ could be used to specify that the values should be transformed using a property 
 <div class="listingblock">
 <div class="title">Injecting a @CoherenceMap with multiple @WhereFilter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceMap("people")                                  <i class="conum" data-value="1"></i><b>(1)</b>
     @View                                                    <i class="conum" data-value="2"></i><b>(2)</b>
     @PropertyExtractor("age")                                <i class="conum" data-value="3"></i><b>(3)</b>
     private NamedMap&lt;String, Integer&gt; ages;                  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
@@ -1712,7 +1712,7 @@ Spring-supported injection annotation such as <code>@Autowired</code> or <code>@
 <div class="listingblock">
 <div class="title">Injecting a Coherence Session instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestController
 public class MyBean {
     @Inject                                      <i class="conum" data-value="1"></i><b>(1)</b>
     private Session session;</code></pre>
@@ -1729,7 +1729,7 @@ public class MyBean {
 <div class="listingblock">
 <div class="title">Injecting a Coherence Session using constructor injection</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestController
 public class MyBean {
     @Autowired                                   <i class="conum" data-value="1"></i><b>(1)</b>
     public MyBean(Session session) {
@@ -1760,7 +1760,7 @@ the injection point.</p>
 <div class="listingblock">
 <div class="title">Injecting a specific (named) Coherence Session</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestController
 public class MyBean {
     @Autowired                                   <i class="conum" data-value="1"></i><b>(1)</b>
     @Name("Catalog")
@@ -1782,7 +1782,7 @@ public class MyBean {
 <div class="listingblock">
 <div class="title">Injecting a specific (named) Coherence Session via constructor</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestController
 public class MyBean {
     @Autowired                                   <i class="conum" data-value="1"></i><b>(1)</b>
     public MyBean(@Name("Catalog") Session session) {
@@ -1818,7 +1818,7 @@ instances can be injected as beans in Spring applications.</p>
 <div class="listingblock">
 <div class="title">Inject NamedTopic</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 private NamedTopic&lt;Person&gt; people;</code></pre>
 </div>
 </div>
@@ -1842,7 +1842,7 @@ annotation to specify the underlying cache name.</p>
 <div class="listingblock">
 <div class="title">Use @Name to specify topic name</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @Name("people")
 private NamedTopic&lt;Order&gt; orders;</code></pre>
 </div>
@@ -1853,7 +1853,7 @@ private NamedTopic&lt;Order&gt; orders;</code></pre>
 <div class="listingblock">
 <div class="title">Use @Name to specify topic name on a parameter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Singleton
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Singleton
 public class SomeBean {
     @Inject
     public SomeBean(@Name("orders") NamedTopic&lt;Order&gt; topic) {
@@ -1880,7 +1880,7 @@ The following code snippet injects a <code>NamedTopic</code> using an underlying
 <div class="listingblock">
 <div class="title">Use @SessionName to specify session</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @SessionName("Customers")
 @Name("orders")
 private NamedTopic&lt;Order&gt; topic;</code></pre>
@@ -1892,7 +1892,7 @@ private NamedTopic&lt;Order&gt; topic;</code></pre>
 <div class="listingblock">
 <div class="title">Use @SessionName to specify session on a method parameter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Controller
 public class OrderProcessor {
     @Inject
     public OrderProcessor(@SessionName("Customers") @Name("orders")
@@ -1917,7 +1917,7 @@ for example:</p>
 <div class="listingblock">
 <div class="title">Inject a Publisher</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 private Publisher&lt;Order&gt; orders;</code></pre>
 </div>
 </div>
@@ -1936,7 +1936,7 @@ name of the injection point, in this case <code>orders</code>.</p>
 <div class="listingblock">
 <div class="title">Inject a Publisher that publishes on the <code>orders</code> topic</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @Name("orders")
 private Publisher&lt;Order&gt; orders;</code></pre>
 </div>
@@ -1944,7 +1944,7 @@ private Publisher&lt;Order&gt; orders;</code></pre>
 <div class="listingblock">
 <div class="title">Inject a Publisher that publishes on the <code>orders</code> topic</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Controller
 public class OrderController {
     @Inject
     public OrderController(@Name("orders") Publisher&lt;Order&gt; topic) {
@@ -1964,7 +1964,7 @@ owns the underlying <code>NamedTopic</code> can be specified when injecting a <c
 <div class="listingblock">
 <div class="title">Inject a Publisher while specifying the owning session</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @Name("orders")
 @SessionName("Customers")
 private Publisher&lt;Order&gt; orders;</code></pre>
@@ -1985,7 +1985,7 @@ for example:</p>
 <div class="listingblock">
 <div class="title">Inject Subscriber</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 private Subscriber&lt;Order&gt; orders;</code></pre>
 </div>
 </div>
@@ -2004,7 +2004,7 @@ name of the injection point, in this case <code>orders</code>.</p>
 <div class="listingblock">
 <div class="title">Inject subscriber into field</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @Name("orders")
 private Subscriber&lt;Order&gt; orders;</code></pre>
 </div>
@@ -2012,7 +2012,7 @@ private Subscriber&lt;Order&gt; orders;</code></pre>
 <div class="listingblock">
 <div class="title">Inject subscriber into method parameter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Controller
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Controller
 public class OrderController {
     @Inject
     public OrderController(@Name("orders") Subscriber&lt;Order&gt; topic) {
@@ -2031,7 +2031,7 @@ owns the underlying <code>NamedTopic</code> can be specified when injecting a <c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Inject
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Inject
 @Name("orders")
 @SessionName("Customers")
 private Subscriber&lt;Order&gt; orders;</code></pre>
@@ -2067,7 +2067,7 @@ events that can be used by applications to respond to data changes and other act
 <div class="listingblock">
 <div class="title">Example of using a Coherence Event Listener</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 void onEvent(CoherenceLifecycleEvent event) {
     // TODO: process event...
 }</code></pre>
@@ -2111,7 +2111,7 @@ event handler execution synchronous.
 <div class="listingblock">
 <div class="title">Example of making a Coherence Event Listener synchronous</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 @Synchronous
 void onEvent(CoherenceLifecycleEvent event) {
     // TODO: process event...
@@ -2141,7 +2141,7 @@ and the application has logic that should be executed each time a new <code>Plan
 <div class="listingblock">
 <div class="title">Example of listening to Inserted events</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.event.Inserted;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.event.Inserted;
 import com.oracle.coherence.spring.annotation.event.MapName;
 import com.oracle.coherence.spring.event.CoherenceEventListener;
 import com.tangosol.util.MapEvent;
@@ -2207,7 +2207,7 @@ from.</p>
 <div class="listingblock">
 <div class="title">Listening to events for all caches</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onEvent(MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2219,7 +2219,7 @@ from.</p>
 <div class="listingblock">
 <div class="title">Listening to events for the map named "foo"</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onFooEvent(@MapName("foo")       <i class="conum" data-value="1"></i><b>(1)</b>
                            MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2237,7 +2237,7 @@ from.</p>
 <div class="listingblock">
 <div class="title">Listening to events for the cache named "bar"</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onBarEvent(@CacheName("bar")     <i class="conum" data-value="1"></i><b>(1)</b>
                            MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2266,7 +2266,7 @@ services, the events can be restricted to just specific services using the
 <div class="listingblock">
 <div class="title">Listening to events for the "foo" map on all services</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onEventFromAllServices(@MapName("foo")  <i class="conum" data-value="1"></i><b>(1)</b>
                                 MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2284,7 +2284,7 @@ services, the events can be restricted to just specific services using the
 <div class="listingblock">
 <div class="title">Listening to events for the "foo" map on the "Storage" service only</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onEventOnStorageService(@MapName("foo")
                         @ServiceName("Storage")  <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
@@ -2303,7 +2303,7 @@ services, the events can be restricted to just specific services using the
 <div class="listingblock">
 <div class="title">Listening to events for ALL caches on the "Storage" service</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onEventFromAllCachesOnStorageService(@ServiceName("Storage")  <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2330,7 +2330,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="listingblock">
 <div class="title">Listening to events for the "orders" map in ALL sessions</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onOrdersEventAllSessions(@MapName("orders")  <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2348,7 +2348,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="listingblock">
 <div class="title">Listening to events for the "orders" map in the "Customer" session only</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onOrdersEventInCustomerSession(@MapName("orders")
                         @SessionName("Customer")             <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
@@ -2367,7 +2367,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="listingblock">
 <div class="title">Listening to events for ALL caches in the "Customer" session</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onEventInAllCachesInCustomerSession(@SessionName("Customer") <i class="conum" data-value="1"></i><b>(1)</b>
                                 MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
@@ -2388,7 +2388,7 @@ The events can be restricted to <code>maps</code> and/or <code>caches</code> in 
 <div class="listingblock">
 <div class="title">Route events with the cache name by the name of the session</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onCustomerOrders(@SessionName("Customer")    <i class="conum" data-value="1"></i><b>(1)</b>
                                  @MapName("orders")
                                  MapEvent&lt;String, Order&gt; event) {
@@ -2458,7 +2458,7 @@ the following annotations:</p>
 <div class="listingblock">
 <div class="title">Listen to "Insert" event for the "test" map only</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onInsertEvent(@MapName("test")
                         @Inserted                            <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
@@ -2477,7 +2477,7 @@ the following annotations:</p>
 <div class="listingblock">
 <div class="title">Listen to "Insert" and "Delete" events for the "test" map only</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onInsertAndDeleteEvent(@MapName("test")
                         @Inserted @Deleted                   <i class="conum" data-value="1"></i><b>(1)</b>
                         MapEvent&lt;String, String&gt; event) {
@@ -2496,7 +2496,7 @@ the following annotations:</p>
 <div class="listingblock">
 <div class="title">Listen to ALL map events for the "test" map</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     public void onMapEvent(@MapName("test") MapEvent&lt;String, String&gt; event) {
         // TODO: process the event
     }</code></pre>
@@ -2541,7 +2541,7 @@ built-in <code>@WhereFilter</code> filter binding annotation will be used in thi
 <div class="listingblock">
 <div class="title">Example of a Where Filter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @WhereFilter("age &gt;= 18")                    <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @WhereFilter("age &gt;= 18")                    <i class="conum" data-value="1"></i><b>(1)</b>
     @CoherenceEventListener
     @MapName("people")
     public void onAdult(MapEvent&lt;String, Person&gt; people) {
@@ -2596,7 +2596,7 @@ to just extract the <code>customerId</code> from the event:</p>
 <div class="listingblock">
 <div class="title">Example of a Property Extractor</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     @PropertyExtractor("customerId")                         <i class="conum" data-value="1"></i><b>(1)</b>
     public void onOrder(@MapName("orders")                   <i class="conum" data-value="2"></i><b>(2)</b>
                         MapEvent&lt;String, String&gt; event) {    <i class="conum" data-value="3"></i><b>(3)</b>
@@ -2636,7 +2636,7 @@ with a two <code>@PropertyExtractor</code> annotations:</p>
 <div class="listingblock">
 <div class="title">Example of using multiple Property Extractors</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @CoherenceEventListener
     @PropertyExtractor("customerId")                              <i class="conum" data-value="1"></i><b>(1)</b>
     @PropertyExtractor("orderId")
     public void onOrderWithMultiplePropertyExtractors(
@@ -2773,7 +2773,7 @@ The method should have a single parameter of type <code>LifecycleEvent</code>.</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(LifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2803,7 +2803,7 @@ By adding the corresponding annotation to the method parameter the method will o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Activated @Disposing LifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2820,7 +2820,7 @@ public void onEvent(@Activated @Disposing LifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2831,7 +2831,7 @@ public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2858,7 +2858,7 @@ The method should have a single parameter of type <code>SessionLifecycleEvent</c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(SessionLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2891,7 +2891,7 @@ By adding the corresponding annotation to the method parameter the method will o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Started @Stopped SessionLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2909,7 +2909,7 @@ associated with a specific <code>Session</code> instance by using the <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name("customers") SessionLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2920,7 +2920,7 @@ public void onEvent(@Name("customers") SessionLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name(Coherence.DEFAULT_NAME) SessionLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2948,7 +2948,7 @@ a cluster member or a client.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2981,7 +2981,7 @@ By adding the corresponding annotation to the method parameter the method will o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Started @Stopped CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -2998,7 +2998,7 @@ public void onEvent(@Started @Stopped CoherenceLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3009,7 +3009,7 @@ public void onEvent(@Name("customers") CoherenceLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3031,7 +3031,7 @@ The method should have a single parameter of type <code>CacheLifecycleEvent</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(CacheLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3060,7 +3060,7 @@ public void onEvent(CacheLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Created @Destroyed CacheLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3083,7 +3083,7 @@ To only receive events for a specific <code>NamedCache</code> annotate the metho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@MapName("orders") CacheLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3101,7 +3101,7 @@ public void onEvent(@MapName("orders") CacheLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@ServiceName("StorageService") CacheLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3119,7 +3119,7 @@ public void onEvent(@ServiceName("StorageService") CacheLifecycleEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3145,7 +3145,7 @@ The method should have a single parameter of type <code>EntryEvent</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(EntryEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3184,7 +3184,7 @@ For example, the method below will receive <code>Inserted</code> and <code>Remov
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Inserted @Removed EntryEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3227,7 +3227,7 @@ To only receive events for a specific <code>NamedCache</code> annotate the metho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@MapName("orders") EntryProcessorEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3245,7 +3245,7 @@ public void onEvent(@MapName("orders") EntryProcessorEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
     // TODO: process the event
 }</code></pre>
@@ -3263,7 +3263,7 @@ public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
     // TODO: process the event
 }</code></pre>
@@ -3285,7 +3285,7 @@ The method should have a single parameter of type <code>EntryProcessorEvent</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(EntryProcessorEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3311,7 +3311,7 @@ public void onEvent(EntryProcessorEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Executed EntryProcessorEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3351,7 +3351,7 @@ To only receive events for a specific <code>NamedCache</code> annotate the metho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@MapName("orders") EntryProcessorEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3369,7 +3369,7 @@ public void onEvent(@MapName("orders") EntryProcessorEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
     // TODO: process the event
 }</code></pre>
@@ -3387,7 +3387,7 @@ public void onEvent(@ServiceName("StorageService") EntryProcessorEvents event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
     // TODO: process the event
 }</code></pre>
@@ -3414,7 +3414,7 @@ The method should have a single parameter of type <code>TransactionEvent</code>.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(TransactionEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3443,7 +3443,7 @@ Use the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Committed TransactionEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3461,7 +3461,7 @@ public void onEvent(@Committed TransactionEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3495,7 +3495,7 @@ The method should have a single parameter of type <code>TransferEvent</code>.</p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(TransferEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3515,7 +3515,7 @@ public void onEvent(TransferEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">TransferEvent event;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">TransferEvent event;
 boolean restored = event.getRemoteMember() == event.getLocalMember();</code></pre>
 </div>
 </div>
@@ -3555,7 +3555,7 @@ Use the <a href="https://spring.coherence.community/4.0.1-SNAPSHOT/refdocs/api/c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@Lost TransferEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3576,7 +3576,7 @@ public void onEvent(@Lost TransferEvent event) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(@ServiceName("StorageService") TransferEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3601,7 +3601,7 @@ The method should have a single parameter of type <code>UnsolicitedCommitEvent</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceEventListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceEventListener
 public void onEvent(UnsolicitedCommitEvent event) {
     // TODO: process the event
 }</code></pre>
@@ -3650,7 +3650,7 @@ large palm trees (any palm tree larger than 20 meters). We would need a <code>Fi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import java.lang.annotation.Documented;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -3687,7 +3687,7 @@ that will produce instances of the required <code>Filter</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.FilterFactory;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.FilterFactory;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
@@ -3734,7 +3734,7 @@ adding a value parameter representing the height like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@FilterBinding
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@FilterBinding
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PalmTrees {
@@ -3753,7 +3753,7 @@ public @interface PalmTrees {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.FilterFactory;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.FilterFactory;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
@@ -3802,7 +3802,7 @@ up as a Spring bean</td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @View                                                    <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">    @View                                                    <i class="conum" data-value="1"></i><b>(1)</b>
     @PalmTrees(1)                                            <i class="conum" data-value="2"></i><b>(2)</b>
     @CoherenceCache("plants")                                <i class="conum" data-value="3"></i><b>(3)</b>
     private NamedMap&lt;Long, Plant&gt; palmTrees;</code></pre>
@@ -3866,7 +3866,7 @@ extracts the <code>name</code> property and the resulting map of plant names can
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExtractorBinding                                <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@ExtractorBinding                                <i class="conum" data-value="1"></i><b>(1)</b>
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PersonAge {                    <i class="conum" data-value="2"></i><b>(2)</b>
@@ -3910,7 +3910,7 @@ implementation that will produce instances of the required <code>ValueExtractor<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.ExtractorFactory;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.ExtractorFactory;
 import com.tangosol.util.Extractors;
 import com.tangosol.util.ValueExtractor;
 import org.springframework.stereotype.Component;
@@ -3955,7 +3955,7 @@ In this case the annotation has no values, but if it did we could access those v
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@View                                            <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@View                                            <i class="conum" data-value="1"></i><b>(1)</b>
 @PersonAge                                       <i class="conum" data-value="2"></i><b>(2)</b>
 @Name("people")                                  <i class="conum" data-value="3"></i><b>(3)</b>
 private NamedMap&lt;String, Integer&gt; ages;          <i class="conum" data-value="4"></i><b>(4)</b>
@@ -4016,7 +4016,7 @@ interfaces.</p>
 <div class="listingblock">
 <div class="title">Config.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
 @CoherencePublisherScan("com.example.app.services")
 public class Config {
 }</code></pre>
@@ -4028,7 +4028,7 @@ public class Config {
 <div class="listingblock">
 <div class="title">ProductClient.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.CoherencePublisher;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.annotation.Topic;
 
 @CoherencePublisher                              <i class="conum" data-value="1"></i><b>(1)</b>
@@ -4067,7 +4067,7 @@ public interface ProductClient {
 <div class="listingblock">
 <div class="title">Using ProductClient</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ProductClient client = applicationContext.getBean(ProductClient.class);
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">ProductClient client = applicationContext.getBean(ProductClient.class);
 client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
@@ -4084,7 +4084,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 <h5 id="mono-value-and-return-type"><a class="anchor" href="#mono-value-and-return-type"></a>3.10.2.1. Mono Value and Return Type</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Mono&lt;Publisher.Status&gt; sendBook(Mono&lt;Book&gt; book);</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Mono&lt;Publisher.Status&gt; sendBook(Mono&lt;Book&gt; book);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4095,7 +4095,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 <h5 id="reactor-flux-value-and-return-type"><a class="anchor" href="#reactor-flux-value-and-return-type"></a>3.10.2.2. Reactor Flux Value and Return Type</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Flux&lt;Publisher.Status&gt; sendBooks(Flux&lt;Book&gt; book);</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Flux&lt;Publisher.Status&gt; sendBooks(Flux&lt;Book&gt; book);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4106,7 +4106,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 <h5 id="future-return-type"><a class="anchor" href="#future-return-type"></a>3.10.2.3. Future Return Type</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Future&lt;Publisher.Status&gt; sendBooks(Mono&lt;Book&gt; book);</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Future&lt;Publisher.Status&gt; sendBooks(Mono&lt;Book&gt; book);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4125,7 +4125,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 <div class="listingblock">
 <div class="title">ProductListener.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.annotation.CoherenceTopicListener;
 import com.oracle.coherence.spring.annotation.Topic;
 
 @CoherenceTopicListener                          <i class="conum" data-value="1"></i><b>(1)</b>
@@ -4165,7 +4165,7 @@ public class ProductListener {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceTopicListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceTopicListener
 @Topic("my-products")
 public void receive(Element&lt;Product&gt; product) {
     // ... process message ...
@@ -4188,7 +4188,7 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceTopicListener
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceTopicListener
 @Topic("my-products")
 public void receive(Element&lt;Product&gt; product) {
     // ... process message ...
@@ -4213,7 +4213,7 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.SYNC)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceTopicListener(commitStrategy = CommitStrategy.SYNC)
 @Topic("my-products")
 public void receive(Product product) {
     // ... process message ...
@@ -4229,7 +4229,7 @@ public void receive(Product product) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.ASYNC)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceTopicListener(commitStrategy = CommitStrategy.ASYNC)
 @Topic("my-products")
 public void receive(Product product) {
     // ... process message ...
@@ -4245,7 +4245,7 @@ public void receive(Product product) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceTopicListener(commitStrategy = CommitStrategy.MANUAL)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceTopicListener(commitStrategy = CommitStrategy.MANUAL)
 @Topic("my-products")
 public void receive(Element&lt;Product&gt; product) {
     // ... process message ...
@@ -4270,7 +4270,7 @@ public void receive(Element&lt;Product&gt; product) {
 <div class="listingblock">
 <div class="title">ProductListener.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.*;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.*;
 import org.springframework.messaging.handler.annotation.SendTo;
 
 @CoherenceTopicListener
@@ -4307,7 +4307,7 @@ public class ProductListener {
 <div class="listingblock">
 <div class="title">ProductListener.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.*;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.*;
 import org.springframework.messaging.handler.annotation.SendTo;
 import reactor.core.publisher.Mono;
 
@@ -4431,7 +4431,7 @@ is annotated with basic JPA annotations:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Entity
 @Table(name = "PEOPLE")
 public class Person implements Serializable {
 
@@ -4504,7 +4504,7 @@ repository interface:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.cachestore.JpaRepositoryCacheStore;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -4536,7 +4536,7 @@ references the Coherence Spring <code>NamespaceHandler</code>.</p>
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
               xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;</code></pre>
@@ -4554,7 +4554,7 @@ configuration that Coherence normally allows an <code>&lt;instance&gt;</code> el
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">    &lt;caching-schemes&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">    &lt;caching-schemes&gt;
         &lt;distributed-scheme&gt;
             &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
             &lt;service-name&gt;StorageService&lt;/service-name&gt;
@@ -4583,7 +4583,7 @@ cache that will use the scheme above.</p>
 <div class="listingblock">
 <div class="title">coherence-cache-config.xml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">        &lt;cache-mapping&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">        &lt;cache-mapping&gt;
             &lt;cache-name&gt;people&lt;/cache-name&gt;
             &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
             &lt;init-params&gt;
@@ -4623,7 +4623,7 @@ following mapping:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cache-mapping&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;cache-mapping&gt;
     &lt;cache-name&gt;locations&lt;/cache-name&gt;
     &lt;scheme-name&gt;db-scheme&lt;/scheme-name&gt;
     &lt;init-params&gt;
@@ -4645,7 +4645,7 @@ The controller class for the two endpoints is very simple:</p>
 <div class="listingblock">
 <div class="title">PersonController.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestController
 @RequestMapping(path = "/api/people")
 @Transactional()
 public class PersonController {
@@ -4721,7 +4721,7 @@ database if there is no entry in the cache for the id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw clean package -pl samples/cachestore-demo</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package -pl samples/cachestore-demo</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4729,7 +4729,7 @@ database if there is no entry in the cache for the id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-app/target/coherence-spring-cachestore-demo-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-app/target/coherence-spring-cachestore-demo-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4737,7 +4737,7 @@ database if there is no entry in the cache for the id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i -X GET http://localhost:8080/api/people/100</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i -X GET http://localhost:8080/api/people/100</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4748,7 +4748,7 @@ database if there is no entry in the cache for the id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i -X POST http://localhost:8080/api/people \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i -X POST http://localhost:8080/api/people \
     -d 'firstName=Joe' -d 'lastName=Smith' \
     -d 'age=21' -d 'id=100'</code></pre>
 </div>
@@ -4762,7 +4762,7 @@ was successfully created and will be stored in the database.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i -X GET http://localhost:8080/api/people/100
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i -X GET http://localhost:8080/api/people/100
 HTTP/1.1 200
 Content-Type: application/json
 Transfer-Encoding: chunked
@@ -4783,7 +4783,7 @@ will have a remote Coherence instance and the actual application will connect to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw clean install -pl :coherence-spring-cachestore-demo-server -am -DskipTests
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean install -pl :coherence-spring-cachestore-demo-server -am -DskipTests
 ./mvnw clean install -pl :coherence-spring-cachestore-demo-app -am -DskipTests</code></pre>
 </div>
 </div>
@@ -4793,7 +4793,7 @@ start with the Coherence Server:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-server/target/coherence-spring-cachestore-demo-server-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-server/target/coherence-spring-cachestore-demo-server-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4803,7 +4803,7 @@ Coherence*Extend:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-app/target/coherence-spring-cachestore-demo-app-4.0.1-SNAPSHOT.jar \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar samples/cachestore-demo/coherence-spring-cachestore-demo-app/target/coherence-spring-cachestore-demo-app-4.0.1-SNAPSHOT.jar \
 --spring.profiles.active=remote</code></pre>
 </div>
 </div>
@@ -4905,7 +4905,7 @@ The autoconfiguration logic is defined in class
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
 @EnableCaching
 public class CacheConfiguration {
     @Bean
@@ -4918,7 +4918,7 @@ public class CacheConfiguration {
 <div class="listingblock secondary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:cache="http://www.springframework.org/schema/cache"
@@ -4966,7 +4966,7 @@ that cache entries typically do not expire. <strong>However</strong>, you can al
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
 @EnableCaching
 public class CacheConfiguration {
     @Bean
@@ -4981,7 +4981,7 @@ public class CacheConfiguration {
 <div class="listingblock secondary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:cache="http://www.springframework.org/schema/cache"
@@ -5113,7 +5113,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
@@ -5130,7 +5130,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-session:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03.1")
 }</code></pre>
@@ -5159,7 +5159,7 @@ Session using the <code>@EnableCoherenceHttpSession</code> annotation.</p>
 <div class="listingblock">
 <div class="title">Enabling Coherence Spring Sessions</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
 @EnableCoherence
 @EnableCoherenceHttpSession(                     <i class="conum" data-value="1"></i><b>(1)</b>
         session = "coherence_session",           <i class="conum" data-value="2"></i><b>(2)</b>
@@ -5222,7 +5222,7 @@ additional POF configuration for the class <code>MapSession</code> is necessary:
 <div class="listingblock">
 <div class="title">POF Configuration</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;user-type&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;user-type&gt;
      &lt;type-id&gt;2001&lt;/type-id&gt;
      &lt;class-name&gt;org.springframework.session.MapSession&lt;/class-name&gt;
      &lt;serializer&gt;
@@ -5285,7 +5285,7 @@ stored in the session as well. In regard to authentication, users have 2 choices
 <div class="listingblock">
 <div class="title">Example Authentication Request</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json"> { "username": "coherence", "password": "rocks" }</code></pre>
+<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs"> { "username": "coherence", "password": "rocks" }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5299,7 +5299,7 @@ require an authenticated user using the session cookie or the <code>username</co
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5309,7 +5309,7 @@ require an authenticated user using the session cookie or the <code>username</co
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar
  $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar --server.port=8091</code></pre>
 </div>
 </div>
@@ -5323,13 +5323,13 @@ Coherence instance as a Coherence*Extend client.</p>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Build the Application instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5338,7 +5338,7 @@ Coherence instance as a Coherence*Extend client.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.0.1-SNAPSHOT.jar
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.0.1-SNAPSHOT.jar
  $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar --spring.profiles.active=coherence-client</code></pre>
 </div>
 </div>
@@ -5371,7 +5371,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Log into the application using <a href="https://curl.se/">CURL</a></div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -c cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -c cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X POST --data '{"username": "coherence", "password": "rocks"}' \
@@ -5381,7 +5381,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Let&#8217;s access the HelloController</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -b cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -b cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X GET "http://localhost:8090/hello"</code></pre>
@@ -5398,7 +5398,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Retrieving session information for user <code>coherence</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -b cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -b cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X GET "http://localhost:8090/actuator/sessions?username=coherence"</code></pre>
@@ -5413,7 +5413,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Generate a Docker image</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
 </div>
 </div>
 </div>
@@ -5520,7 +5520,7 @@ days.
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
     &lt;version&gt;4.0.1-SNAPSHOT&lt;/version&gt;
@@ -5530,7 +5530,7 @@ days.
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">implementation("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")</code></pre>
 </div>
 </div>
 </div>
@@ -5547,7 +5547,7 @@ section will assume some familiarity with Spring Data.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
     // ...
 }</code></pre>
 </div>
@@ -5591,7 +5591,7 @@ of the Coherence reference documentation for more details on these features.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 
 // ...
 
@@ -5605,7 +5605,7 @@ public interface PersonRepository extends CoherenceRepository&lt;String, Person&
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
 
 // ...
 
@@ -5624,7 +5624,7 @@ If this is not desired, the name may instead be passed by the <code>@CoherenceMa
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.data.config.CoherenceMap;
 import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 
 // ...
@@ -5650,7 +5650,7 @@ entity&#8217;s id.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class Person implements Serializable {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public class Person implements Serializable {
     @org.springframework.data.annotation.Id
     protected String id;
 
@@ -5668,7 +5668,7 @@ annotation. A simple configuration example would be:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
 
 // ...
@@ -5694,7 +5694,7 @@ For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.util.UUID;
@@ -5714,7 +5714,7 @@ of these methods, please use Spring&#8217;s <a href="https://spring.io/guides/gs
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.data.config.CoherenceMap;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
@@ -5737,7 +5737,7 @@ public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository&l
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -5764,7 +5764,7 @@ among other things, to transfer a subset of the entities properties when <code>c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Entity
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Entity
 public class Book implements Cloneable, Serializable {
     @Id
     protected final UUID uuid;
@@ -5791,7 +5791,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface to retrieve a subset of attributes</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndPages {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookTitleAndPages {
 
     String getTitle();
     int getPages();
@@ -5801,7 +5801,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A repository using an interface based projection with a query method</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 
     List&lt;BookTitleAndPages&gt; findByTitle(String title);
 }</code></pre>
@@ -5816,7 +5816,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface to retrieve a subset of attributes</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookSummary {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookSummary {
 
     String getTitle();
     int getPages();
@@ -5837,7 +5837,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A closed projection</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndPages {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookTitleAndPages {
 
     String getTitle();
     int getPages();
@@ -5853,7 +5853,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">An open projection</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndAuthor {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookTitleAndAuthor {
 
     @Value("#{target.author.firstName + ' - ' + target.title}")
     String getTitleAndAuthor();
@@ -5869,7 +5869,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface using a default method for custom logic</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface BookTitleAndAuthor {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface BookTitleAndAuthor {
 
     default String getTitleAndAuthor() {
         return getAuthor().getFirstName().concat(' - ').concat(getTitle());
@@ -5883,7 +5883,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">A projection interface using a default method for custom logic</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Component
 class MyBean {
 
     String getTitleAndAuthor(Book book) {
@@ -5904,7 +5904,7 @@ interface BookTitleAndAuthor {
 <div class="listingblock">
 <div class="title">A sample Book object</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface NameOnly {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface NameOnly {
 
     @Value("args[0] + ' ' + #{target.author.firstName}")
     String getHonorificName(String honorific);
@@ -5937,7 +5937,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A projection interface using nullable wrappers</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">interface TitleOnly {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">interface TitleOnly {
 
     Optional&lt;String&gt; getTitle();
 }</code></pre>
@@ -5958,7 +5958,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A projecting DTO</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">class BookTitleAndPages {
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">class BookTitleAndPages {
     private final String title;
     private final int pages;
 
@@ -5988,7 +5988,7 @@ Currently supported wrapper types are:</p>
 <div class="listingblock">
 <div class="title">A repository using a dynamic projection parameter</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoherenceMap("book")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@CoherenceMap("book")
 interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 
     &lt;T&gt; Collection&lt;T&gt; findByTitle(String title, Class&lt;T&gt; type);
@@ -5998,7 +5998,7 @@ interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
 <div class="listingblock">
 <div class="title">Using a repository with dynamic projections</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Collection&lt;BookSummary&gt; aggregates = books.findByTitle("Shadow", BookSummary.class);
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Collection&lt;BookSummary&gt; aggregates = books.findByTitle("Shadow", BookSummary.class);
 
 Collection&lt;BookTitleAndPages&gt; aggregates = books.findByTitle("Remember", BookTitleAndPages.class);</code></pre>
 </div>
@@ -6026,7 +6026,7 @@ as the desired version of Coherence.</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -6043,7 +6043,7 @@ as the desired version of Coherence.</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03.1")
 }</code></pre>
@@ -6075,7 +6075,7 @@ class for further configuration. The YAML configuration for Spring Boot&#8217;s 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">coherence:
+<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">coherence:
   logging:
     destination: slf4j
     logger-name: MyCoherence
@@ -6265,7 +6265,7 @@ properties will be applied, e.g., the name of the application used to fetch remo
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">spring:
   config:
     import: "coherence:"
 coherence:
@@ -6391,7 +6391,7 @@ the Spring cache until the connection to the Coherence server has been restored.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6399,7 +6399,7 @@ the Spring cache until the connection to the Coherence server has been restored.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw spring-boot:run -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6416,7 +6416,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">List all books</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books"</code></pre>
@@ -6427,7 +6427,7 @@ from the database. But at this point the collection of books is added to the Coh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">No cache entry for key 'SimpleKey []' in cache(s) [allBooks]</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">No cache entry for key 'SimpleKey []' in cache(s) [allBooks]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6439,7 +6439,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">Get a single book</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books/1"</code></pre>
@@ -6450,7 +6450,7 @@ from the database. But at this point the collection of books is added to the Coh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">Cache entry for key '1' found in cache 'books'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">Cache entry for key '1' found in cache 'books'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6459,7 +6459,7 @@ from the database. But at this point the collection of books is added to the Coh
 <div class="listingblock">
 <div class="title">Evict book with id <code>1</code> from the Coherence Cache</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X DELETE "http://localhost:8090/api/books/1"</code></pre>
@@ -6473,7 +6473,7 @@ with id <code>42</code> will cause a <code>BusinessException</code> to be thrown
 <div class="listingblock">
 <div class="title">Get a single book throwing a business exception</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books/42"</code></pre>
@@ -6516,7 +6516,7 @@ included in the list of <code>ignoreExceptions</code> via <code>application.yaml
 <div class="listingblock">
 <div class="title">Get a single book again</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:8090/api/books/1"</code></pre>
@@ -6527,7 +6527,7 @@ included in the list of <code>ignoreExceptions</code> via <code>application.yaml
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">getBook fallback method (For Throwable) was called: Unable to locate ProxyService 'ExtendTcpCacheService' ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6554,7 +6554,7 @@ health-endpoint as well as its circuit breaker events endpoint:</p>
 <div class="listingblock">
 <div class="title">Spring Boot Health Endpoint</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs">{
   "status":"UP",
   "components":{
     "circuitBreakers":{
@@ -6612,7 +6612,7 @@ health-endpoint as well as its circuit breaker events endpoint:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">management.endpoints.web.exposure.include: "*"
+<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">management.endpoints.web.exposure.include: "*"
 management.endpoint.health.show-details: always</code></pre>
 </div>
 </div>
@@ -6636,7 +6636,7 @@ for this application.</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
     &lt;artifactId&gt;resilience4j-spring-boot3&lt;/artifactId&gt;
     &lt;version&gt;2.1.0&lt;/version&gt;
@@ -6646,7 +6646,7 @@ for this application.</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")</code></pre>
 </div>
 </div>
 </div>
@@ -6660,7 +6660,7 @@ the <code>@CircuitBreaker</code> annotations, e.g.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Cacheable("allBooks")
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Cacheable("allBooks")
 @CircuitBreaker(name = "coherence", fallbackMethod = "getAllBooksFallback")
 @Override
 public List&lt;Book&gt; getAllBooks() {
@@ -6708,7 +6708,7 @@ Boot as it is not needed:</p>
 <div class="listingblock">
 <div class="title">Disable CoherenceAutoConfiguration</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringBootApplication(exclude=CoherenceAutoConfiguration.class)
 public class HibernateApplication {
     public static void main(String[] args) {
         SpringApplication.run(HibernateApplication.class, args);
@@ -6726,7 +6726,7 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
 <div class="listingblock">
 <div class="title">RegionFactory Configuration using YAML</div>
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
+<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">spring:
   application:
     name: Your Spring Boot App
   jpa:
@@ -6767,7 +6767,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Example of a <code>Plant</code> JSON response</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
+<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs"> {"id": 1, "genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}</code></pre>
 </div>
 </div>
 <div class="sect4">
@@ -6778,7 +6778,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/hibernate-cache-demo</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6787,7 +6787,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/hibernate-cache-demo/target/hibernate-cache-demo-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6796,7 +6796,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Add a plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X POST --data '{"genus": "Sabal", "species": "minor", "commonName": "Dwarf palmetto"}' \
@@ -6806,7 +6806,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">List all plants</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants"</code></pre>
@@ -6815,7 +6815,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Get a single plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants/1"</code></pre>
@@ -6824,7 +6824,7 @@ such as the genus and species.</p>
 <div class="listingblock">
 <div class="title">Delete a plant</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X DELETE "http://localhost:9090/plants/1"</code></pre>
@@ -6837,7 +6837,7 @@ from the second level cache as illustrated by the printed out cache statistics.<
 <div class="listingblock">
 <div class="title">Hibernate Cache Statistics</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">2021-06-28 16:12:42.545  INFO 29022 --- [nio-9090-exec-7] i.StatisticalLoggingSessionEventListener : Session Metrics {
 27579 nanoseconds spent acquiring 1 JDBC connections;
 0 nanoseconds spent releasing 0 JDBC connections;
 0 nanoseconds spent preparing 0 JDBC statements;
@@ -6858,7 +6858,7 @@ class has a custom query using such a hint for illustration purposes:</p>
 <div class="listingblock">
 <div class="title">Using Query Hints</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
 @Query("select p from Plant p")
 List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 </div>
@@ -6869,7 +6869,7 @@ List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 <div class="listingblock">
 <div class="title">List all plants</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -i \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl -i \
   -H "Accept: application/json" \
   -H "Content-Type:application/json" \
   -X GET "http://localhost:9090/plants?use-cache=true"</code></pre>
@@ -6895,7 +6895,7 @@ project:</p>
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -6917,7 +6917,7 @@ project:</p>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-session:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03.1")
@@ -7007,7 +7007,7 @@ as described at <a href="#coherence-spring-messaging-with-coherence-topics">Mess
 <div class="listingblock">
 <div class="title">application.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">management:
+<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">management:
   metrics:
     enable:
       coherence: false</code></pre>
@@ -7026,7 +7026,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
@@ -7048,7 +7048,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-data:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03.1")
@@ -7119,7 +7119,7 @@ externalize some Coherence configuration using Spring Cloud Config. The source c
 <div class="listingblock">
 <div class="title">Clone the Spring Cloud Config demo project</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ git clone https://github.com/coherence-community/coherence-spring.git
  $ cd coherence-spring</code></pre>
 </div>
 </div>
@@ -7143,7 +7143,7 @@ under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>.
 <div class="listingblock">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;    <i class="conum" data-value="1"></i><b>(1)</b>
 &lt;/dependency&gt;
@@ -7172,7 +7172,7 @@ under <code>coherence-spring-samples/coherence-spring-cloud-config-demo/</code>.
 <div class="listingblock">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;version&gt;{coherence-spring.version}&lt;/version&gt;
@@ -7226,7 +7226,7 @@ the configuration data.</p>
 <div class="listingblock">
 <div class="title">Set up the Config Data</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ cd /path/to/git/repo
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ cd /path/to/git/repo
  $ mkdir coherence-spring-config-repository
  $ cd coherence-spring-config-repository
  $ git init</code></pre>
@@ -7238,7 +7238,7 @@ the configuration data.</p>
 <div class="listingblock">
 <div class="title">config-client.properties</div>
 <div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties"> coherence.logging.severity-level=6                                           <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs"> coherence.logging.severity-level=6                                           <i class="conum" data-value="1"></i><b>(1)</b>
  coherence.logging.destination=slf4j                                          <i class="conum" data-value="2"></i><b>(2)</b>
 
  coherence.properties.coherence.cluster=Demo Cluster                          <i class="conum" data-value="3"></i><b>(3)</b>
@@ -7316,7 +7316,7 @@ reports are located at <code>coherence-23.03.1.jar/reports</code></td>
 <div class="listingblock">
 <div class="title">Start the Spring Cloud Config Server</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
  $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
  $ java -jar coherence-spring-cloud-config-demo-server-4.0.1-SNAPSHOT.jar \n
      --spring.cloud.config.server.git.uri=file:///path/to/git/repo</code></pre>
@@ -7325,7 +7325,7 @@ reports are located at <code>coherence-23.03.1.jar/reports</code></td>
 <div class="listingblock">
 <div class="title">Start the Coherence Spring Application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
  $ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
  $ java -jar coherence-spring-cloud-config-demo-app-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
@@ -7378,7 +7378,7 @@ property as well.</p>
 <div class="listingblock">
 <div class="title">Equivalent Properties</div>
 <div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties"> coherence.logging.severity-level=5
+<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs"> coherence.logging.severity-level=5
  coherence.logging.destination=log4j
 
  coherence.log.level=5
@@ -7403,9 +7403,12 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-16 10:08:51 UTC
+Last updated 2023-08-17 04:25:40 UTC
 </div>
 </div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

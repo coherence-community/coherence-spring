@@ -170,7 +170,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="listingblock primary">
 <div class="title">Maven</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
@@ -187,7 +187,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-session:4.0.1-SNAPSHOT")
     compile("com.oracle.coherence.ce:coherence:23.03.1")
 }</code></pre>
@@ -216,7 +216,7 @@ Session using the <code>@EnableCoherenceHttpSession</code> annotation.</p>
 <div class="listingblock">
 <div class="title">Enabling Coherence Spring Sessions</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
 @EnableCoherence
 @EnableCoherenceHttpSession(                     <i class="conum" data-value="1"></i><b>(1)</b>
         session = "coherence_session",           <i class="conum" data-value="2"></i><b>(2)</b>
@@ -281,7 +281,7 @@ additional POF configuration for the class <code>MapSession</code> is necessary:
 <div class="listingblock">
 <div class="title">POF Configuration</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;user-type&gt;
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;user-type&gt;
      &lt;type-id&gt;2001&lt;/type-id&gt;
      &lt;class-name&gt;org.springframework.session.MapSession&lt;/class-name&gt;
      &lt;serializer&gt;
@@ -346,7 +346,7 @@ stored in the session as well. In regard to authentication, users have 2 choices
 <div class="listingblock">
 <div class="title">Example Authentication Request</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json"> { "username": "coherence", "password": "rocks" }</code></pre>
+<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs"> { "username": "coherence", "password": "rocks" }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -360,7 +360,7 @@ require an authenticated user using the session cookie or the <code>username</co
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -370,7 +370,7 @@ require an authenticated user using the session cookie or the <code>username</co
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar
  $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar --server.port=8091</code></pre>
 </div>
 </div>
@@ -384,13 +384,13 @@ Coherence instance as a Coherence*Extend client.</p>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Build the Application instance</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -399,7 +399,7 @@ Coherence instance as a Coherence*Extend client.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.0.1-SNAPSHOT.jar
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.0.1-SNAPSHOT.jar
  $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.0.1-SNAPSHOT.jar --spring.profiles.active=coherence-client</code></pre>
 </div>
 </div>
@@ -432,7 +432,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Log into the application using <a href="https://curl.se/">CURL</a></div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -c cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -c cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X POST --data '{"username": "coherence", "password": "rocks"}' \
@@ -442,7 +442,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Let&#8217;s access the HelloController</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -b cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -b cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X GET "http://localhost:8090/hello"</code></pre>
@@ -459,7 +459,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Retrieving session information for user <code>coherence</code></div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ curl -i -b cookie.txt \
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl -i -b cookie.txt \
  -H "Accept: application/json" \
  -H "Content-Type:application/json" \
  -X GET "http://localhost:8090/actuator/sessions?username=coherence"</code></pre>
@@ -474,7 +474,7 @@ can now remove the relevant Maven dependencies:</p>
 <div class="listingblock">
 <div class="title">Generate a Docker image</div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
+<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
 </div>
 </div>
 </div>
@@ -546,9 +546,12 @@ days.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-16 10:08:51 UTC
+Last updated 2023-08-17 04:25:41 UTC
 </div>
 </div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>
