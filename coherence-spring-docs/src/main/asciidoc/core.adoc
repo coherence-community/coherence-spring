@@ -792,6 +792,100 @@ link:{coherence-spring-api}com/oracle/coherence/spring/annotation/SessionName.ht
 private Subscriber<Order> orders;
 ----
 
+[[injecting-spring-beans-into-coherence-managed-objects]]
+== Injecting Spring Beans into Coherence-Managed Objects
+
+Coherence has many server-side extension points, which enable you to customize application behavior in different ways,
+typically by configuring their extensions within various sections of the cache configuration file. For example, you can
+implement event interceptors and cache stores to handle server-side events and integrate with external data stores
+and other services. In the previous chapter, you learned how you can inject Coherence-managed objects into your
+Spring-managed beans. However, the reverse is possible as well. Coherence Spring also provides the ability to inject
+Spring beans into these Coherence-managed extension points using the custom configuration namespace handler.
+
+[source,xml]
+.coherence-cache-config.xml with Spring NamespaceHandler
+----
+include::{include-source-code-samples-cachestore-resources}coherence-cache-config.xml[tag=header]
+----
+
+After you have declared the handler for the Spring namespace above, you can specify the `<spring:bean>` element in any
+place where you would normally use the `<class-name>` or `<class-factory-name>` elements:
+
+[source,xml]
+.Using Spring bean references in coherence-cache-config.xml
+----
+<?xml version="1.0"?>
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+        xmlns:spring="class://com.oracle.coherence.spring.namespace.NamespaceHandler"
+        xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+
+    <interceptors>
+        <interceptor>
+            <instance>
+                <spring:bean>registrationListener</spring:bean> <!--1-->
+            </instance>
+        </interceptor>
+        <interceptor>
+            <instance>
+                <spring:bean>activationListener</spring:bean>
+            </instance>
+        </interceptor>
+    </interceptors>
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>distributed-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>partitionListener-bean</param-name> <!--2-->
+                    <param-value>partitionListener</param-value>
+                </init-param>
+            </init-params>
+            <interceptors>
+                <interceptor>
+                    <instance>
+                        <spring:bean>cacheListener</spring:bean>
+                    </instance>
+                </interceptor>
+            </interceptors>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>distributed-scheme</scheme-name>
+            <service-name>PartitionedCache</service-name>
+            <local-storage system-property="coherence.distributed.localstorage">true</local-storage>
+            <partition-listener>
+                <spring:bean>{partitionListener-bean}</spring:bean> <!--3-->
+            </partition-listener>
+            <member-listener>
+                <spring:bean>memberListener</spring:bean>
+            </member-listener>
+            <backing-map-scheme>
+                <local-scheme/>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+            <interceptors>
+                <interceptor>
+                    <instance>
+                        <spring:bean>storageListener</spring:bean>
+                    </instance>
+                </interceptor>
+            </interceptors>
+        </distributed-scheme>
+    </caching-schemes>
+</cache-config>
+----
+<1> Specifying the name of the Spring bean that you want to reference.
+<2> The name of Spring beans can also be parameterized. Let's create a parameter named `partitionListener-bean` with the name of the Spring bean as its value.
+<3> Here we reference the parameter named `partitionListener-bean` and its value will be used.
+
+TIP: Please also take a look at the chapter discussing the
+<<coherence-spring-cachestore-demo, Coherence Spring Cachestore Demo>> as it uses Spring-managed beans.
+
 [[coherence-spring-events]]
 == Events
 
@@ -2219,6 +2313,8 @@ The Coherence Spring core module provides two interfaces:
 To create a JPA repository cache loader or cache store, all a developer needs to do is extend the relevant interface
 `JpaRepositoryCacheLoader` or `JpaRepositoryCacheStore` with the correct generic parameters. We will illustrate the use
 of Cache Stores using the following example.
+
+NOTE: Please also look at the reference documentation chapter <<injecting-spring-beans-into-coherence-managed-objects>>.
 
 [[coherence-spring-cachestore-demo]]
 === JPA Repository CacheStore Demo
