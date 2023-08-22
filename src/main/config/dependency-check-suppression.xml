@@ -27,4 +27,9 @@
        ]]></notes>
         <cve>CVE-2023-2976</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[ grpc-core-1.49.2.jar + grpc-protobuf-1.49.2.jar
+       ]]></notes>
+        <cve>CVE-2023-33953</cve>
+    </suppress>
 </suppressions>
