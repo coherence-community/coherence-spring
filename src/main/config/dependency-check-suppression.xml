@@ -29,22 +29,7 @@
         <cve>CVE-2022-3171</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-   file name: protobuf-java-3.21.3.jar
-   ]]></notes>
-        <cve>CVE-2022-3509</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-       file name: protobuf-java-3.21.3.jar
-       ]]></notes>
-        <cve>CVE-2022-3510</cve>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-       file name: snakeyaml-1.33.jar
-       ]]></notes>
+        <notes><![CDATA[ file name: snakeyaml-1.33.jar ]]></notes>
         <cve>CVE-2022-1471</cve>
     </suppress>
     <suppress>
@@ -54,20 +39,10 @@
         <cve>CVE-2022-45047</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2023-20863</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[ jackson-databind-2.14.2.jar
         Invalid - see: https://github.com/FasterXML/jackson-databind/issues/3997
        ]]></notes>
         <cve>CVE-2023-35116</cve>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-       file name: netty-handler-4.1.92.Final.jar
-       ]]></notes>
-        <cve>CVE-2023-34462</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[ guava-30.0-jre.jar
@@ -75,8 +50,13 @@
         <cve>CVE-2023-2976</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[ jszip.js - We should not be affected as it is only used for the static Javadocs
+        <notes><![CDATA[ grpc-protobuf-1.54.1.jar + grpc-stub-1.54.1.jar
        ]]></notes>
-        <cve>CVE-2022-48285</cve>
+        <cve>CVE-2023-33953</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[ grpc-protobuf-1.54.1.jar + grpc-stub-1.54.1.jar
+       ]]></notes>
+        <cve>CVE-2023-32731</cve>
     </suppress>
 </suppressions>
