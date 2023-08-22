@@ -141,7 +141,7 @@
 		<asciidoctorj-pdf.version>2.3.9</asciidoctorj-pdf.version>
 		<checkstyle.version>10.6.0</checkstyle.version>
 		<spring-javaformat-checkstyle.version>0.0.39</spring-javaformat-checkstyle.version>
-		<spring-asciidoctor-extensions.version>0.6.1</spring-asciidoctor-extensions.version>
+		<spring-asciidoctor-extensions.version>0.6.2</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
