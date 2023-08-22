@@ -5749,6 +5749,29 @@ public interface PersonRepository extends CoherenceAsyncRepository&lt;String, Pe
 }</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In the less common use-case of using the <code>update</code> method of the <code>CoherenceRepository</code> to update entities with an entity
+Id that does NOT exist, a <code>NullPointerException</code> may be thrown. In order to plug-in your own logic, you can either
+provide an <code>EntityFactory</code> to create a new instance or you can provide a lambda expression that e.g. throws an exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">this.bookRepository.update(new UUID(), Book::setPages, 700, uuid -&gt; {
+    throw new IllegalStateException("The book with id " + uuid + " does not exist.");
+});</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="sect3">
 <h4 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>6.4.1. Identifying the Coherence NamedMap</h4>
 <div class="paragraph">
@@ -7538,7 +7561,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-22 10:54:09 UTC
+Last updated 2023-08-22 22:47:46 UTC
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">
