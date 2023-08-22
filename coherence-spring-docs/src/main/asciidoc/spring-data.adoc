@@ -90,6 +90,20 @@ public interface PersonRepository extends CoherenceAsyncRepository<String, Perso
 }
 ----
 
+[TIP]
+====
+In the less common use-case of using the `update` method of the `CoherenceRepository` to update entities with an entity
+Id that does NOT exist, a `NullPointerException` may be thrown. In order to plug-in your own logic, you can either
+provide an `EntityFactory` to create a new instance or you can provide a lambda expression that e.g. throws an exception:
+
+[source,java]
+----
+this.bookRepository.update(new UUID(), Book::setPages, 700, uuid -> {
+    throw new IllegalStateException("The book with id " + uuid + " does not exist.");
+});
+----
+====
+
 === Identifying the Coherence NamedMap
 
 The Coherence `NamedMap` that will be used by the Repository implementation
