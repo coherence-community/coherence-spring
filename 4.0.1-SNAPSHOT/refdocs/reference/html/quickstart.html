@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>Quickstart</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 
 <style>
 .hidden {
@@ -167,7 +168,7 @@ GitHub repository.</p>
 <div class="listingblock">
 <div class="title">Clone GitHub Repository</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ git clone https://github.com/coherence-community/coherence-spring.git
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ git clone https://github.com/coherence-community/coherence-spring.git
  $ cd coherence-spring</code></pre>
 </div>
 </div>
@@ -221,7 +222,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Build the project</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -230,7 +231,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Run the Spring Boot application</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ java -jar samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-4.0.1-SNAPSHOT.jar</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/coherence-spring-demo/coherence-spring-demo-boot/target/coherence-spring-demo-boot-4.0.1-SNAPSHOT.jar</code></pre>
 </div>
 </div>
 </div>
@@ -245,7 +246,7 @@ the same app. The third module contains shared code.</p>
 <div class="listingblock">
 <div class="title">Create the first event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/events?title=First%20Event&amp;date=2020-11-30'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -262,7 +263,7 @@ returned and printed to the console:</p>
 <div class="listingblock">
 <div class="title">Return result of the created event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="json" class="language-json hljs"> {
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> {
    "id" : 1,
    "title" : "First Event",
    "date" : "2020-11-30T00:00:00.000+00:00"
@@ -286,7 +287,7 @@ providing numerous statistical information regarding the cache.</p>
 <div class="listingblock">
 <div class="title">Retrieving Cache Statistics</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> $ curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl --request GET 'http://localhost:8080/api/statistics/events'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -312,7 +313,7 @@ as it provides some additional insights and visualizations.
 <div class="listingblock">
 <div class="title">Retrieve Event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -332,7 +333,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 <div class="listingblock">
 <div class="title">Evict Event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request DELETE 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request DELETE 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -341,7 +342,7 @@ Let&#8217;s evict our Event with id 1 from the cache named events:</p>
 <div class="listingblock">
 <div class="title">Retrieve Event</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/events/1'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -351,14 +352,14 @@ can, for example, add people:</p>
 <div class="listingblock">
 <div class="title">Add people</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people?firstName=Conrad&amp;lastName=Zuse&amp;age=85'
  curl --request POST 'http://localhost:8080/api/people?firstName=Alan&amp;lastName=Turing&amp;age=41'</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">List people</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request GET 'http://localhost:8080/api/people'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -367,7 +368,7 @@ can, for example, add people:</p>
 <div class="listingblock">
 <div class="title">Assign People to Events</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="shell" class="language-shell hljs"> curl --request POST 'http://localhost:8080/api/people/2/add-to-event/1'
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> curl --request POST 'http://localhost:8080/api/people/2/add-to-event/1'
  curl --request POST 'http://localhost:8080/api/people/3/add-to-event/1'</code></pre>
 </div>
 </div>
@@ -388,7 +389,7 @@ dependency as well as the desired dependency for Coherence.</p>
 <div class="listingblock">
 <div class="title">POM configuration</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;dependency&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml"> &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
      &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; <i class="conum" data-value="1"></i><b>(1)</b>
      &lt;version&gt;4.0.1-SNAPSHOT&lt;/version&gt;
@@ -419,7 +420,7 @@ use the <code>spring-boot-starter-cache</code> dependency as well:</p>
 <div class="listingblock">
 <div class="title">POM configuration for Spring Cache Abstraction</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs"> &lt;dependency&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml"> &lt;dependency&gt;
      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
      &lt;artifactId&gt;spring-boot-starter-cache&lt;/artifactId&gt;
  &lt;/dependency&gt;</code></pre>
@@ -431,7 +432,7 @@ use the <code>spring-boot-starter-cache</code> dependency as well:</p>
 <div class="listingblock">
 <div class="title">Spring Boot App configuration</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs"> @SpringBootApplication
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @SpringBootApplication
  @EnableCaching                                             <i class="conum" data-value="1"></i><b>(1)</b>
  public class CoherenceSpringBootDemoApplication {
 
@@ -464,12 +465,16 @@ application context.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-22 23:21:19 UTC
+Last updated 2023-08-23 02:02:26 UTC
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>
