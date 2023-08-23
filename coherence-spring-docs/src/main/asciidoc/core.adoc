@@ -492,7 +492,7 @@ could be used to specify that the values should be transformed using a property 
 .Injecting a @CoherenceMap with multiple @WhereFilter
 [source,java]
 ----
-include::{include-source-code}di/viewtransformer/PeopleService.java[tags=!hide]
+include::{include-source-code}di/viewtransformer/PeopleService.java[tags=!*]
 ----
 <1> The name of the underlying map for the view is "people".
 <2> The `@View` annotation specifies that a view will be injected rather than a raw `NamedMap`.
@@ -953,7 +953,7 @@ and the application has logic that should be executed each time a new `Plant` is
 .Example of listening to Inserted events
 [source,java]
 ----
-include::{include-source-code}event/PersonEventHandler.java[tags=!hide]
+include::{include-source-code}event/PersonEventHandler.java[tag=!*]
 ----
 <1> The `PersonController` is a simple Spring bean, in this case a `Controller`.
 <2> The `onNewPerson` method is annotated with `@CoherenceEventListener` making it a Coherence event listener.
@@ -1900,7 +1900,7 @@ First create a simple annotation, it could be called something like `PlantNameEx
 
 [source,java]
 ----
-include::{include-source-code}filterbinding/LargePalmTrees.java[tags=!hide]
+include::{include-source-code}filterbinding/LargePalmTrees.java[tags=!*]
 ----
 <1> The annotation class is annotated with `@FilterBinding`
 <2> The annotation name is `PlantNameExtractor`
@@ -1914,7 +1914,7 @@ that will produce instances of the required `Filter`.
 
 [source,java]
 ----
-include::{include-source-code}filterbinding/LargePalmTreesFilterFactory.java[tags=!hide]
+include::{include-source-code}filterbinding/LargePalmTreesFilterFactory.java[tags=!*]
 ----
 <1> The class is annotated with the `PlantNameExtractor` filter binding annotation
 <2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
@@ -1934,14 +1934,14 @@ adding a value parameter representing the height like this:
 public @interface PalmTrees {
     String value();
 }
-include::{include-source-code}filterbinding/PalmTrees.java[tags=!hide]
+include::{include-source-code}filterbinding/PalmTrees.java[tags=!*]
 ----
 
 We then need to modify our filter factory to use the height value:
 
 [source,java]
 ----
-include::{include-source-code}filterbinding/PalmTreesFilterFactory.java[tags=!hide]
+include::{include-source-code}filterbinding/PalmTreesFilterFactory.java[tags=!*]
 ----
 <1> The class is annotated with the more flexible `PalmTrees` filter binding annotation accepting a height parameter
 <2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
@@ -1955,7 +1955,7 @@ Now the application code where the view is to be injected can use the custom fil
 
 [source,java]
 ----
-include::{include-source-code}filterbinding/PlantService.java[tags=!hide]
+include::{include-source-code}filterbinding/PlantService.java[tags=!*]
 ----
 <1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
 <2> The `@PalmTrees` annotation links to the custom filter factory which is used to create the filter for the view. The
@@ -1994,7 +1994,7 @@ First create a simple annotation called `PlantName`
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PersonAge {                    // <2>
 }
-include::{include-source-code}extractorbinding/PlantNameExtractor.java[tags=!hide]
+include::{include-source-code}extractorbinding/PlantNameExtractor.java[tags=!*]
 ----
 <1> The annotation class is annotated with `@ExtractorBinding`
 <2> The annotation name is `PlantNameExtractor`
@@ -2008,7 +2008,7 @@ implementation that will produce instances of the required `ValueExtractor`.
 
 [source,java]
 ----
-include::{include-source-code}extractorbinding/PlantNameExtractorFactory.java[tags=!hide]
+include::{include-source-code}extractorbinding/PlantNameExtractorFactory.java[tags=!*]
 ----
 <1> The class is annotated with the `PlantNameExtractor` extractor binding annotation
 <2> The class must be a Spring bean, let's annotate it with `@Component` so that component scanning will pick this class
@@ -2028,7 +2028,7 @@ Now the application code where the view is to be injected can use the custom ext
 @PersonAge                                       // <2>
 @Name("people")                                  // <3>
 private NamedMap<String, Integer> ages;          // <4>
-include::{include-source-code}extractorbinding/PlantService.java[tags=!hide]
+include::{include-source-code}extractorbinding/PlantService.java[tags=!*]
 ----
 <1> The `@View` annotation indicates that this is a view rather than a plain `NamedMap`
 <2> The `@PlantNameExtractor` annotation links to the custom extractor factory used to create the `ValueExtractor` for the view

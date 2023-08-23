@@ -277,7 +277,7 @@
 						<configuration>
 							<backend>html5</backend>
 							<sourceDocumentExtensions>
-								<sourceDocumentExtension>.adoc</sourceDocumentExtension>
+								<sourceDocumentExtension>adoc</sourceDocumentExtension>
 								<sourceDocumentExtension>htmladoc</sourceDocumentExtension>
 							</sourceDocumentExtensions>
 							<outputDirectory>${project.build.directory}/generated-docs/reference/html</outputDirectory>
