@@ -10,6 +10,7 @@
     <include resource="org/springframework/boot/logging/logback/base.xml" />
     <logger name="Coherence" level="INFO" />
     <logger name="com.oracle.coherence.spring" level="INFO" />
+    <logger name="com.oracle.coherence.spring.session" level="DEBUG" />
     <logger name="org.springframework" level="WARN" />
     <root level="INFO" />
 </configuration>

@@ -34,6 +34,6 @@ logging:
     org.springframework.web: info
     com.oracle.coherence.spring: info
     com.oracle.coherence.spring.samples.session: info
-    com.oracle.coherence.spring.session: info
+    com.oracle.coherence.spring.session: debug
 server:
   port: 8090
