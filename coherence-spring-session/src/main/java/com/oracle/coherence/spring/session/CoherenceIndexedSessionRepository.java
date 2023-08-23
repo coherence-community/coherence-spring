@@ -113,9 +113,12 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 		this.coherenceSession.getInterceptorRegistry().registerEventInterceptor(interceptor);
 
 		if (logger.isDebugEnabled()) {
+			final String maxInactiveInterval =
+					(this.defaultMaxInactiveInterval != null) ? String.valueOf(this.defaultMaxInactiveInterval.getSeconds()) : "null";
 			logger.debug(String.format("CoherenceIndexedSessionRepository initialized with "
-							+ "[Scope: %s; cache: %s; defaultMaxInactiveInterval: %ssec]",
-					this.coherenceSession.getScopeName(), this.sessionCache.getCacheName(), this.defaultMaxInactiveInterval));
+							+ "[Scope: '%s'; cache: '%s'; defaultMaxInactiveInterval: %ssec; useEntryProcessor: %s]",
+					this.coherenceSession.getScopeName(), this.sessionCache.getCacheName(),
+					maxInactiveInterval, this.useEntryProcessor));
 		}
 	}
 
