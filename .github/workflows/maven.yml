@@ -16,7 +16,7 @@ jobs:
         java-version: [ 17, 20 ]
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.6.0
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v3.12.0
         with:
