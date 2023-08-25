@@ -144,11 +144,11 @@
 
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.20.2</assertj.version>
-		<awaitility.version>4.1.0</awaitility.version>
-		<bedrock.version>6.0.2</bedrock.version>
+		<awaitility.version>4.1.1</awaitility.version>
+		<bedrock.version>6.0.4</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>22.06.4</coherence.version>
-		<classgraph.version>4.8.115</classgraph.version>
+		<classgraph.version>4.8.162</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
 		<javaee-api.version>8.0.1</javaee-api.version>
@@ -158,14 +158,14 @@
 		<junit.version>5.7.2</junit.version>
 		<log4j.version>2.20.0</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
-		<org.springframework.version>5.3.28</org.springframework.version>
-		<org.springframework.data.version>2021.2.13</org.springframework.data.version>
-		<reactor.version>3.4.9</reactor.version>
+		<org.springframework.version>5.3.29</org.springframework.version>
+		<org.springframework.data.version>2021.2.15</org.springframework.data.version>
+		<reactor.version>3.4.32</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
-		<spring-boot.version>2.7.14</spring-boot.version>
-		<spring-session.version>2.6.3</spring-session.version>
+		<spring-boot.version>2.7.15</spring-boot.version>
+		<spring-session.version>2.6.4</spring-session.version>
 		<spring-security.version>5.7.10</spring-security.version>
-		<tomcat.version>9.0.76</tomcat.version>
+		<tomcat.version>9.0.79</tomcat.version>
 	</properties>
 
 	<distributionManagement>
