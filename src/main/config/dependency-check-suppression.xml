@@ -32,4 +32,9 @@
        ]]></notes>
         <cve>CVE-2023-33953</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[ spring-data-commons-3.0.9.jar + spring-data-jpa-3.0.9.jar
+       ]]></notes>
+        <cve>CVE-2023-34040</cve>
+    </suppress>
 </suppressions>
