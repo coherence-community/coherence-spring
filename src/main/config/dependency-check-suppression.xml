@@ -37,4 +37,12 @@
        ]]></notes>
         <cve>CVE-2023-34040</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        file name: org.eclipse.jgit-5.13.1.202206130422-r.jar
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.jgit/org\.eclipse\.jgit@.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
+    </suppress>
 </suppressions>
