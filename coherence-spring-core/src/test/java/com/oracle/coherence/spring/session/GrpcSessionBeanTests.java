@@ -65,7 +65,7 @@ public class GrpcSessionBeanTests {
 		server = platform.launch(CoherenceClusterMember.class,
 				LocalHost.only(),
 				IPv4Preferred.yes(),
-				SystemProperty.of("coherence.cluster", "GrpcSessionTestsCluster"),
+				SystemProperty.of("coherence.cluster", "GrpcSessionBeanTestsCluster"),
 				SystemProperty.of("coherence.grpc.enabled", true),
 				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				DisplayName.of("server"));
