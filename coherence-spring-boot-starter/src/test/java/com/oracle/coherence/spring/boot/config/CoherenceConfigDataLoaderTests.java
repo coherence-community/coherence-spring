@@ -61,6 +61,7 @@ public class CoherenceConfigDataLoaderTests {
 				SystemProperty.of("coherence.cluster", "CoherenceConfigDataLoaderTests"),
 				SystemProperty.of("coherence.grpc.enabled", true),
 				SystemProperty.of("coherence.grpc.server.port", "1408"),
+				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
 
 		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
