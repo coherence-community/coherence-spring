@@ -192,7 +192,7 @@ as the desired version of Coherence.</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.4&lt;/version&gt;
+        &lt;version&gt;22.06.5&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -202,7 +202,7 @@ as the desired version of Coherence.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.4-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.4")
+    compile("com.oracle.coherence.ce:coherence:22.06.5")
 }</code></pre>
 </div>
 </div>
@@ -298,7 +298,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>grpc</code>, <code>server</code>, <code>client</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>grpc</code> (deprecated), <code>server</code>, <code>client</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].name</p></td>
@@ -344,7 +344,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <p><a href="https://spring.coherence.community/3.3.4-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html">SessionConfigurationBean</a></p>
 </li>
 <li>
-<p><a href="https://spring.coherence.community/3.3.4-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html">GrpcSessionConfigurationBean</a></p>
+<p><a href="https://spring.coherence.community/3.3.4-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html">GrpcSessionConfigurationBean</a> (deprecated)</p>
 </li>
 </ul>
 </div>
@@ -358,6 +358,21 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 Many properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property <code>coherence.properties.*</code> are configured, the Spring Boot
 property is used.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+As of Coherence Spring <code>4.0</code>, the <code>GrpcSessionConfigurationBean</code> has been deprecated. Please use the
+<code>SessionConfigurationBean</code> in that case. Since Coherence <code>22.06.2</code>, relevant gRPC configuration can be configured directly in
+the <code>coherence-cache-config.xml</code> file as described in the Coherence reference guide chapter
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D">Configuring the Coherence gRPC Client</a>.
 </td>
 </tr>
 </table>
@@ -1052,7 +1067,7 @@ project:</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.4&lt;/version&gt;
+        &lt;version&gt;22.06.5&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -1063,7 +1078,7 @@ project:</p>
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.4-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-session:3.3.4-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.4")
+    compile("com.oracle.coherence.ce:coherence:22.06.5")
 }</code></pre>
 </div>
 </div>
@@ -1189,7 +1204,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.4&lt;/version&gt;
+        &lt;version&gt;22.06.5&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -1200,7 +1215,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.4-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-data:3.3.4-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.4")
+    compile("com.oracle.coherence.ce:coherence:22.06.5")
 }</code></pre>
 </div>
 </div>
@@ -1220,7 +1235,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-25 10:01:49 UTC
+Last updated 2023-09-14 05:15:10 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
