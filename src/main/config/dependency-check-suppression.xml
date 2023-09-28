@@ -45,4 +45,11 @@
         <packageUrl regex="true">^pkg:maven/org\.eclipse\.jgit/org\.eclipse\.jgit@.*$</packageUrl>
         <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        file name: grpc-core-1.49.2.jar
+        ]]></notes>
+        <cve>CVE-2023-4785</cve>
+    </suppress>
 </suppressions>
