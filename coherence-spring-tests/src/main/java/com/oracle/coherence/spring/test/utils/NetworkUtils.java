@@ -12,20 +12,23 @@ import java.net.Socket;
 
 public class NetworkUtils {
 
-	/**
-	 * Helper method to determine if the default gRPC port is available or not.
-	 * @return true if the gRPC port is bound and thus unavailable
-	 */
-	public static boolean isGrpcPortInUse() {
-
+	public static boolean isGrpcPortInUse(Integer port) {
 		boolean result = false;
 
 		try {
-			(new Socket(InetAddress.getLoopbackAddress(), 1408)).close();
+			(new Socket(InetAddress.getLoopbackAddress(), (port != null) ? port : 1408)).close();
 			result = true;
 		}
 		catch (IOException ex) {
 		}
 		return result;
+	}
+
+	/**
+	 * Helper method to determine if the default gRPC port is available or not.
+	 * @return true if the gRPC port is bound and thus unavailable
+	 */
+	public static boolean isGrpcPortInUse() {
+		return isGrpcPortInUse(null);
 	}
 }

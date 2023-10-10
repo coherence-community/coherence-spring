@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -46,11 +46,6 @@ public class SessionConfigurationBean extends AbstractSessionConfigurationBean {
 
 	@Override
 	public Optional<SessionConfiguration> getConfiguration() {
-		final SessionType type = getType();
-		if (SessionType.GRPC == type) {
-			return Optional.empty();
-		}
-
 		SessionConfiguration.Builder builder = SessionConfiguration
 				.builder()
 				.named(processSessionName(this.getName()))

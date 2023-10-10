@@ -1,6 +1,5 @@
 coherence:
   sessions:
-    grpc:
+    client:
       - name: grpc-session
-#      - channel-name: grpc-bean-channel-name
-#        tracing-enabled: true
+

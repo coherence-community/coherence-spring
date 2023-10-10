@@ -30,16 +30,6 @@ public enum SessionType {
 	CLIENT,
 
 	/**
-	 * The session is a gRPC client session.
-	 * @deprecated use {@link SessionType#CLIENT} instead
-	 */
-	@Deprecated(
-			since = "4.0.0",
-			forRemoval = true
-	)
-	GRPC,
-
-	/**
 	 * The session is a server session, that is it expects to be a Coherence cluster member.
 	 * <p>This is the default type if none is specified for a configuration.
 	 */

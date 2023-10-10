@@ -19,8 +19,8 @@ import com.oracle.bedrock.runtime.options.DisplayName;
 import com.oracle.coherence.grpc.proxy.GrpcServerController;
 import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
-import com.oracle.coherence.spring.configuration.session.SessionType;
 import com.oracle.coherence.spring.test.utils.NetworkUtils;
 import com.tangosol.net.NamedCache;
 import org.awaitility.Awaitility;
@@ -93,11 +93,10 @@ public class GrpcSessionTests {
 	@EnableCoherence
 	static class Config {
 		@Bean
-		SessionConfigurationBean grpcSessionConfigurationBean() {
-			final SessionConfigurationBean sessionConfigurationBean = new SessionConfigurationBean();
+		ClientSessionConfigurationBean grpcSessionConfigurationBean() {
+			final ClientSessionConfigurationBean sessionConfigurationBean = new ClientSessionConfigurationBean();
 			sessionConfigurationBean.setName(SessionConfigurationBean.DEFAULT_SESSION_NAME);
-			sessionConfigurationBean.setConfig("grpc-test-coherence-cache-config.xml");
-			sessionConfigurationBean.setType(SessionType.CLIENT);
+			sessionConfigurationBean.setConfig("grpc-core-test-coherence-cache-config.xml");
 			return sessionConfigurationBean;
 		}
 	}
