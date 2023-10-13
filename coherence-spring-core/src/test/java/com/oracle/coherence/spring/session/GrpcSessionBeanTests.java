@@ -8,7 +8,6 @@
 package com.oracle.coherence.spring.session;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import com.oracle.bedrock.runtime.LocalPlatform;
 import com.oracle.bedrock.runtime.coherence.CoherenceClusterMember;
@@ -18,11 +17,10 @@ import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.DisplayName;
 import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
-import com.oracle.coherence.spring.test.utils.NetworkUtils;
+import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
+import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -51,7 +49,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GrpcSessionBeanTests {
 	static CoherenceClusterMember server;
 
-	@CoherenceCache(session = GrpcSessionConfigurationBean.DEFAULT_SESSION_NAME)
+	public static final String COHERENCE_CLUSTER_NAME = "GrpcSessionBeanTestsCluster";
+
+	@CoherenceCache(session = "grpcSession")
 	private NamedCache<String, String> fooMap;
 
 	@Autowired
@@ -65,13 +65,10 @@ public class GrpcSessionBeanTests {
 		server = platform.launch(CoherenceClusterMember.class,
 				LocalHost.only(),
 				IPv4Preferred.yes(),
-				SystemProperty.of("coherence.cluster", "GrpcSessionBeanTestsCluster"),
+				SystemProperty.of("coherence.cluster", COHERENCE_CLUSTER_NAME),
 				SystemProperty.of("coherence.grpc.enabled", true),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
-
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
 	}
 
 	@AfterAll
@@ -85,7 +82,7 @@ public class GrpcSessionBeanTests {
 	@Order(1)
 	public void testBasicGrpcClient() throws Exception {
 		this.fooMap.put("foo", "bar");
-		final Map<String, String> mapFromCoherence = server.getSession().getMap("fooMap");
+		final Map<String, String> mapFromCoherence = this.server.getSession().getMap("fooMap");
 		assertEquals("bar", mapFromCoherence.get("foo"));
 	}
 
@@ -93,9 +90,11 @@ public class GrpcSessionBeanTests {
 	@EnableCoherence
 	static class Config {
 		@Bean
-		GrpcSessionConfigurationBean grpcSessionConfigurationBean() {
-			final GrpcSessionConfigurationBean sessionConfigurationBean = new GrpcSessionConfigurationBean();
-			sessionConfigurationBean.setName(GrpcSessionConfigurationBean.DEFAULT_SESSION_NAME);
+		ClientSessionConfigurationBean grpcSessionConfigurationBean() {
+			final ClientSessionConfigurationBean sessionConfigurationBean = new ClientSessionConfigurationBean();
+			sessionConfigurationBean.setName(SessionConfigurationBean.DEFAULT_SESSION_NAME);
+			sessionConfigurationBean.setConfig("grpc-core-test-coherence-cache-config-nameservice.xml");
+			sessionConfigurationBean.setName("grpcSession");
 			return sessionConfigurationBean;
 		}
 	}

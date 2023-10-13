@@ -6,10 +6,6 @@ coherence:
     message-format: "Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}"
     severity-level: 5
   sessions:
-    grpc:
-      - name: grpc-session
-#      - channel-name: grpc-bean-channel-name
-#        tracing-enabled: true
     server:
       - name: default
         config: "coherence-cache-config.xml"
@@ -26,6 +22,7 @@ coherence:
         config: "coherence-cache-config.xml"
         priority: 3
         scope-name: client-scope
+      - name: grpc-session
   properties:
     coherence.log.limit: 444
     coherence.log.level: 1

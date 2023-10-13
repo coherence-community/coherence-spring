@@ -15,7 +15,7 @@ coherence:
     coherence.log.limit: 444
     coherence.log.level: 1
     coherence.log.logger: CoherenceSpring
-    coherence.log: log4j
+    coherence.log: jdk
     coherence.log.format: foobar
   property-prefix: "coherence.properties."
 

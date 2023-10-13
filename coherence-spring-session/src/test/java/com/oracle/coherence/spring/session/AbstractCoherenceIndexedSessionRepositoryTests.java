@@ -52,6 +52,17 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 	protected String sessionName;
 
+	AbstractCoherenceIndexedSessionRepositoryTests() {
+		String name = getLocalClusterName();
+		if (name != null) {
+			System.setProperty("coherence.cluster", getLocalClusterName());
+		}
+	}
+
+	protected String getLocalClusterName() {
+		return null;
+	}
+
 	@Test
 	void verifyCoherenceIndexedSessionRepositoryProperties() {
 		assertThat(this.repository.isUseEntryProcessor()).isEqualTo(this.expectedToUseEntryProcessor);

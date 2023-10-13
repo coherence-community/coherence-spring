@@ -15,7 +15,6 @@ import java.util.Map;
 import com.oracle.coherence.spring.boot.autoconfigure.support.LogType;
 import com.oracle.coherence.spring.configuration.session.AbstractSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
-import com.oracle.coherence.spring.configuration.session.GrpcSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.ServerSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.CoherenceInstanceType;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
@@ -276,17 +275,6 @@ public class CoherenceProperties {
 	public static class SessionProperties {
 
 		/**
-		 * gRPC Session configuration.
-		 * @deprecated As of 4.0 please use the {@code client} property and configure the relevant gRPC configuration
-		 * properties directly via {@code coherence-cache-config.xml}.
-		 */
-		@Deprecated(
-				since = "4.0.0",
-				forRemoval = true
-		)
-		private List<GrpcSessionConfigurationBean> grpc;
-
-		/**
 		 * Client Session configuration.
 		 */
 		private List<ClientSessionConfigurationBean> client;
@@ -295,22 +283,6 @@ public class CoherenceProperties {
 		 * Session configuration.
 		 */
 		private List<ServerSessionConfigurationBean> server;
-
-		@Deprecated(
-				since = "4.0.0",
-				forRemoval = true
-		)
-		public List<GrpcSessionConfigurationBean> getGrpc() {
-			return this.grpc;
-		}
-
-		@Deprecated(
-				since = "4.0.0",
-				forRemoval = true
-		)
-		public void setGrpc(List<GrpcSessionConfigurationBean> grpc) {
-			this.grpc = grpc;
-		}
 
 		public List<ClientSessionConfigurationBean> getClient() {
 			return this.client;
@@ -336,9 +308,6 @@ public class CoherenceProperties {
 			}
 			if (!CollectionUtils.isEmpty(this.server)) {
 				sessionConfigurationBeans.addAll(this.server);
-			}
-			if (!CollectionUtils.isEmpty(this.grpc)) {
-				sessionConfigurationBeans.addAll(this.grpc);
 			}
 			return sessionConfigurationBeans;
 		}
