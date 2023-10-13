@@ -1,5 +1,5 @@
 coherence:
   sessions:
-    grpc:
+    client:
       - name: grpc-session
 

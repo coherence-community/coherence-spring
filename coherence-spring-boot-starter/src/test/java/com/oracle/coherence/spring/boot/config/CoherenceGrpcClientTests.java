@@ -43,26 +43,25 @@ public class CoherenceGrpcClientTests {
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.cluster", "CoherenceGrpcClientTestsCluster"),
 				SystemProperty.of("coherence.grpc.enabled", true),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
+				SystemProperty.of("coherence.grpc.server.port", "1418"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
 
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse(1418));
 	}
 
 	@AfterAll
 	static void cleanup() {
+
 		if (server != null) {
 			server.close();
 		}
 	}
 
 	@Test
-	public void testCoherenceGrpcClient() throws Exception {
+	public void testCoherenceGrpcClient() {
 		final CoherenceConfigClientProperties coherenceConfigClientProperties = new CoherenceConfigClientProperties();
-		coherenceConfigClientProperties.getClient().setHost("localhost");
-		coherenceConfigClientProperties.getClient().setPort(1408);
-		coherenceConfigClientProperties.getClient().setEnableTls(false);
+		coherenceConfigClientProperties.setCacheConfig("grpc-test-coherence-cache-config2.xml");
 
 		final CoherenceGrpcClient coherenceGrpcClient = new CoherenceGrpcClient(coherenceConfigClientProperties);
 		final Session grpcCoherenceSession = coherenceGrpcClient.getCoherenceSession();

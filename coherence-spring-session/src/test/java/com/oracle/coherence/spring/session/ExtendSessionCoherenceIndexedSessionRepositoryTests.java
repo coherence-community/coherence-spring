@@ -12,6 +12,7 @@ import com.oracle.bedrock.runtime.coherence.callables.IsServiceRunning;
 import com.oracle.bedrock.runtime.coherence.options.CacheConfig;
 import com.oracle.bedrock.runtime.coherence.options.LocalHost;
 import com.oracle.bedrock.runtime.java.options.IPv4Preferred;
+import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.DisplayName;
 import com.oracle.bedrock.testsupport.deferred.Eventually;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
@@ -53,6 +54,8 @@ public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends Abstrac
 			CacheConfig.of("server-coherence-cache-config.xml"),
 			LocalHost.only(),
 			IPv4Preferred.yes(),
+			SystemProperty.of("coherence.cluster", "ExtendSessionTestsCluster"),
+			SystemProperty.of("coherence.wka", "127.0.0.1"),
 			DisplayName.of("server"));
 
 		// Wait for Coherence to start

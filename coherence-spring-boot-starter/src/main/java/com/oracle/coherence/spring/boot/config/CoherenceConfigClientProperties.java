@@ -1,17 +1,8 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.boot.config;
 
@@ -57,7 +48,7 @@ public class CoherenceConfigClientProperties {
 	/**
 	 * Name of the Coherence session used to fetch remote properties from. If not set, the default session is used.
 	 */
-	private String sessionName;
+	private String sessionName = "";
 
 	/**
 	 * Name of the Coherence scope used to fetch remote properties from. If not set, the default scope is used.
@@ -70,9 +61,10 @@ public class CoherenceConfigClientProperties {
 	private boolean failFast = false;
 
 	/**
-	 * Contains gRPC-specific configuration.
+	 * Contains client-specific Coherence configuration. This can be used to configure Coherence*Extend and
+	 * gRPC clients.
 	 */
-	private GrpcClientProperties client = new GrpcClientProperties();
+	private String cacheConfig = "coherence-cache-config.xml";
 
 	/**
 	 * The default profile to use when fetching remote configuration (comma-separated).
@@ -113,18 +105,6 @@ public class CoherenceConfigClientProperties {
 	}
 
 	/**
-	 * Contains gRPC-specific configuration.
-	 * @return the gRPC-specific configuration properties
-	 */
-	public GrpcClientProperties getClient() {
-		return this.client;
-	}
-
-	public void setClient(GrpcClientProperties client) {
-		this.client = client;
-	}
-
-	/**
 	 * Name of the application used to fetch remote properties.
 	 * @return the name of the application to retrieve remote properties for
 	 */
@@ -160,70 +140,12 @@ public class CoherenceConfigClientProperties {
 		this.scopeName = scopeName;
 	}
 
-	/**
-	 * Coherence gRPC client configuration.
-	 */
-	public static class GrpcClientProperties {
-
-		private String host = "localhost";
-		private int port = 1408;
-		private boolean enableTls = false;
-
-		/**
-		 * Returns host name of gRPC server.
-		 * @return host name
-		 */
-		public String getHost() {
-			return this.host;
-		}
-
-		/**
-		 * Sets host name of gRPC server.
-		 * @param host host name
-		 */
-		public void setHost(String host) {
-			this.host = host;
-		}
-
-		/**
-		 * Gets gRPC server port.
-		 * @return port
-		 */
-		public int getPort() {
-			return this.port;
-		}
-
-		/**
-		 * Sets gRPC server port.
-		 * @param port port
-		 */
-		public void setPort(int port) {
-			this.port = port;
-		}
-
-		/**
-		 * Returns true if TLS is enabled.
-		 * @return true if TLS is enabled
-		 */
-		public boolean isEnableTls() {
-			return this.enableTls;
-		}
-
-		/**
-		 * Enables TLS support.
-		 * @param enableTls if not set, defaults to true. Set to false to disable TLS.
-		 */
-		public void setEnableTls(boolean enableTls) {
-			this.enableTls = enableTls;
-		}
-
-		@Override
-		public String toString() {
-			return "CoherenceClientConfiguration{" +
-					"host='" + this.host + '\'' +
-					", port=" + this.port +
-					", enableTls=" + this.enableTls +
-					'}';
-		}
+	public String getCacheConfig() {
+		return this.cacheConfig;
 	}
+
+	public void setCacheConfig(String cacheConfig) {
+		this.cacheConfig = cacheConfig;
+	}
+
 }

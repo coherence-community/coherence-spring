@@ -13,6 +13,7 @@ import com.oracle.coherence.spring.session.support.SessionEventApplicationListen
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
 /**
@@ -22,6 +23,10 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
  */
 @DirtiesContext
 @SpringJUnitWebConfig
+@TestPropertySource(properties = {
+		"coherence.tcmp.enabled = 'false'",
+		"coherence.cluster.name = FoobarSessionEventTests"
+})
 public class FoobarSessionEventTests extends AbstractSessionEventTests {
 
 	public FoobarSessionEventTests() {

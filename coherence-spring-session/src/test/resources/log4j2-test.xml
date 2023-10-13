@@ -16,7 +16,7 @@
 		</File>
 	</Appenders>
 	<Loggers>
-		<Logger name="Coherence" level="warn" />
+		<Logger name="Coherence" level="info" />
 		<Logger name="com.oracle.coherence.spring" level="info" />
 		<Logger name="com.oracle.coherence.spring.session" level="debug" />
 		<Logger name="org.springframework" level="warn" />
