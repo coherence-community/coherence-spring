@@ -69,4 +69,11 @@
         ]]></notes>
         <cve>CVE-2023-4785</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        file name: netty-transport-4.1.97.Final.jar
+        ]]></notes>
+        <cve>CVE-2023-4586</cve>
+    </suppress>
 </suppressions>
