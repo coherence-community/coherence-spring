@@ -36,7 +36,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 @SpringBootTest(
-		properties = { "coherence.tcmp.enabled=false" },
+		properties = { "coherence.tcmp.enabled=false",
+						"coherence.cluster=CoherenceConfigDataLoaderTests",
+						"coherence.client=grpc",
+						"coherence-spring.test-cluster-name=CoherenceConfigDataLoaderTests"
+		},
 		classes = {
 			CoherenceConfigDataLoaderTests.DataLoaderConfig.class,
 			CoherenceConfigClientProperties.class
@@ -49,6 +53,10 @@ public class CoherenceConfigDataLoaderTests {
 
 	@Autowired
 	private Environment env;
+
+	static {
+		System.setProperty("coherence-spring.test-cluster-name", "CoherenceConfigDataLoaderTests");
+	}
 
 	@BeforeAll
 	static void setup() throws Exception {
@@ -90,5 +98,4 @@ public class CoherenceConfigDataLoaderTests {
 	@Configuration
 	static class DataLoaderConfig {
 	}
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -14,6 +14,8 @@ import com.tangosol.coherence.component.util.daemon.queueProcessor.service.grid.
 import com.tangosol.coherence.component.util.safeService.SafeCacheService;
 import com.tangosol.net.CacheService;
 import com.tangosol.net.NamedMap;
+
+import org.springframework.util.Assert;
 
 /**
  * A helper class for event tests.
@@ -40,6 +42,7 @@ public final class EventsHelper {
 	}
 
 	public static int getKeyListenerCount(NamedMap<?, ?> map) {
+		Assert.notNull(map, "The NamedMap must not be null.");
 		Storage storage = getStorage(map);
 		return getKeyListenerCount(storage);
 	}

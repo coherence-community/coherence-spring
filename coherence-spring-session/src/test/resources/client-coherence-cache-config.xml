@@ -15,6 +15,7 @@
     <remote-cache-scheme>
       <scheme-name>remote</scheme-name>
       <service-name>ExtendTcpCacheService</service-name>
+      <cluster-name>ExtendSessionTestsCluster</cluster-name>
       <initiator-config>
         <tcp-initiator>
           <name-service-addresses>

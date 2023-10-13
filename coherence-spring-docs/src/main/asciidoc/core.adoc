@@ -99,16 +99,10 @@ import the `CoherenceSpringConfiguration` class under the covers. Therefore, you
 In most use-cases, only a single Coherence Session is expected to be used. Therefore, without providing any further
 configuration the default session is configured using the embedded default configuration file. This results in the application
 joining Coherence as a _cluster_ member (Session type `SERVER`). This is of course not the only way. Coherence Spring support
-the following 3 session types:
+the following 2 session types:
 
 - *SERVER* - Join as Coherence cluster member. This is the default session type.
 - *CLIENT* - Connect to Coherence as a Coherence*Extend or gRPC client
-- *GRPC* - Connect to Coherence as gRPC client (deprecated, use *CLIENT* instead)
-
-IMPORTANT: As of Coherence Spring `4.0`, the `GRPC` session type has been deprecated. Please use `CLIENT` instead.
-Since Coherence `22.06.2`, relevant gRPC configuration can be configured directly in the `coherence-cache-config.xml`
-file as described in the Coherence reference guide chapter
-{oracle-coherence-docs}develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D[Configuring the Coherence gRPC Client].
 
 In order to configure the type of your Session, you may declare a `SessionConfigurationBean` that allows to you to not only
 to set the session type but also to specify a custom Coherence configuration file or a custom session name.
@@ -125,9 +119,6 @@ SessionConfigurationBean sessionConfigurationBeanDefault() {
     return sessionConfigurationBean;
 }
 ----
-
-NOTE: The option of declaring a `GrpcSessionConfigurationBean` for gRPC clients has been deprecated. Please use session
-type `CLIENT` instead and configure the gRPC relevant configuration properties in your `coherence-cache-config.xml` file.
 
 [[coherence-spring-botstrap-with-multiple-session]]
 == Configure Multiple Sessions
@@ -161,14 +152,8 @@ The session type of this configuration. There are three different types of sessi
 
 - *server* represents storage enabled cluster member session.
 - *client* represents a storage disabled cluster member or Coherence*Extend client session.
-- *grpc* (deprecated) is a gRPC client session (see the gRPC documentation).
 
 The type of the session affects how the bootstrap API starts the session.
-
-IMPORTANT: As of Coherence Spring `4.0`, the `GRPC` session type has been deprecated. Please use `CLIENT` instead.
-Since Coherence `22.06.2`, relevant gRPC configuration can be configured directly in the `coherence-cache-config.xml`
-file as described in the Coherence reference guide chapter
-{oracle-coherence-docs}develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D[Configuring the Coherence gRPC Client].
 
 **priority**
 
@@ -181,24 +166,6 @@ The following property applies to the `CLIENT` (Coherence*Extend) and `Server` m
 
 The Coherence cache configuration URI for the session. As already mentioned, the most common configuration to set will
 be the Coherence configuration file name. If not specified, the default value will be `coherence-cache-config.xml`.
-
-The following property applies to the deprecated `GRPC` mode, only:
-
-**channelName** (deprecated)
-
-Sets the underlying gRPC channel. If not set, it will default to `localhost` and port `1408`. This property is
-deprecated. See note under **type**.
-
-**serializer** (deprecated)
-
-Specifies the serializer to that shall be used, in order to serialize gRPC message payloads. If not specified,
-the serializer will be the default Coherence serializer, either POF if it has been enabled with the `coherence.pof.enabled`
-system property or Java serialization. This property is deprecated. See note under **type**.
-
-**tracingEnabled** (deprecated)
-
-Specifies if client gRPC tracing should be enabled. This is `false` by default. This property is
-deprecated. See note under **type**.
 
 [[coherence-spring-dependency-injection]]
 == Dependency Injection

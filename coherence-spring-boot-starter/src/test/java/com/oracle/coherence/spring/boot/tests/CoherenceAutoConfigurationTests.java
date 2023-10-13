@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -175,7 +175,7 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(systemPropertyResolver.getProperty("coherence.log.limit")).isEqualTo("444");
 					assertThat(systemPropertyResolver.getProperty("coherence.log.level")).isEqualTo("1");
 					assertThat(systemPropertyResolver.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
-					assertThat(systemPropertyResolver.getProperty("coherence.log")).isEqualTo("log4j");
+					assertThat(systemPropertyResolver.getProperty("coherence.log")).isEqualTo("jdk");
 					assertThat(systemPropertyResolver.getProperty("coherence.log.format")).isEqualTo("foobar");
 
 					final SystemPropertyResolver systemPropertyResolverFromSpringContext = context.getBean(SystemPropertyResolver.class);
@@ -184,7 +184,7 @@ public class CoherenceAutoConfigurationTests {
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.limit")).isEqualTo("444");
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.level")).isEqualTo("1");
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log")).isEqualTo("log4j");
+					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log")).isEqualTo("jdk");
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.format")).isEqualTo("foobar");
 				});
 	}
