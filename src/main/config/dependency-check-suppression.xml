@@ -39,21 +39,6 @@
        ]]></notes>
         <cve>CVE-2023-35116</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[ guava-30.0-jre.jar
-       ]]></notes>
-        <cve>CVE-2023-2976</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[ grpc-protobuf-1.54.1.jar + grpc-stub-1.54.1.jar
-       ]]></notes>
-        <cve>CVE-2023-33953</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[ grpc-protobuf-1.54.1.jar + grpc-stub-1.54.1.jar
-       ]]></notes>
-        <cve>CVE-2023-32731</cve>
-    </suppress>
 
     <suppress>
         <notes><![CDATA[
@@ -61,13 +46,6 @@
         ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.eclipse\.jgit/org\.eclipse\.jgit@.*$</packageUrl>
         <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        file name: grpc-protobuf-1.54.1.jar
-        ]]></notes>
-        <cve>CVE-2023-4785</cve>
     </suppress>
 
     <suppress>
