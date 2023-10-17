@@ -1,4 +1,4 @@
-# This workflow will build a Java project with Maven
+﻿# This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 name: CI Coherence Spring
 run-name: ${{ github.event.head_commit.message }} [${{ github.event_name }}][${{ github.ref_name }}]
@@ -13,7 +13,7 @@ jobs:
     if: github.repository_owner == 'coherence-community'
     strategy:
       matrix:
-        java-version: [ 17, 20 ]
+        java-version: [ 17, 21 ]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4.1.1

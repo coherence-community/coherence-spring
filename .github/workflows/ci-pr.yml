@@ -5,7 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [ 17, 20 ]
+        java-version: [ 17, 21 ]
     runs-on: macos-latest
     permissions:
       checks: write
