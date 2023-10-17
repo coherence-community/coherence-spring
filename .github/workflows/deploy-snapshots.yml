@@ -22,7 +22,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4.0.0
+    - uses: actions/checkout@v4.1.1
       with:
         fetch-depth: 0
     - name: Set up JDK 17
