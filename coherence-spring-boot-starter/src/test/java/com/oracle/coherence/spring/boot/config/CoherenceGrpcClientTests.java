@@ -47,7 +47,7 @@ public class CoherenceGrpcClientTests {
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
 
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse(1418));
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isPortInUse(1418));
 	}
 
 	@AfterAll
