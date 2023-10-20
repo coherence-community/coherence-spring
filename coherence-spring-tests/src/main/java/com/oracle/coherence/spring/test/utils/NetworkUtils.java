@@ -12,11 +12,11 @@ import java.net.Socket;
 
 public class NetworkUtils {
 
-	public static boolean isGrpcPortInUse(Integer port) {
+	public static boolean isPortInUse(Integer port) {
 		boolean result = false;
 
 		try {
-			(new Socket(InetAddress.getLoopbackAddress(), (port != null) ? port : 1408)).close();
+			(new Socket(InetAddress.getLoopbackAddress(), port)).close();
 			result = true;
 		}
 		catch (IOException ex) {
@@ -29,6 +29,6 @@ public class NetworkUtils {
 	 * @return true if the gRPC port is bound and thus unavailable
 	 */
 	public static boolean isGrpcPortInUse() {
-		return isGrpcPortInUse(null);
+		return isPortInUse(1408);
 	}
 }
