@@ -23,19 +23,9 @@
         <cve>CVE-2023-35116</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[ guava-31.1-jre.jar
-       ]]></notes>
-        <cve>CVE-2023-2976</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[ grpc-core-1.49.2.jar + grpc-protobuf-1.49.2.jar
        ]]></notes>
         <cve>CVE-2023-33953</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[ spring-data-commons-3.0.9.jar + spring-data-jpa-3.0.9.jar
-       ]]></notes>
-        <cve>CVE-2023-34040</cve>
     </suppress>
 
     <suppress>
@@ -58,5 +48,9 @@
         file name: netty-transport-4.1.94.Final.jar
         ]]></notes>
         <cve>CVE-2023-4586</cve>
+    </suppress>
+
+    <suppress>
+        <cve>CVE-2023-44487</cve>
     </suppress>
 </suppressions>
