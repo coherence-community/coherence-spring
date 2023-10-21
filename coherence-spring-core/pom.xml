@@ -141,12 +141,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.bedrock</groupId>
-			<artifactId>bedrock-testing-support</artifactId>
-			<version>${bedrock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-tests</artifactId>
 			<version>${project.version}</version>
@@ -162,12 +156,6 @@
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
 			<version>${awaitility.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
-			<artifactId>coherence-bedrock-testing-support</artifactId>
-			<version>${coherence.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

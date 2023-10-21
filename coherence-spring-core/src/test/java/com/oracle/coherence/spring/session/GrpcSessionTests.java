@@ -21,7 +21,7 @@ import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
-import com.oracle.coherence.spring.test.utils.NetworkUtils;
+import com.oracle.coherence.spring.test.utils.IsGrpcProxyRunning;
 import com.tangosol.net.NamedCache;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
@@ -45,12 +45,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(GrpcSessionTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource(properties = {
-		"coherence.tcmp.enabled = 'false'"
+		"coherence.tcmp.enabled = 'false'",
+		"coherence-spring.test-cluster-name = " + GrpcSessionTests.COHERENCE_CLUSTER_NAME
 })
 @DirtiesContext
 public class GrpcSessionTests {
 
 	static CoherenceClusterMember server;
+
+	public static final String COHERENCE_CLUSTER_NAME = "GrpcSessionTestsCluster";
 
 	@CoherenceCache
 	private NamedCache<String, String> fooMap;
@@ -63,13 +66,11 @@ public class GrpcSessionTests {
 		server = platform.launch(CoherenceClusterMember.class,
 				LocalHost.only(),
 				IPv4Preferred.yes(),
-				SystemProperty.of("coherence.cluster", "GrpcSessionTestsCluster"),
+				SystemProperty.of("coherence.cluster", COHERENCE_CLUSTER_NAME),
 				SystemProperty.of("coherence.grpc.enabled", true),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
-
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll
@@ -78,7 +79,6 @@ public class GrpcSessionTests {
 		if (server != null) {
 			server.close();
 		}
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isGrpcPortInUse());
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class GrpcSessionTests {
 		ClientSessionConfigurationBean grpcSessionConfigurationBean() {
 			final ClientSessionConfigurationBean sessionConfigurationBean = new ClientSessionConfigurationBean();
 			sessionConfigurationBean.setName(SessionConfigurationBean.DEFAULT_SESSION_NAME);
-			sessionConfigurationBean.setConfig("grpc-core-test-coherence-cache-config.xml");
+			sessionConfigurationBean.setConfig("grpc-core-test-coherence-cache-config-nameservice.xml");
 			return sessionConfigurationBean;
 		}
 	}

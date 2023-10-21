@@ -54,9 +54,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.oracle.bedrock.coherence</groupId>
-            <artifactId>coherence-14.1.1-testing-support</artifactId>
-            <version>${bedrock.version}</version>
+            <groupId>com.oracle.coherence.spring</groupId>
+            <artifactId>coherence-spring-tests</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -15,7 +15,8 @@ import com.oracle.bedrock.runtime.coherence.options.LocalHost;
 import com.oracle.bedrock.runtime.java.options.IPv4Preferred;
 import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.DisplayName;
-import com.oracle.coherence.spring.test.utils.NetworkUtils;
+import com.oracle.coherence.grpc.proxy.GrpcServerController;
+import com.oracle.coherence.spring.test.utils.IsGrpcProxyRunning;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -68,15 +69,14 @@ public class CoherenceConfigDataLoaderTests {
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.cluster", "CoherenceConfigDataLoaderTests"),
 				SystemProperty.of("coherence.grpc.enabled", true),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
-
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll
 	static void cleanup() {
+		GrpcServerController.INSTANCE.stop();
 		if (server != null) {
 			server.close();
 		}

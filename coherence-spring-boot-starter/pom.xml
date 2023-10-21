@@ -132,12 +132,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.bedrock</groupId>
-			<artifactId>bedrock-testing-support</artifactId>
-			<version>${bedrock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 			<version>${spring-boot.version}</version>
@@ -166,12 +160,6 @@
 			<artifactId>coherence-micrometer</artifactId>
 			<version>${coherence.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
-			<artifactId>coherence-bedrock-testing-support</artifactId>
-			<version>${coherence.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

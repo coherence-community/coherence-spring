@@ -82,5 +82,10 @@
 			<artifactId>classgraph</artifactId>
 			<version>${classgraph.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.oracle.coherence.ce</groupId>
+			<artifactId>coherence-bedrock-testing-support</artifactId>
+			<version>${coherence.version}</version>
+		</dependency>
 	</dependencies>
 </project>
