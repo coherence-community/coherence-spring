@@ -8,6 +8,7 @@
 package com.oracle.coherence.spring.session;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.oracle.bedrock.runtime.LocalPlatform;
 import com.oracle.bedrock.runtime.coherence.CoherenceClusterMember;
@@ -20,8 +21,10 @@ import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
+import com.oracle.coherence.spring.test.utils.IsGrpcProxyRunning;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -44,7 +47,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(GrpcSessionBeanTests.Config.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource(properties = {
-		"coherence.tcmp.enabled = 'false'"
+		"coherence.tcmp.enabled = 'false'",
+		"coherence-spring.test-cluster-name = " + GrpcSessionBeanTests.COHERENCE_CLUSTER_NAME
 })
 @DirtiesContext
 public class GrpcSessionBeanTests {
@@ -70,6 +74,7 @@ public class GrpcSessionBeanTests {
 				SystemProperty.of("coherence.grpc.enabled", true),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll

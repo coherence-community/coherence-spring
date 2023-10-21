@@ -28,14 +28,6 @@
 			<scheme-name>remote-grpc</scheme-name>
 			<service-name>RemoteGrpcCache</service-name>
 			<cluster-name system-property="coherence-spring.test-cluster-name">CoherenceGrpcClientTestsCluster</cluster-name>
-			<grpc-channel>
-				<remote-addresses>
-					<socket-address>
-						<address>127.0.0.1</address>
-						<port>1408</port>
-					</socket-address>
-				</remote-addresses>
-			</grpc-channel>
 		</remote-grpc-cache-scheme>
 	</caching-schemes>
 

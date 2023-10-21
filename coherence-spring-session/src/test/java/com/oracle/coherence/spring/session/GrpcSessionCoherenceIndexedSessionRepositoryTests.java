@@ -19,6 +19,7 @@ import com.oracle.coherence.grpc.proxy.GrpcServerController;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
 import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
+import com.oracle.coherence.spring.test.utils.IsGrpcProxyRunning;
 import com.oracle.coherence.spring.test.utils.NetworkUtils;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
@@ -71,11 +72,9 @@ public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractC
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.cluster", CLUSTER_NAME),
 				SystemProperty.of("coherence.grpc.enabled", true),
-				SystemProperty.of("coherence.grpc.server.port", "1408"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"));
-
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> NetworkUtils.isGrpcPortInUse());
+		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll
