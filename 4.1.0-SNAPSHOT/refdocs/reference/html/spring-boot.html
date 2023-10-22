@@ -133,32 +133,43 @@ $(globalSwitch);
 <ul class="sectlevel1">
 <li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
 <li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
-<li><a href="#spring-boot-config-data-api">3. Support of the Spring Boot ConfigData API</a></li>
-<li><a href="#spring-boot-caching">4. Caching with Spring Boot</a>
+<li><a href="#spring-boot-coherence-cluster-setup">3. Coherence Cluster Setup</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-caching-circuit-breaker">4.1. Configure Circuit Breakers with Resilience4j</a>
+<li><a href="#spring-boot-coherence-cluster-setup-co-located">3.1. Co-located Coherence Clusters</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client">3.2. Access Coherence Clusters as a Client</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-caching-circuit-breaker-running-example">4.1.1. Running the Example</a></li>
-<li><a href="#monitoring-the-circuit-breaker">4.1.2. Monitoring the Circuit Breaker</a></li>
-<li><a href="#add-resilience4j-dependencies">4.1.3. Add Resilience4j Dependencies</a></li>
-<li><a href="#resilience4j-annotations">4.1.4. Resilience4j Annotations</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client-grpc">3.2.1. gRPC</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client-extend">3.2.2. Coherence*Extend</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#spring-boot-hibernate-second-level-cache">5. Configure Hibernate Second-Level Caching</a>
+<li><a href="#spring-boot-config-data-api">4. Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">5. Caching with Spring Boot</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-hibernate-second-level-cache-example">5.1. Hibernate Second Level Cache Example</a>
+<li><a href="#spring-boot-caching-circuit-breaker">5.1. Configure Circuit Breakers with Resilience4j</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-hibernate-second-level-cache-example-run">5.1.1. Run the Hibernate Application</a></li>
+<li><a href="#spring-boot-caching-circuit-breaker-running-example">5.1.1. Running the Example</a></li>
+<li><a href="#monitoring-the-circuit-breaker">5.1.2. Monitoring the Circuit Breaker</a></li>
+<li><a href="#add-resilience4j-dependencies">5.1.3. Add Resilience4j Dependencies</a></li>
+<li><a href="#resilience4j-annotations">5.1.4. Resilience4j Annotations</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#spring-boot-sessions">6. Spring Session Support</a></li>
-<li><a href="#spring-boot-messaging">7. Coherence Messaging Support</a></li>
-<li><a href="#spring-boot-metrics">8. Coherence Metrics</a></li>
-<li><a href="#spring-boot-data">9. Spring Data Support</a></li>
+<li><a href="#spring-boot-hibernate-second-level-cache">6. Configure Hibernate Second-Level Caching</a>
+<ul class="sectlevel2">
+<li><a href="#spring-boot-hibernate-second-level-cache-example">6.1. Hibernate Second Level Cache Example</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-hibernate-second-level-cache-example-run">6.1.1. Run the Hibernate Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot-sessions">7. Spring Session Support</a></li>
+<li><a href="#spring-boot-messaging">8. Coherence Messaging Support</a></li>
+<li><a href="#spring-boot-metrics">9. Coherence Metrics</a></li>
+<li><a href="#spring-boot-data">10. Spring Data Support</a></li>
 </ul>
 </div>
 </div>
@@ -231,11 +242,30 @@ As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requi
 <p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the
 <a href="https://spring.coherence.community/4.1.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html">CoherenceAutoConfiguration</a>
 class. This will also bind the <a href="https://spring.coherence.community/4.1.0-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/boot/autoconfigure/CoherenceProperties.html">CoherenceProperties</a>
-class for further configuration. The YAML configuration for Spring Boot&#8217;s Coherence support may look like the following:</p>
+class for further configuration.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By default, Coherence Spring will start Coherence in clustered mode (Server). If you want to use Coherence in
+client mode (Coherence*Extend or gRPC), please see the chapter on <a href="#spring-boot-coherence-cluster-setup-client">setting
+up Spring Boot as a Coherence Client</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Additional configuration can be provided for instance via Spring Boot&#8217;s <code>application.yaml</code> or <code>application.properties</code> file.
+For instance YAML configuration for Spring Boot&#8217;s Coherence support may look like the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
+  property-prefix: "coherence.properties."
   logging:
     destination: slf4j
     logger-name: MyCoherence
@@ -371,7 +401,328 @@ the native Coherence properties. For a list of available native properties, plea
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>3. Support of the Spring Boot ConfigData API</h2>
+<h2 id="spring-boot-coherence-cluster-setup"><a class="anchor" href="#spring-boot-coherence-cluster-setup"></a>3. Coherence Cluster Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to set up Coherence clusters with Spring Boot, you can use the following approaches:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Co-locate Coherence instances with your application</p>
+</li>
+<li>
+<p>Access a dedicated Coherence Cluster as a Client, either via <em>gRPC</em> or <em>Coherence*Extend</em>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For an in-depth introduction to Coherence clusters, please consult the chapter
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/introduction-coherence-clusters.html#GUID-92569674-E077-46CE-BA06-1BA2DD59B605">Introduction to Coherence Clusters</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-coherence-cluster-setup-co-located"><a class="anchor" href="#spring-boot-coherence-cluster-setup-co-located"></a>3.1. Co-located Coherence Clusters</h3>
+<div class="paragraph">
+<p>In this setup, Coherence is started as part of your Spring Boot application. Each instance of your application will run
+Coherence and using the Tangosol Cluster Management Protocol (TCMP), they will form a Coherence cluster. This is typically
+the recommended approach for most use-cases and the default. Therefore, by just adding the <code>coherence-spring-boot-starter</code>
+Maven dependency, Spring Boot autoconfiguration for Coherence is enabled and will enable Coherence in Server (Clustered)
+mode.</p>
+</div>
+<div class="paragraph">
+<p>If you need to provide additional configuration, e.g. to point to your own Coherence cache configuration file or to
+provide Coherence <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/system-property-overrides.html">System Property Overrides</a>,
+you can add those to your <code>application.yaml</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="title">Coherence Configuration Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
+  sessions:
+    server:
+      - name: default
+        config: "coherence-cache-config.xml"  <i class="conum" data-value="1"></i><b>(1)</b>
+  logging:
+    destination: slf4j                        <i class="conum" data-value="2"></i><b>(2)</b>
+coherence.wka: 127.0.0.1                      <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The Coherence cache configuration URI for the session (classpath resource)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Several Oracle Coherence system property overrides are directly mapped to Spring Boot properties</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Alternatively, you can specify <em>any</em> Coherence system property override directly as well</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-coherence-cluster-setup-client"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client"></a>3.2. Access Coherence Clusters as a Client</h3>
+<div class="paragraph">
+<p>In this approach, your Spring Boot application will connect to a dedicated Coherence cluster as a client. This can be
+done either via <em>Coherence*Extend</em> or <a href="https://grpc.io/">gRPC</a>. For your Spring Boot application, the configuration is
+basically the same for both approaches. In your Spring Boot <code>application.yaml</code> file, you will need to specify the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">Coherence Client Configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">coherence:
+  spring:
+    - server:                           <i class="conum" data-value="1"></i><b>(1)</b>
+    - client:                           <i class="conum" data-value="2"></i><b>(2)</b>
+      - name: default
+        config: remote-cache-config.xml <i class="conum" data-value="3"></i><b>(3)</b>
+coherence.tcmp.enabled: false           <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Disable the server (clustered) session</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Enable the client session</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The Coherence cache configuration URI for the client session, which contains the gRPC or Coherence*Extend-specific configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Disable TCMP</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When setting up pure client connections to a Coherence cluster, you should ensure that TCMP is disabled. For
+more information, please see <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/configuring-extend-clients.html#GUID-F8832F4C-2F88-4DE4-A804-D100D47B552C">Disabling TCMP Communication</a>
+in the Coherence reference guide.
+</td>
+</tr>
+</table>
+</div>
+<div id="spring-boot-coherence-cluster-setup-client-bean" class="paragraph">
+<p>An alternative to the yaml or properties configuration above is to specify a dedicated <code>SessionConfigurationBean</code> in
+your Spring Boot application.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configure the Coherence Client using a SessionConfigurationBean</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class CoherenceClientConfig {
+  @Bean
+  public SessionConfigurationBean grpcSessionConfigurationBean() {
+    final ClientSessionConfigurationBean sessionConfigurationBean = new ClientSessionConfigurationBean();
+    sessionConfigurationBean.setName(SessionConfigurationBean.DEFAULT_SESSION_NAME);
+    sessionConfigurationBean.setConfig("remote-cache-config.xml");
+    return sessionConfigurationBean;
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the configuration above the <code>remote-cache-config.xml</code> file will contain the relevant Coherence configuration for
+either <em>Coherence*Extend</em> or <em>gRPC</em>. The configuration for both approaches is described in the following sections.</p>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-coherence-cluster-setup-client-grpc"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-grpc"></a>3.2.1. gRPC</h4>
+<div class="paragraph">
+<p>The main gRPC configuration is done in your <code>coherence-cache-config.xml</code> file. The configuration would look similar to the
+following:</p>
+</div>
+<div class="listingblock">
+<div class="title">Minimal gRPC Configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0"?&gt;
+&lt;cache-config
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+    xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;
+    &lt;caching-scheme-mapping&gt;
+        &lt;cache-mapping&gt;
+            &lt;cache-name&gt;*&lt;/cache-name&gt;                   <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;scheme-name&gt;remote-grpc&lt;/scheme-name&gt;       <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;/cache-mapping&gt;
+    &lt;/caching-scheme-mapping&gt;
+
+    &lt;caching-schemes&gt;
+        &lt;remote-grpc-cache-scheme&gt;                       <i class="conum" data-value="3"></i><b>(3)</b>
+            &lt;scheme-name&gt;remote-grpc&lt;/scheme-name&gt;
+            &lt;service-name&gt;RemoteGrpcCache&lt;/service-name&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+            &lt;cluster-name&gt;Mycluster&lt;/cluster-name&gt;
+        &lt;/remote-grpc-cache-scheme&gt;
+    &lt;/caching-schemes&gt;
+&lt;/cache-config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The cache name <code>*</code> is a wildcard and will match all caches</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The scheme name <code>remote-grpc</code> is used to map the all caches to the scheme</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>remote-grpc</code> cache is defined in the <code>remote-grpc-cache-scheme</code> XML element</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The reference to the gRPC service name</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more information on gRPC, please consult the chapter on
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/getting-started-grpc.html">Getting Started with gRPC</a> in the Coherence
+reference guide.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-coherence-cluster-setup-client-extend"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-extend"></a>3.2.2. Coherence*Extend</h4>
+<div class="paragraph">
+<p>The setup for Coherence*Extend is very similar to the gRPC setup. The main difference is that you will use the
+<code>remote-cache-scheme</code> XML element instead. The configuration would look similar to the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">Minimal Coherence*Extend Configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0"?&gt;
+&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;
+
+    &lt;caching-scheme-mapping&gt;
+        &lt;cache-mapping&gt;
+            &lt;cache-name&gt;*&lt;/cache-name&gt;                         <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;scheme-name&gt;remote&lt;/scheme-name&gt;                  <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;/cache-mapping&gt;
+    &lt;/caching-scheme-mapping&gt;
+
+    &lt;caching-schemes&gt;
+        &lt;remote-cache-scheme&gt;                                  <i class="conum" data-value="3"></i><b>(3)</b>
+            &lt;scheme-name&gt;remote&lt;/scheme-name&gt;
+            &lt;service-name&gt;ExtendTcpCacheService&lt;/service-name&gt;
+        &lt;/remote-cache-scheme&gt;
+    &lt;/caching-schemes&gt;
+&lt;/cache-config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The cache name <code>*</code> is a wildcard and will match all caches</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The scheme name <code>remote</code> is used to map the all caches to the scheme</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>remote</code> cache scheme is defined in the <code>remote-cache-scheme</code> XML element</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The configuration above will use the name service to discover the Coherence cluster and thus the exposed Coherence*Extend
+port. However, you can also specify the host and port explicitly. Here is an example of the configuration where the
+Coherence*Extend host and port are specified explicitly:</p>
+</div>
+<div class="listingblock">
+<div class="title">Coherence*Extend Configuration with explicit host/port configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0"?&gt;
+&lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;
+
+    &lt;caching-scheme-mapping&gt;
+        &lt;cache-mapping&gt;
+            &lt;cache-name&gt;*&lt;/cache-name&gt;
+            &lt;scheme-name&gt;remote&lt;/scheme-name&gt;
+        &lt;/cache-mapping&gt;
+    &lt;/caching-scheme-mapping&gt;
+
+    &lt;caching-schemes&gt;
+        &lt;remote-cache-scheme&gt;
+            &lt;scheme-name&gt;remote&lt;/scheme-name&gt;
+            &lt;service-name&gt;ExtendTcpCacheService&lt;/service-name&gt;
+            &lt;initiator-config&gt;
+                &lt;tcp-initiator&gt;
+                    &lt;name-service-addresses&gt;
+                        &lt;socket-address&gt;
+                            &lt;address&gt;127.0.0.1&lt;/address&gt;
+                            &lt;port&gt;7574&lt;/port&gt;
+                        &lt;/socket-address&gt;
+                    &lt;/name-service-addresses&gt;
+                &lt;/tcp-initiator&gt;
+                &lt;outgoing-message-handler&gt;
+                    &lt;request-timeout&gt;5s&lt;/request-timeout&gt;
+                &lt;/outgoing-message-handler&gt;
+            &lt;/initiator-config&gt;
+        &lt;/remote-cache-scheme&gt;
+    &lt;/caching-schemes&gt;
+&lt;/cache-config&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more information on Coherence*Extend, please consult the chapter on
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/getting-started-coherenceextend.html">Getting Started with Coherence*Extend
+</a> in the Coherence reference guide.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>4. Support of the Spring Boot ConfigData API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since Spring Boot <code>2.4.x</code>, you can define your own
@@ -429,7 +780,7 @@ for details.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>4. Caching with Spring Boot</h2>
+<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>5. Caching with Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you have not already done so, please read the chapter
@@ -481,7 +832,7 @@ following resources:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>4.1. Configure Circuit Breakers with Resilience4j</h3>
+<h3 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>5.1. Configure Circuit Breakers with Resilience4j</h3>
 <div class="paragraph">
 <p>Generally, it is recommended to configure and run Coherence as part of your application as a <em>cluster member</em>. However,
 caching can also be configured using Coherence in <em>client mode</em> via Coherence*Extend or gRPC. However, in client mode
@@ -521,7 +872,7 @@ exception and invoke a fallback method. In this case the data is returned from t
 the Spring cache until the connection to the Coherence server has been restored.</p>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>4.1.1. Running the Example</h4>
+<h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>5.1.1. Running the Example</h4>
 <div class="paragraph">
 <p>The example application consists of 2 applications:</p>
 </div>
@@ -685,7 +1036,7 @@ in, calling the fallback method instead, and thus returning the Book not from th
 </div>
 </div>
 <div class="sect3">
-<h4 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>4.1.2. Monitoring the Circuit Breaker</h4>
+<h4 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>5.1.2. Monitoring the Circuit Breaker</h4>
 <div class="paragraph">
 <p>Spring Boot and Resilience4j also provide facilities to monitor the state of the Circuit Breaker via Spring Boot&#8217;s
 health-endpoint as well as its circuit breaker events endpoint:</p>
@@ -775,7 +1126,7 @@ for this application.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>4.1.3. Add Resilience4j Dependencies</h4>
+<h4 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>5.1.3. Add Resilience4j Dependencies</h4>
 <div class="paragraph">
 <p>In order to use Resilience4j in your Coherence Spring project with Spring Boot, you need to add the following dependencies:</p>
 </div>
@@ -802,7 +1153,7 @@ for this application.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>4.1.4. Resilience4j Annotations</h4>
+<h4 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>5.1.4. Resilience4j Annotations</h4>
 <div class="paragraph">
 <p>In order to add circuit-breaker capabilities to our <code>@Cacheable</code> business methods in <code>DefaultBookService</code>, we simply add
 the <code>@CircuitBreaker</code> annotations, e.g.:</p>
@@ -845,7 +1196,7 @@ autowiring has <a href="https://stackoverflow.com/questions/5152686/self-injecti
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>5. Configure Hibernate Second-Level Caching</h2>
+<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>6. Configure Hibernate Second-Level Caching</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
@@ -905,7 +1256,7 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
 documentation.</p>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>5.1. Hibernate Second Level Cache Example</h3>
+<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>6.1. Hibernate Second Level Cache Example</h3>
 <div class="paragraph">
 <p>The Coherence Spring source code repository also provides an
 <a href="https://github.com/coherence-community/coherence-spring/tree/main/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
@@ -922,7 +1273,7 @@ such as the genus and species.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>5.1.1. Run the Hibernate Application</h4>
+<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>6.1.1. Run the Hibernate Application</h4>
 <div class="paragraph">
 <p>First, let&#8217;s build the application:</p>
 </div>
@@ -1031,7 +1382,7 @@ List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>6. Spring Session Support</h2>
+<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>7. Spring Session Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
@@ -1141,7 +1492,7 @@ class. Auto-configuration will back-off in certain situations:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>7. Coherence Messaging Support</h2>
+<h2 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>8. Coherence Messaging Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Support for injecting Coherence Publishers is enabled automatically by adding the <code>coherence-spring-boot-starter</code> dependency.
@@ -1153,7 +1504,7 @@ as described at <a href="core.html#coherence-spring-messaging-with-coherence-top
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>8. Coherence Metrics</h2>
+<h2 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>9. Coherence Metrics</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>By adding the <code>coherence-spring-boot-starter</code> and <code>com.oracle.coherence.ce:coherence-micrometer</code> dependencies auto-configuration will register <code>CoherenceMicrometerMetrics</code> and publish <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206//manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7">Coherence Metrics</a> under the <code>coherence.</code> name.</p>
@@ -1173,7 +1524,7 @@ as described at <a href="core.html#coherence-spring-messaging-with-coherence-top
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>9. Spring Data Support</h2>
+<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>10. Spring Data Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Coherence Spring&#8217;s support for Spring Data also contain auto-configuration support for Spring Boot. The auto-configuration
@@ -1230,7 +1581,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-22 20:25:49 UTC
+Last updated 2023-10-22 20:32:28 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
