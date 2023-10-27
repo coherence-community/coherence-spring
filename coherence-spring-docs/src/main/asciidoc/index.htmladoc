@@ -20,6 +20,11 @@ http://coherence-community.github.io/coherence-spring[*Website*].
 <<spring-data.adoc#spring-data, Spring Data>> :: Coherence Spring Data
 <<spring-cloud-config.adoc#spring-cloud-config, Spring Cloud Config>> :: Use Coherence with Spring Cloud Config
 
+The reference documentation has the following appendices:
+
+[horizontal]
+<<appendix-examples.adoc#examples, Examples>> :: List of available Coherence Spring Examples
+
 Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight
 
 Copyright (c) 2013, 2023, Oracle and/or its affiliates. +

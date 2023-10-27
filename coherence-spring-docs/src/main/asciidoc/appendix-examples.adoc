@@ -1,0 +1,21 @@
+[appendix]
+[[examples]]
+== Coherence Spring Example Applications
+
+The Coherence Spring project itself includes a number of examples that demonstrate how to use Coherence Spring. Furthermore,
+there are several additional examples that are not part of this repository but that may be of interest to Coherence Spring users.
+
+The following examples are included in this repository:
+
+- xref:core.adoc#coherence-spring-cachestore-demo[JPA Repository CacheStore Demo]
+- xref:spring-boot.adoc#spring-boot-caching-circuit-breaker[Circuit Breaker Cache Demo]
+- xref:quickstart.adoc#quickstart[Coherence Spring Demo]
+  * Coherence Spring Boot Demo
+  * Coherence Spring Classic Demo (non-Boot)
+- xref:spring-session.adoc#spring-session-sample[Coherence Spring Session Demo]
+- xref:spring-boot.adoc#spring-boot-hibernate-second-level-cache-example-run[Hibernate Second Level Cache Demo]
+
+The following examples are not included in this repository but are available in separate repositories:
+
+- https://github.com/coherence-community/todo-list-example/tree/main/java/spring-server[Coherence To Do List Example Application for Spring Boot]
+- https://github.com/oracle/coherence-spring-sockshop-sample[Coherence Spring Sock Shop]

@@ -15,6 +15,4 @@ include::spring-session.adoc[leveloffset=+1]
 include::spring-data.adoc[leveloffset=+1]
 include::spring-boot.adoc[leveloffset=+1]
 include::spring-cloud-config.adoc[leveloffset=+1]
-
-//[[appendix]]
-//== Appendices
+include::appendix.adoc[leveloffset=+1]
