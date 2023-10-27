@@ -1,0 +1,4 @@
+[[appendix]]
+= Appendices
+
+include::appendix-examples.adoc[]
