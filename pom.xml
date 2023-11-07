@@ -394,7 +394,9 @@
 						<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 						<coherence.wka>127.0.0.1</coherence.wka>
 					</systemPropertyVariables>
-					<useSystemClassLoader>true</useSystemClassLoader>
+					<forkCount>1</forkCount>
+					<reuseForks>false</reuseForks>
+					<useSystemClassLoader>false</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 				</configuration>
 			</plugin>
