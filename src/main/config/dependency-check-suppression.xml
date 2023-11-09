@@ -10,47 +10,18 @@
     <suppress>
         <notes><![CDATA[
        file name: snakeyaml-1.33.jar
-
        Not an issue.
        See https://github.com/spring-projects/spring-boot/issues/33457
        ]]></notes>
         <cve>CVE-2022-1471</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[ jackson-databind-2.15.2.jar
-        Invalid - see: https://github.com/FasterXML/jackson-databind/issues/3997
-       ]]></notes>
-        <cve>CVE-2023-35116</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[ grpc-core-1.49.2.jar + grpc-protobuf-1.49.2.jar
-       ]]></notes>
-        <cve>CVE-2023-33953</cve>
-    </suppress>
 
     <suppress>
         <notes><![CDATA[
-        file name: org.eclipse.jgit-5.13.1.202206130422-r.jar
+        False positive: See https://github.com/jeremylong/DependencyCheck/issues/5943
+        We temporarily use the workaround of adding the following to the pom.xml in the
+        spring-cloud-config-server module's pom.xml: 6.6.1.202309021850-r
         ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.eclipse\.jgit/org\.eclipse\.jgit@.*$</packageUrl>
         <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        file name: grpc-core-1.49.2.jar
-        ]]></notes>
-        <cve>CVE-2023-4785</cve>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        file name: netty-transport-4.1.94.Final.jar
-        ]]></notes>
-        <cve>CVE-2023-4586</cve>
-    </suppress>
-
-    <suppress>
-        <cve>CVE-2023-44487</cve>
     </suppress>
 </suppressions>
