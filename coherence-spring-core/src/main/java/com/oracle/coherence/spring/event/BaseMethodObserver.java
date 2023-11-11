@@ -31,7 +31,14 @@ import org.springframework.util.Assert;
  */
 public abstract class BaseMethodObserver {
 
+	/**
+	 * The name of the bean that has the executable method.
+	 */
 	protected final String beanName;
+
+	/**
+	 * The executable method.
+	 */
 	protected final Method method;
 	private ApplicationContext applicationContext;
 

@@ -72,7 +72,7 @@
 			<version>${jakarta.persistence-api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>

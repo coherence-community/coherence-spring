@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -37,11 +37,12 @@ import com.tangosol.util.MapListener;
  * @param <K> the type of the cache key
  * @param <V> the type of the cache value
  * @author Jonathan Knight
+ * @author Gunnar Hillert
  * @since 3.0
  *
  * @see MapListenerRegistrationBean#registerMapListeners(CacheLifecycleEvent)
  */
-public class AnnotatedMapListener<K, V> extends SimpleMapListener {
+public class AnnotatedMapListener<K, V> extends SimpleMapListener<K, V> {
 
 	/**
 	 * The optional annotation specifying the filter to use to filter events.
@@ -60,10 +61,16 @@ public class AnnotatedMapListener<K, V> extends SimpleMapListener {
 	 */
 	private final Set<Annotation> extractorAnnotations;
 
-	public AnnotatedMapListener(MethodMapListener<K, V> observer, Set<Annotation> annotations) {
+	/**
+	 * Constructs an {@code AnnotatedMapListener}.
+	 * @param observer whose annotations are used to set various properties on the listener. Must not be {@code null}.
+	 */
+	public AnnotatedMapListener(MethodMapListener<K, V> observer) {
 		super(observer);
 
-		for (Annotation annotation : observer.getObservedQualifiers()) {
+		final Set<Annotation> annotations = observer.getObservedQualifiers();
+
+		for (Annotation annotation : annotations) {
 			if (annotation instanceof CacheName) {
 				setCacheName(((CacheName) annotation).value());
 			}

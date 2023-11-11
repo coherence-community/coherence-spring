@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -17,6 +17,8 @@ import com.tangosol.util.MapEventTransformer;
 import com.tangosol.util.MapListener;
 import com.tangosol.util.comparator.SafeComparator;
 import com.tangosol.util.function.Remote;
+
+import org.springframework.util.Assert;
 
 /**
  * {@link MapListener} implementation that dispatches {@code MapEvent}s
@@ -89,7 +91,12 @@ public class SimpleMapListener<K, V> implements MapListener<K, V>, Comparable<Si
 	 */
 	private MapEventTransformer<K, V, ?> transformer;
 
+	/**
+	 * Constructs a {@code SimpleMapListener}.
+	 * @param observer must not be {@code null}
+	 */
 	public SimpleMapListener(MethodMapListener<K, V> observer) {
+		Assert.notNull(observer, "observer must not be null");
 		this.observer = observer;
 	}
 

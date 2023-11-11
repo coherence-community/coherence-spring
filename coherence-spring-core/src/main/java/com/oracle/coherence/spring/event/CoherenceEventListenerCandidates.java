@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -80,7 +80,7 @@ public class CoherenceEventListenerCandidates implements ApplicationContextAware
 				else {
 					// type is MapEvent
 					final MethodMapListener listener = new MethodMapListener(beanName, method, this.applicationContext);
-					final AnnotatedMapListener mapListener = new AnnotatedMapListener(listener, listener.getObservedQualifiers());
+					final AnnotatedMapListener mapListener = new AnnotatedMapListener(listener);
 					this.mapListenerRegistrationBean.addMapListener(mapListener);
 				}
 			}

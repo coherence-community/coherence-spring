@@ -31,7 +31,7 @@ public class IsGrpcProxyRunning extends IsServiceRunning {
 	}
 
 	/**
-	 * Convenience method to call {@link super#call()}.
+	 * Convenience method to call {@link #call()}.
 	 * @return true if the gRPC proxy is running
 	 */
 	public static boolean locally() {

@@ -10,8 +10,19 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * A collection of network related utilities.
+ *
+ * @author Gunnar Hillert
+ * @since 3.0
+ */
 public class NetworkUtils {
 
+	/**
+	 * Helper method to determine if a port is available or not.
+	 * @param port the port to check
+	 * @return true if the port is bound and thus unavailable
+	 */
 	public static boolean isPortInUse(Integer port) {
 		boolean result = false;
 
@@ -25,7 +36,7 @@ public class NetworkUtils {
 	}
 
 	/**
-	 * Helper method to determine if the default gRPC port is available or not.
+	 * Helper method to determine if the default gRPC port 1408 is available or not.
 	 * @return true if the gRPC port is bound and thus unavailable
 	 */
 	public static boolean isGrpcPortInUse() {
