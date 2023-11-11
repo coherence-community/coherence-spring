@@ -6,6 +6,20 @@
 reverse chronological order.</p>
 
 
+<h3 id="_version_4_1_0_november_2023">Version 4.1.0 (November 2023)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v4.1.0" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v4.1.0</a></p>
+
+</div>
+
+
+<h3 id="_version_3_3_4_november_2023">Version 3.3.4 (November 2023)</h3>
+<div class="section">
+<p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.4" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.4</a></p>
+
+</div>
+
+
 <h3 id="_version_4_0_0_july_2023">Version 4.0.0 (July 2023)</h3>
 <div class="section">
 <p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/releases/tag/v4.0.0" class="bare">https://github.com/coherence-community/coherence-spring/releases/tag/v4.0.0</a></p>
