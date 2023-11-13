@@ -57,4 +57,7 @@
     <suppress>
         <cve>CVE-2023-44487</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2022-48285</cve>
+    </suppress>
 </suppressions>
