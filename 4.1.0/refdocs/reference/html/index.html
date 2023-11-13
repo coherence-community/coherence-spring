@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Coherence Spring Reference Documentation</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body class="book">
+<div id="header">
+<h1>Coherence Spring Reference Documentation</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Version 4.1.0</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><em>What&#8217;s New</em>, <em>Upgrade Notes</em>, <em>Supported Versions</em>, and other topics,
+independent of release cadence, are maintained externally on the project&#8217;s
+<a href="http://coherence-community.github.io/coherence-spring"><strong>Website</strong></a>.</p>
+</div>
+</div>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a href="legal.html#legal">Legal</a> 
+</td>
+<td class="hdlist2">
+<p>Legal information.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="overview.html#overview">Overview</a> 
+</td>
+<td class="hdlist2">
+<p>Introduction to the various Coherence Spring modules and getting started guide.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="quickstart.html#quickstart">Quickstart</a> 
+</td>
+<td class="hdlist2">
+<p>How to get started quickly</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="core.html#spring-core">Coherence Spring Core</a> 
+</td>
+<td class="hdlist2">
+<p>Use Coherence with the Spring Framework</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-boot.html#spring-boot">Spring Boot</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence for Spring Boot users</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-cache.html#spring-cache">Spring Cache</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Cache</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-session.html#spring-session">Spring Session</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Session</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-data.html#spring-data">Spring Data</a> 
+</td>
+<td class="hdlist2">
+<p>Coherence Spring Data</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a href="spring-cloud-config.html#spring-cloud-config">Spring Cloud Config</a> 
+</td>
+<td class="hdlist2">
+<p>Use Coherence with Spring Cloud Config</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The reference documentation has the following appendices:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a href="appendix-examples.html#examples">Examples</a> 
+</td>
+<td class="hdlist2">
+<p>List of available Coherence Spring Examples</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight</p>
+</div>
+<div class="paragraph">
+<p>Copyright (c) 2013, 2023, Oracle and/or its affiliates.<br>
+Licensed under the Universal Permissive License v 1.0 as shown at <a href="https://oss.oracle.com/licenses/upl" class="bare">https://oss.oracle.com/licenses/upl</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2023-11-13 10:25:06 UTC
+</div>
+</div>
+<script src="js/highlight/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
