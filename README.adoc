@@ -1,8 +1,8 @@
-:main-release-version: 4.0.0
-:main-snapshot-version: 4.1.0-SNAPSHOT
+:main-release-version: 4.1.0
+:main-snapshot-version: 4.1.1-SNAPSHOT
 :website: https://spring.coherence.community/
-:3x-release-version: 3.3.3
-:3x-snapshot-version: 3.3.4-SNAPSHOT
+:3x-release-version: 3.3.4
+:3x-snapshot-version: 3.3.5-SNAPSHOT
 
 = Welcome to the Oracle Coherence Spring Project
 
