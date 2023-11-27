@@ -1,0 +1,30 @@
+# Copyright 2023 Oracle Corporation and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at
+# https://oss.oracle.com/licenses/upl.
+
+name: Scheduled Trivy Scan
+on:
+  workflow_dispatch:
+  schedule:
+    # Every day at midnight
+    - cron: '0 0 * * *'
+jobs:
+  trivy-scan:
+    name: trivy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run static analysis
+        uses: aquasecurity/trivy-action@0.10.0
+        with:
+          scan-type: 'fs'
+          security-checks: 'vuln,secret,config'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'code'
