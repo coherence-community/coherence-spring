@@ -15,10 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run static analysis
-        uses: aquasecurity/trivy-action@0.10.0
+        uses: aquasecurity/trivy-action@0.14.0
         with:
           scan-type: 'fs'
-          security-checks: 'vuln,secret,config'
           ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
