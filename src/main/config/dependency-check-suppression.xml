@@ -57,4 +57,10 @@
     <suppress>
         <cve>CVE-2023-4759</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Waiting for updated Spring / Spring Boot releases.
+        ]]></notes>
+        <vulnerabilityName>CVE-2023-6378</vulnerabilityName>
+    </suppress>
 </suppressions>
