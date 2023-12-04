@@ -18,15 +18,6 @@
 
     <suppress>
         <notes><![CDATA[
-        False positive: See https://github.com/jeremylong/DependencyCheck/issues/5943
-        We temporarily use the workaround of adding the following to the pom.xml in the
-        spring-cloud-config-server module's pom.xml: 6.6.1.202309021850-r
-        ]]></notes>
-        <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
         False positive: See https://github.com/jeremylong/DependencyCheck/issues/5912
         ]]></notes>
         <packageUrl regex="true">^pkg:maven/io\.netty/@*.*$</packageUrl>
@@ -45,5 +36,12 @@
         Waiting for updated Spring / Spring Boot releases.
         ]]></notes>
         <vulnerabilityName>CVE-2023-6378</vulnerabilityName>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        From grpc-core & grpc-protobuf 1.57.1
+        ]]></notes>
+        <vulnerabilityName>CVE-2023-44487</vulnerabilityName>
     </suppress>
 </suppressions>
