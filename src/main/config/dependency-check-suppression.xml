@@ -63,4 +63,11 @@
         ]]></notes>
         <vulnerabilityName>CVE-2023-6378</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        From grpc-core & grpc-protobuf 1.57.1
+        ]]></notes>
+        <vulnerabilityName>CVE-2023-44487</vulnerabilityName>
+    </suppress>
 </suppressions>
