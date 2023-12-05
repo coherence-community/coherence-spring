@@ -35,7 +35,9 @@ import org.springframework.session.MapSession;
 import org.springframework.session.PrincipalNameIndexResolver;
 import org.springframework.session.SaveMode;
 import org.springframework.session.Session;
+import org.springframework.session.SessionIdGenerator;
 import org.springframework.session.SessionRepository;
+import org.springframework.session.UuidSessionIdGenerator;
 import org.springframework.session.events.AbstractSessionEvent;
 import org.springframework.util.Assert;
 
@@ -87,6 +89,8 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	 * Shall a Coherence Entry Processor be used for handling updates to session? Defaults to true.
 	 */
 	private boolean useEntryProcessor = true;
+
+	private SessionIdGenerator sessionIdGenerator = UuidSessionIdGenerator.getInstance();
 
 	/**
 	 * Create a new {@link CoherenceIndexedSessionRepository} instance.
@@ -255,6 +259,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 			deleteById(saved.getId());
 			return null;
 		}
+		saved.setSessionIdGenerator(this.sessionIdGenerator);
 		return new CoherenceSpringSession(this, saved, false);
 	}
 
@@ -273,7 +278,9 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 
 		final Map<String, CoherenceSpringSession> sessionMap = new HashMap<>(sessions.size());
 		for (Map.Entry<String, MapSession> session : sessions) {
-			sessionMap.put(session.getValue().getId(), new CoherenceSpringSession(this, session.getValue(), false));
+			final MapSession mapSession = session.getValue();
+			mapSession.setSessionIdGenerator(this.sessionIdGenerator);
+			sessionMap.put(session.getValue().getId(), new CoherenceSpringSession(this, mapSession, false));
 		}
 		return sessionMap;
 	}
