@@ -7,7 +7,6 @@
 package com.oracle.coherence.spring.boot.tests;
 
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
-import com.oracle.coherence.spring.boot.autoconfigure.CoherenceProperties;
 import com.oracle.coherence.spring.boot.autoconfigure.session.CoherenceSpringSessionAutoConfiguration;
 import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ public class CoherenceSpringSessionAutoConfigurationTests {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(CoherenceAutoConfiguration.class))
-			.withConfiguration(AutoConfigurations.of(CoherenceProperties.class))
 			.withConfiguration(AutoConfigurations.of(SessionProperties.class))
 			.withConfiguration(AutoConfigurations.of(ServerProperties.class))
 			.withConfiguration(AutoConfigurations.of(CoherenceSpringSessionAutoConfiguration.class))
