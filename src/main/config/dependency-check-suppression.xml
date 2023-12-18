@@ -70,4 +70,11 @@
         ]]></notes>
         <vulnerabilityName>CVE-2023-44487</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        logback-core-1.2.12.jar, should be addressed with next Spring Boot release (Dec 21, 2023)
+        ]]></notes>
+        <vulnerabilityName>CVE-2023-6481</vulnerabilityName>
+    </suppress>
 </suppressions>
