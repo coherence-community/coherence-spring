@@ -159,7 +159,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.coherence.ce</groupId>
+			<groupId>${coherence.groupId}</groupId>
 			<artifactId>coherence-bedrock-testing-support</artifactId>
 			<version>${coherence.version}</version>
 			<scope>test</scope>
