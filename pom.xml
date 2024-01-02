@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2024, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -166,14 +166,13 @@
 		<log4j.version>2.21.1</log4j.version>
 		<mockito.version>5.7.0</mockito.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
-		<org.springframework.version>6.1.1</org.springframework.version>
-		<org.springframework.data.version>2023.1.0</org.springframework.data.version>
+		<org.springframework.version>6.1.2</org.springframework.version>
 		<reactor.version>3.6.1</reactor.version>
 		<resilience4j.version>2.1.0</resilience4j.version>
 		<slf4j-api.version>2.0.9</slf4j-api.version>
-		<spring-boot.version>3.2.0</spring-boot.version>
+		<spring-boot.version>3.2.1</spring-boot.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
-		<spring-data-bom.version>2023.1.0</spring-data-bom.version>
+		<spring-data-bom.version>2023.1.1</spring-data-bom.version>
 		<spring-session.version>3.2.0</spring-session.version>
 		<spring-security.version>6.1.5</spring-security.version>
 		<tomcat.version>10.1.16</tomcat.version>
@@ -250,7 +249,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-bom</artifactId>
-				<version>${org.springframework.data.version}</version>
+				<version>${spring-data-bom.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
