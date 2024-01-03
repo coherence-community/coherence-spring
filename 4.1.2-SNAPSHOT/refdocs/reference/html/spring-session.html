@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Coherence Spring Session</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body id="spring-session" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Session</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-session-introduction">1. Getting Started</a></li>
+<li><a href="#spring-session-pof">2. POF Serialization</a></li>
+<li><a href="#spring-session-sample">3. Spring Session Sample</a>
+<ul class="sectlevel2">
+<li><a href="#spring-session-sample-start-embedded-coherence">3.1. Start Spring Session with Embedded Coherence Instances</a></li>
+<li><a href="#spring-session-sample-start-remote-coherence">3.2. Spring Session with Remote Coherence Instances</a></li>
+<li><a href="#spring-session-sample-rest-endpoints">3.3. Accessing the REST Endpoints</a></li>
+<li><a href="#spring-session-sample-actuator">3.4. Spring Session Actuator</a></li>
+<li><a href="#spring-session-sample-docker">3.5. Generate Docker Image</a></li>
+</ul>
+</li>
+<li><a href="#spring-session-expiration-strategies">4. Session Expiration Strategies</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the Coherence Spring Session module. It explains how to use
+Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/docs/current/reference/html5/">Spring Session</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session-introduction"><a class="anchor" href="#spring-session-introduction"></a>1. Getting Started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this chapter you will learn how to configure <a href="https://coherence.community/">Coherence</a> as an HTTP session store using
+<a href="https://docs.spring.io/spring-session/docs/current/reference/html5/">Spring Session</a>.</p>
+</div>
+<div class="paragraph">
+<p>First you need to add the coherence-spring-session dependency:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Adding the Coherence Spring Session Dependency</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+        &lt;version&gt;4.1.2-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;23.09.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    compile("com.oracle.coherence.spring:coherence-spring-session:4.1.2-SNAPSHOT")
+    compile("com.oracle.coherence.ce:coherence:23.09.1")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Coherence Spring support for Spring Session can be used for either the free Coherence Community Edition (CE)
+or the commercial version. Coherence Spring does not bring in the Coherence dependency automatically but users
+must specify the Coherence dependency explicitly.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
+Session using the <code>@EnableCoherenceHttpSession</code> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="title">Enabling Coherence Spring Sessions</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+@EnableCoherence
+@EnableCoherenceHttpSession(                     <i class="conum" data-value="1"></i><b>(1)</b>
+        session = "coherence_session",           <i class="conum" data-value="2"></i><b>(2)</b>
+        cache = "spring:session:sessions",       <i class="conum" data-value="3"></i><b>(3)</b>
+        flushMode = FlushMode.ON_SAVE,           <i class="conum" data-value="4"></i><b>(4)</b>
+        sessionTimeoutInSeconds = 1800,          <i class="conum" data-value="5"></i><b>(5)</b>
+        useEntryProcessor = true                 <i class="conum" data-value="6"></i><b>(6)</b>
+)
+static class CoherenceSessionConfig {
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables Spring Session support for Coherence</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Specify the name of the Coherence Session. Optional. Defaults to Coherence' default session.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The name of the cache to use. Optional. Defaults to <code>spring:session:sessions</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The FlushMode to use. Optional. Defaults to <code>FlushMode.ON_SAVE</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The session timeout. Optional. Defaults to <code>1800</code> seconds (<code>30</code> minutes)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>When doing HTTP session updates, shall we use a Coherence entry processor? The default is {@code true}.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Are you running Coherence as a dedicated server instance? Then you need to make sure that your Coherence
+server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
+you may need <code>Coherence Spring Session</code>, <code>Spring Security Core</code>, <code>Spring Security Web</code>. Please also ensure that dependency
+version between Coherence server and application clients matches exactly.</p>
+</div>
+<div class="paragraph">
+<p>An alternative is to set <code>useEntryProcessor</code> to <code>false</code>. This is less efficient as the entire session has to be sent over
+the wire when updating session properties. The positive side effect is that your Coherence server instance will not need
+to be aware of the additional dependencies on its classpath.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session-pof"><a class="anchor" href="#spring-session-pof"></a>2. POF Serialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In case that you configured the cache using
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913">POF serialization</a>,
+additional POF configuration for the class <code>MapSession</code> is necessary:</p>
+</div>
+<div class="listingblock">
+<div class="title">POF Configuration</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml"> &lt;user-type&gt;
+     &lt;type-id&gt;2001&lt;/type-id&gt;
+     &lt;class-name&gt;org.springframework.session.MapSession&lt;/class-name&gt;
+     &lt;serializer&gt;
+         &lt;class-name&gt;com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer&lt;/class-name&gt;
+     &lt;/serializer&gt;
+ &lt;/user-type&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Depending on your serialization requirements and your session data, additional POF configuration
+may be necessary.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session-sample"><a class="anchor" href="#spring-session-sample"></a>3. Spring Session Sample</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This Coherence Spring source code repository provides a dedicated example application, illustrating the usage of
+Spring Session and <a href="https://spring.io/projects/spring-security">Spring Security</a> using
+<a href="https://spring.io/projects/spring-boot">Spring Boot</a>.</p>
+</div>
+<div class="paragraph">
+<p>The example application show-cases 2 use-cases:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use Spring Session with embedded Coherence instances and Java serialization</p>
+</li>
+<li>
+<p>Use Spring Session with remote Coherence instances (Coherence*Extends) and Java serialization</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Even though this demo is targeting Spring Session, we use Spring Security as well, since the authentication details are
+stored in the session as well. In regard to authentication, users have 2 choices:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A user can POST a JSON request containing the  username and password in the body of the request.</p>
+</li>
+<li>
+<p>Use basic authentication</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The username is <code>coherence</code>, and the password <code>rocks</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Authentication Request</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json"> { "username": "coherence", "password": "rocks" }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once successfully authenticated, the application will return a <code>2xx</code> HTTP status with an empty body and a session cookie.
+An Authentication failure, on the other hand, produces a non-2xx HTTP status with an empty body. The application has an
+endpoint that responds to a <code>GET</code> request to the URL <code>/hello</code> that returns the string <code>Hello Coherence</code>. All endpoints
+require an authenticated user using the session cookie or the <code>username</code> and <code>password</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="spring-session-sample-start-embedded-coherence"><a class="anchor" href="#spring-session-sample-start-embedded-coherence"></a>3.1. Start Spring Session with Embedded Coherence Instances</h3>
+<div class="listingblock">
+<div class="title">Build the Coherence Server instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we are ready to run the application. Let&#8217;s launch 2 instances, one listening on the pre-configured port
+<code>8090</code>, and the other one on port <code>8091</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Run the Spring Boot application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.1.2-SNAPSHOT.jar
+ $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.1.2-SNAPSHOT.jar --server.port=8091</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-session-sample-start-remote-coherence"><a class="anchor" href="#spring-session-sample-start-remote-coherence"></a>3.2. Spring Session with Remote Coherence Instances</h3>
+<div class="paragraph">
+<p>In this variation of the examle, we will start 1 central Coherence Server and the application will access that remote
+Coherence instance as a Coherence*Extend client.</p>
+</div>
+<div class="listingblock">
+<div class="title">Build the Coherence Server instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Build the Application instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we are ready to run the application. We will activate the <code>coherence-client</code> Spring Boot profile as well:</p>
+</div>
+<div class="listingblock">
+<div class="title">Run the Spring Boot application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.1.2-SNAPSHOT.jar
+ $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-4.1.2-SNAPSHOT.jar --spring.profiles.active=coherence-client</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, Coherence Spring Session uses a Coherence Entry Processor to perform updates to the persisted HTTP Session. This
+will prevent the entire session to be sent over the wire. A drawback of that approach is that the Coherence instance needs
+to be aware of Coherence Spring classes for serialization purposes.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can also set the Coherence Spring Session property <code>coherence.spring.session.use-entry-processor</code> and
+set it to <code>false</code> (It is <code>true</code> by default) in the client application <code>spring-session-demo-app</code>. With that in place, you
+can now remove the relevant Maven dependencies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>spring-security-web</p>
+</li>
+<li>
+<p>coherence-spring-session</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>from the server application module <code>spring-session-demo-server</code> and the application will still work.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-session-sample-rest-endpoints"><a class="anchor" href="#spring-session-sample-rest-endpoints"></a>3.3. Accessing the REST Endpoints</h3>
+<div class="listingblock">
+<div class="title">Log into the application using <a href="https://curl.se/">CURL</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl -i -c cookie.txt \
+ -H "Accept: application/json" \
+ -H "Content-Type:application/json" \
+ -X POST --data '{"username": "coherence", "password": "rocks"}' \
+ "http://localhost:8090/login"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Let&#8217;s access the HelloController</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl -i -b cookie.txt \
+ -H "Accept: application/json" \
+ -H "Content-Type:application/json" \
+ -X GET "http://localhost:8090/hello"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-session-sample-actuator"><a class="anchor" href="#spring-session-sample-actuator"></a>3.4. Spring Session Actuator</h3>
+<div class="paragraph">
+<p>Using Spring Boot&#8217;s Actuator endpoints, we can introspect the session using the
+<a href="https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#sessions">Sessions actuator</a> at
+<code><a href="http://localhost:8090/actuator/sessions?username=coherence" class="bare">localhost:8090/actuator/sessions?username=coherence</a></code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Retrieving session information for user <code>coherence</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ curl -i -b cookie.txt \
+ -H "Accept: application/json" \
+ -H "Content-Type:application/json" \
+ -X GET "http://localhost:8090/actuator/sessions?username=coherence"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-session-sample-docker"><a class="anchor" href="#spring-session-sample-docker"></a>3.5. Generate Docker Image</h3>
+<div class="paragraph">
+<p>If you prefer to use Docker, you can create an image using:</p>
+</div>
+<div class="listingblock">
+<div class="title">Generate a Docker image</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-session-expiration-strategies"><a class="anchor" href="#spring-session-expiration-strategies"></a>4. Session Expiration Strategies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When dealing with the expiration of cache entries, you generally have 2 options in Coherence:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set the expiration time for each put operation explicitly</p>
+</li>
+<li>
+<p>Configure caches in your <code>coherence-cache-config.xml</code> file</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When you define a session timeout via the application, for example <code>@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 1000)</code>,
+the session expiration will be set for each put-operation in <code>CoherenceIndexedSessionRepository</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If not set in the application, Coherence Spring will expire HTTP session caches in <code>1800</code> seconds (<code>30</code> minutes).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you rather prefer defining the session expiration timeouts in your <code>coherence-cache-config.xml</code> file, you
+should set the session timeout in the application to <code>0</code>, for instance <code>@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 0)</code>.
+That way, put operations will never to set an expiration value for the cache entry. You can then set the <code>expiry-delay</code>
+cache configuration element for your cache in the <code>coherence-cache-config.xml</code> file.</p>
+</div>
+<div class="paragraph">
+<p>In regard to the question, whether one strategy or the other strategy is preferable: It is mostly a
+matter of preference. You do have, however, a bit more control when configuring expiration logic via the
+<code>coherence-cache-config.xml</code> file, as you have the ability to define custom eviction policies.</p>
+</div>
+<div class="paragraph">
+<p>For more information, please consult the <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/configuring-caches.html#GUID-B57A0E9B-23F2-4099-86D7-6DDD54BBC45C">respective chapter</a>
+on <em>Controlling the Growth of a Local Cache</em> in the Coherence reference guide.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The underlying expiry delay parameter in Coherence is defined as an integer and is expressed in milliseconds.
+Therefore, the maximum amount of time can never exceed Integer.MAX_VALUE (2147483647) milliseconds or approximately 24
+days.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2024-01-03 01:42:18 UTC
+</div>
+</div>
+<script src="js/highlight/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>
