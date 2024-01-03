@@ -1,5 +1,5 @@
-:main-release-version: 4.1.0
-:main-snapshot-version: 4.1.1-SNAPSHOT
+:main-release-version: 4.1.1
+:main-snapshot-version: 4.1.2-SNAPSHOT
 :website: https://spring.coherence.community/
 :3x-release-version: 3.3.4
 :3x-snapshot-version: 3.3.5-SNAPSHOT
@@ -45,7 +45,6 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 |Coherence Spring | Java       | Coherence CE | Spring | Boot | Jakarta | Git Branch/Tag
 
 |*4.1.x*          | `17`, `21` | `23.09`      | `6.x` | `3.x` | ✔       | `main`
-|*4.0.x*          | `17`       | `23.03`      | `6.x` | `3.x` | ✔       | `main`
 |*3.3.x*          | `11`       | `22.06`      | `5.x` | `2.x` |         | `3.3.x`
 |===
 
