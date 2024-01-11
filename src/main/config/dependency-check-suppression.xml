@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2024, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -48,12 +48,6 @@
         <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
     </suppress>
 
-    <suppress>
-        <notes><![CDATA[
-        file name: netty-transport-4.1.97.Final.jar
-        ]]></notes>
-        <cve>CVE-2023-4586</cve>
-    </suppress>
     <suppress>
         <cve>CVE-2023-4759</cve>
     </suppress>

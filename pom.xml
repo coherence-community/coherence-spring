@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2024, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -142,12 +142,12 @@
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.24.2</assertj.version>
+		<assertj.version>3.25.1</assertj.version>
 		<awaitility.version>4.2.0</awaitility.version>
 		<bedrock.version>6.0.4</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>22.06.6</coherence.version>
-		<classgraph.version>4.8.164</classgraph.version>
+		<classgraph.version>4.8.165</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
 		<javaee-api.version>8.0.1</javaee-api.version>
@@ -155,16 +155,16 @@
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<javax.inject.version>1</javax.inject.version>
 		<junit.version>5.7.2</junit.version>
-		<log4j.version>2.21.1</log4j.version>
+		<log4j.version>2.22.1</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
 		<org.springframework.version>5.3.31</org.springframework.version>
-		<org.springframework.data.version>2021.2.17</org.springframework.data.version>
-		<reactor.version>3.4.33</reactor.version>
+		<org.springframework.data.version>2021.2.18</org.springframework.data.version>
+		<reactor.version>3.4.35</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<spring-session.version>2.7.4</spring-session.version>
 		<spring-security.version>5.7.11</spring-security.version>
-		<tomcat.version>9.0.83</tomcat.version>
+		<tomcat.version>9.0.85</tomcat.version>
 	</properties>
 
 	<distributionManagement>
