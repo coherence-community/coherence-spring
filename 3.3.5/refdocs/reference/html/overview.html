@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Coherence Spring Documentation</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body id="coherence-spring-documentation" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Documentation</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#about">1. About the Documentation</a></li>
+<li><a href="#getting-help">2. Getting Help</a></li>
+<li><a href="#news">3. What is new?</a></li>
+<li><a href="#first-steps">4. First Steps</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Welcome to the reference documentation of <a href="https://github.com/coherence-community/coherence-spring/">Coherence Spring</a>, a collection of libraries that will
+help you to integrate <a href="https://coherence.community/">Oracle Coherence</a> with the wider <a href="https://spring.io/">Spring</a> ecosystem.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://coherence.community/">Oracle Coherence</a> is a scalable, fault-tolerant, cloud-ready, distributed platform for building
+grid-based applications and reliably storing data. The product is used at scale, for both compute and raw storage, in a
+vast array of industries such as critical financial trading systems, high performance telecommunication products and
+e-commerce applications.</p>
+</div>
+<div class="paragraph">
+<p>Coherence Spring features dedicated support to bootstrap Oracle Coherence and to inject Coherence resources into Spring
+beans as well as to inject Spring beans into Coherence resources. Spring&#8217;s dependency injection (DI) support simplifies
+application code as Oracle Coherence <em>maps</em>, <em>caches</em> and <em>topics</em> are just injected instead of being obtained explicitly
+via Coherence APIs. Furthermore, using annotated <em>event listener</em> methods simplifies building reactive code that responds
+to Coherence cache events.</p>
+</div>
+<div class="paragraph">
+<p>Before diving into the technical aspects of the reference documentation let&#8217;s provide a brief overview of the Coherence
+Spring reference documentation, where to start, how to obtain further helper and more.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="about"><a class="anchor" href="#about"></a>1. About the Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Coherence Spring reference guide is available as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://spring.coherence.community/3.3.5/refdocs/reference//html">Multi-page HTML</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.3.5/refdocs/reference//htmlsingle">Single page HTML</a></p>
+</li>
+<li>
+<p><a href="https://spring.coherence.community/3.3.5/refdocs/reference//pdf/coherence-spring-reference.pdf">PDF</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-help"><a class="anchor" href="#getting-help"></a>2. Getting Help</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you run into issues with Spring Coherence, we are here to help.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Try the <a href="quickstart.html#quickstart">Quickstart</a>.</em>
+The Quickstart will give you an overview of Coherence Spring&#8217;s
+capabilities and provides a sample application to get you started.</p>
+</li>
+<li>
+<p><em>Learn the Coherence basics.</em> Please have at least some basic understanding of Oracle Coherence since all Spring Coherence
+modules depend on it. Check out the <a href="https://coherence.community">Coherence CE</a> web-site for general Coherence
+targeted reference documentation.</p>
+</li>
+<li>
+<p><em>Learn the Spring basics.</em>
+The reference guide assumes that you have a basic understanding of <a href="https://spring.io/projects/spring-framework/">Spring Framework</a> and
+<a href="https://spring.io/projects/spring-boot/">Spring Boot</a>. Coherence Spring utilizes several other Spring projects. Check the
+<a href="https://spring.io/">spring.io</a> web-site for general reference documentation. If you are starting out with Spring, try
+one of the <a href="https://spring.io/guides">guides</a> or generate a starter project using <a href="https://start.spring.io/" class="bare">start.spring.io/</a>.</p>
+</li>
+<li>
+<p><em>Ask a question.</em>
+Chat with us directly on <a href="https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw">Slack</a>.
+We also monitor <a href="https://stackoverflow.com">stackoverflow.com</a> for questions tagged with
+<a href="https://stackoverflow.com/tags/oracle-coherence">oracle-coherence</a>.</p>
+</li>
+<li>
+<p><em>Contribute.</em>
+Report bugs with Spring Coherence via <a href="https://github.com/coherence-community/coherence-spring/issues/">GitHub Issues</a>. Both, Coherence CE and Coherence Spring are Open
+Source Software (OSS) under the liberal <a href="legal.html#legal">Universal Permissive License (UPL)</a>. Contributing back is
+a great way to attain a deeper understanding of our projects.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All of <em>Coherence Spring</em> is open source, including the documentation.
+If you find problems with the docs or if you want to improve them, please <a href="https://github.com/coherence-community/coherence-spring/">get involved</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="news"><a class="anchor" href="#news"></a>3. What is new?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to see what changes were made from earlier versions of Coherence Spring, see the
+<a href="https://spring.coherence.community/3.3.5/index.html#/dev/06_history">Change History</a> as well as the <a href="https://github.com/coherence-community/coherence-spring/releases/">GitHub Releases</a> page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="first-steps"><a class="anchor" href="#first-steps"></a>4. First Steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are getting started with Coherence Spring, start with the <a href="quickstart.html#quickstart">Quickstart</a>. It is a great
+way to see a working solution quickly. Particularly if you are relatively new to Spring, continue with the
+<a href="spring-boot.html#spring-boot">spring-boot.html</a> chapter next.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Another great example application is the Spring Boot implementation of the
+<a href="https://github.com/coherence-community/todo-list-example/tree/master/java">To-do List application</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The reference documentation makes a distinction between
+<a href="https://spring.io/projects/spring-framework/">Spring Framework</a> and <a href="https://spring.io/projects/spring-boot/">Spring Boot</a>. At its very core, Spring Framework provides
+Dependency Injection (DI) or Inversion Of Control (IOC) to Java applications. Furthermore, Spring Framework gives developers
+comprehensive infrastructure support for developing Java applications.</p>
+</div>
+<div class="paragraph">
+<p>Spring Boot on the other hand, is an opinionated extension to the Spring Framework by:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Eliminating boilerplate configurations</p>
+</li>
+<li>
+<p>Providing Auto-Configuration for other Spring modules and third-party integrations</p>
+</li>
+<li>
+<p>Metrics + health checks</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The vast majority of new Spring projects will utilize Spring Boot. Nonetheless, please also study the Spring Framework targeted
+chapters as Spring Frameworks is the foundation for everything related to Spring Boot.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2024-01-11 22:06:49 -1000
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
