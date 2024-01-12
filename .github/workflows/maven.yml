@@ -65,7 +65,7 @@ jobs:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-        run: ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+        run: ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
           find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
