@@ -49,8 +49,8 @@ jobs:
         git checkout "${GIT_COMMIT}"
         git config --global user.email "github-action@users.noreply.github.com"
         git config --global user.name "GitHub Action"
-        ./mvnw clean install -B -Pspring,spring-repo -Powasp --settings .mvn/settings.xml
-        ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+        ./mvnw clean install -B -Pspring,spring-repo --settings .mvn/settings.xml
+        ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
     - name: Clean Maven cache
       run: |
         find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
