@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2024, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -16,14 +16,13 @@
 	</parent>
 
 	<artifactId>coherence-spring-cloud-config-demo-parent</artifactId>
-	<version>3.3.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Cloud Config Demo - Parent</name>
 	<description>Demo project for Coherence Spring using Spring Cloud Config Server</description>
 
 	<properties>
-		<spring-cloud.version>2021.0.8</spring-cloud.version>
+		<spring-cloud.version>2021.0.9</spring-cloud.version>
 	</properties>
 
 	<modules>
