@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>3.3.5-SNAPSHOT</version>
+		<version>3.3.5</version>
 	</parent>
 
 	<artifactId>coherence-spring-cloud-config-demo-parent</artifactId>
