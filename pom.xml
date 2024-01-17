@@ -138,7 +138,7 @@
 		<spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
 
 		<!-- Other plugin dependency versions -->
-		<asciidoctorj-pdf.version>2.3.9</asciidoctorj-pdf.version>
+		<asciidoctorj-pdf.version>2.3.10</asciidoctorj-pdf.version>
 		<checkstyle.version>10.6.0</checkstyle.version>
 		<spring-javaformat-checkstyle.version>0.0.39</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.6.2</spring-asciidoctor-extensions.version>
