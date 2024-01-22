@@ -16,13 +16,6 @@
 
     <suppress>
         <notes><![CDATA[
-        From grpc-core & grpc-protobuf 1.57.1
-        ]]></notes>
-        <vulnerabilityName>CVE-2023-44487</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
         In Coherence Spring Cloud Config Demo
         file name: sshd-osgi-2.10.0.jar
         ]]></notes>
