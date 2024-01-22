@@ -167,7 +167,7 @@
 		<mockito.version>5.8.0</mockito.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
 		<org.springframework.version>6.1.2</org.springframework.version>
-		<reactor.version>3.6.1</reactor.version>
+		<reactor.version>3.6.2</reactor.version>
 		<resilience4j.version>2.1.0</resilience4j.version>
 		<slf4j-api.version>2.0.9</slf4j-api.version>
 		<spring-boot.version>3.2.1</spring-boot.version>
