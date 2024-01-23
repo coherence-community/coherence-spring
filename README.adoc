@@ -51,7 +51,7 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 == Quick Start
 
 In order to get started quickly, please read the reference guide as it provides a detailed
-https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter].
+https://spring.coherence.community/{main-release-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter] (v{main-release-version}).
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
