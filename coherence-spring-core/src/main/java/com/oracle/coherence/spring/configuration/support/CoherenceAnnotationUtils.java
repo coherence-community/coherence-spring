@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
@@ -35,7 +35,7 @@ import org.springframework.util.StringUtils;
  */
 public final class CoherenceAnnotationUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CoherenceAnnotationUtils.class);
+	private static final Log logger = LogFactory.getLog(CoherenceAnnotationUtils.class);
 
 	private CoherenceAnnotationUtils() {
 		throw new AssertionError("Utility Class.");
@@ -103,7 +103,10 @@ public final class CoherenceAnnotationUtils {
 		final List<T> foundSpringBeans = new ArrayList<>();
 
 		final String[] beanNames = applicationContext.getBeanNamesForType(beanType);
-		LOGGER.debug("Found {} beans in the application context for bean type {}", beanNames.length, beanType.getName());
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Found %s beans in the application context for bean type %s", beanNames.length, beanType.getName()));
+		}
 
 		final ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
 
@@ -120,11 +123,15 @@ public final class CoherenceAnnotationUtils {
 					boolean foundAnnotation = beanMethodMetadata.getAnnotations().isPresent(annotationType);
 
 					if (foundAnnotation) {
-						LOGGER.debug("Found annotation {} on Bean {}.", annotationType.getName(), beanName);
+						if (logger.isDebugEnabled()) {
+							logger.debug(String.format("Found annotation %s on Bean %s.", annotationType.getName(), beanName));
+						}
 						foundSpringBeans.add(applicationContext.getBean(beanName, beanType));
 					}
 					else {
-						LOGGER.debug("The annotation {} was not found on Bean {}.", annotationType.getName(), beanName);
+						if (logger.isDebugEnabled()) {
+							logger.debug(String.format("The annotation %s was not found on Bean %s.", annotationType.getName(), beanName));
+						}
 					}
 				}
 
@@ -132,15 +139,21 @@ public final class CoherenceAnnotationUtils {
 				boolean foundAnnotation = classLevelAnnotationMetadata.getAnnotations().isPresent(annotationType);
 
 				if (foundAnnotation) {
-					LOGGER.debug("Found class-level annotation {} on Bean {}.", annotationType.getName(), beanName);
+					if (logger.isDebugEnabled()) {
+						logger.debug(String.format("Found class-level annotation %s on Bean %s.", annotationType.getName(), beanName));
+					}
 					foundSpringBeans.add(applicationContext.getBean(beanName, beanType));
 				}
 				else {
-					LOGGER.debug("The annotation {} was not found on Bean {}.", annotationType.getName(), beanName);
+					if (logger.isDebugEnabled()) {
+						logger.debug(String.format("The annotation %s was not found on Bean %s.", annotationType.getName(), beanName));
+					}
 				}
 			}
 			else {
-				LOGGER.debug("Ignoring beanDefinition {} as it is not an AnnotatedBeanDefinition.", beanName);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Ignoring beanDefinition " + beanName + " as it is not an AnnotatedBeanDefinition.");
+				}
 			}
 		}
 		return foundSpringBeans;

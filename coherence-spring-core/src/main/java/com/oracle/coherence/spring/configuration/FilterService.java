@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -19,8 +19,8 @@ import com.oracle.coherence.spring.configuration.support.CoherenceAnnotationUtil
 import com.oracle.coherence.spring.configuration.support.CommonFilterFactories;
 import com.tangosol.util.Filter;
 import com.tangosol.util.Filters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  */
 public class FilterService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FilterService.class);
+	private static final Log logger = LogFactory.getLog(FilterService.class);
 
 	private final ConfigurableApplicationContext applicationContext;
 
@@ -50,7 +50,10 @@ public class FilterService {
 
 		final Class filterFactoryClass = FilterFactory.class;
 		final String[] beanNames = this.applicationContext.getBeanNamesForType(filterFactoryClass);
-		LOGGER.debug("Found {} beans in the application context for bean type {}", beanNames.length, filterFactoryClass.getName());
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Found %s beans in the application context for bean type %s", beanNames.length, filterFactoryClass.getName()));
+		}
 
 		final Collection<FilterFactory> beans = CoherenceAnnotationUtils.getBeansOfTypeWithAnnotation(
 				this.applicationContext,
