@@ -103,11 +103,15 @@ IMPORTANT: Depending on your serialization requirements and your session data, a
 may be necessary.
 
 [[spring-session-sample]]
-== Spring Session Sample
+== Spring Session Samples
 
-This Coherence Spring source code repository provides a dedicated example application, illustrating the usage of
-Spring Session and https://spring.io/projects/spring-security[Spring Security] using
-https://spring.io/projects/spring-boot[Spring Boot].
+This Coherence Spring source code repository provides 2 dedicated example applications, illustrating the usage of
+Spring Session with a Coherence-backed session repository. The first example application uses
+https://spring.io/projects/spring-boot[Spring Boot] as well as
+https://spring.io/projects/spring-security[Spring Security]. The second example application uses plain Spring Framework
+(without Spring Boot) and deploys as a WAR file to a Servlet container (e.g. Tomcat and Jetty).
+
+=== Spring Session with Spring Boot
 
 The example application show-cases 2 use-cases:
 
@@ -134,7 +138,7 @@ endpoint that responds to a `GET` request to the URL `/hello` that returns the s
 require an authenticated user using the session cookie or the `username` and `password`.
 
 [[spring-session-sample-start-embedded-coherence]]
-=== Start Spring Session with Embedded Coherence Instances
+==== Start Spring Session with Embedded Coherence Instances
 
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
@@ -153,9 +157,9 @@ $ java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-se
 ----
 
 [[spring-session-sample-start-remote-coherence]]
-=== Spring Session with Remote Coherence Instances
+==== Spring Session with Remote Coherence Instances
 
-In this variation of the examle, we will start 1 central Coherence Server and the application will access that remote
+In this variation of the example, we will start 1 central Coherence Server and the application will access that remote
 Coherence instance as a Coherence*Extend client.
 
 .Build the Coherence Server instance
@@ -193,7 +197,7 @@ can now remove the relevant Maven dependencies:
 from the server application module `spring-session-demo-server` and the application will still work.
 
 [[spring-session-sample-rest-endpoints]]
-=== Accessing the REST Endpoints
+==== Accessing the REST Endpoints
 
 .Log into the application using https://curl.se/[CURL]
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
@@ -215,7 +219,7 @@ $ curl -i -b cookie.txt \
 ----
 
 [[spring-session-sample-actuator]]
-=== Spring Session Actuator
+==== Spring Session Actuator
 
 Using Spring Boot's Actuator endpoints, we can introspect the session using the
 https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#sessions[Sessions actuator] at
@@ -231,7 +235,7 @@ $ curl -i -b cookie.txt \
 ----
 
 [[spring-session-sample-docker]]
-=== Generate Docker Image
+==== Generate Docker Image
 
 If you prefer to use Docker, you can create an image using:
 
@@ -240,6 +244,114 @@ If you prefer to use Docker, you can create an image using:
 ----
 $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo
 ----
+
+=== Spring Session with plain Spring Framework
+
+While most new Spring applications are written using Spring Boot, there are certainly many applications that use
+the Spring Framework, only. Therefore, the following example uses plain Spring Framework without any Spring Boot and
+deploys as a WAR file to a Servlet container such as Tomcat or Jetty. The application will expose one endpoint that
+displays a simple counter that is incremented with each request and stored in the HTTP Session that is in return backed
+by Coherence.
+
+NOTE: Coherence Spring `{coherence-spring-version}` is using the Jakarta EE namespace. For Java EE (`javax.*`), please use
+Coherence Spring `3.3.x`. Therefore, chose the appropriate version of the Servlet container accordingly.
+
+This example uses a separate Coherence server instance to which the application will connect to using Coherence*Extend.
+Furthermore, {oracle-coherence-docs}develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913[Coherence POF]
+is used for serialization. We will re-use the Coherence server from the `spring-session-demo-server` Maven module. This
+will start 1 central Coherence server instance and the application will access that remote Coherence instance as a
+Coherence*Extend client. In order to build the server application, execute the following in the root directory of the
+Coherence Spring source code repository:
+
+.Build the Coherence Server instance
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+----
+
+Next, we will build the client application:
+
+.Build the Client Application
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-war
+----
+
+The Coherence-specific configuration of the client is fairly straight-forward and mostly
+contained in the Spring configuration class `CoherenceSessionConfig`:
+
+.CoherenceSessionConfig.java
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@Configuration
+@EnableCoherence                                                        // <1>
+@EnableCoherenceHttpSession(                                            // <2>
+    cache = "spring:session:sessions",
+    flushMode = FlushMode.ON_SAVE,
+    sessionTimeoutInSeconds = 1800,
+    useEntryProcessor = false
+)
+public class CoherenceSessionConfig
+       extends AbstractHttpSessionApplicationInitializer {              // <3>
+    @Bean
+    public SessionConfigurationBean sessionConfigurationBeanDefault() { // <4>
+        final SessionConfigurationBean sessionConfigurationBean =
+            new SessionConfigurationBean();
+        sessionConfigurationBean.setType(SessionType.CLIENT);           // <5>
+        sessionConfigurationBean.setConfig("remote-cache-config.xml");  // <6>
+        return sessionConfigurationBean;
+    }
+}
+----
+<1> Enable Coherence Spring
+<2> Enable the Spring Session support for Coherence + you can specify several optional parameters
+<3> Extend `AbstractHttpSessionApplicationInitializer` to register the `springSessionRepositoryFilter`
+<4> Create a `SessionConfigurationBean` to configure the Coherence Session
+<5> Set the session type to `CLIENT`
+<6> Set the Coherence configuration file to `remote-cache-config.xml`
+
+The Coherence-specific `remote-cache-config.xml` configures the `ExtendTcpCacheService` and creates a cache mapping
+for the cache `spring:session:sessions` to the `remote-cache-scheme` that uses the `ExtendTcpCacheService`.
+
+Now we are ready to run the application. First, we will start the server. The server application uses Spring Boot and by
+activating a custom Spring Boot profile, Coherence will be started with POF serialization enabled:
+
+.coherence-cache-config-pof.xml
+[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+----
+<cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+              xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd">
+  <defaults>
+    <serializer>pof</serializer>
+  </defaults>
+...
+----
+
+.Run the Server application with the POF profile
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-{coherence-spring-version}.jar --spring.profiles.active=pof
+----
+
+For the client application, deploy the generated WAR file `spring-session-demo.war` in
+`samples/spring-session-demo/spring-session-demo-war/target` to a Servlet container, for example Tomcat {tomcat-version}.
+
+.Deploy WAR file to Tomcat {tomcat-version}
+[source,shell,indent=1,subs="verbatim,quotes,attributes"]
+----
+$ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-{tomcat-version}/webapps
+----
+
+The application should start up and connect to the Coherence server instance. You can then access the application at
+
+`http://localhost:8080/spring-session-demo/hello`.
+
+.Spring Session Demo
+image::spring-session-demo-war.png[Spring Session Demo,width=50%, pdfwidth=50%]
+
+The invoked `HelloController` will display a simple counter that is incremented with each request and whose value is
+stored in the HTTP Session.
 
 [[spring-session-expiration-strategies]]
 == Session Expiration Strategies
