@@ -9,3 +9,6 @@ coherence:
     server:
     - name: default
       config: "coherence-cache-config.xml"
+spring:
+  session:
+    store-type: none

@@ -252,6 +252,7 @@
 						<coherence-version>${coherence.version}</coherence-version>
 						<sources-root>${project.basedir}/src</sources-root>
 						<sources-root-samples>${coherence.spring.root}/samples/</sources-root-samples>
+						<tomcat-version>${tomcat.version}</tomcat-version>
 					</attributes>
 				</configuration>
 				<dependencies>
