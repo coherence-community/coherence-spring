@@ -210,7 +210,7 @@ class ExtractorConfigurationTests {
 		}
 	}
 
-	private static class ExtractorBean {
+	private static final class ExtractorBean {
 
 		@Inject
 		@PropertyExtractor("firstName")
