@@ -56,7 +56,7 @@ public class CoherenceRepositoriesRegistrar extends AbstractRepositoryConfigurat
 	}
 
 	@EnableCoherenceRepositories
-	private static class EnableCoherenceRepositoriesConfiguration {
+	private static final class EnableCoherenceRepositoriesConfiguration {
 
 	}
 }

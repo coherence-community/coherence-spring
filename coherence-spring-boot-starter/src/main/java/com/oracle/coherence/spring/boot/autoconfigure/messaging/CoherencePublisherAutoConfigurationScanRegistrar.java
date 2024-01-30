@@ -62,7 +62,7 @@ public class CoherencePublisherAutoConfigurationScanRegistrar extends CoherenceP
 	}
 
 	@CoherencePublisherScan
-	private static class CoherencePublisherScanConfiguration {
+	private static final class CoherencePublisherScanConfiguration {
 
 	}
 }
