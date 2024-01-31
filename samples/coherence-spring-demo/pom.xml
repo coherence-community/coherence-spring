@@ -12,11 +12,11 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>3.3.6-SNAPSHOT</version>
+		<version>3.3.6</version>
 	</parent>
 
 	<artifactId>coherence-spring-demo-parent</artifactId>
-	<version>3.3.6-SNAPSHOT</version>
+	<version>3.3.6</version>
 
 	<packaging>pom</packaging>
 
