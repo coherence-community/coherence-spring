@@ -1,0 +1,159 @@
+{
+    "docs": [
+        {
+            "location": "/dev/02_source-code",
+            "text": " The Source Code for the Oracle Coherence Spring Integration is hosted by github.com . It is located here: https://github.com/coherence-community/coherence-spring Alternatively, if you&#8217;re not using or want to avoid setting up git , you can download a zip containing the latest development branch from here: https://github.com/coherence-community/coherence-spring/archive/master.zip Important Pull Requests are welcome! Just make sure to become an official contributor . ",
+            "title": "Source Code"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.6 ",
+            "title": "Version 3.3.6 (January 2024)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.5 ",
+            "title": "Version 3.3.5 (January 2024)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.4 ",
+            "title": "Version 3.3.4 (November 2023)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0 ",
+            "title": "Version 3.3.0 (July 2022)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.2.0 ",
+            "title": "Version 3.2.0 (April 2022)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.1.0 ",
+            "title": "Version 3.1.0 (January 2022)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0 ",
+            "title": "Version 3.0.0 (September 201)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0-M2 ",
+            "title": "Version 3.0.0.M2 (July 2021)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " Source and Documentation Contributors Gunnar Hillert Ryan Lubke Changes Change Licensing to UPL ( Apache license compatible ) Completely refactor bootstrapping mechanism using the new Coherence Bootstrap API (Community Edition 20.12) Add support for Spring Data repositories using the brand-new Coherence Repository API which has been introduced with Coherence CE 21.06 M2 Add Spring Cache abstraction support Add Spring Boot Starter Provide AutoConfiguration support Add initial support for Spring Boot configuration properties Add support for Coherence Event Listeners Add initial support for Spring Boot 2.4+ Config API for importing additional configuration data using Coherence as a store of configuration data Add Dependency Injection (DI) support for various Coherence types: Coherence Filters Views Coherence Sessions Inject Coherence Maps and Caches: @CoherenceCache @CoherenceMap @CoherenceAsyncCache @CoherenceAsyncMap Add support for Filter Binding Annotations Add support for Extractor Binding Annotations Add AsciiDoc-based documentation (HTML + PDF) Convert the Coherence Spring website to the Coherence CE theme Add security vulnerability scans using the OWASP Dependency-Check Plugin Provide source-code consistency using the Spring Java Format Maven Plugin Add Quickstart Sample (Classic Spring + Spring Boot) and reference guide chapter Add Spring Cloud Config demo Add CI workflow using GitHub Actions Add Coherence To Do List Example Application for Spring Boot (separate repository) Update to the latest dependencies Oracle Coherence 21.06-M2 Spring Boot 2.4.5 Spring Framework 5.3.5 ",
+            "title": "Version 3.0.0.M1 (May 2021)"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes Issue #8 : Ensured compliance with Coherence 12.1.2 and 12.1.3 (for building and running) and 12.2.1 (for running) Issue #9 : Upgraded to use Spring Framework 4.3.9 Issue #10 : Upgraded to require Java 7 Issue #11 : Made Spring Framework dependencies scope \"provided\" Issue #13 : Introduced the SpringBasedCoherenceSession to provide a mechanism to configure and acquire Coherence-based resources (NamedCaches) from Coherence without using static functions or methods. Issue #15 : Provided access to Coherence Services via the SpringBasedCoherenceSession Issue #16 : Resolved incorrect XSD declaration of spring:property Issue #17 : Migrated to use Maven Central (from maven.java.net) ",
+            "title": "Version 2.0.0-SNAPSHOT built on 2017-07-13 20:03"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes COHSPR-8 : Upgraded to use Coherence 12.1.2-0-4 (and certified against Coherence 12.1.3-0-2) ",
+            "title": "Version 1.0.2 built on 2015-08-06 20:45"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " Acknowledgements Huge thanks to everyone that provided feedback, isolated defects and contributed fixes. Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes Upgraded Maven Plug-ins The coherence-spring Module COHSPR-5 : Resolved issue where multiple CoherenceApplicationContexts were created during concurrent initialization. ",
+            "title": "Version: 1.0.1 built on 2014-11-04 11:09"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " Acknowledgements Huge thanks to everyone that contributed feedback, suggestions, documentation and ideas for this initial release. Source and Documentation Contributors Brian Oliver and Patrick Peralta Global and Cross-Module Changes Initial Release The coherence-spring Module Initial Release. The coherence-spring-tests Module Initial Release. ",
+            "title": "Version: 1.0.0 built on 2013-09-10 13:35"
+        },
+        {
+            "location": "/dev/06_history",
+            "text": " The following sections outline Coherence Spring project changes in reverse chronological order. Version 3.3.6 (January 2024) https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.6 Version 3.3.5 (January 2024) https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.5 Version 3.3.4 (November 2023) https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.4 Version 3.3.0 (July 2022) https://github.com/coherence-community/coherence-spring/releases/tag/v3.3.0 Version 3.2.0 (April 2022) https://github.com/coherence-community/coherence-spring/releases/tag/v3.2.0 Version 3.1.0 (January 2022) https://github.com/coherence-community/coherence-spring/releases/tag/v3.1.0 Version 3.0.0 (September 201) https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0 Version 3.0.0.M2 (July 2021) https://github.com/coherence-community/coherence-spring/releases/tag/v3.0.0-M2 Version 3.0.0.M1 (May 2021) Source and Documentation Contributors Gunnar Hillert Ryan Lubke Changes Change Licensing to UPL ( Apache license compatible ) Completely refactor bootstrapping mechanism using the new Coherence Bootstrap API (Community Edition 20.12) Add support for Spring Data repositories using the brand-new Coherence Repository API which has been introduced with Coherence CE 21.06 M2 Add Spring Cache abstraction support Add Spring Boot Starter Provide AutoConfiguration support Add initial support for Spring Boot configuration properties Add support for Coherence Event Listeners Add initial support for Spring Boot 2.4+ Config API for importing additional configuration data using Coherence as a store of configuration data Add Dependency Injection (DI) support for various Coherence types: Coherence Filters Views Coherence Sessions Inject Coherence Maps and Caches: @CoherenceCache @CoherenceMap @CoherenceAsyncCache @CoherenceAsyncMap Add support for Filter Binding Annotations Add support for Extractor Binding Annotations Add AsciiDoc-based documentation (HTML + PDF) Convert the Coherence Spring website to the Coherence CE theme Add security vulnerability scans using the OWASP Dependency-Check Plugin Provide source-code consistency using the Spring Java Format Maven Plugin Add Quickstart Sample (Classic Spring + Spring Boot) and reference guide chapter Add Spring Cloud Config demo Add CI workflow using GitHub Actions Add Coherence To Do List Example Application for Spring Boot (separate repository) Update to the latest dependencies Oracle Coherence 21.06-M2 Spring Boot 2.4.5 Spring Framework 5.3.5 Version 2.0.0-SNAPSHOT built on 2017-07-13 20:03 Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes Issue #8 : Ensured compliance with Coherence 12.1.2 and 12.1.3 (for building and running) and 12.2.1 (for running) Issue #9 : Upgraded to use Spring Framework 4.3.9 Issue #10 : Upgraded to require Java 7 Issue #11 : Made Spring Framework dependencies scope \"provided\" Issue #13 : Introduced the SpringBasedCoherenceSession to provide a mechanism to configure and acquire Coherence-based resources (NamedCaches) from Coherence without using static functions or methods. Issue #15 : Provided access to Coherence Services via the SpringBasedCoherenceSession Issue #16 : Resolved incorrect XSD declaration of spring:property Issue #17 : Migrated to use Maven Central (from maven.java.net) Version 1.0.2 built on 2015-08-06 20:45 Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes COHSPR-8 : Upgraded to use Coherence 12.1.2-0-4 (and certified against Coherence 12.1.3-0-2) Version: 1.0.1 built on 2014-11-04 11:09 Acknowledgements Huge thanks to everyone that provided feedback, isolated defects and contributed fixes. Source and Documentation Contributors Brian Oliver Global and Cross-Module Changes Upgraded Maven Plug-ins The coherence-spring Module COHSPR-5 : Resolved issue where multiple CoherenceApplicationContexts were created during concurrent initialization. Version: 1.0.0 built on 2013-09-10 13:35 Acknowledgements Huge thanks to everyone that contributed feedback, suggestions, documentation and ideas for this initial release. Source and Documentation Contributors Brian Oliver and Patrick Peralta Global and Cross-Module Changes Initial Release The coherence-spring Module Initial Release. The coherence-spring-tests Module Initial Release. ",
+            "title": "Change History"
+        },
+        {
+            "location": "/dev/05_contributions",
+            "text": " We would love your contributions to the Coherence Spring project! ",
+            "title": "Overview"
+        },
+        {
+            "location": "/dev/05_contributions",
+            "text": " The details of how to contribute to Coherence Spring are detailed in CONTRIBUTING.md in the Coherence Spring GitHub repository. ",
+            "title": "Becoming a Contributor"
+        },
+        {
+            "location": "/dev/05_contributions",
+            "text": " Coherence Spring follows the Spring coding conventions . ",
+            "title": "Useful Information"
+        },
+        {
+            "location": "/dev/05_contributions",
+            "text": " The following sections outline the requirements for making contributions to the Coherence Spring project. Overview We would love your contributions to the Coherence Spring project! Becoming a Contributor The details of how to contribute to Coherence Spring are detailed in CONTRIBUTING.md in the Coherence Spring GitHub repository. Useful Information Coherence Spring follows the Spring coding conventions . ",
+            "title": "Contributing"
+        },
+        {
+            "location": "/dev/01_license",
+            "text": " Subject to the condition set forth below, permission is hereby granted to any person obtaining a copy of this software, associated documentation and/or data (collectively the \"Software\"), free of charge and under any and all copyright rights in the Software, and any and all patent rights owned or freely licensable by each licensor hereunder covering either (i) the unmodified Software as contributed to or provided by such licensor, or (ii) the Larger Works (as defined below), to deal in both (a) the Software, and (b) any piece of software and/or hardware listed in the lrgrwrks.txt file if one is included with the Software (each a \"Larger Work\" to which the Software is contributed by such licensors), without restriction, including without limitation the rights to copy, create derivative works of, display, perform, and distribute the Software and make, use, sell, offer for sale, import, export, have made, and have sold the Software and the Larger Work(s), and to sublicense the foregoing rights on either these or other terms. This license is subject to the following condition: The above copyright notice and either this complete permission notice or at a minimum a reference to the UPL must be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. ",
+            "title": "The Universal Permissive License (UPL), Version 1.0"
+        },
+        {
+            "location": "/dev/01_license",
+            "text": " Oracle licenses the Oracle Coherence Spring project under the The Universal Permissive License (UPL), Version 1.0 The Universal Permissive License (UPL), Version 1.0 Subject to the condition set forth below, permission is hereby granted to any person obtaining a copy of this software, associated documentation and/or data (collectively the \"Software\"), free of charge and under any and all copyright rights in the Software, and any and all patent rights owned or freely licensable by each licensor hereunder covering either (i) the unmodified Software as contributed to or provided by such licensor, or (ii) the Larger Works (as defined below), to deal in both (a) the Software, and (b) any piece of software and/or hardware listed in the lrgrwrks.txt file if one is included with the Software (each a \"Larger Work\" to which the Software is contributed by such licensors), without restriction, including without limitation the rights to copy, create derivative works of, display, perform, and distribute the Software and make, use, sell, offer for sale, import, export, have made, and have sold the Software and the Larger Work(s), and to sublicense the foregoing rights on either these or other terms. This license is subject to the following condition: The above copyright notice and either this complete permission notice or at a minimum a reference to the UPL must be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. ",
+            "title": "License"
+        },
+        {
+            "location": "/dev/04_issue-tracking",
+            "text": " The Issue Tracking system for the Coherence Spring project is hosted by github.com . It can be found here: https://github.com/coherence-community/coherence-spring/issues . ",
+            "title": "Issue Tracking"
+        },
+        {
+            "location": "/about/02_spring-boot",
+            "text": " The Spring Boot module of the Coherence Spring project builds upon the core Spring module and enhances it by providing dedicated auto-configuration support for Spring Boot as well support for Spring Boot configuration properties, and support for Spring Boot&#8217;s new ConfigData API to use Coherence as a source of configuration data. Getting your first Coherence powered Spring Boot application off the ground could not be easier. Create a basic Spring Boot app using start.spring.io . Add the Coherence Spring Boot Starter to your generated app&#8217;s pom.xml : <markup lang=\"xml\" title=\"Maven\" >&lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt; &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;3.3.7-SNAPSHOT&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt; &lt;artifactId&gt;coherence&lt;/artifactId&gt; &lt;version&gt;22.06.7&lt;/version&gt; &lt;/dependency&gt; &lt;/dependencies&gt; Instead of Coherence CE you can also specify the commercial version of Coherence. The minimum supported commercial version is Oracle Coherence 14.1.1.2206 Feature Pack. This will be enough to start up a default instance of Coherence with default settings. E.g., inject Coherence beans into your Spring Controllers, Services and other components: <markup lang=\"java\" >@CoherenceCache(\"myCacheName\") private NamedCache&lt;Long, String&gt; namedCache; In order to dive deeper, please see the Quickstart Guide , the To-do List Sample , and also refer to the reference guide . ",
+            "title": "Spring Boot"
+        },
+        {
+            "location": "/about/01_overview",
+            "text": " The Coherence Spring project provides mechanisms for application developers to integrate Oracle Coherence and Spring-based applications. Coherence Spring not only provides foundational support for Spring Framework and Spring Boot but also direct integrations for various Spring portfolio projects, including Spring Data and Spring Session . ",
+            "title": "Overview"
+        },
+        {
+            "location": "/about/01_overview",
+            "text": " power_settings_new Spring Boot Minimum Configuration arrow_circle_up Quickstart Chapter of the Reference Guide. format_list_bulleted To Do List Sample Application. ",
+            "title": "Get Started"
+        },
+        {
+            "location": "/about/01_overview",
+            "text": " text_snippet HTML Reference Documentation. text_snippet Single Page HTML Reference Documentation. picture_as_pdf PDF Reference Documentation. code Javadocs Browse the Coherence Spring JavaDocs. ",
+            "title": "Reference Documentation"
+        },
+        {
+            "location": "/dev/07_getting-help",
+            "text": " The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack here . ",
+            "title": "Slack"
+        },
+        {
+            "location": "/dev/07_getting-help",
+            "text": " Coherence Spring&#8217;s source code, including tests and examples, is hosted on GitHub. The source code repository is a great place to start looking for implementation tips. The source code is located at: https://github.com/coherence-community/coherence-spring-integration ",
+            "title": "Source Code, Tests and Examples"
+        },
+        {
+            "location": "/dev/07_getting-help",
+            "text": " If you find an issue with the Coherence Spring project or have an idea for a new feature the best place to start is with the Issue Tracking System. All issues, both current and past are publicly viewable. The Issue Tracking System can be found here: https://github.com/coherence-community/coherence-spring/issues ",
+            "title": "Issue Tracking System"
+        },
+        {
+            "location": "/dev/07_getting-help",
+            "text": " Alternatively Oracle Coherence customers can file Support Requests (SR) against the Coherence Product, clearly specifying that requests are for a Coherence Community project. ",
+            "title": "Oracle Support"
+        },
+        {
+            "location": "/dev/07_getting-help",
+            "text": " There are many avenues to receive help when using the Coherence Spring project. Here are a few options. Slack The Coherence Slack channel is the best place to start asking questions - should you need to. Join Slack here . Source Code, Tests and Examples Coherence Spring&#8217;s source code, including tests and examples, is hosted on GitHub. The source code repository is a great place to start looking for implementation tips. The source code is located at: https://github.com/coherence-community/coherence-spring-integration Issue Tracking System If you find an issue with the Coherence Spring project or have an idea for a new feature the best place to start is with the Issue Tracking System. All issues, both current and past are publicly viewable. The Issue Tracking System can be found here: https://github.com/coherence-community/coherence-spring/issues Oracle Support Alternatively Oracle Coherence customers can file Support Requests (SR) against the Coherence Product, clearly specifying that requests are for a Coherence Community project. ",
+            "title": "Getting Help"
+        }
+ ]
+}
