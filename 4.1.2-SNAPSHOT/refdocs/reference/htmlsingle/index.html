@@ -277,13 +277,18 @@ $(globalSwitch);
 <ul class="sectlevel2">
 <li><a href="#spring-session-introduction">5.1. Getting Started</a></li>
 <li><a href="#spring-session-pof">5.2. POF Serialization</a></li>
-<li><a href="#spring-session-sample">5.3. Spring Session Sample</a>
+<li><a href="#spring-session-sample">5.3. Spring Session Samples</a>
 <ul class="sectlevel3">
-<li><a href="#spring-session-sample-start-embedded-coherence">5.3.1. Start Spring Session with Embedded Coherence Instances</a></li>
-<li><a href="#spring-session-sample-start-remote-coherence">5.3.2. Spring Session with Remote Coherence Instances</a></li>
-<li><a href="#spring-session-sample-rest-endpoints">5.3.3. Accessing the REST Endpoints</a></li>
-<li><a href="#spring-session-sample-actuator">5.3.4. Spring Session Actuator</a></li>
-<li><a href="#spring-session-sample-docker">5.3.5. Generate Docker Image</a></li>
+<li><a href="#spring-session-with-spring-boot">5.3.1. Spring Session with Spring Boot</a>
+<ul class="sectlevel4">
+<li><a href="#spring-session-sample-start-embedded-coherence">5.3.1.1. Start Spring Session with Embedded Coherence Instances</a></li>
+<li><a href="#spring-session-sample-start-remote-coherence">5.3.1.2. Spring Session with Remote Coherence Instances</a></li>
+<li><a href="#spring-session-sample-rest-endpoints">5.3.1.3. Accessing the REST Endpoints</a></li>
+<li><a href="#spring-session-sample-actuator">5.3.1.4. Spring Session Actuator</a></li>
+<li><a href="#spring-session-sample-docker">5.3.1.5. Generate Docker Image</a></li>
+</ul>
+</li>
+<li><a href="#spring-session-with-plain-spring-framework">5.3.2. Spring Session with plain Spring Framework</a></li>
 </ul>
 </li>
 <li><a href="#spring-session-expiration-strategies">5.4. Session Expiration Strategies</a></li>
@@ -5324,12 +5329,16 @@ may be necessary.
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-session-sample"><a class="anchor" href="#spring-session-sample"></a>5.3. Spring Session Sample</h3>
+<h3 id="spring-session-sample"><a class="anchor" href="#spring-session-sample"></a>5.3. Spring Session Samples</h3>
 <div class="paragraph">
-<p>This Coherence Spring source code repository provides a dedicated example application, illustrating the usage of
-Spring Session and <a href="https://spring.io/projects/spring-security">Spring Security</a> using
-<a href="https://spring.io/projects/spring-boot">Spring Boot</a>.</p>
+<p>This Coherence Spring source code repository provides 2 dedicated example applications, illustrating the usage of
+Spring Session with a Coherence-backed session repository. The first example application uses
+<a href="https://spring.io/projects/spring-boot">Spring Boot</a> as well as
+<a href="https://spring.io/projects/spring-security">Spring Security</a>. The second example application uses plain Spring Framework
+(without Spring Boot) and deploys as a WAR file to a Servlet container (e.g. Tomcat and Jetty).</p>
 </div>
+<div class="sect3">
+<h4 id="spring-session-with-spring-boot"><a class="anchor" href="#spring-session-with-spring-boot"></a>5.3.1. Spring Session with Spring Boot</h4>
 <div class="paragraph">
 <p>The example application show-cases 2 use-cases:</p>
 </div>
@@ -5372,8 +5381,8 @@ An Authentication failure, on the other hand, produces a non-2xx HTTP status wit
 endpoint that responds to a <code>GET</code> request to the URL <code>/hello</code> that returns the string <code>Hello Coherence</code>. All endpoints
 require an authenticated user using the session cookie or the <code>username</code> and <code>password</code>.</p>
 </div>
-<div class="sect3">
-<h4 id="spring-session-sample-start-embedded-coherence"><a class="anchor" href="#spring-session-sample-start-embedded-coherence"></a>5.3.1. Start Spring Session with Embedded Coherence Instances</h4>
+<div class="sect4">
+<h5 id="spring-session-sample-start-embedded-coherence"><a class="anchor" href="#spring-session-sample-start-embedded-coherence"></a>5.3.1.1. Start Spring Session with Embedded Coherence Instances</h5>
 <div class="listingblock">
 <div class="title">Build the Coherence Server instance</div>
 <div class="content">
@@ -5392,10 +5401,10 @@ require an authenticated user using the session cookie or the <code>username</co
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="spring-session-sample-start-remote-coherence"><a class="anchor" href="#spring-session-sample-start-remote-coherence"></a>5.3.2. Spring Session with Remote Coherence Instances</h4>
+<div class="sect4">
+<h5 id="spring-session-sample-start-remote-coherence"><a class="anchor" href="#spring-session-sample-start-remote-coherence"></a>5.3.1.2. Spring Session with Remote Coherence Instances</h5>
 <div class="paragraph">
-<p>In this variation of the examle, we will start 1 central Coherence Server and the application will access that remote
+<p>In this variation of the example, we will start 1 central Coherence Server and the application will access that remote
 Coherence instance as a Coherence*Extend client.</p>
 </div>
 <div class="listingblock">
@@ -5444,8 +5453,8 @@ can now remove the relevant Maven dependencies:</p>
 <p>from the server application module <code>spring-session-demo-server</code> and the application will still work.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="spring-session-sample-rest-endpoints"><a class="anchor" href="#spring-session-sample-rest-endpoints"></a>5.3.3. Accessing the REST Endpoints</h4>
+<div class="sect4">
+<h5 id="spring-session-sample-rest-endpoints"><a class="anchor" href="#spring-session-sample-rest-endpoints"></a>5.3.1.3. Accessing the REST Endpoints</h5>
 <div class="listingblock">
 <div class="title">Log into the application using <a href="https://curl.se/">CURL</a></div>
 <div class="content">
@@ -5466,8 +5475,8 @@ can now remove the relevant Maven dependencies:</p>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="spring-session-sample-actuator"><a class="anchor" href="#spring-session-sample-actuator"></a>5.3.4. Spring Session Actuator</h4>
+<div class="sect4">
+<h5 id="spring-session-sample-actuator"><a class="anchor" href="#spring-session-sample-actuator"></a>5.3.1.4. Spring Session Actuator</h5>
 <div class="paragraph">
 <p>Using Spring Boot&#8217;s Actuator endpoints, we can introspect the session using the
 <a href="https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#sessions">Sessions actuator</a> at
@@ -5483,8 +5492,8 @@ can now remove the relevant Maven dependencies:</p>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="spring-session-sample-docker"><a class="anchor" href="#spring-session-sample-docker"></a>5.3.5. Generate Docker Image</h4>
+<div class="sect4">
+<h5 id="spring-session-sample-docker"><a class="anchor" href="#spring-session-sample-docker"></a>5.3.1.5. Generate Docker Image</h5>
 <div class="paragraph">
 <p>If you prefer to use Docker, you can create an image using:</p>
 </div>
@@ -5493,6 +5502,161 @@ can now remove the relevant Maven dependencies:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ mvn spring-boot:build-image -pl samples/spring-session-demo/spring-session-demo-app -Dspring-boot.build-image.imageName=coherence/spring_session_demo</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring-session-with-plain-spring-framework"><a class="anchor" href="#spring-session-with-plain-spring-framework"></a>5.3.2. Spring Session with plain Spring Framework</h4>
+<div class="paragraph">
+<p>While most new Spring applications are written using Spring Boot, there are certainly many applications that use
+the Spring Framework, only. Therefore, the following example uses plain Spring Framework without any Spring Boot and
+deploys as a WAR file to a Servlet container such as Tomcat or Jetty. The application will expose one endpoint that
+displays a simple counter that is incremented with each request and stored in the HTTP Session that is in return backed
+by Coherence.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Coherence Spring <code>4.1.2-SNAPSHOT</code> is using the Jakarta EE namespace. For Java EE (<code>javax.*</code>), please use
+Coherence Spring <code>3.3.x</code>. Therefore, chose the appropriate version of the Servlet container accordingly.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This example uses a separate Coherence server instance to which the application will connect to using Coherence*Extend.
+Furthermore, <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913">Coherence POF</a>
+is used for serialization. We will re-use the Coherence server from the <code>spring-session-demo-server</code> Maven module. This
+will start 1 central Coherence server instance and the application will access that remote Coherence instance as a
+Coherence*Extend client. In order to build the server application, execute the following in the root directory of the
+Coherence Spring source code repository:</p>
+</div>
+<div class="listingblock">
+<div class="title">Build the Coherence Server instance</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we will build the client application:</p>
+</div>
+<div class="listingblock">
+<div class="title">Build the Client Application</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-war</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Coherence-specific configuration of the client is fairly straight-forward and mostly
+contained in the Spring configuration class <code>CoherenceSessionConfig</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">CoherenceSessionConfig.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Configuration
+ @EnableCoherence                                                        <i class="conum" data-value="1"></i><b>(1)</b>
+ @EnableCoherenceHttpSession(                                            <i class="conum" data-value="2"></i><b>(2)</b>
+     cache = "spring:session:sessions",
+     flushMode = FlushMode.ON_SAVE,
+     sessionTimeoutInSeconds = 1800,
+     useEntryProcessor = false
+ )
+ public class CoherenceSessionConfig
+        extends AbstractHttpSessionApplicationInitializer {              <i class="conum" data-value="3"></i><b>(3)</b>
+     @Bean
+     public SessionConfigurationBean sessionConfigurationBeanDefault() { <i class="conum" data-value="4"></i><b>(4)</b>
+         final SessionConfigurationBean sessionConfigurationBean =
+             new SessionConfigurationBean();
+         sessionConfigurationBean.setType(SessionType.CLIENT);           <i class="conum" data-value="5"></i><b>(5)</b>
+         sessionConfigurationBean.setConfig("remote-cache-config.xml");  <i class="conum" data-value="6"></i><b>(6)</b>
+         return sessionConfigurationBean;
+     }
+ }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enable Coherence Spring</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Enable the Spring Session support for Coherence + you can specify several optional parameters</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Extend <code>AbstractHttpSessionApplicationInitializer</code> to register the <code>springSessionRepositoryFilter</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Create a <code>SessionConfigurationBean</code> to configure the Coherence Session</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Set the session type to <code>CLIENT</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Set the Coherence configuration file to <code>remote-cache-config.xml</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The Coherence-specific <code>remote-cache-config.xml</code> configures the <code>ExtendTcpCacheService</code> and creates a cache mapping
+for the cache <code>spring:session:sessions</code> to the <code>remote-cache-scheme</code> that uses the <code>ExtendTcpCacheService</code>.</p>
+</div>
+<div class="paragraph">
+<p>Now we are ready to run the application. First, we will start the server. The server application uses Spring Boot and by
+activating a custom Spring Boot profile, Coherence will be started with POF serialization enabled:</p>
+</div>
+<div class="listingblock">
+<div class="title">coherence-cache-config-pof.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml"> &lt;cache-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
+               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config coherence-cache-config.xsd"&gt;
+   &lt;defaults&gt;
+     &lt;serializer&gt;pof&lt;/serializer&gt;
+   &lt;/defaults&gt;
+ ...</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Run the Server application with the POF profile</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-4.1.2-SNAPSHOT.jar --spring.profiles.active=pof</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For the client application, deploy the generated WAR file <code>spring-session-demo.war</code> in
+<code>samples/spring-session-demo/spring-session-demo-war/target</code> to a Servlet container, for example Tomcat 10.1.18.</p>
+</div>
+<div class="listingblock">
+<div class="title">Deploy WAR file to Tomcat 10.1.18</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-10.1.18/webapps</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application should start up and connect to the Coherence server instance. You can then access the application at</p>
+</div>
+<div class="paragraph">
+<p><code><a href="http://localhost:8080/spring-session-demo/hello" class="bare">localhost:8080/spring-session-demo/hello</a></code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/spring-session-demo-war.png" alt="Spring Session Demo" width="50%">
+</div>
+<div class="title">Figure 3. Spring Session Demo</div>
+</div>
+<div class="paragraph">
+<p>The invoked <code>HelloController</code> will display a simple counter that is incremented with each request and whose value is
+stored in the HTTP Session.</p>
 </div>
 </div>
 </div>
@@ -7884,7 +8048,7 @@ there are several additional examples that are not part of this repository but t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-30 18:59:34 UTC
+Last updated 2024-01-31 03:32:10 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
