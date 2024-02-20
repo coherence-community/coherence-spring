@@ -16,7 +16,6 @@ import com.oracle.bedrock.runtime.coherence.options.LocalHost;
 import com.oracle.bedrock.runtime.java.options.IPv4Preferred;
 import com.oracle.bedrock.runtime.java.options.SystemProperty;
 import com.oracle.bedrock.runtime.options.DisplayName;
-import com.oracle.coherence.grpc.proxy.GrpcServerController;
 import com.oracle.coherence.spring.configuration.annotation.CoherenceCache;
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.configuration.session.ClientSessionConfigurationBean;
@@ -79,7 +78,6 @@ public class GrpcSessionBeanTests {
 
 	@AfterAll
 	static void cleanup() {
-		GrpcServerController.INSTANCE.stop();
 		if (server != null) {
 			server.close();
 		}
