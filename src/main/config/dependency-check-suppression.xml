@@ -71,4 +71,12 @@
         ]]></notes>
         <vulnerabilityName>CVE-2023-6481</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        Spring Boot - 2.7.18
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-22243</vulnerabilityName>
+    </suppress>
+
 </suppressions>
