@@ -11,7 +11,7 @@ jobs:
       matrix:
         branch: [main, 3.3.x]
     steps:
-      - uses: benc-uk/workflow-dispatch@v121
+      - uses: benc-uk/workflow-dispatch@v1.2.3
         with:
           workflow: CI Coherence Spring
           ref: ${{ matrix.branch }}
