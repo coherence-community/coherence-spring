@@ -151,7 +151,7 @@
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>24.03</coherence.version>
 		<coherence-hibernate.version>3.0.1</coherence-hibernate.version>
-		<classgraph.version>4.8.165</classgraph.version>
+		<classgraph.version>4.8.168</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>6.4.4.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
