@@ -79,4 +79,11 @@
         <vulnerabilityName>CVE-2024-22243</vulnerabilityName>
     </suppress>
 
+    <suppress>
+        <notes><![CDATA[
+        spring-security-core-5.8.10.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-22257</vulnerabilityName>
+    </suppress>
+
 </suppressions>
