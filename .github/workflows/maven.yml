@@ -48,6 +48,7 @@ jobs:
           SONAR_TOKEN: "${{secrets.SONAR_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+          NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
       - name: Build and test with Maven - ${{ matrix.java-version }}
         if: "matrix.java-version != 17"
         run: |
@@ -60,13 +61,14 @@ jobs:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+          NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
       - name: Deploy Snapshots
         if: "matrix.java-version == 17"
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-        run: ./mvnw deploy -B -Pspring -Powasp --settings .mvn/settings.xml
+        run: ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
           find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
