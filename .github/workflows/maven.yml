@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -Pspring-repo -Pcoverage --settings .mvn/settings.xml
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -DautoUpdate=false -Pspring-repo -Pcoverage --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
@@ -52,7 +52,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Pspring -Powasp,jdk${{ matrix.java-version }} --settings .mvn/settings.xml
+          ./mvnw clean install -B -Pspring -Powasp,jdk${{ matrix.java-version }} -DautoUpdate=false --settings .mvn/settings.xml
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
