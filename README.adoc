@@ -1,5 +1,5 @@
-:main-release-version: 4.1.2
-:main-snapshot-version: 4.1.3-SNAPSHOT
+:main-release-version: 4.1.3
+:main-snapshot-version: 4.1.4-SNAPSHOT
 :website: https://spring.coherence.community/
 :3x-release-version: 3.3.6
 :3x-snapshot-version: 3.3.7-SNAPSHOT
