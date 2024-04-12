@@ -21,4 +21,12 @@
         ]]></notes>
         <cve>CVE-2023-48795</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        (Medium) Via Coherence 24.03
+        file name: netty-codec-http-4.1.107.Final.jar
+        ]]></notes>
+        <cve>CVE-2024-29025</cve>
+    </suppress>
 </suppressions>
