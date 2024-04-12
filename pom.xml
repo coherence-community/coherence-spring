@@ -581,9 +581,9 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>jdk20</id>
+			<id>jdk21</id>
 			<properties>
-				<java.version>20</java.version>
+				<java.version>21</java.version>
 			</properties>
 		</profile>
 		<profile>
