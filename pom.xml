@@ -279,6 +279,11 @@
 				<artifactId>bcprov-jdk18on</artifactId>
 				<version>${bcprov.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
