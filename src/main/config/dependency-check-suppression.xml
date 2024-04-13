@@ -60,23 +60,9 @@
 
     <suppress>
         <notes><![CDATA[
-        From grpc-core & grpc-protobuf 1.57.1
-        ]]></notes>
-        <vulnerabilityName>CVE-2023-44487</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
         logback-core-1.2.12.jar, should be addressed with next Spring Boot release (Dec 21, 2023)
         ]]></notes>
         <vulnerabilityName>CVE-2023-6481</vulnerabilityName>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        Spring Boot - 2.7.18
-        ]]></notes>
-        <vulnerabilityName>CVE-2024-22243</vulnerabilityName>
     </suppress>
 
     <suppress>
