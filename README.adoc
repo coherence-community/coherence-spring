@@ -44,7 +44,7 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 |===
 |Coherence Spring | Java       | Coherence CE | Spring | Boot | Jakarta | Git Branch/Tag
 
-|*4.1.x*          | `17`, `21` | `23.09`      | `6.x` | `3.x` | ✔       | `main`
+|*4.1.x*          | `17`, `21` | `24.03`      | `6.x` | `3.x` | ✔       | `main`
 |*3.3.x*          | `11`       | `22.06`      | `5.x` | `2.x` |         | `3.3.x`
 |===
 
