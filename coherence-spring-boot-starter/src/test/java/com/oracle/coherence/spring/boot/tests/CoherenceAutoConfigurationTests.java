@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -54,6 +54,13 @@ public class CoherenceAutoConfigurationTests {
 			.withConfiguration(AutoConfigurations.of(CoherenceAutoConfiguration.class))
 			.withConfiguration(AutoConfigurations.of(CacheAutoConfiguration.class))
 			.withInitializer(new ConfigDataApplicationContextInitializer())
+			.withSystemProperties(
+					"coherence.localhost=127.0.0.1",
+					"coherence.ttl=0",
+					"java.net.preferIPv4Stack=true",
+					"coherence.wka=127.0.0.1",
+					"coherence.cluster=CoherenceAutoConfigurationTestsCluster"
+					)
 			.withInitializer(
 					(context) -> {
 						ConfigurableConversionService conversionService = new ApplicationConversionService();
@@ -63,6 +70,7 @@ public class CoherenceAutoConfigurationTests {
 
 	@Test
 	public void testDefaultCacheManagerExists() {
+
 		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutCacheManager.class)
 		.run((context) -> {
 			assertThat(context).hasSingleBean(CoherenceServer.class);
@@ -168,6 +176,13 @@ public class CoherenceAutoConfigurationTests {
 	public void testSpringSystemPropertyResolverForSpringBoot() {
 		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
 				.withSystemProperties("spring.profiles.active=coherenceNativePropertiesTests")
+				.withSystemProperties(
+						"coherence.properties.coherence.localhost=127.0.0.1",
+						"coherence.properties.coherence.ttl=0",
+						"coherence.properties.java.net.preferIPv4Stack=true",
+						"coherence.properties.coherence.wka=127.0.0.1",
+						"coherence.properties.coherence.cluster=CoherenceAutoConfigurationTestsCluster"
+				)
 				.run((context) -> {
 					final SystemPropertyResolver systemPropertyResolver = SystemPropertyResolver.getInstance();
 					assertThat(systemPropertyResolver).isNotNull();

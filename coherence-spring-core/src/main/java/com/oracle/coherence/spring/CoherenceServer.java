@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.tangosol.coherence.config.Config;
-import com.tangosol.net.CacheFactory;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import org.apache.commons.logging.Log;
@@ -136,12 +135,12 @@ public class CoherenceServer implements InitializingBean, SmartLifecycle, Applic
 		if (logger.isInfoEnabled()) {
 			logger.info("Stopping Coherence");
 		}
+
 		Coherence.closeAll();
 
 		if (logger.isInfoEnabled()) {
 			logger.info("Stopped Coherence");
 		}
-		CacheFactory.getCluster().shutdown();
 	}
 
 	public Duration getStartupTimeout() {
