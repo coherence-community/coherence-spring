@@ -1,0 +1,36 @@
+name: Simple CI Coherence Spring
+run-name: CI with Coherence ${{ inputs.coherence-version }} and JDK ${{ matrix.java-version }}
+on:
+  workflow_dispatch:
+    inputs:
+      coherence-version:
+        description: 'Coherence Version'
+        required: false
+        default: '24.03'
+jobs:
+  build:
+    if: github.repository_owner == 'coherence-community'
+    strategy:
+      matrix:
+        java-version: [ 17, 21 ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java-version }}
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven2-
+      - name: Build and test with Maven - ${{ matrix.java-version }}
+        run: |
+          ./mvnw clean install -B -Dcoherence.version=${{ inputs.coherence-version }} -Pspring,jdk${{ matrix.java-version }} -DautoUpdate=false --settings .mvn/settings.xml
+      - name: Clean Maven cache
+        run: |
+          find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
