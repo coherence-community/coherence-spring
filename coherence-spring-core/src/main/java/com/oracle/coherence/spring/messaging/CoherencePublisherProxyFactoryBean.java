@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -21,9 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.oracle.coherence.spring.annotation.CoherencePublisher;
 import com.oracle.coherence.spring.annotation.SessionName;
@@ -49,6 +46,8 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -113,7 +112,8 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 
 	@Nullable
 	@Override
-	public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
+	public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
+		Assert.notNull(invocation, "The MethodInvocation must not be null.");
 		Method method = invocation.getMethod();
 		if (AopUtils.isToStringMethod(method)) {
 			return "CoherencePublisher proxy for service interface [" + this.serviceInterface + "]";
@@ -352,7 +352,7 @@ public class CoherencePublisherProxyFactoryBean implements FactoryBean<Object>, 
 			}
 		}
 
-		@Nonnull
+		@NonNull
 		private Publisher<Object> getPublisher(String topicName, String sessionName) {
 			TopicKey key = new TopicKey(topicName, sessionName);
 			return this.publisherMap.compute(key, (k, publisher) -> {
