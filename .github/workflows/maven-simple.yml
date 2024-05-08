@@ -1,5 +1,5 @@
 name: Simple CI Coherence Spring
-run-name: CI with Coherence ${{ inputs.coherence-version }} and JDK ${{ matrix.java-version }}
+run-name: CI with Coherence ${{ inputs.coherence-version }}
 on:
   workflow_dispatch:
     inputs:
