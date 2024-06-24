@@ -616,6 +616,7 @@
 							<suppressionFiles>
 								<suppressionFile>${coherence.spring.root}/src/main/config/dependency-check-suppression.xml</suppressionFile>
 							</suppressionFiles>
+							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
 						</configuration>
 						<executions>
 							<execution>
