@@ -13,7 +13,7 @@ jobs:
     if: github.repository_owner == 'coherence-community'
     strategy:
       matrix:
-        java-version: [ 11, 17 ]
+        java-version: [ 11, 17, 21 ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.2
