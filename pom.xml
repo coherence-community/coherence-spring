@@ -581,6 +581,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>jdk21</id>
+			<properties>
+				<java.version>21</java.version>
+			</properties>
+		</profile>
+		<profile>
 			<id>owasp</id>
 			<build>
 				<plugins>
