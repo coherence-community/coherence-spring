@@ -44,11 +44,11 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 
 [width="75%", cols="1,1,1,1,1,^1,1"]
 |===
-|Coherence Spring | Java       | Coherence CE | Spring | Boot | Jakarta | Git Branch/Tag
+|Coherence Spring | Java            | Coherence CE | Spring| Boot    | Jakarta | Git Branch/Tag
 
-|*4.2.x*          | `17`, `21` | `24.03`      | `6.x` | `3.3.x` | ✔       | `4.2.x`
-|*4.1.x*          | `17`, `21` | `24.03`      | `6.x` | `3.2.x` | ✔       | `main`
-|*3.3.x*          | `11`       | `22.06`      | `5.x` | `2.x`   |         | `3.3.x`
+|*4.2.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.3.x` | ✔       | `4.2.x`
+|*4.1.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.2.x` | ✔       | `main`
+|*3.3.x*          | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.3.x`
 |===
 
 == Quick Start
