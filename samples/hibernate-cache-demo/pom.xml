@@ -21,7 +21,7 @@
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
 
 	<properties>
-		<coherence-hibernate.version>2.3.3</coherence-hibernate.version>
+		<coherence-hibernate.version>2.3.5</coherence-hibernate.version>
 		<coherence.spring.root>${basedir}/../..</coherence.spring.root>
 	</properties>
 
