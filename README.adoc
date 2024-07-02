@@ -2,8 +2,8 @@
 :main-snapshot-version: 4.1.4-SNAPSHOT
 :website: https://spring.coherence.community/
 :42x-snapshot-version: 4.2.0-SNAPSHOT
-:3x-release-version: 3.3.6
-:3x-snapshot-version: 3.3.7-SNAPSHOT
+:3x-release-version: 3.4.0
+:3x-snapshot-version: 3.4.1-SNAPSHOT
 
 = Welcome to the Oracle Coherence Spring Project
 
@@ -48,7 +48,7 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 
 |*4.2.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.3.x` | ✔       | `4.2.x`
 |*4.1.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.2.x` | ✔       | `main`
-|*3.3.x*          | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.3.x`
+|*3.4.x*          | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.x`
 |===
 
 == Quick Start
