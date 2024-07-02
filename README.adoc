@@ -1,11 +1,13 @@
-:4x-version: 4.0.0-SNAPSHOT
-:snapshot-version: 3.3.2-SNAPSHOT
+:main-release-version: 4.1.3
+:main-snapshot-version: 4.1.4-SNAPSHOT
 :website: https://spring.coherence.community/
-:releaseVersion: 3.3.1
+:42x-snapshot-version: 4.2.0-SNAPSHOT
+:3x-release-version: 3.3.6
+:3x-snapshot-version: 3.3.7-SNAPSHOT
 
 = Welcome to the Oracle Coherence Spring Project
 
-image:https://github.com/coherence-community/coherence-spring/workflows/CI%20Coherence%20Spring/badge.svg[CI Coherence Spring,link=https://github.com/coherence-community/coherence-spring/actions]
+image:https://github.com/coherence-community/coherence-spring/actions/workflows/maven.yml/badge.svg?branch=main[CI Coherence Spring,link=https://github.com/coherence-community/coherence-spring/actions]
 image:https://sonarcloud.io/api/project_badges/measure?project=coherence-community_coherence-spring&metric=alert_status[Quality Gate Status,link=https://sonarcloud.io/summary/new_code?id=coherence-community_coherence-spring]
 image:https://img.shields.io/badge/Coherence-Join%20Slack-brightgreen[Chat with us on slack,link=https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw]
 image:https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence[Stack Exchange questions,link=https://stackoverflow.com/questions/tagged/oracle-coherence]
@@ -20,15 +22,20 @@ Coherence Spring also provides a set of components to aid in the integration of 
 - Spring Boot Config API + Spring Cloud Config Server
 - Spring Session
 
+Furthermore, the project also provides various examples to show-case the integration of Oracle Coherence into Spring-based
+projects.
+
 == Documentation
 
 Detailed project documentation is available on the Coherence Spring website. This includes the reference documentation in various formats (Multi-page/Single-page HTML, PDF), as well as extensive JavaDoc for the Coherence Spring source code.
 
 [width="75%"]
 |=======
-|*{releaseVersion}* | {website}{releaseVersion}[Website] |{website}{releaseVersion}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{releaseVersion}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{releaseVersion}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{releaseVersion}/refdocs/api/index.html[API Doc.]
-|*{snapshot-version}* | {website}{snapshot-version}[Website] |{website}{snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{snapshot-version}/refdocs/api/index.html[API Doc.]
-|*{4x-version}* | {website}{4x-version}[Website] |{website}{4x-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{4x-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{4x-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{4x-version}/refdocs/api/index.html[API Doc.]
+|*{42x-snapshot-version}*  | {website}{42x-snapshot-version}[Website] |{website}{42x-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{42x-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{42x-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{42x-snapshot-version}/refdocs/api/index.html[API Doc.]
+|*{main-release-version}*  | {website}{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{main-snapshot-version}* | {website}{main-snapshot-version}[Website]|{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
+|*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
+|*{3x-snapshot-version}*   | {website}{3x-snapshot-version}[Website]  |{website}{3x-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML]   |{website}{3x-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]   | {website}{3x-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]   | {website}{3x-snapshot-version}/refdocs/api/index.html[API Doc.]
 |=======
 
 NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
@@ -38,21 +45,21 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 
 [width="75%", cols="1,1,1,1,1,^1,1"]
 |===
-|Coherence Spring | Java       | Coherence CE | Spring | Boot | Jakarta | Git Branch/Tag
+|Coherence Spring | Java            | Coherence CE | Spring| Boot    | Jakarta | Git Branch/Tag
 
-|*4.1.x*          | `17`, `21` | `23.09`      | `6.x` | `3.x` | ✔       | `main`
-|*4.0.x*          | `17`       | `23.03`      | `6.x` | `3.x` | ✔       | `main`
-|*3.3.x*          | `11`       | `22.06`      | `5.x` | `2.x` |         | `3.3.x`
+|*4.2.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.3.x` | ✔       | `4.2.x`
+|*4.1.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.2.x` | ✔       | `main`
+|*3.3.x*          | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.3.x`
 |===
 
 == Quick Start
 
 In order to get started quickly, please read the reference guide as it provides a detailed
-https://spring.coherence.community/{snapshot-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter].
+https://spring.coherence.community/{main-release-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter] (v{main-release-version}).
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
-https://github.com/coherence-community/coherence-spring/tree/master/samples[samples] module.
+https://github.com/coherence-community/coherence-spring/tree/main/samples[samples] module.
 
 == Building from Source
 
@@ -85,7 +92,7 @@ Build the entire project using https://maven.apache.org/[Maven]:
 
 [source,bash]
 ----
-./mvnw clean package -Pspring
+./mvnw clean package
 ----
 
 ==== Offline Builds
@@ -96,28 +103,28 @@ you may have to provide additional command line arguments:
 
 [source,bash]
 ----
-./mvnw clean package -Pspring -DargLine="-Dcoherence.localhost=127.0.0.1 -Djava.net.preferIPv4Stack=true"
+./mvnw clean package -DargLine="-Dcoherence.localhost=127.0.0.1 -Djava.net.preferIPv4Stack=true"
 ----
 
 === Build the Documentation
 
 [source,bash]
 ----
-./mvnw clean package -pl coherence-spring-docs -Pspring
+./mvnw clean package -pl coherence-spring-docs
 ----
 
 === Build the project website
 
 [source,bash]
 ----
-./mvnw clean install -pl coherence-spring-site -Pspring
+./mvnw clean install -pl coherence-spring-site
 ----
 
 === Deploy the project website
 
 [source,bash]
 ----
-./mvnw deploy -pl coherence-spring-site -Pspring
+./mvnw deploy -pl coherence-spring-site
 ----
 
 == Getting Support
