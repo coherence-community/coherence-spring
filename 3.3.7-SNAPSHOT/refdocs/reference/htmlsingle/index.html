@@ -828,7 +828,7 @@ dependency as well as the desired dependency for Coherence.</p>
  &lt;dependency&gt;
      &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
      &lt;artifactId&gt;coherence&lt;/artifactId&gt;                     <i class="conum" data-value="2"></i><b>(2)</b>
-     &lt;version&gt;22.06.7&lt;/version&gt;
+     &lt;version&gt;22.06.8&lt;/version&gt;
  &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -942,14 +942,14 @@ Oracle Coherence as transitive dependency. For example, to use Coherence CE spec
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
     &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-    &lt;version&gt;22.06.7&lt;/version&gt;
+    &lt;version&gt;22.06.8&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:22.06.7")</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.ce:coherence:22.06.8")</code></pre>
 </div>
 </div>
 </div>
@@ -1217,8 +1217,8 @@ own set of annotations. The following annotations are available:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Using these annotations, you can inject any Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> in any situation including constructors.</p>
+<p>Using these annotations, you can inject any Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> in any situation including constructors.</p>
 </div>
 <div class="paragraph">
 <p>Furthermore, the annotations also give you some added conveniences such as the ability to specify the name of the cache, or
@@ -1459,10 +1459,10 @@ private AsyncNamedMap&lt;String, Person&gt; map;</code></pre>
 <div class="sect3">
 <h4 id="coherence-spring-dependency-injection-views"><a class="anchor" href="#coherence-spring-dependency-injection-views"></a>3.6.3. Injecting Views (CQC)</h4>
 <div class="paragraph">
-<p>View (or <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/cache/ContinuousQueryCache.html">ContinuousQueryCache</a>) beans can be injected by
+<p>View (or <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/cache/ContinuousQueryCache.html">ContinuousQueryCache</a>) beans can be injected by
 specifying the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/View.html">@View</a> annotation at the injection
 point. A view is a sub-set of the data in an underlying cache, controlled by a
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/Filter.html">Filter</a>.</p>
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/Filter.html">Filter</a>.</p>
 </div>
 <div class="listingblock">
 <div class="title">Injecting an AsyncNamedMap</div>
@@ -1483,7 +1483,7 @@ of a <code>ContinuousQueryCache</code>.</td>
 </div>
 <div class="paragraph">
 <p>In the above example, no <code>Filter</code> has been specified, so the default behaviour is to use an
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/filter/AlwaysFilter.html">AlwaysFilter</a>. This means that the view will contain all the
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/filter/AlwaysFilter.html">AlwaysFilter</a>. This means that the view will contain all the
 entries from the underlying cache (typically a distributed cache). As a <code>ContinuousQueryCache</code> will hold keys and values
 locally in deserialized form, this can often be a better approach than using a replicated cache.</p>
 </div>
@@ -1573,7 +1573,7 @@ The Coherence reference guide has an in-depth chapter on CohQL and more details 
 <div class="paragraph">
 <p>Other built-in or custom filter binding annotations can be combined as well and multiple filter-binding annotations can
 be added to the same injection point to build up more complex views. The Filter instances produced from each filter
-binding annotation will all be collected together in an <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/filter/AllFilter.html">AllFilter</a>,
+binding annotation will all be collected together in an <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/filter/AllFilter.html">AllFilter</a>,
 which will logically combine them together.</p>
 </div>
 </div>
@@ -1735,7 +1735,7 @@ public class MyBean {
 <div class="sect3">
 <h4 id="coherence-spring-dependency-injection-namedtopic"><a class="anchor" href="#coherence-spring-dependency-injection-namedtopic"></a>3.6.5. Injecting NamedTopic</h4>
 <div class="paragraph">
-<p>Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a>
+<p>Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a>
 instances can be injected as beans in Spring applications.</p>
 </div>
 <div class="paragraph">
@@ -1797,7 +1797,7 @@ public class SomeBean {
 <div class="sect5">
 <h6 id="specify-the-session-name"><a class="anchor" href="#specify-the-session-name"></a>Specify the Session Name</h6>
 <div class="paragraph">
-<p>Whilst most applications probably use a single Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/Session.html">Session</a> there are uses-cases where an application may
+<p>Whilst most applications probably use a single Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/Session.html">Session</a> there are uses-cases where an application may
 have multiple sessions. In this case, when injecting a <code>NamedTopic</code> the specific session can be specified
 by annotating the injection point with <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/SessionName.html">@SessionName</a>.</p>
 </div>
@@ -1839,7 +1839,7 @@ public class OrderProcessor {
 <h5 id="injecting-a-namedtopic-publisher"><a class="anchor" href="#injecting-a-namedtopic-publisher"></a>3.6.5.2. Injecting a NamedTopic Publisher</h5>
 <div class="paragraph">
 <p>If application code only needs to publish messages to a Coherence <code>NamedTopic</code> then instead of injecting a
-<code>NamedTopic</code> bean, a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Publisher.html">Publisher</a> bean can be injected.</p>
+<code>NamedTopic</code> bean, a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Publisher.html">Publisher</a> bean can be injected.</p>
 </div>
 <div class="paragraph">
 <p>The simplest way to inject a <code>Publisher</code> is just to annotate the injection point of type <code>Publisher</code> with <code>@Inject</code>,
@@ -1907,7 +1907,7 @@ private Publisher&lt;Order&gt; orders;</code></pre>
 <h5 id="injecting-a-namedtopic-subscriber"><a class="anchor" href="#injecting-a-namedtopic-subscriber"></a>3.6.5.3. Injecting a NamedTopic Subscriber</h5>
 <div class="paragraph">
 <p>If application code only needs to subscribe to messages from a Coherence <code>NamedTopic</code> then instead of injecting a
-<code>NamedTopic</code> bean, a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> bean can be injected.</p>
+<code>NamedTopic</code> bean, a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> bean can be injected.</p>
 </div>
 <div class="paragraph">
 <p>The simplest way to inject a <code>Subscriber</code> is just to annotate the injection point of type <code>Subscriber</code> with <code>@Inject</code>,
@@ -1984,10 +1984,10 @@ events that can be used by applications to respond to data changes and other act
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/MapEvent.html">MapEvents</a> which are subscribed to using a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/MapListener.html">MapListener</a></p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/MapEvent.html">MapEvents</a> which are subscribed to using a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/MapListener.html">MapListener</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/Event.html">Events</a>, which are subscribed to using an <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a></p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/Event.html">Events</a>, which are subscribed to using an <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a></p>
 </li>
 </ul>
 </div>
@@ -2053,14 +2053,14 @@ void onEvent(CoherenceLifecycleEvent event) {
 <h4 id="coherence-spring-events-mapevent-listeners"><a class="anchor" href="#coherence-spring-events-mapevent-listeners"></a>3.7.1. MapEvent Listeners</h4>
 <div class="paragraph">
 <p>Listening for changes to data in Coherence is a common use case in applications. Typically, this involves creating an
-implementation of a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/MapListener.html">MapListener</a> and adding that listener to a
+implementation of a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/MapListener.html">MapListener</a> and adding that listener to a
 <code>NamedMap</code> or <code>NamedCache</code>. Using Coherence Spring makes this much simpler by just using Spring beans with suitably
 annotated observer methods that will receive the respective events.</p>
 </div>
 <div class="sect4">
 <h5 id="mapevent-observer-methods"><a class="anchor" href="#mapevent-observer-methods"></a>3.7.1.1. MapEvent Observer Methods</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/MapEvent.html">MapEvent</a> observer method is a method on a Spring bean that is
+<p>A <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/MapEvent.html">MapEvent</a> observer method is a method on a Spring bean that is
 annotated with <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
 The annotated method must have a <code>void</code> return type and must take a single method parameter of type <code>MapEvent</code>, typically
 this has the generic types of the underlying map/cache key and value.</p>
@@ -2442,7 +2442,7 @@ the following annotations:</p>
 <div class="paragraph">
 <p>The <code>MapEvents</code> received by an observer method can be further restricted by applying a filter. Filters are applied by
 annotating the method with a <a href="#coherence-spring-filter-binding-annotations">filter binding</a> annotation, which is a link
-to a factory that creates a specific instance of a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/Filter.html">Filter</a>. Event
+to a factory that creates a specific instance of a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/Filter.html">Filter</a>. Event
 filters applied in this way are executed on the server, which can make receiving events more efficient for clients, as
 the event will not be sent from the server at all.</p>
 </div>
@@ -2504,7 +2504,7 @@ the cache value is large, but the client only requires a small part of that valu
 sent over the wire to the client.</p>
 </div>
 <div class="paragraph">
-<p>In Coherence Spring, event values are transformed using a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>.
+<p>In Coherence Spring, event values are transformed using a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>.
 A <code>ValueExtractor</code> is a simple interface that takes in one value and transforms it into another value. The <code>ValueExtractor</code>
 is applied to the event value. As events contain both a new and old values, the extractor is applied to both as applicable.
 For <code>Insert</code> events there is only a new value, for <code>Update</code> events there will be both, a new and an old value, and for
@@ -2556,7 +2556,7 @@ property should be used to transform the event.</td>
 </div>
 <div class="paragraph">
 <p>It is possible to apply multiple filter binding annotations to a method. In this case the extractors are combined into a
-Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/extractor/ChainedExtractor.html">ChainedExtractor</a>, which will return the
+Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/extractor/ChainedExtractor.html">ChainedExtractor</a>, which will return the
 extracted values as a <code>java.util.List</code>.</p>
 </div>
 <div class="paragraph">
@@ -2613,7 +2613,7 @@ to the method.</td>
 for Coherence itself, maps and cache, <em>Entry events</em> when data in maps and caches changes, <em>Partition events</em> for
 partition lifecycle and distribution, <em>EntryProcessor events</em> when invoked on a map or cache, etc. In a stand-alone
 Coherence application these events are subscribed to using a
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a> implementation registered to listen
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/EventInterceptor.html">EventInterceptor</a> implementation registered to listen
 to specific event types.</p>
 </div>
 <div class="paragraph">
@@ -2632,43 +2632,43 @@ vary depending on the type of the event.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvent</a> -
-lifecycle events for  <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/Coherence.html">Coherence</a> instances</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvent</a> -
+lifecycle events for  <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/Coherence.html">Coherence</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/Session.html">Session</a> instances</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/Session.html">Session</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instances</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> -
-lifecycle events for <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> instances</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> -
+lifecycle events for <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> and <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedCache.html">NamedCache</a> instances</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> - events emitted by the
-mutation of entries in a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedMap.html">NamedMap</a>
-or <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> - events emitted by the
+mutation of entries in a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedMap.html">NamedMap</a>
+or <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> - events emitted
-by the invocation of an <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> on entries in a
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> - events emitted
+by the invocation of an <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> on entries in a
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedCache.html">NamedCache</a></p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> - events pertaining to
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> - events pertaining to
 all mutations performed within the context of a single request in a partition of a
-<a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/NamedCache.html">NamedCache</a>,
+<a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedMap.html">NamedMap</a> or <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/NamedCache.html">NamedCache</a>,
 also referred to as "partition level transactions".</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> - captures information
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> - captures information
 concerning the transfer of a partition for a storage enabled member.</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> - captures
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> - captures
 changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the
 partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers
 of the backing map causing changes.</p>
@@ -2689,7 +2689,7 @@ is created, truncated, or destroyed.</p>
 <div class="sect4">
 <h5 id="coherence-lifecycle-events"><a class="anchor" href="#coherence-lifecycle-events"></a>3.7.2.2. Coherence Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> are emitted to indicate the lifecycle of a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instance.</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/application/LifecycleEvent.html">LifecycleEvent</a> are emitted to indicate the lifecycle of a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/ConfigurableCacheFactory.html">ConfigurableCacheFactory</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>LifecycleEvent</code> simply create a Spring bean with a listener method that is annotated with
@@ -2773,8 +2773,8 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 <div class="sect4">
 <h5 id="session-lifecycle-events"><a class="anchor" href="#session-lifecycle-events"></a>3.7.2.3. Session Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvents</a> are emitted to indicate
-the lifecycle event of a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/Session.html">Session</a> instance.</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/SessionLifecycleEvent.html">SessionLifecycleEvents</a> are emitted to indicate
+the lifecycle event of a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/Session.html">Session</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>SessionLifecycleEvents</code> simply create a Spring bean with a listener method annotated with
@@ -2862,8 +2862,8 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) SessionLifecycleEvent event) {
 <div class="sect4">
 <h5 id="configurablecachefactory-lifecycle-events"><a class="anchor" href="#configurablecachefactory-lifecycle-events"></a>3.7.2.4. ConfigurableCacheFactory Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvents</a> are emitted to
-indicate the lifecycle of a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/Coherence.html">Coherence</a> instance.</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/CoherenceLifecycleEvent.html">CoherenceLifecycleEvents</a> are emitted to
+indicate the lifecycle of a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/Coherence.html">Coherence</a> instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>CoherenceLifecycleEvent</code> simply create a Spring bean with a listener method annotated with
@@ -2951,7 +2951,7 @@ public void onEvent(@Name(Coherence.DEFAULT_NAME) CoherenceLifecycleEvent event)
 <div class="sect4">
 <h5 id="cache-lifecycle-events"><a class="anchor" href="#cache-lifecycle-events"></a>3.7.2.5. Cache Lifecycle Events</h5>
 <div class="paragraph">
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> are emitted to indicate the lifecycle of a cache instance.</p>
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/CacheLifecycleEvent.html">CacheLifecycleEvent</a> are emitted to indicate the lifecycle of a cache instance.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>CacheLifecycleEvent</code> simply create a Spring bean with a listener method annotated with <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -3061,8 +3061,8 @@ public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
 <div class="sect4">
 <h5 id="entry-events"><a class="anchor" href="#entry-events"></a>3.7.2.6. Entry Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> is emitted when
-a <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These
+<p>An <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> is emitted when
+a <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These
 events are only emitted on the storage enabled member that is the primary owner of the entry that the <code>EntryProcessor</code>
 is invoked on.</p>
 </div>
@@ -3205,7 +3205,7 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 <div class="sect4">
 <h5 id="entryprocessor-events"><a class="anchor" href="#entryprocessor-events"></a>3.7.2.7. EntryProcessor Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.</p>
+<p>An <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/cache/EntryProcessorEvent.html">EntryProcessorEvent</a> is emitted when a mutation occurs on an entry in a cache. These events are only emitted on the storage enabled member that is the primary owner of the entry.</p>
 </div>
 <div class="paragraph">
 <p>To subscribe to <code>EntryProcessorEvent</code> simply create a Spring bean with a listener method annotated with <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
@@ -3329,7 +3329,7 @@ public void onEvent(@SessionName("BackEnd") EntryProcessorEvents event) {
 <div class="sect4">
 <h5 id="partition-level-transaction-events"><a class="anchor" href="#partition-level-transaction-events"></a>3.7.2.8. Partition Level Transaction Events</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> is emitted in relation to all mutations in a single partition in response to executing a single request.
+<p>A <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransactionEvent.html">TransactionEvent</a> is emitted in relation to all mutations in a single partition in response to executing a single request.
 These are commonly referred to as partition level transactions.
 For example, an <code>EntryProcessor</code> that mutates more than one entry (which could be in multiple caches) as part of a single invocation will cause a partition level transaction to occur encompassing all of those cache entries.</p>
 </div>
@@ -3403,7 +3403,7 @@ public void onEvent(@ServiceName("StorageService") TransactionEvent event) {
 <div class="sect4">
 <h5 id="partition-transfer-events"><a class="anchor" href="#partition-transfer-events"></a>3.7.2.9. Partition Transfer Events</h5>
 <div class="paragraph">
-<p>A <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/BinaryEntry.html">BinaryEntry</a> instances that are being transferred.</p>
+<p>A <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html">TransferEvent</a> captures information concerning the transfer of a partition for a storage enabled member. Transfer events are raised against the set of <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/BinaryEntry.html">BinaryEntry</a> instances that are being transferred.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -3440,7 +3440,7 @@ public void onEvent(TransferEvent event) {
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Arrived</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been transferred to the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a> or restored from backup.The reason for the event (primary transfer from another member or restore from backup) can be derived as follows:</p>
+<p><strong>Arrived</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been transferred to the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a> or restored from backup.The reason for the event (primary transfer from another member or restore from backup) can be derived as follows:</p>
 </li>
 </ul>
 </div>
@@ -3456,23 +3456,23 @@ boolean restored = event.getRemoteMember() == event.getLocalMember();</code></pr
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Assigned</strong> -  This <code>TransferEvent</code> is dispatched when a partition has been assigned to the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event will only be emitted by the ownership senior during the initial partition assignment.
+<p><strong>Assigned</strong> -  This <code>TransferEvent</code> is dispatched when a partition has been assigned to the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event will only be emitted by the ownership senior during the initial partition assignment.
 Use the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Assigned.html">@Assigned</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Departing</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> are being transferred from the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is followed by either a <code>Departed</code> or <code>Rollback</code> event to indicate the success or failure of the transfer.
+<p><strong>Departing</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> are being transferred from the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is followed by either a <code>Departed</code> or <code>Rollback</code> event to indicate the success or failure of the transfer.
 Use the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Departing.html">@Departing</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Departed</strong> - This <code>TransferEvent</code> is dispatched when a partition has been successfully transferred from the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. To derive the <code>BinaryEntry</code> instances associated with the transfer, consumers should subscribe to the <code>Departing</code> event that would precede this event.
+<p><strong>Departed</strong> - This <code>TransferEvent</code> is dispatched when a partition has been successfully transferred from the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. To derive the <code>BinaryEntry</code> instances associated with the transfer, consumers should subscribe to the <code>Departing</code> event that would precede this event.
 Use the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Departed.html">@Departed</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Lost</strong> - This <code>TransferEvent</code> is dispatched when a partition has been orphaned (data loss <em>may</em> have occurred), and the ownership is assumed by the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is only be emitted by the ownership senior.
+<p><strong>Lost</strong> - This <code>TransferEvent</code> is dispatched when a partition has been orphaned (data loss <em>may</em> have occurred), and the ownership is assumed by the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>. This event is only be emitted by the ownership senior.
 Use the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Lost.html">@Lost</a> annotation to restrict received events.</p>
 </li>
 <li>
-<p><strong>Recovered</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been recovered from a persistent storage by the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>.
+<p><strong>Recovered</strong> - This <code>TransferEvent</code> is dispatched when a set of <code>BinaryEntry</code> instances have been recovered from a persistent storage by the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/TransferEvent.html#getLocalMember()">local member</a>.
 Use the <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/event/Recovered.html">@Recovered</a> annotation to restrict received events.</p>
 </li>
 <li>
@@ -3518,7 +3518,7 @@ public void onEvent(@ServiceName("StorageService") TransferEvent event) {
 <div class="sect4">
 <h5 id="unsolicited-commit-events"><a class="anchor" href="#unsolicited-commit-events"></a>3.7.2.10. Unsolicited Commit Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.</p>
+<p>An <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/events/partition/UnsolicitedCommitEvent.html">UnsolicitedCommitEvent</a> captures changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers of the backing map causing changes.</p>
 </div>
 <div class="paragraph">
 <p>Unsolicited commit events are emitted by storage enabled cache services, they will only e received on the same member.</p>
@@ -3546,7 +3546,7 @@ public void onEvent(UnsolicitedCommitEvent event) {
 <div class="paragraph">
 <p>Filter binding annotations are normal annotations that are themselves annotated with the
 <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/FilterBinding.html">@FilterBinding</a> meta-annotation.
-A filter binding annotation represents a Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/Filter.html">Filter</a> and is used
+A filter binding annotation represents a Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/Filter.html">Filter</a> and is used
 to specify a <code>Filter</code> in certain injection points, for example a View (CQC), <code>NamedTopic</code> <code>Subscriber</code> beans,
 event listeners, etc.</p>
 </div>
@@ -3764,7 +3764,7 @@ which also has takes an optional value to specify the name of the cache.</td>
 <div class="paragraph">
 <p>ValueExtractor binding annotations are normal annotations that are themselves annotated with the
 <a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/annotation/ExtractorBinding.html">@ExtractorBinding</a> meta-annotation.
-An extractor binding annotation represents a Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>
+An extractor binding annotation represents a Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/util/ValueExtractor.html">ValueExtractor</a>
 and is used to specify a <code>ValueExtractor</code> in certain injection points, for example a View (CQC), <code>NamedTopic</code> <code>Subscriber</code>
 beans, <code>MapEvent</code> listeners, etc.</p>
 </div>
@@ -3926,7 +3926,7 @@ from the underlying cache are transformed into <code>String</code> values by ext
 <p>Spring Coherence integration provides support for message driven applications by virtue of Coherence topics.</p>
 </div>
 <div class="paragraph">
-<p>A Coherence <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a> is analogous to a queue or pub/sub topic, depending on the configuration and application code. Messages published to the topic are stored in Coherence caches, so topics are scalable and performant.</p>
+<p>A Coherence <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/NamedTopic.html">NamedTopic</a> is analogous to a queue or pub/sub topic, depending on the configuration and application code. Messages published to the topic are stored in Coherence caches, so topics are scalable and performant.</p>
 </div>
 <div class="paragraph">
 <p>A typical stand-alone Coherence application would create a <code>NamedTopic</code> along with <code>Publisher</code> or <code>Subscriber</code> instances to publish to or subscribe to topics. Injection of topics into Spring applications is already covered in <a href="#coherence-spring-dependency-injection-namedtopic">Injecting NamedTopics</a>. With Spring messaging this becomes much simpler.</p>
@@ -4019,7 +4019,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The implementation will return a <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> that when subscribed to will subscribe to the passed <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> and send a message emitting the resulting <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
+<p>The implementation will return a <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> that when subscribed to will subscribe to the passed <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html">Mono</a> and send a message emitting the resulting <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -4030,7 +4030,7 @@ client.sendProduct("Blue Trainers");</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The implementation will return a Reactor <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html">Flux</a> that when subscribed to will subscribe to the passed <code>Flux</code> and for each emitted item will send a message emitting the resulting <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
+<p>The implementation will return a Reactor <a href="https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html">Flux</a> that when subscribed to will subscribe to the passed <code>Flux</code> and for each emitted item will send a message emitting the resulting <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Publisher.Status.html">Publisher.Status</a>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -4089,7 +4089,7 @@ public class ProductListener {
 <div class="sect3">
 <h4 id="method-parameter-bindings"><a class="anchor" href="#method-parameter-bindings"></a>3.10.4. Method Parameter Bindings</h4>
 <div class="paragraph">
-<p>When using a Coherence topic <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> directly in application code, the <code>receive</code> method returns an <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a>, which contains the message value and metadata. The annotated subscriber method can take various parameter types that will bind to the element itself or to the message.</p>
+<p>When using a Coherence topic <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Subscriber.html">Subscriber</a> directly in application code, the <code>receive</code> method returns an <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a>, which contains the message value and metadata. The annotated subscriber method can take various parameter types that will bind to the element itself or to the message.</p>
 </div>
 <div class="paragraph">
 <p>For example</p>
@@ -4104,7 +4104,7 @@ public void receive(Element&lt;Product&gt; product) {
 </div>
 </div>
 <div class="paragraph">
-<p>The method above will be passed the <a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a> received from the topic. By receiving the element, the method has access to the message value and all the metadata stored with the message.</p>
+<p>The method above will be passed the <a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/topic/Subscriber.Element.html">Element</a> received from the topic. By receiving the element, the method has access to the message value and all the metadata stored with the message.</p>
 </div>
 </div>
 <div class="sect3">
@@ -4289,11 +4289,11 @@ Spring will do the rest.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/cache/CacheLoader.html">CacheLoader</a> - an application developer writes an implementation of a <code>CacheLoader</code> to read data from a database for
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/cache/CacheLoader.html">CacheLoader</a> - an application developer writes an implementation of a <code>CacheLoader</code> to read data from a database for
 a given key (or keys), convert it to entities that are then loaded into a cache for the given keys.</p>
 </li>
 <li>
-<p><a href="https://coherence.community/22.06.7/api/java/com/tangosol/net/cache/CacheStore.html">CacheStore</a> - whilst a <code>CacheLoader</code> only loads from a database into a cache, a <code>CacheStore</code> (which extends
+<p><a href="https://coherence.community/22.06.8/api/java/com/tangosol/net/cache/CacheStore.html">CacheStore</a> - whilst a <code>CacheLoader</code> only loads from a database into a cache, a <code>CacheStore</code> (which extends
 <code>CacheLoader</code>) also stores cached entities back to the database, or for entries deleted from the cache, erases the
 corresponding values from the database. The parallels between a <code>CacheLoader</code> or <code>CacheStore</code> and a <code>JpaRepository</code>
 should be pretty obvious.</p>
@@ -5053,7 +5053,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.7&lt;/version&gt;
+        &lt;version&gt;22.06.8&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -5063,7 +5063,7 @@ Coherence&#8217;s support for <a href="https://docs.spring.io/spring-session/doc
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-session:3.3.7-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.7")
+    compile("com.oracle.coherence.ce:coherence:22.06.8")
 }</code></pre>
 </div>
 </div>
@@ -5482,12 +5482,12 @@ activating a custom Spring Boot profile, Coherence will be started with POF seri
 </div>
 <div class="paragraph">
 <p>For the client application, deploy the generated WAR file <code>spring-session-demo.war</code> in
-<code>samples/spring-session-demo/spring-session-demo-war/target</code> to a Servlet container, for example Tomcat 9.0.86.</p>
+<code>samples/spring-session-demo/spring-session-demo-war/target</code> to a Servlet container, for example Tomcat 9.0.90.</p>
 </div>
 <div class="listingblock">
-<div class="title">Deploy WAR file to Tomcat 9.0.86</div>
+<div class="title">Deploy WAR file to Tomcat 9.0.90</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-9.0.86/webapps</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-9.0.90/webapps</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6125,7 +6125,7 @@ as the desired version of Coherence.</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.7&lt;/version&gt;
+        &lt;version&gt;22.06.8&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -6135,7 +6135,7 @@ as the desired version of Coherence.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.7-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.7")
+    compile("com.oracle.coherence.ce:coherence:22.06.8")
 }</code></pre>
 </div>
 </div>
@@ -6975,7 +6975,7 @@ project:</p>
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.7&lt;/version&gt;
+        &lt;version&gt;22.06.8&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -6986,7 +6986,7 @@ project:</p>
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.7-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-session:3.3.7-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.7")
+    compile("com.oracle.coherence.ce:coherence:22.06.8")
 }</code></pre>
 </div>
 </div>
@@ -7106,7 +7106,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.7&lt;/version&gt;
+        &lt;version&gt;22.06.8&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -7117,7 +7117,7 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
     compile("com.oracle.coherence.spring:coherence-spring-boot-starter:3.3.7-SNAPSHOT")
     compile("com.oracle.coherence.spring:coherence-spring-data:3.3.7-SNAPSHOT")
-    compile("com.oracle.coherence.ce:coherence:22.06.7")
+    compile("com.oracle.coherence.ce:coherence:22.06.8")
 }</code></pre>
 </div>
 </div>
@@ -7353,7 +7353,7 @@ the configuration data.</p>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>You can control which reports are generated by specifying a different report group configuration file. The pre-defined
-reports are located at <code>coherence-22.06.7.jar/reports</code></td>
+reports are located at <code>coherence-22.06.8.jar/reports</code></td>
 </tr>
 </table>
 </div>
@@ -7469,7 +7469,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-07-02 05:12:21 UTC
+Last updated 2024-07-02 16:20:19 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
