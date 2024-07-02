@@ -1027,7 +1027,7 @@ import the <code>CoherenceSpringConfiguration</code> class under the covers. The
 <p>In most use-cases, only a single Coherence Session is expected to be used. Therefore, without providing any further
 configuration the default session is configured using the embedded default configuration file. This results in the application
 joining Coherence as a <em>cluster</em> member (Session type <code>SERVER</code>). This is of course not the only way. Coherence Spring support
-the following 3 session types:</p>
+the following 2 session types:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1037,25 +1037,7 @@ the following 3 session types:</p>
 <li>
 <p><strong>CLIENT</strong> - Connect to Coherence as a Coherence*Extend or gRPC client</p>
 </li>
-<li>
-<p><strong>GRPC</strong> - Connect to Coherence as gRPC client (deprecated, use <strong>CLIENT</strong> instead)</p>
-</li>
 </ul>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-As of Coherence Spring <code>4.0</code>, the <code>GRPC</code> session type has been deprecated. Please use <code>CLIENT</code> instead.
-Since Coherence <code>22.06.2</code>, relevant gRPC configuration can be configured directly in the <code>coherence-cache-config.xml</code>
-file as described in the Coherence reference guide chapter
-<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D">Configuring the Coherence gRPC Client</a>.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>In order to configure the type of your Session, you may declare a <code>SessionConfigurationBean</code> that allows to you to not only
@@ -1073,19 +1055,6 @@ to set the session type but also to specify a custom Coherence configuration fil
      return sessionConfigurationBean;
  }</code></pre>
 </div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The option of declaring a <code>GrpcSessionConfigurationBean</code> for gRPC clients has been deprecated. Please use session
-type <code>CLIENT</code> instead and configure the gRPC relevant configuration properties in your <code>coherence-cache-config.xml</code> file.
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect2">
@@ -1143,28 +1112,10 @@ have a unique scope name.</p>
 <li>
 <p><strong>client</strong> represents a storage disabled cluster member or Coherence*Extend client session.</p>
 </li>
-<li>
-<p><strong>grpc</strong> (deprecated) is a gRPC client session (see the gRPC documentation).</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
 <p>The type of the session affects how the bootstrap API starts the session.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-As of Coherence Spring <code>4.0</code>, the <code>GRPC</code> session type has been deprecated. Please use <code>CLIENT</code> instead.
-Since Coherence <code>22.06.2</code>, relevant gRPC configuration can be configured directly in the <code>coherence-cache-config.xml</code>
-file as described in the Coherence reference guide chapter
-<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D">Configuring the Coherence gRPC Client</a>.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p><strong>priority</strong></p>
@@ -1182,31 +1133,6 @@ first. If this property is not specified, the property will default to <code>0</
 <div class="paragraph">
 <p>The Coherence cache configuration URI for the session. As already mentioned, the most common configuration to set will
 be the Coherence configuration file name. If not specified, the default value will be <code>coherence-cache-config.xml</code>.</p>
-</div>
-<div class="paragraph">
-<p>The following property applies to the deprecated <code>GRPC</code> mode, only:</p>
-</div>
-<div class="paragraph">
-<p><strong>channelName</strong> (deprecated)</p>
-</div>
-<div class="paragraph">
-<p>Sets the underlying gRPC channel. If not set, it will default to <code>localhost</code> and port <code>1408</code>. This property is
-deprecated. See note under <strong>type</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>serializer</strong> (deprecated)</p>
-</div>
-<div class="paragraph">
-<p>Specifies the serializer to that shall be used, in order to serialize gRPC message payloads. If not specified,
-the serializer will be the default Coherence serializer, either POF if it has been enabled with the <code>coherence.pof.enabled</code>
-system property or Java serialization. This property is deprecated. See note under <strong>type</strong>.</p>
-</div>
-<div class="paragraph">
-<p><strong>tracingEnabled</strong> (deprecated)</p>
-</div>
-<div class="paragraph">
-<p>Specifies if client gRPC tracing should be enabled. This is <code>false</code> by default. This property is
-deprecated. See note under <strong>type</strong>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -6303,7 +6229,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>grpc</code> (deprecated), <code>server</code>, <code>client</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates the type of the session. One of the following: <code>server</code>, <code>client</code> (For both Coherence*Extend and gRPC)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">coherence.sessions.&lt;type&gt;[0].name</p></td>
@@ -6349,7 +6275,7 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 <p><a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/SessionConfigurationBean.html">SessionConfigurationBean</a></p>
 </li>
 <li>
-<p><a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/GrpcSessionConfigurationBean.html">GrpcSessionConfigurationBean</a> (deprecated)</p>
+<p><a href="https://spring.coherence.community/3.3.7-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/configuration/session/ClientSessionConfigurationBean.html">ClientSessionConfigurationBean</a></p>
 </li>
 </ul>
 </div>
@@ -6363,21 +6289,6 @@ No messages are emitted if <code>-1</code> is specified. More log messages are e
 Many properties are translated into native Coherence properties. If both
 Spring Boot property AND a native property <code>coherence.properties.*</code> are configured, the Spring Boot
 property is used.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-As of Coherence Spring <code>4.0</code>, the <code>GrpcSessionConfigurationBean</code> has been deprecated. Please use the
-<code>SessionConfigurationBean</code> in that case. Since Coherence <code>22.06.2</code>, relevant gRPC configuration can be configured directly in
-the <code>coherence-cache-config.xml</code> file as described in the Coherence reference guide chapter
-<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/using-coherence-java-grpc-client.html#GUID-76F8E59F-3933-45CD-8C21-C13072D4D46D">Configuring the Coherence gRPC Client</a>.
 </td>
 </tr>
 </table>
@@ -7558,7 +7469,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-07-01 05:12:23 UTC
+Last updated 2024-07-02 04:10:09 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
