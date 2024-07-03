@@ -158,7 +158,7 @@
 		<hsqldb.version>2.7.2</hsqldb.version>
 		<jackson-datatype.version>2.17.1</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
-		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+		<jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jakarta.inject.version>2.0.1</jakarta.inject.version>
