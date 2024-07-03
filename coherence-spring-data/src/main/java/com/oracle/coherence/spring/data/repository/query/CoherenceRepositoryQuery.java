@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -39,9 +39,10 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
-import org.springframework.data.repository.query.DefaultParameters;
 import org.springframework.data.repository.query.ParameterAccessor;
+import org.springframework.data.repository.query.Parameters;
 import org.springframework.data.repository.query.ParametersParameterAccessor;
+import org.springframework.data.repository.query.ParametersSource;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
@@ -112,7 +113,20 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	public Object execute(Object[] parameters) {
 
 		PartTree partTree = new PartTree(this.method.getName(), this.metadata.getDomainType());
-		ParameterAccessor accessor = new ParametersParameterAccessor(new DefaultParameters(this.method), parameters);
+
+		Parameters<?, ?> springDataParameters = new MyDefaultParameters(this.method);
+
+		/*
+		 * Deprecated in Spring Data 2023.1.4 and removed in 2024.0.1
+		 */
+		// Parameters<?, ?> springDataParameters = new DefaultParameters(this.method);
+
+		/*
+		 * Recommended replacement. But this does not work.
+		 */
+		// Parameters<?, ?> springDataParameters = new DefaultParameters(ParametersSource.of(this.method));
+
+		ParameterAccessor accessor = new ParametersParameterAccessor(springDataParameters, parameters);
 		CoherenceQueryCreator creator = new CoherenceQueryCreator(partTree, accessor);
 		QueryResult queryResult = creator.createQuery();
 
@@ -278,5 +292,25 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 	public QueryMethod getQueryMethod() {
 
 		return this.queryMethod;
+	}
+
+	/**
+	 * Custom {@link Parameters} implementation, so we can call the super constructor. We should not really have to do
+	 * this. This is a workaround for the fact that the constructor is protected.
+	 */
+	class MyDefaultParameters extends Parameters {
+
+		private MyDefaultParameters(List<org.springframework.data.repository.query.Parameter> parameters) {
+			super(parameters);
+		}
+
+		MyDefaultParameters(Method method) {
+			super(ParametersSource.of(method), null);
+		}
+
+		@Override
+		protected Parameters createFrom(List parameters) {
+			return new MyDefaultParameters(parameters);
+		}
 	}
 }

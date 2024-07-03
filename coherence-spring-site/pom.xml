@@ -25,12 +25,12 @@
 	<properties>
 		<coherence.spring.root>${basedir}/..</coherence.spring.root>
 		<helidon.sitegen.version>3.0.5</helidon.sitegen.version>
-		<asciidoctor.diagram.version>2.3.0</asciidoctor.diagram.version>
+		<asciidoctor.diagram.version>2.3.1</asciidoctor.diagram.version>
 		<doxia.version>1.11.1</doxia.version>
 
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
+		<maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
 	</properties>
 
 	<dependencies>

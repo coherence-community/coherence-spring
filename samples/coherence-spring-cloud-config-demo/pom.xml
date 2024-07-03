@@ -28,7 +28,7 @@
 	</modules>
 
 	<properties>
-		<org.eclipse.jgit.version>6.9.0.202403050737-r</org.eclipse.jgit.version>
+		<org.eclipse.jgit.version>6.10.0.202406032230-r</org.eclipse.jgit.version>
 	</properties>
 
 	<dependencyManagement>

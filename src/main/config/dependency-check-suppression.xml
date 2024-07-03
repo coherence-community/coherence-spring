@@ -13,20 +13,4 @@
         ]]></notes>
         <vulnerabilityName>CVE-2023-5763</vulnerabilityName>
     </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        In Coherence Spring Cloud Config Demo
-        file name: sshd-osgi-2.10.0.jar
-        ]]></notes>
-        <cve>CVE-2023-48795</cve>
-    </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-        (Medium) Via Coherence 24.03
-        file name: netty-codec-http-4.1.107.Final.jar
-        ]]></notes>
-        <cve>CVE-2024-29025</cve>
-    </suppress>
 </suppressions>
