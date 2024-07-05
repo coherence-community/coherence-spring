@@ -354,21 +354,46 @@ The invoked `HelloController` will display a simple counter that is incremented 
 stored in the HTTP Session.
 
 [[spring-session-expiration-strategies]]
-== Session Expiration Strategies
+=== Session Expiration Strategies
 
 When dealing with the expiration of cache entries, you generally have 2 options in Coherence:
 
 - Set the expiration time for each put operation explicitly
-- Configure caches in your `coherence-cache-config.xml` file
+- Configure cache expiration on a per-cache-basis in your `coherence-cache-config.xml` file
+
+==== Setting the Expiration Time for Each Put Operation
 
 When you define a session timeout via the application, for example `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 1000)`,
 the session expiration will be set for each put-operation in `CoherenceIndexedSessionRepository`.
 
 NOTE: If not set in the application, Coherence Spring will expire HTTP session caches in `1800` seconds (`30` minutes).
 
+As is the nature with Spring, you have multiple ways to set the session timeout:
+
+- Using the `@EnableCoherenceHttpSession` annotation, e.g. `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 6000)`
+- By extending `CoherenceHttpSessionConfiguration` and overriding the `setMaxInactiveIntervalInSeconds` method. In that
+  case, you would not be using the `@EnableCoherenceHttpSession` annotation but instead use `@Configuration` and
+  `@Import(MyCustomCoherenceHttpSessionConfiguration.class)`
+- By declaring a `SessionRepositoryCustomizer<CoherenceIndexedSessionRepository>` bean, e.g.:
+
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@Bean
+public static SessionRepositoryCustomizer<CoherenceIndexedSessionRepository> sessionRepositoryCustomizer() {
+  return (sessionRepository) -> {
+    sessionRepository.setDefaultMaxInactiveInterval(Duration.ofSeconds(120));
+  };
+}
+----
+
+If you are using Spring Boot, you can also set the session timeout in your `application.properties` or
+`application.yaml` file using the `spring.session.timeout` property: `spring.session.timeout = 10m`.
+
+==== Configuring the Expiration Time in the `coherence-cache-config.xml`
+
 If you rather prefer defining the session expiration timeouts in your `coherence-cache-config.xml` file, you
 should set the session timeout in the application to `0`, for instance `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 0)`.
-That way, put operations will never to set an expiration value for the cache entry. You can then set the `expiry-delay`
+That way, put operations will never try to set an expiration value for the cache entry. You can then set the `expiry-delay`
 cache configuration element for your cache in the `coherence-cache-config.xml` file.
 
 In regard to the question, whether one strategy or the other strategy is preferable: It is mostly a
