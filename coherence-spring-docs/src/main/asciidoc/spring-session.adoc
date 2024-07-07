@@ -354,14 +354,14 @@ The invoked `HelloController` will display a simple counter that is incremented 
 stored in the HTTP Session.
 
 [[spring-session-expiration-strategies]]
-=== Session Expiration Strategies
+== Session Expiration Strategies
 
 When dealing with the expiration of cache entries, you generally have 2 options in Coherence:
 
 - Set the expiration time for each put operation explicitly
 - Configure cache expiration on a per-cache-basis in your `coherence-cache-config.xml` file
 
-==== Setting the Expiration Time for Each Put Operation
+=== Setting the Expiration Time for Each Put Operation
 
 When you define a session timeout via the application, for example `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 1000)`,
 the session expiration will be set for each put-operation in `CoherenceIndexedSessionRepository`.
@@ -389,7 +389,7 @@ public static SessionRepositoryCustomizer<CoherenceIndexedSessionRepository> ses
 If you are using Spring Boot, you can also set the session timeout in your `application.properties` or
 `application.yaml` file using the `spring.session.timeout` property: `spring.session.timeout = 10m`.
 
-==== Configuring the Expiration Time in the `coherence-cache-config.xml`
+=== Configuring the Expiration Time in `coherence-cache-config.xml`
 
 If you rather prefer defining the session expiration timeouts in your `coherence-cache-config.xml` file, you
 should set the session timeout in the application to `0`, for instance `@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 0)`.
@@ -406,3 +406,17 @@ on _Controlling the Growth of a Local Cache_ in the Coherence reference guide.
 IMPORTANT: The underlying expiry delay parameter in Coherence is defined as an integer and is expressed in milliseconds.
 Therefore, the maximum amount of time can never exceed Integer.MAX_VALUE (2147483647) milliseconds or approximately 24
 days.
+
+== Using HttpSessionListener
+
+If you plan on use the `HttpSessionListener` interface, you can register a `HttpSessionListener` bean in your Spring
+configuration. The `HttpSessionListener` will be registered with the `ServletContext` and will be notified of session
+creation and destruction events.
+
+[source,java,indent=1,subs="verbatim,quotes,attributes"]
+----
+@Bean
+MyHttpSessionListener myHttpSessionListener() {
+    return new MyHttpSessionListener();
+}
+----

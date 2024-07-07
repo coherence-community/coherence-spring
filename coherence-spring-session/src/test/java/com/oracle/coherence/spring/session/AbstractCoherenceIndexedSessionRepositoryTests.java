@@ -8,12 +8,17 @@ package com.oracle.coherence.spring.session;
 
 import java.util.Map;
 
+import com.oracle.coherence.spring.session.support.MyHttpSessionListener;
+import com.oracle.coherence.spring.session.support.SessionEventApplicationListener;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.Session;
 import com.tangosol.net.cache.CacheMap;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,6 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.FlushMode;
 import org.springframework.session.MapSession;
+import org.springframework.session.events.SessionCreatedEvent;
+import org.springframework.session.events.SessionDeletedEvent;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +57,12 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 	@Autowired
 	private CoherenceIndexedSessionRepository repository;
 
+	@Autowired
+	private SessionEventApplicationListener sessionEventRegistry;
+
+	@Autowired
+	private MyHttpSessionListener myHttpSessionListener;
+
 	protected String sessionName;
 
 	AbstractCoherenceIndexedSessionRepositoryTests() {
@@ -61,6 +74,11 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 	protected String getLocalClusterName() {
 		return null;
+	}
+
+	@AfterEach
+	void tearDown() {
+		this.myHttpSessionListener.reset();
 	}
 
 	@Test
@@ -81,9 +99,26 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 		assertThat(cacheMap.get(sessionId)).isEqualTo(sessionToSave.getDelegate());
 
+		assertThat(this.sessionEventRegistry.receivedEvent(sessionId)).isTrue();
+		assertThat(this.sessionEventRegistry.<SessionCreatedEvent>getEvent(sessionId))
+				.isInstanceOf(SessionCreatedEvent.class);
+		this.sessionEventRegistry.clearSessionEvents();
+
+		assertThat(this.myHttpSessionListener.getSessionsCreatedCount()).isEqualTo(1);
+		assertThat(this.myHttpSessionListener.getSessionsDestroyedCount()).isEqualTo(0);
+
 		this.repository.deleteById(sessionId);
 
 		assertThat(cacheMap.get(sessionId)).isNull();
+
+		this.sessionEventRegistry.getEvent(sessionId);
+
+		assertThat(this.sessionEventRegistry.receivedEvent(sessionId)).isTrue();
+		assertThat(this.sessionEventRegistry.<SessionDeletedEvent>getEvent(sessionId))
+				.isInstanceOf(SessionDeletedEvent.class);
+
+		assertThat(this.myHttpSessionListener.getSessionsCreatedCount()).isEqualTo(1);
+		assertThat(this.myHttpSessionListener.getSessionsDestroyedCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -322,5 +357,18 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 		assertThat(retrievedSecurityContext.getAuthentication().getName()).isEqualTo("coherence_rocks");
 		this.repository.deleteById(session.getId());
 		assertThat(this.repository.findById(session.getId())).isNull();
+	}
+
+	@Configuration
+	static class CommonConfig {
+		@Bean
+		SessionEventApplicationListener sessionEventRegistry() {
+			return new SessionEventApplicationListener();
+		}
+
+		@Bean
+		MyHttpSessionListener myHttpSessionListener() {
+			return new MyHttpSessionListener();
+		}
 	}
 }
