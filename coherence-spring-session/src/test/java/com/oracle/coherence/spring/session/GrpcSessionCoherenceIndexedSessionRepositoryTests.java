@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
@@ -88,6 +89,7 @@ public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractC
 	@Configuration
 	@EnableCoherenceHttpSession(session = "grpcSession")
 	@EnableCoherence
+	@Import(AbstractCoherenceIndexedSessionRepositoryTests.CommonConfig.class)
 	static class Config {
 		@Bean
 		ClientSessionConfigurationBean sessionConfigurationBean() {

@@ -11,6 +11,7 @@ import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCohe
 import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
@@ -32,6 +33,7 @@ class CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests extends Abstra
 	@EnableCoherenceHttpSession(useEntryProcessor = false)
 	@EnableCoherence
 	@Configuration
+	@Import(AbstractCoherenceIndexedSessionRepositoryTests.CommonConfig.class)
 	static class CoherenceSessionConfig {
 	}
 
