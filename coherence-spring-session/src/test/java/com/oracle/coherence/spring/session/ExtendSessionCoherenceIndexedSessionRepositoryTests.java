@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
@@ -73,6 +74,7 @@ public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends Abstrac
 	@Configuration
 	@EnableCoherenceHttpSession(session = "coherence_extend") //TODO Derive from single session
 	@EnableCoherence
+	@Import(AbstractCoherenceIndexedSessionRepositoryTests.CommonConfig.class)
 	static class CoherenceConfig {
 		@Bean
 		SessionConfigurationBean sessionConfigurationBean() {

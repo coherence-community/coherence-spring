@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -12,12 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.oracle.coherence.spring.session.events.CoherenceSessionCreatedEventHandler;
-import com.oracle.coherence.spring.session.events.SessionRemovedMapListener;
+import com.oracle.coherence.spring.session.events.CoherenceSessionEventMapListener;
 import com.oracle.coherence.spring.session.support.PrincipalNameExtractor;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.CacheMap;
-import com.tangosol.net.events.NamedEventInterceptor;
 import com.tangosol.util.Filter;
 import com.tangosol.util.filter.EqualsFilter;
 import jakarta.annotation.PostConstruct;
@@ -105,15 +103,8 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	public void init() {
 		this.sessionCache = this.coherenceSession.getCache(this.sessionMapName);
 
-		final CoherenceSessionCreatedEventHandler coherenceSessionEventHandler = new CoherenceSessionCreatedEventHandler(this.eventPublisher);
-		final SessionRemovedMapListener sessionRemovedMapListener = new SessionRemovedMapListener(this.eventPublisher);
-
-		coherenceSessionEventHandler.setScopeName(this.coherenceSession.getScopeName());
-		coherenceSessionEventHandler.setCacheName(this.sessionCache.getCacheName());
-
+		final CoherenceSessionEventMapListener sessionRemovedMapListener = new CoherenceSessionEventMapListener(this.eventPublisher);
 		this.sessionCache.addMapListener(sessionRemovedMapListener);
-		final NamedEventInterceptor<?> interceptor = new NamedEventInterceptor<>(CoherenceSessionCreatedEventHandler.class.getName(), coherenceSessionEventHandler);
-		this.coherenceSession.getInterceptorRegistry().registerEventInterceptor(interceptor);
 
 		if (logger.isDebugEnabled()) {
 			final String maxInactiveInterval =

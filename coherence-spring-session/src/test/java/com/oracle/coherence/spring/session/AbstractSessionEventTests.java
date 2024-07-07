@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -16,7 +16,7 @@ import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,8 @@ public abstract class AbstractSessionEventTests {
 	@Autowired
 	private SessionEventApplicationListener sessionEventApplicationListener;
 
-	@BeforeEach
-	void setup() {
+	@AfterEach
+	void shutdown() {
 		this.sessionEventApplicationListener.clearSessionEvents();
 	}
 
@@ -158,7 +158,7 @@ public abstract class AbstractSessionEventTests {
 	}
 
 	@Test
-	void changeSessionIdNoEventTest() {
+	void changeSessionIdTest() {
 		final Session sessionToSave = this.repository.createSession();
 		sessionToSave.setMaxInactiveInterval(Duration.ofMinutes(30));
 		this.repository.save(sessionToSave);
@@ -171,7 +171,7 @@ public abstract class AbstractSessionEventTests {
 		sessionToSave.changeSessionId();
 		this.repository.save(sessionToSave);
 
-		assertThat(this.sessionEventApplicationListener.receivedEvent(sessionToSave.getId())).isFalse();
+		assertThat(this.sessionEventApplicationListener.receivedEvent(sessionToSave.getId())).isTrue();
 
 		this.repository.deleteById(sessionToSave.getId());
 	}

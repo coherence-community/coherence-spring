@@ -10,6 +10,7 @@ import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
 import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
@@ -25,6 +26,7 @@ class CoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSes
 	@EnableCoherenceHttpSession
 	@EnableCoherence
 	@Configuration
+	@Import(AbstractCoherenceIndexedSessionRepositoryTests.CommonConfig.class)
 	static class CoherenceSessionConfig {
 	}
 
