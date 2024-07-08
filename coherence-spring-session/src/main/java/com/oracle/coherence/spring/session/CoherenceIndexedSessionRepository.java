@@ -17,8 +17,10 @@ import javax.annotation.PreDestroy;
 
 import com.oracle.coherence.spring.session.events.CoherenceSessionEventMapListener;
 import com.oracle.coherence.spring.session.support.PrincipalNameExtractor;
+import com.tangosol.coherence.memcached.server.MemcachedHelper;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.CacheMap;
+import com.tangosol.util.BinaryEntry;
 import com.tangosol.util.Filter;
 import com.tangosol.util.filter.EqualsFilter;
 import org.apache.commons.logging.Log;
@@ -294,4 +296,32 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 		this.eventPublisher = applicationEventPublisher;
 	}
 
+	/**
+	 * Clear all sessions.
+	 */
+	public void clearAllSessions() {
+		this.sessionCache.truncate();
+	}
+
+	/**
+	 * Reset the max inactive interval for all active sessions.
+	 */
+	public void resetMaxInactiveIntervalForActiveSessions() {
+		final long expirationInMillis = this.defaultMaxInactiveInterval.toMillis();
+		this.sessionCache.invokeAll((entry) -> {
+
+			final MapSession mapSession = entry.getValue();
+
+			if (entry.getValue().isExpired()) {
+				return null;
+			}
+
+			mapSession.setMaxInactiveInterval(Duration.ofMillis(expirationInMillis));
+			final BinaryEntry binaryEntry = MemcachedHelper.getBinaryEntry(entry);
+			binaryEntry.expire(expirationInMillis);
+
+			entry.setValue(mapSession);
+			return null;
+		});
+	}
 }
