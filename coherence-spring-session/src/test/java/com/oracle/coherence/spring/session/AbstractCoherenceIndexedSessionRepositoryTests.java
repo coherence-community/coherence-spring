@@ -6,6 +6,7 @@
  */
 package com.oracle.coherence.spring.session;
 
+import java.time.Duration;
 import java.util.Map;
 
 import com.oracle.coherence.spring.session.support.MyHttpSessionListener;
@@ -311,6 +312,62 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 		this.repository.deleteById(sessionId);
 		assertThat(this.repository.findById(sessionId)).isNull();
+	}
+
+	@Test
+	void resetMaxInactiveIntervalForActiveSessions() {
+		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(100));
+
+		final CoherenceSpringSession session1 = this.repository.createSession();
+		final String sessionId1 = session1.getId();
+		this.repository.save(session1);
+
+		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(200));
+
+		final CoherenceSpringSession session2 = this.repository.createSession();
+		final String sessionId2 = session2.getId();
+		this.repository.save(session2);
+
+		final CoherenceSpringSession sessionFromRepository1 = this.repository.findById(sessionId1);
+		final CoherenceSpringSession sessionFromRepository2 = this.repository.findById(sessionId2);
+
+		assertThat(sessionFromRepository1).isNotNull();
+		assertThat(sessionFromRepository2).isNotNull();
+
+		assertThat(sessionFromRepository1.getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(100));
+		assertThat(sessionFromRepository2.getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(200));
+
+		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(50));
+		this.repository.resetMaxInactiveIntervalForActiveSessions();
+
+		assertThat(this.repository.findById(sessionId1).getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(50));
+		assertThat(this.repository.findById(sessionId2).getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(50));
+	}
+
+	@Test
+	void clearAllSessions() {
+		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(100));
+
+		final CoherenceSpringSession session1 = this.repository.createSession();
+		final String sessionId1 = session1.getId();
+		this.repository.save(session1);
+
+		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(200));
+
+		final CoherenceSpringSession session2 = this.repository.createSession();
+		final String sessionId2 = session2.getId();
+		this.repository.save(session2);
+
+		final CoherenceSpringSession sessionFromRepository1 = this.repository.findById(sessionId1);
+		final CoherenceSpringSession sessionFromRepository2 = this.repository.findById(sessionId2);
+
+		assertThat(sessionFromRepository1).isNotNull();
+		assertThat(sessionFromRepository2).isNotNull();
+
+		this.repository.clearAllSessions();
+
+		assertThat(this.repository.findById(sessionId1)).isNull();
+		assertThat(this.repository.findById(sessionId2)).isNull();
 	}
 
 	@Test
