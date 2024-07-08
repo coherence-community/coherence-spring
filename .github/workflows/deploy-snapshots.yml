@@ -15,12 +15,11 @@ on:
       - '[1-9]+.x'
     types:
     - completed
+  workflow_dispatch:  
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
-    runs-on: macos-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
@@ -38,6 +37,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-
     - name: Build and Deploy
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
       env:
         GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
         HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
@@ -49,8 +49,19 @@ jobs:
         git checkout "${GIT_COMMIT}"
         git config --global user.email "github-action@users.noreply.github.com"
         git config --global user.name "GitHub Action"
-        ./mvnw clean install -B -Pspring,spring-repo --settings .mvn/settings.xml
-        ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
+        ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
+        ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml
+    - name: Build and Deploy
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      env:
+        MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
+        MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
+        MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+      run: |
+        git config --global user.email "github-action@users.noreply.github.com"
+        git config --global user.name "GitHub Action"
+        ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
+        ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
     - name: Clean Maven cache
       run: |
         find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
