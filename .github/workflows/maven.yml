@@ -48,6 +48,7 @@ jobs:
           SONAR_TOKEN: "${{secrets.SONAR_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+          NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
       - name: Build and test with Maven - ${{ matrix.java-version }}
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
@@ -59,12 +60,14 @@ jobs:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+          NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
       - name: Deploy Snapshots
         if: "github.event_name != 'pull_request' && matrix.java-version == 11"
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+          NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
         run: ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
