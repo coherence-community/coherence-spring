@@ -12,7 +12,7 @@ on:
     workflows: [CI Coherence Spring]
     branches:
       - main
-      - '[1-9]+.[0-9]+.x'
+      - '[1-9]+.x'
     types:
     - completed
 jobs:
