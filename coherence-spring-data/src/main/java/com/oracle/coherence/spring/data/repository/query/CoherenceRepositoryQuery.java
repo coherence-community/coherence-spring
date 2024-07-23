@@ -39,6 +39,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
+import org.springframework.data.repository.query.DefaultParameters;
 import org.springframework.data.repository.query.ParameterAccessor;
 import org.springframework.data.repository.query.Parameters;
 import org.springframework.data.repository.query.ParametersParameterAccessor;
@@ -114,19 +115,10 @@ public class CoherenceRepositoryQuery implements RepositoryQuery {
 
 		PartTree partTree = new PartTree(this.method.getName(), this.metadata.getDomainType());
 
-		Parameters<?, ?> springDataParameters = new MyDefaultParameters(this.method);
-
-		/*
-		 * Deprecated in Spring Data 2023.1.4 and removed in 2024.0.1
-		 */
-		// Parameters<?, ?> springDataParameters = new DefaultParameters(this.method);
-
-		/*
-		 * Recommended replacement. But this does not work.
-		 */
-		// Parameters<?, ?> springDataParameters = new DefaultParameters(ParametersSource.of(this.method));
+		Parameters<?, ?> springDataParameters = new DefaultParameters(ParametersSource.of(this.metadata, this.method));
 
 		ParameterAccessor accessor = new ParametersParameterAccessor(springDataParameters, parameters);
+
 		CoherenceQueryCreator creator = new CoherenceQueryCreator(partTree, accessor);
 		QueryResult queryResult = creator.createQuery();
 
