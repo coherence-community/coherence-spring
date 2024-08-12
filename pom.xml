@@ -154,7 +154,7 @@
 		<coherence-hibernate.version>3.0.1</coherence-hibernate.version>
 		<classgraph.version>4.8.168</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<hibernate.version>6.4.4.Final</hibernate.version>
+		<hibernate.version>6.6.0.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
 		<jackson-datatype.version>2.17.1</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
