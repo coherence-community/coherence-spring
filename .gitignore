@@ -23,5 +23,5 @@ target/
 .java-version
 *.iml
 *slf4j2
-
+.vscode/
 .flattened-pom.xml
