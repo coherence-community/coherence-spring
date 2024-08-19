@@ -67,9 +67,9 @@
 
     <suppress>
         <notes><![CDATA[
-        spring-security-core-5.8.10.jar
+        sshd-core-2.7.0.jar
         ]]></notes>
-        <vulnerabilityName>CVE-2024-22257</vulnerabilityName>
+        <vulnerabilityName>CVE-2024-41909</vulnerabilityName>
     </suppress>
 
 </suppressions>
