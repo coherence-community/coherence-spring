@@ -147,7 +147,13 @@ $(globalSwitch);
 <li><a href="#spring-session-with-plain-spring-framework">3.2. Spring Session with plain Spring Framework</a></li>
 </ul>
 </li>
-<li><a href="#spring-session-expiration-strategies">4. Session Expiration Strategies</a></li>
+<li><a href="#spring-session-expiration-strategies">4. Session Expiration Strategies</a>
+<ul class="sectlevel2">
+<li><a href="#setting-the-expiration-time-for-each-put-operation">4.1. Setting the Expiration Time for Each Put Operation</a></li>
+<li><a href="#configuring-the-expiration-time-in-coherence-cache-config-xml">4.2. Configuring the Expiration Time in <code>coherence-cache-config.xml</code></a></li>
+</ul>
+</li>
+<li><a href="#using-httpsessionlistener">5. Using HttpSessionListener</a></li>
 </ul>
 </div>
 </div>
@@ -618,12 +624,12 @@ activating a custom Spring Boot profile, Coherence will be started with POF seri
 </div>
 <div class="paragraph">
 <p>For the client application, deploy the generated WAR file <code>spring-session-demo.war</code> in
-<code>samples/spring-session-demo/spring-session-demo-war/target</code> to a Servlet container, for example Tomcat 10.1.20.</p>
+<code>samples/spring-session-demo/spring-session-demo-war/target</code> to a Servlet container, for example Tomcat 10.1.25.</p>
 </div>
 <div class="listingblock">
-<div class="title">Deploy WAR file to Tomcat 10.1.20</div>
+<div class="title">Deploy WAR file to Tomcat 10.1.25</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-10.1.20/webapps</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"> $ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-10.1.25/webapps</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -657,10 +663,12 @@ stored in the HTTP Session.</p>
 <p>Set the expiration time for each put operation explicitly</p>
 </li>
 <li>
-<p>Configure caches in your <code>coherence-cache-config.xml</code> file</p>
+<p>Configure cache expiration on a per-cache-basis in your <code>coherence-cache-config.xml</code> file</p>
 </li>
 </ul>
 </div>
+<div class="sect2">
+<h3 id="setting-the-expiration-time-for-each-put-operation"><a class="anchor" href="#setting-the-expiration-time-for-each-put-operation"></a>4.1. Setting the Expiration Time for Each Put Operation</h3>
 <div class="paragraph">
 <p>When you define a session timeout via the application, for example <code>@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 1000)</code>,
 the session expiration will be set for each put-operation in <code>CoherenceIndexedSessionRepository</code>.</p>
@@ -678,9 +686,44 @@ If not set in the application, Coherence Spring will expire HTTP session caches 
 </table>
 </div>
 <div class="paragraph">
+<p>As is the nature with Spring, you have multiple ways to set the session timeout:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Using the <code>@EnableCoherenceHttpSession</code> annotation, e.g. <code>@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 6000)</code></p>
+</li>
+<li>
+<p>By extending <code>CoherenceHttpSessionConfiguration</code> and overriding the <code>setMaxInactiveIntervalInSeconds</code> method. In that
+case, you would not be using the <code>@EnableCoherenceHttpSession</code> annotation but instead use <code>@Configuration</code> and
+<code>@Import(MyCustomCoherenceHttpSessionConfiguration.class)</code></p>
+</li>
+<li>
+<p>By declaring a <code>SessionRepositoryCustomizer&lt;CoherenceIndexedSessionRepository&gt;</code> bean, e.g.:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Bean
+ public static SessionRepositoryCustomizer&lt;CoherenceIndexedSessionRepository&gt; sessionRepositoryCustomizer() {
+   return (sessionRepository) -&gt; {
+     sessionRepository.setDefaultMaxInactiveInterval(Duration.ofSeconds(120));
+   };
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are using Spring Boot, you can also set the session timeout in your <code>application.properties</code> or
+<code>application.yaml</code> file using the <code>spring.session.timeout</code> property: <code>spring.session.timeout = 10m</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-the-expiration-time-in-coherence-cache-config-xml"><a class="anchor" href="#configuring-the-expiration-time-in-coherence-cache-config-xml"></a>4.2. Configuring the Expiration Time in <code>coherence-cache-config.xml</code></h3>
+<div class="paragraph">
 <p>If you rather prefer defining the session expiration timeouts in your <code>coherence-cache-config.xml</code> file, you
 should set the session timeout in the application to <code>0</code>, for instance <code>@EnableCoherenceHttpSession(sessionTimeoutInSeconds = 0)</code>.
-That way, put operations will never to set an expiration value for the cache entry. You can then set the <code>expiry-delay</code>
+That way, put operations will never try to set an expiration value for the cache entry. You can then set the <code>expiry-delay</code>
 cache configuration element for your cache in the <code>coherence-cache-config.xml</code> file.</p>
 </div>
 <div class="paragraph">
@@ -709,9 +752,28 @@ days.
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="using-httpsessionlistener"><a class="anchor" href="#using-httpsessionlistener"></a>5. Using HttpSessionListener</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you plan on use the <code>HttpSessionListener</code> interface, you can register a <code>HttpSessionListener</code> bean in your Spring
+configuration. The <code>HttpSessionListener</code> will be registered with the <code>ServletContext</code> and will be notified of session
+creation and destruction events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"> @Bean
+ MyHttpSessionListener myHttpSessionListener() {
+     return new MyHttpSessionListener();
+ }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-08-15 05:15:51 UTC
+Last updated 2024-08-23 02:48:27 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
