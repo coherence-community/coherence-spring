@@ -171,7 +171,7 @@
 		<reactor.version>3.6.7</reactor.version>
 		<resilience4j.version>2.2.0</resilience4j.version>
 		<slf4j-api.version>2.0.13</slf4j-api.version>
-		<spring-boot.version>3.3.2</spring-boot.version>
+		<spring-boot.version>3.3.3</spring-boot.version>
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
 		<spring-data-bom.version>2024.0.2</spring-data-bom.version>
 		<spring-session.version>3.2.2</spring-session.version>
