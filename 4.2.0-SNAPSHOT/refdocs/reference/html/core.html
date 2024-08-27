@@ -430,8 +430,9 @@ Coherence Spring requires as a minimum version <strong>Coherence CE</strong> <co
 <h2 id="coherence-spring-botstrap"><a class="anchor" href="#coherence-spring-botstrap"></a>2. Bootstrapping Coherence</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Coherence Spring uses the Coherence bootstrap API introduced in Coherence CE <code>20.12</code> to
-configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
+<p>Coherence Spring uses the Coherence
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/starting-and-stopping-cluster-members.html#GUID-A74280C1-AB23-48DB-8C0D-E494230ABFCA">Bootstrap API</a>
+to configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
 part of a Coherence Session.</p>
 </div>
 <div class="paragraph">
@@ -575,6 +576,25 @@ be the Coherence configuration file name. If not specified, the default value wi
 <div class="paragraph">
 <p>For the most part, you can use the equivalent Coherence Spring annotation that match the annotations from Coherence&#8217;s CDI
 or Micronaut support.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>All Coherence resources that are used by Spring application code should be injected using Spring dependency injection, only.
+Applications should avoid calling Coherence APIs that create or initialize Coherence resources directly, especially
+static <a href="https://coherence.community/24.03.1/api/java/com/tangosol/net/CacheFactory.html">CacheFactory</a> methods. If your Spring application code calls
+these Coherence APIs it may cause Coherence to be initialized too early in the start-up process, before Spring has
+initialized the Coherence extensions. A typical symptom of this would be that Coherence starts without picking up the
+correct configuration from Spring.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="coherence-spring-dependency-injection-namedmap-namedcache"><a class="anchor" href="#coherence-spring-dependency-injection-namedmap-namedcache"></a>6.1. Injecting NamedMap and NamedCache</h3>
@@ -4335,7 +4355,7 @@ such as the open-source <a href="https://dbeaver.io/">DBeaver</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-08-27 05:15:17 UTC
+Last updated 2024-08-27 09:48:12 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
