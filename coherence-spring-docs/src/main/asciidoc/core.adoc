@@ -82,8 +82,9 @@ IMPORTANT: Coherence Spring requires as a minimum version *Coherence CE* `22.06`
 [[coherence-spring-botstrap]]
 == Bootstrapping Coherence
 
-Coherence Spring uses the Coherence bootstrap API introduced in Coherence CE `20.12` to
-configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
+Coherence Spring uses the Coherence
+{coherence-docs}develop-applications/starting-and-stopping-cluster-members.html#GUID-A74280C1-AB23-48DB-8C0D-E494230ABFCA[Bootstrap API]
+to configure and create Coherence instances. This means that Coherence resources in a Spring application are typically
 part of a Coherence Session.
 
 By default, Coherence will start a single Session configured to use the default Coherence configuration file. This
@@ -175,6 +176,16 @@ Coherence Spring provides comprehensive support for the injection Coherence obje
 
 For the most part, you can use the equivalent Coherence Spring annotation that match the annotations from Coherence's CDI
 or Micronaut support.
+
+[IMPORTANT]
+====
+All Coherence resources that are used by Spring application code should be injected using Spring dependency injection, only.
+Applications should avoid calling Coherence APIs that create or initialize Coherence resources directly, especially
+static {coherence-api}com/tangosol/net/CacheFactory.html[CacheFactory] methods. If your Spring application code calls
+these Coherence APIs it may cause Coherence to be initialized too early in the start-up process, before Spring has
+initialized the Coherence extensions. A typical symptom of this would be that Coherence starts without picking up the
+correct configuration from Spring.
+====
 
 [[coherence-spring-dependency-injection-namedmap-namedcache]]
 === Injecting NamedMap and NamedCache
