@@ -145,6 +145,16 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 	}
 
 	/**
+	 * Sets the {@link SessionIdGenerator} to be used when generating a new session id. If not specified
+	 * a {@link UuidSessionIdGenerator} will be used.
+	 * @param sessionIdGenerator the {@link SessionIdGenerator} to use. Must not be null.
+	 */
+	public void setSessionIdGenerator(SessionIdGenerator sessionIdGenerator) {
+		Assert.notNull(sessionIdGenerator, "sessionIdGenerator cannot be null");
+		this.sessionIdGenerator = sessionIdGenerator;
+	}
+
+	/**
 	 * Set the name of map used to store sessions.
 	 * @param sessionMapName the session map name
 	 */
@@ -181,7 +191,7 @@ public class CoherenceIndexedSessionRepository implements FindByIndexNameSession
 
 	@Override
 	public CoherenceSpringSession createSession() {
-		MapSession cached = new MapSession();
+		MapSession cached = new MapSession(this.sessionIdGenerator);
 		if (this.defaultMaxInactiveInterval != null) {
 			cached.setMaxInactiveInterval(this.defaultMaxInactiveInterval);
 		}

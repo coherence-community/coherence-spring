@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -32,6 +32,7 @@ import org.springframework.session.IndexResolver;
 import org.springframework.session.MapSession;
 import org.springframework.session.SaveMode;
 import org.springframework.session.Session;
+import org.springframework.session.SessionIdGenerator;
 import org.springframework.session.config.SessionRepositoryCustomizer;
 import org.springframework.session.config.annotation.web.http.SpringHttpSessionConfiguration;
 import org.springframework.session.web.http.SessionRepositoryFilter;
@@ -65,6 +66,7 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	private Coherence coherence;
 
 	private IndexResolver<Session> indexResolver;
+	private SessionIdGenerator sessionIdGenerator;
 	private List<SessionRepositoryCustomizer<CoherenceIndexedSessionRepository>> sessionRepositoryCustomizers;
 
 	@Bean
@@ -115,6 +117,11 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 	}
 
 	@Autowired(required = false)
+	public void setSessionIdGenerator(SessionIdGenerator sessionIdGenerator) {
+		this.sessionIdGenerator = sessionIdGenerator;
+	}
+
+	@Autowired(required = false)
 	public void setSessionRepositoryCustomizer(
 			ObjectProvider<SessionRepositoryCustomizer<CoherenceIndexedSessionRepository>> sessionRepositoryCustomizers) {
 		this.sessionRepositoryCustomizers = sessionRepositoryCustomizers.orderedStream().collect(Collectors.toList());
@@ -156,6 +163,9 @@ public class CoherenceHttpSessionConfiguration extends SpringHttpSessionConfigur
 
 		if (this.indexResolver != null) {
 			sessionRepository.setIndexResolver(this.indexResolver);
+		}
+		if (this.sessionIdGenerator != null) {
+			sessionRepository.setSessionIdGenerator(this.sessionIdGenerator);
 		}
 		if (StringUtils.hasText(this.sessionMapName)) {
 			sessionRepository.setSessionMapName(this.sessionMapName);
