@@ -114,33 +114,33 @@
 		<asciidoctor-maven-plugin.version>3.0.0</asciidoctor-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
 		<doxia-module-markdown.version>1.0</doxia-module-markdown.version>
-		<exec-maven-plugin.version>3.3.0</exec-maven-plugin.version>
+		<exec-maven-plugin.version>3.4.1</exec-maven-plugin.version>
 		<flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
 		<github.site-maven-plugin.version>0.12</github.site-maven-plugin.version>
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<dependency-check-maven.version>10.0.2</dependency-check-maven.version>
 		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-		<maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
+		<maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-		<maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+		<maven-deploy-plugin.version>3.1.3</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
-		<maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
+		<maven-gpg-plugin.version>3.2.5</maven-gpg-plugin.version>
 		<maven-install-plugin.version>3.1.3</maven-install-plugin.version>
 		<maven-jacoco-plugin.version>0.8.12</maven-jacoco-plugin.version>
 		<maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
-		<maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
-		<maven-release-plugin.version>3.1.0</maven-release-plugin.version>
+		<maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
+		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-site-plugin.version>3.12.1</maven-site-plugin.version>
 		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-		<maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
 		<nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
 		<spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>2.3.18</asciidoctorj-pdf.version>
-		<checkstyle.version>10.18.0</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.42</spring-javaformat-checkstyle.version>
+		<checkstyle.version>10.18.1</checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.43</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.6.3</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
@@ -156,7 +156,7 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>6.6.0.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
-		<jackson-datatype.version>2.17.1</jackson-datatype.version>
+		<jackson-datatype.version>2.17.2</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
@@ -173,7 +173,7 @@
 		<slf4j-api.version>2.0.16</slf4j-api.version>
 		<spring-boot.version>3.3.3</spring-boot.version>
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
-		<spring-data-bom.version>2024.0.2</spring-data-bom.version>
+		<spring-data-bom.version>2024.0.3</spring-data-bom.version>
 		<spring-session.version>3.2.2</spring-session.version>
 		<spring-security.version>6.3.3</spring-security.version>
 		<tomcat.version>10.1.28</tomcat.version>
