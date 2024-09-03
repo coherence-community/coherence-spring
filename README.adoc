@@ -1,7 +1,6 @@
 :main-release-version: 4.1.3
-:main-snapshot-version: 4.1.4-SNAPSHOT
+:main-snapshot-version: 4.2.0-SNAPSHOT
 :website: https://spring.coherence.community/
-:42x-snapshot-version: 4.2.0-SNAPSHOT
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
 
@@ -30,7 +29,6 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 
 [width="75%"]
 |=======
-|*{42x-snapshot-version}*  | {website}{42x-snapshot-version}[Website] |{website}{42x-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{42x-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{42x-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{42x-snapshot-version}/refdocs/api/index.html[API Doc.]
 |*{main-release-version}*  | {website}{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
 |*{main-snapshot-version}* | {website}{main-snapshot-version}[Website]|{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
@@ -46,9 +44,8 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 |===
 |Coherence Spring | Java            | Coherence CE | Spring| Boot    | Jakarta | Git Branch/Tag
 
-|*4.2.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.3.x` | ✔       | `4.2.x`
-|*4.1.x*          | `17`, `21`      | `24.03`      | `6.x` | `3.2.x` | ✔       | `main`
-|*3.4.x*          | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.x`
+|*4.x*            | `17`, `21`      | `24.03.1`    | `6.x` | `3.3.x` | ✔       | `main`
+|*3.x*            | `11`, `17`, `21`| `22.06`      | `5.x` | `2.x`   |         | `3.x`
 |===
 
 == Quick Start
