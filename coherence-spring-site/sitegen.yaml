@@ -19,8 +19,8 @@ engine:
       coherence-maven-group-id: "${coherence.group.id}"
       javadoc-root: "https://coherence.community/${revision}/api/java/"
       version-coherence-maven: "${revision}"
-      version-coherence-spring: "${project.version}"
-      version-coherence: "${coherence.version}"
+      version-coherence-spring: "4.2.0"
+      version-coherence: "24.03.1"
       timestamp: "${timestamp}"
 assets:
   - target: "/"
