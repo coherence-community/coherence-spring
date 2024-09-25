@@ -25,3 +25,4 @@ target/
 *slf4j2
 
 .flattened-pom.xml
+.vscode/

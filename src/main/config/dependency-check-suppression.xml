@@ -72,4 +72,17 @@
         <vulnerabilityName>CVE-2024-41909</vulnerabilityName>
     </suppress>
 
+    <suppress>
+        <notes><![CDATA[
+        spring-webmvc-5.3.39.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-38816</vulnerabilityName>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        protobuf-java-3.21.12.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
+    </suppress>
 </suppressions>
