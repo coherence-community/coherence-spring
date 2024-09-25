@@ -13,4 +13,10 @@
         ]]></notes>
         <vulnerabilityName>CVE-2023-5763</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+        protobuf-java-3.21.12.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
+    </suppress>
 </suppressions>
