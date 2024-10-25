@@ -13,10 +13,4 @@
         ]]></notes>
         <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-        spring-webmvc-6.1.13.jar
-        ]]></notes>
-        <vulnerabilityName>CVE-2024-38819</vulnerabilityName>
-    </suppress>
 </suppressions>
