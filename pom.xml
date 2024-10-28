@@ -156,7 +156,7 @@
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>6.6.0.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
-		<jackson-datatype.version>2.17.2</jackson-datatype.version>
+		<jackson-datatype.version>2.18.0</jackson-datatype.version>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
