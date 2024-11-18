@@ -81,6 +81,13 @@
 
     <suppress>
         <notes><![CDATA[
+        spring-web-5.3.39.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2024-38828</vulnerabilityName>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
         protobuf-java-3.21.12.jar
         ]]></notes>
         <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
