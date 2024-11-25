@@ -174,7 +174,7 @@
 		<spring-boot.version>3.3.5</spring-boot.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 		<spring-data-bom.version>2024.0.3</spring-data-bom.version>
-		<spring-session.version>3.3.2</spring-session.version>
+		<spring-session.version>3.4.0</spring-session.version>
 		<spring-security.version>6.3.4</spring-security.version>
 		<tomcat.version>10.1.28</tomcat.version>
 	</properties>
