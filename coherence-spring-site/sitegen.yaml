@@ -20,7 +20,7 @@ engine:
       javadoc-root: "https://coherence.community/${revision}/api/java/"
       version-coherence-maven: "${revision}"
       version-coherence-spring: "4.2.0"
-      version-coherence: "24.03.1"
+      version-coherence: "24.09"
       timestamp: "${timestamp}"
 assets:
   - target: "/"
