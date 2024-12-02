@@ -23,7 +23,7 @@ title="Maven"
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
-        &lt;version&gt;22.06.8&lt;/version&gt;
+        &lt;version&gt;22.06.10&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</markup>
 
