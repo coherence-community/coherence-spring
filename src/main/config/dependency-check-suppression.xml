@@ -13,10 +13,4 @@
         ]]></notes>
         <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-        spring-web-6.1.15.jar
-        ]]></notes>
-        <vulnerabilityName>CVE-2024-38828</vulnerabilityName>
-    </suppress>
 </suppressions>

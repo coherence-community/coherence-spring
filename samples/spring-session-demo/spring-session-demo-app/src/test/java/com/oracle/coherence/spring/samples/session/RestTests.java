@@ -1,10 +1,12 @@
 /*
- * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2024, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
  */
 package com.oracle.coherence.spring.samples.session;
+
+import java.util.Base64;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oracle.coherence.spring.samples.session.filter.AuthenticationRequest;
@@ -23,7 +25,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.Base64Utils;
 
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.is;
@@ -62,7 +63,7 @@ public class RestTests {
 	public void shouldReturnOk() throws Exception {
 		this.mockMvc
 				.perform(get("/hello").header(HttpHeaders.AUTHORIZATION,
-						"Basic " + Base64Utils.encodeToString("coherence:rocks".getBytes())))
+						"Basic " + Base64.getEncoder().encodeToString("coherence:rocks".getBytes())))
 				.andExpect(status().isOk())
 				.andExpect(content().string(is("Hello Coherence")));
 	}

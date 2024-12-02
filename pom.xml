@@ -150,7 +150,7 @@
 		<bcprov.version>1.78.1</bcprov.version>
 		<bedrock.version>7.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
-		<coherence.version>24.03.1</coherence.version>
+		<coherence.version>24.09</coherence.version>
 		<coherence-hibernate.version>3.0.2</coherence-hibernate.version>
 		<classgraph.version>4.8.168</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
@@ -167,15 +167,15 @@
 		<log4j.version>2.24.0</log4j.version>
 		<mockito.version>5.11.0</mockito.version>
 		<modelmapper.version>3.2.0</modelmapper.version>
-		<org.springframework.version>6.1.15</org.springframework.version>
+		<org.springframework.version>6.2.0</org.springframework.version>
 		<reactor.version>3.6.10</reactor.version>
 		<resilience4j.version>2.2.0</resilience4j.version>
 		<slf4j-api.version>2.0.16</slf4j-api.version>
-		<spring-boot.version>3.3.5</spring-boot.version>
-		<spring-cloud.version>2023.0.3</spring-cloud.version>
-		<spring-data-bom.version>2024.0.3</spring-data-bom.version>
-		<spring-session.version>3.3.2</spring-session.version>
-		<spring-security.version>6.3.4</spring-security.version>
+		<spring-boot.version>3.4.0</spring-boot.version>
+		<spring-cloud.version>2024.0.0-RC1</spring-cloud.version>
+		<spring-data-bom.version>2024.1.0</spring-data-bom.version>
+		<spring-session.version>3.4.0</spring-session.version>
+		<spring-security.version>6.4.1</spring-security.version>
 		<tomcat.version>10.1.28</tomcat.version>
 	</properties>
 
