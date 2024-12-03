@@ -132,44 +132,45 @@ $(globalSwitch);
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
-<li><a href="#spring-boot-using-coherence">2. Using Coherence with Spring Boot</a></li>
-<li><a href="#spring-boot-coherence-cluster-setup">3. Coherence Cluster Setup</a>
+<li><a href="#spring-boot-autoconfiguration">2. Auto-configuration</a></li>
+<li><a href="#spring-boot-configuration-properties">3. Configuration Properties</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup">4. Coherence Cluster Setup</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-coherence-cluster-setup-co-located">3.1. Co-located Coherence Clusters</a></li>
-<li><a href="#spring-boot-coherence-cluster-setup-client">3.2. Access Coherence Clusters as a Client</a>
+<li><a href="#spring-boot-coherence-cluster-setup-co-located">4.1. Co-located Coherence Clusters</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client">4.2. Access Coherence Clusters as a Client</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-coherence-cluster-setup-client-grpc">3.2.1. gRPC</a></li>
-<li><a href="#spring-boot-coherence-cluster-setup-client-extend">3.2.2. Coherence*Extend</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client-grpc">4.2.1. gRPC</a></li>
+<li><a href="#spring-boot-coherence-cluster-setup-client-extend">4.2.2. Coherence*Extend</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#spring-boot-config-data-api">4. Support of the Spring Boot ConfigData API</a></li>
-<li><a href="#spring-boot-caching">5. Caching with Spring Boot</a>
+<li><a href="#spring-boot-config-data-api">5. Support of the Spring Boot ConfigData API</a></li>
+<li><a href="#spring-boot-caching">6. Caching with Spring Boot</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-caching-circuit-breaker">5.1. Configure Circuit Breakers with Resilience4j</a>
+<li><a href="#spring-boot-caching-circuit-breaker">6.1. Configure Circuit Breakers with Resilience4j</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-caching-circuit-breaker-running-example">5.1.1. Running the Example</a></li>
-<li><a href="#monitoring-the-circuit-breaker">5.1.2. Monitoring the Circuit Breaker</a></li>
-<li><a href="#add-resilience4j-dependencies">5.1.3. Add Resilience4j Dependencies</a></li>
-<li><a href="#resilience4j-annotations">5.1.4. Resilience4j Annotations</a></li>
+<li><a href="#spring-boot-caching-circuit-breaker-running-example">6.1.1. Running the Example</a></li>
+<li><a href="#monitoring-the-circuit-breaker">6.1.2. Monitoring the Circuit Breaker</a></li>
+<li><a href="#add-resilience4j-dependencies">6.1.3. Add Resilience4j Dependencies</a></li>
+<li><a href="#resilience4j-annotations">6.1.4. Resilience4j Annotations</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#spring-boot-hibernate-second-level-cache">6. Configure Hibernate Second-Level Caching</a>
+<li><a href="#spring-boot-hibernate-second-level-cache">7. Configure Hibernate Second-Level Caching</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-hibernate-second-level-cache-example">6.1. Hibernate Second Level Cache Example</a>
+<li><a href="#spring-boot-hibernate-second-level-cache-example">7.1. Hibernate Second Level Cache Example</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-hibernate-second-level-cache-example-run">6.1.1. Run the Hibernate Application</a></li>
+<li><a href="#spring-boot-hibernate-second-level-cache-example-run">7.1.1. Run the Hibernate Application</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#spring-boot-sessions">7. Spring Session Support</a></li>
-<li><a href="#spring-boot-messaging">8. Coherence Messaging Support</a></li>
-<li><a href="#spring-boot-metrics">9. Coherence Metrics</a></li>
-<li><a href="#spring-boot-data">10. Spring Data Support</a></li>
+<li><a href="#spring-boot-sessions">8. Spring Session Support</a></li>
+<li><a href="#spring-boot-messaging">9. Coherence Messaging Support</a></li>
+<li><a href="#spring-boot-metrics">10. Coherence Metrics</a></li>
+<li><a href="#spring-boot-data">11. Spring Data Support</a></li>
 </ul>
 </div>
 </div>
@@ -220,15 +221,16 @@ as the desired version of Coherence.</p>
 </div>
 </div>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requires Oracle Coherence CE version
-<code>20.12</code> or higher.
+Under the covers Coherence Spring takes advantage of the Coherence Bootstrap API. For more information, check out
+the respective chapter on the Bootstrap API in the
+<a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/starting-and-stopping-cluster-members.html#GUID-A74280C1-AB23-48DB-8C0D-E494230ABFCA">Coherence reference guide</a>.
 </td>
 </tr>
 </table>
@@ -236,7 +238,7 @@ As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requi
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-using-coherence"><a class="anchor" href="#spring-boot-using-coherence"></a>2. Using Coherence with Spring Boot</h2>
+<h2 id="spring-boot-autoconfiguration"><a class="anchor" href="#spring-boot-autoconfiguration"></a>2. Auto-configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>By adding the <code>coherence-spring-boot-starter</code> dependency, AutoConfiguration will be activated via the
@@ -258,6 +260,47 @@ up Spring Boot as a Coherence Client</a>.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>When using Coherence Spring Boot, you may want to verify that only the auto-configuration that you actually need
+is enabled. For example, Coherence is shipped with <code>Gson</code>, and the mere presence of the Gson class may trigger
+<code>GsonAutoConfiguration</code>.</p>
+</div>
+<div class="paragraph">
+<p>To find out which auto-configuration is applied for your application, start your Spring Boot application with the <code>--debug</code>
+argument. The auto-configuration report will be logged to the console.</p>
+</div>
+<div class="paragraph">
+<p>Any auto-configuration that you do not want to be applied, can be disabled by specifying the <code>exclude</code> property on the
+<code>@SpringBootApplication</code> annotation on your main application class. Just specify the name of the auto-configuration classes
+that you do not want to be applied.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication(exclude = GsonAutoConfiguration.class)
+public class MyCoherenceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyCoherenceApplication.class, args);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can also disable specific auto-configuration by setting the <code>spring.autoconfigure.exclude</code> property
+in your <code>application.properties</code> or <code>application.yaml</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-configuration-properties"><a class="anchor" href="#spring-boot-configuration-properties"></a>3. Configuration Properties</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Additional configuration can be provided for instance via Spring Boot&#8217;s <code>application.yaml</code> or <code>application.properties</code> file.
 For instance YAML configuration for Spring Boot&#8217;s Coherence support may look like the following:</p>
@@ -401,7 +444,7 @@ the native Coherence properties. For a list of available native properties, plea
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-coherence-cluster-setup"><a class="anchor" href="#spring-boot-coherence-cluster-setup"></a>3. Coherence Cluster Setup</h2>
+<h2 id="spring-boot-coherence-cluster-setup"><a class="anchor" href="#spring-boot-coherence-cluster-setup"></a>4. Coherence Cluster Setup</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In order to set up Coherence clusters with Spring Boot, you can use the following approaches:</p>
@@ -430,7 +473,7 @@ For an in-depth introduction to Coherence clusters, please consult the chapter
 </table>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-coherence-cluster-setup-co-located"><a class="anchor" href="#spring-boot-coherence-cluster-setup-co-located"></a>3.1. Co-located Coherence Clusters</h3>
+<h3 id="spring-boot-coherence-cluster-setup-co-located"><a class="anchor" href="#spring-boot-coherence-cluster-setup-co-located"></a>4.1. Co-located Coherence Clusters</h3>
 <div class="paragraph">
 <p>In this setup, Coherence is started as part of your Spring Boot application. Each instance of your application will run
 Coherence and using the Tangosol Cluster Management Protocol (TCMP), they will form a Coherence cluster. This is typically
@@ -474,7 +517,7 @@ coherence.wka: 127.0.0.1                      <i class="conum" data-value="3"></
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-coherence-cluster-setup-client"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client"></a>3.2. Access Coherence Clusters as a Client</h3>
+<h3 id="spring-boot-coherence-cluster-setup-client"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client"></a>4.2. Access Coherence Clusters as a Client</h3>
 <div class="paragraph">
 <p>In this approach, your Spring Boot application will connect to a dedicated Coherence cluster as a client. This can be
 done either via <em>Coherence*Extend</em> or <a href="https://grpc.io/">gRPC</a>. For your Spring Boot application, the configuration is
@@ -550,7 +593,7 @@ public class CoherenceClientConfig {
 either <em>Coherence*Extend</em> or <em>gRPC</em>. The configuration for both approaches is described in the following sections.</p>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-coherence-cluster-setup-client-grpc"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-grpc"></a>3.2.1. gRPC</h4>
+<h4 id="spring-boot-coherence-cluster-setup-client-grpc"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-grpc"></a>4.2.1. gRPC</h4>
 <div class="paragraph">
 <p>The main gRPC configuration is done in your <code>coherence-cache-config.xml</code> file. The configuration would look similar to the
 following:</p>
@@ -616,7 +659,7 @@ reference guide.
 </div>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-coherence-cluster-setup-client-extend"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-extend"></a>3.2.2. Coherence*Extend</h4>
+<h4 id="spring-boot-coherence-cluster-setup-client-extend"><a class="anchor" href="#spring-boot-coherence-cluster-setup-client-extend"></a>4.2.2. Coherence*Extend</h4>
 <div class="paragraph">
 <p>The setup for Coherence*Extend is very similar to the gRPC setup. The main difference is that you will use the
 <code>remote-cache-scheme</code> XML element instead. The configuration would look similar to the following:</p>
@@ -722,7 +765,7 @@ For more information on Coherence*Extend, please consult the chapter on
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>4. Support of the Spring Boot ConfigData API</h2>
+<h2 id="spring-boot-config-data-api"><a class="anchor" href="#spring-boot-config-data-api"></a>5. Support of the Spring Boot ConfigData API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since Spring Boot <code>2.4.x</code>, you can define your own
@@ -780,7 +823,7 @@ for details.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>5. Caching with Spring Boot</h2>
+<h2 id="spring-boot-caching"><a class="anchor" href="#spring-boot-caching"></a>6. Caching with Spring Boot</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you have not already done so, please read the chapter
@@ -832,7 +875,7 @@ following resources:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>5.1. Configure Circuit Breakers with Resilience4j</h3>
+<h3 id="spring-boot-caching-circuit-breaker"><a class="anchor" href="#spring-boot-caching-circuit-breaker"></a>6.1. Configure Circuit Breakers with Resilience4j</h3>
 <div class="paragraph">
 <p>Generally, it is recommended to configure and run Coherence as part of your application as a <em>cluster member</em>. However,
 caching can also be configured using Coherence in <em>client mode</em> via Coherence*Extend or gRPC. However, in client mode
@@ -872,7 +915,7 @@ exception and invoke a fallback method. In this case the data is returned from t
 the Spring cache until the connection to the Coherence server has been restored.</p>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>5.1.1. Running the Example</h4>
+<h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>6.1.1. Running the Example</h4>
 <div class="paragraph">
 <p>The example application consists of 2 applications:</p>
 </div>
@@ -1036,7 +1079,7 @@ in, calling the fallback method instead, and thus returning the Book not from th
 </div>
 </div>
 <div class="sect3">
-<h4 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>5.1.2. Monitoring the Circuit Breaker</h4>
+<h4 id="monitoring-the-circuit-breaker"><a class="anchor" href="#monitoring-the-circuit-breaker"></a>6.1.2. Monitoring the Circuit Breaker</h4>
 <div class="paragraph">
 <p>Spring Boot and Resilience4j also provide facilities to monitor the state of the Circuit Breaker via Spring Boot&#8217;s
 health-endpoint as well as its circuit breaker events endpoint:</p>
@@ -1126,7 +1169,7 @@ for this application.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>5.1.3. Add Resilience4j Dependencies</h4>
+<h4 id="add-resilience4j-dependencies"><a class="anchor" href="#add-resilience4j-dependencies"></a>6.1.3. Add Resilience4j Dependencies</h4>
 <div class="paragraph">
 <p>In order to use Resilience4j in your Coherence Spring project with Spring Boot, you need to add the following dependencies:</p>
 </div>
@@ -1153,7 +1196,7 @@ for this application.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>5.1.4. Resilience4j Annotations</h4>
+<h4 id="resilience4j-annotations"><a class="anchor" href="#resilience4j-annotations"></a>6.1.4. Resilience4j Annotations</h4>
 <div class="paragraph">
 <p>In order to add circuit-breaker capabilities to our <code>@Cacheable</code> business methods in <code>DefaultBookService</code>, we simply add
 the <code>@CircuitBreaker</code> annotations, e.g.:</p>
@@ -1196,7 +1239,7 @@ autowiring has <a href="https://stackoverflow.com/questions/5152686/self-injecti
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>6. Configure Hibernate Second-Level Caching</h2>
+<h2 id="spring-boot-hibernate-second-level-cache"><a class="anchor" href="#spring-boot-hibernate-second-level-cache"></a>7. Configure Hibernate Second-Level Caching</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring&#8217;s cache abstraction is not your only option with regard to caching. Another option is to use Hibernate&#8217;s
@@ -1256,7 +1299,7 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
 documentation.</p>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>6.1. Hibernate Second Level Cache Example</h3>
+<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>7.1. Hibernate Second Level Cache Example</h3>
 <div class="paragraph">
 <p>The Coherence Spring source code repository also provides an
 <a href="https://github.com/coherence-community/coherence-spring/tree/main/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
@@ -1273,7 +1316,7 @@ such as the genus and species.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>6.1.1. Run the Hibernate Application</h4>
+<h4 id="spring-boot-hibernate-second-level-cache-example-run"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example-run"></a>7.1.1. Run the Hibernate Application</h4>
 <div class="paragraph">
 <p>First, let&#8217;s build the application:</p>
 </div>
@@ -1382,7 +1425,7 @@ List&lt;Plant&gt; getAllPlantsCacheable();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>7. Spring Session Support</h2>
+<h2 id="spring-boot-sessions"><a class="anchor" href="#spring-boot-sessions"></a>8. Spring Session Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Coherence Spring also provides support for Spring Session. This includes auto-configuration support as well as a set of
@@ -1492,7 +1535,7 @@ class. Auto-configuration will back-off in certain situations:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>8. Coherence Messaging Support</h2>
+<h2 id="spring-boot-messaging"><a class="anchor" href="#spring-boot-messaging"></a>9. Coherence Messaging Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Support for injecting Coherence Publishers is enabled automatically by adding the <code>coherence-spring-boot-starter</code> dependency.
@@ -1504,7 +1547,7 @@ as described at <a href="core.html#coherence-spring-messaging-with-coherence-top
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>9. Coherence Metrics</h2>
+<h2 id="spring-boot-metrics"><a class="anchor" href="#spring-boot-metrics"></a>10. Coherence Metrics</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>By adding the <code>coherence-spring-boot-starter</code> and <code>com.oracle.coherence.ce:coherence-micrometer</code> dependencies auto-configuration will register <code>CoherenceMicrometerMetrics</code> and publish <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206//manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7">Coherence Metrics</a> under the <code>coherence.</code> name.</p>
@@ -1524,7 +1567,7 @@ as described at <a href="core.html#coherence-spring-messaging-with-coherence-top
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>10. Spring Data Support</h2>
+<h2 id="spring-boot-data"><a class="anchor" href="#spring-boot-data"></a>11. Spring Data Support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Coherence Spring&#8217;s support for Spring Data also contain auto-configuration support for Spring Boot. The auto-configuration
@@ -1581,7 +1624,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-12-03 21:35:41 UTC
+Last updated 2024-12-03 21:38:35 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
