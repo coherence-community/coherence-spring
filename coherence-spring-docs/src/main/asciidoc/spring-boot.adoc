@@ -40,11 +40,12 @@ dependencies {
 ----
 ====
 
-IMPORTANT: As Coherence Spring takes advantage of the new Coherence Bootstrap API, it requires Oracle Coherence CE version
-`20.12` or higher.
+NOTE: Under the covers Coherence Spring takes advantage of the Coherence Bootstrap API. For more information, check out
+the respective chapter on the Bootstrap API in the
+{coherence-docs}develop-applications/starting-and-stopping-cluster-members.html#GUID-A74280C1-AB23-48DB-8C0D-E494230ABFCA[Coherence reference guide].
 
-[[spring-boot-using-coherence]]
-== Using Coherence with Spring Boot
+[[spring-boot-autoconfiguration]]
+== Auto-configuration
 
 By adding the `coherence-spring-boot-starter` dependency, AutoConfiguration will be activated via the
 {coherence-spring-api}com/oracle/coherence/spring/boot/autoconfigure/CoherenceAutoConfiguration.html[CoherenceAutoConfiguration]
@@ -54,6 +55,41 @@ class for further configuration.
 NOTE: By default, Coherence Spring will start Coherence in clustered mode (Server). If you want to use Coherence in
 client mode (Coherence*Extend or gRPC), please see the chapter on <<spring-boot-coherence-cluster-setup-client, setting
 up Spring Boot as a Coherence Client>>.
+
+When using Coherence Spring Boot, you may want to verify that only the auto-configuration that you actually need
+is enabled. For example, Coherence is shipped with `Gson`, and the mere presence of the Gson class may trigger
+`GsonAutoConfiguration`.
+
+To find out which auto-configuration is applied for your application, start your Spring Boot application with the `--debug`
+argument. The auto-configuration report will be logged to the console.
+
+Any auto-configuration that you do not want to be applied, can be disabled by specifying the `exclude` property on the
+`@SpringBootApplication` annotation on your main application class. Just specify the name of the auto-configuration classes
+that you do not want to be applied.
+
+[source,java]
+----
+@SpringBootApplication(exclude = GsonAutoConfiguration.class)
+public class MyCoherenceApplication {
+	public static void main(String[] args) {
+        SpringApplication.run(MyCoherenceApplication.class, args);
+    }
+}
+----
+
+Alternatively, you can also disable specific auto-configuration by setting the `spring.autoconfigure.exclude` property
+in your `application.properties` or `application.yaml` file.
+
+[source,yaml]
+.application.yaml
+----
+spring:
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
+----
+
+[[spring-boot-configuration-properties]]
+== Configuration Properties
 
 Additional configuration can be provided for instance via Spring Boot's `application.yaml` or `application.properties` file.
 For instance YAML configuration for Spring Boot's Coherence support may look like the following:
