@@ -30,7 +30,7 @@
 
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
+		<maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
 	</properties>
 
 	<dependencies>
