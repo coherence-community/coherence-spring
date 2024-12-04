@@ -18,7 +18,7 @@ title="Maven"
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
         &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
-        &lt;version&gt;4.2.0&lt;/version&gt;
+        &lt;version&gt;4.3.0&lt;/version&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
