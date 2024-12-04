@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>Coherence Spring Data</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body id="spring-data" class="book toc2 toc-left">
+<div id="header">
+<h1>Coherence Spring Data</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#spring-data-introduction">1. Introduction</a></li>
+<li><a href="#features">2. Features</a></li>
+<li><a href="#getting-started">3. Getting Started</a></li>
+<li><a href="#defining-repositories">4. Defining Repositories</a>
+<ul class="sectlevel2">
+<li><a href="#identifying-the-coherence-namedmap">4.1. Identifying the Coherence NamedMap</a></li>
+</ul>
+</li>
+<li><a href="#mapping-entities">5. Mapping Entities</a></li>
+<li><a href="#using-the-repository">6. Using the Repository</a>
+<ul class="sectlevel2">
+<li><a href="#finder-queries">6.1. Finder Queries</a></li>
+</ul>
+</li>
+<li><a href="#projections">7. Projections</a>
+<ul class="sectlevel2">
+<li><a href="#interface-based-projections">7.1. Interface-based Projections</a></li>
+<li><a href="#closed-projections">7.2. Closed Projections</a></li>
+<li><a href="#open-projections">7.3. Open Projections</a></li>
+<li><a href="#nullable-wrappers">7.4. Nullable Wrappers</a></li>
+<li><a href="#class-based-projections-dtos">7.5. Class-based Projections (DTOs)</a></li>
+<li><a href="#dynamic-projections">7.6. Dynamic Projections</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="spring-data-introduction"><a class="anchor" href="#spring-data-introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Spring Data Coherence module provides integration with Coherence data grids. Key functional areas of Spring Data Coherence are a POJO centric model for interacting with a Coherence data grid and easily writing a Repository style data access layer.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="features"><a class="anchor" href="#features"></a>2. Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Spring configuration support using Java-based @Configuration classes.</p>
+</li>
+<li>
+<p>Automatic implementation of Repository interfaces</p>
+</li>
+<li>
+<p>Rich query and event features from Coherence</p>
+</li>
+<li>
+<p>Native asynchronous repository support</p>
+</li>
+<li>
+<p>Projections</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-started"><a class="anchor" href="#getting-started"></a>3. Getting Started</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Example 1. Coherence Spring Data Dependencies</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-data&lt;/artifactId&gt;
+    &lt;version&gt;4.3.1-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation("com.oracle.coherence.spring:coherence-spring-data:4.3.1-SNAPSHOT")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="defining-repositories"><a class="anchor" href="#defining-repositories"></a>4. Defining Repositories</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before proceeding, please be familiar with the <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/">Spring Data Commons</a> documentation, as this
+section will assume some familiarity with Spring Data.</p>
+</div>
+<div class="paragraph">
+<p>Simple repositories such as the following will, of course, work as expected:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface PersonRepository extends CrudRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, it is recommended to extend the
+<a href="https://spring.coherence.community/4.3.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/data/repository/CoherenceRepository.html">CoherenceRepository</a> interface,
+to fully utilize the features Coherence for Spring Data has to offer such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Powerful projection features</p>
+</li>
+<li>
+<p>Flexible in-place entity updates</p>
+</li>
+<li>
+<p>First-class data aggregation support</p>
+</li>
+<li>
+<p>Stream API support</p>
+</li>
+<li>
+<p>Event listener support</p>
+</li>
+<li>
+<p>Declarative acceleration and index creation</p>
+</li>
+<li>
+<p>Native asynchronous support</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please also see the chapter <a href="https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-applications/using-repository-api.html">Using the Repository API</a>
+of the Coherence reference documentation for more details on these features.</p>
+</div>
+<div class="paragraph">
+<p>Example extending the blocking <code>CoherenceRepository</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or for the non-blocking flavor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+
+// ...
+
+public interface PersonRepository extends CoherenceAsyncRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In the less common use-case of using the <code>update</code> method of the <code>CoherenceRepository</code> to update entities with an entity
+Id that does NOT exist, a <code>NullPointerException</code> may be thrown. In order to plug-in your own logic, you can either
+provide an <code>EntityFactory</code> to create a new instance or you can provide a lambda expression that e.g. throws an exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">this.bookRepository.update(new UUID(), Book::setPages, 700, uuid -&gt; {
+    throw new IllegalStateException("The book with id " + uuid + " does not exist.");
+});</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="identifying-the-coherence-namedmap"><a class="anchor" href="#identifying-the-coherence-namedmap"></a>4.1. Identifying the Coherence NamedMap</h3>
+<div class="paragraph">
+<p>The Coherence <code>NamedMap</code> that will be used by the Repository implementation
+will be based on the type name in the Repository class assuming the Repository
+name follows the format of [Type]Repository (e.g., PersonRepository will use a NamedMap called <code>person</code>).
+If this is not desired, the name may instead be passed by the <code>@CoherenceMap</code> annotation.  For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+
+// ...
+
+@CoherenceMap("people")
+public interface PersonRepository extends CoherenceRepository&lt;String, Person&gt; {
+    // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mapping-entities"><a class="anchor" href="#mapping-entities"></a>5. Mapping Entities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
+Repository is relatively simple as only the id needs to be annotated.  It is possible to
+use either <code>org.springframework.data.annotation.Id</code> or <code>javax.persistence.Id</code> to denote the
+entity&#8217;s id.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Person implements Serializable {
+    @org.springframework.data.annotation.Id
+    protected String id;
+
+    // ---- person functionality ----
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-the-repository"><a class="anchor" href="#using-the-repository"></a>6. Using the Repository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to enable Coherence-based Repositories, you must use the
+<a href="https://spring.coherence.community/4.3.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/data/config/EnableCoherenceRepositories.html">@EnableCoherenceRepositories</a>
+annotation. A simple configuration example would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+
+// ...
+
+@Configuration
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly to other Spring Data implementations, the <code>@EnableCoherenceRepositories</code> annotation
+offers several configuration options to configure how Spring will search for repositories.
+Please see the <a href="https://spring.coherence.community/4.3.1-SNAPSHOT/refdocs/api/">API docs</a> for details.</p>
+</div>
+<div class="sect2">
+<h3 id="finder-queries"><a class="anchor" href="#finder-queries"></a>6.1. Finder Queries</h3>
+<div class="paragraph">
+<p>One of the benefits of Spring Data is the ability to define queries on the Repository interface
+using Spring Data&#8217;s <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details">finder query</a> syntax.
+For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.tangosol.util.UUID;
+
+// ...
+
+public interface BookRepository extends CoherenceRepository&lt;Book, UUID&gt; {
+    List&lt;Book&gt; findByAuthor(Author author);
+    // other finders
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It should be noted that finder queries defined on either the blocking or non-blocking
+Coherence repository will always execute in a blocking manner.  For asynchronous versions
+of these methods, please use Spring&#8217;s <a href="https://spring.io/guides/gs/async-method/">Async Method</a> support.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.data.config.CoherenceMap;
+import com.oracle.coherence.spring.data.model.Author;
+import com.oracle.coherence.spring.data.model.Book;
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
+import com.tangosol.util.UUID;
+
+import org.springframework.scheduling.annotation.Async;
+
+// ...
+
+@CoherenceMap("book")
+public interface CoherenceBookAsyncRepository extends CoherenceAsyncRepository&lt;Book, UUID&gt; {
+
+    @Async
+    CompletableFuture&lt;List&lt;Book&gt;&gt; findByAuthor(Author author);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to include the <code>@EnableAsync</code> annotation on the configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
+import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+// ...
+
+@Configuration
+@EnableAsync
+@EnableCoherence
+@EnableCoherenceRepositories
+public static class Config {
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="projections"><a class="anchor" href="#projections"></a>7. Projections</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Data Coherence module supports projections as defined in <a href="https://docs.spring.io/spring-data/commons/docs/current/reference/html/#projections">Spring Data Projections</a> documentation. This allows us,
+among other things, to transfer a subset of the entities properties when <code>closed</code> projections are used.</p>
+</div>
+<div class="paragraph">
+<p>Imagine a repository and aggregate root type such as the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Entity
+public class Book implements Cloneable, Serializable {
+    @Id
+    protected final UUID uuid;
+    protected String title;
+    protected Author author;
+    protected int pages;
+    protected Calendar published;
+}
+
+@CoherenceMap("book")
+interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
+
+    List&lt;BookProjection&gt; findByTitle(String title);
+
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-based-projections"><a class="anchor" href="#interface-based-projections"></a>7.1. Interface-based Projections</h3>
+<div class="paragraph">
+<p>The simplest way to simplify the result is to declare an interface that exposes methods reading the desired properties, as shown in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="title">A projection interface to retrieve a subset of attributes</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndPages {
+
+    String getTitle();
+    int getPages();
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">A repository using an interface based projection with a query method</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
+
+    List&lt;BookTitleAndPages&gt; findByTitle(String title);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The query execution engine creates proxy instances of that interface at runtime for each element returned and forwards calls to the exposed methods to the target object.</p>
+</div>
+<div class="paragraph">
+<p>Projections can be used recursively as shown in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="title">A projection interface to retrieve a subset of attributes</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookSummary {
+
+    String getTitle();
+    int getPages();
+    AuthorSummary getAuthor();
+
+    interface AuthorSummary {
+        String getFirstName();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="closed-projections"><a class="anchor" href="#closed-projections"></a>7.2. Closed Projections</h3>
+<div class="paragraph">
+<p>A projection interface whose accessor methods all match properties of the target aggregate is considered to be a closed projection. The following example is a closed projection:</p>
+</div>
+<div class="listingblock">
+<div class="title">A closed projection</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndPages {
+
+    String getTitle();
+    int getPages();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="open-projections"><a class="anchor" href="#open-projections"></a>7.3. Open Projections</h3>
+<div class="paragraph">
+<p>Accessor methods in projection interfaces can also be used to compute new values by using the @Value annotation, as shown in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="title">An open projection</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndAuthor {
+
+    @Value("#{target.author.firstName + ' - ' + target.title}")
+    String getTitleAndAuthor();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A projection interface using <code>@Value</code> is an open projection. Spring Data cannot apply query execution optimizations in this case, because the SpEL expression could use any attribute of the aggregate root.</p>
+</div>
+<div class="paragraph">
+<p>Default methods also can be used for open projection interfaces:</p>
+</div>
+<div class="listingblock">
+<div class="title">A projection interface using a default method for custom logic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface BookTitleAndAuthor {
+
+    default String getTitleAndAuthor() {
+        return getAuthor().getFirstName().concat(' - ').concat(getTitle());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A more flexible option is to implement the custom logic in a Spring bean:</p>
+</div>
+<div class="listingblock">
+<div class="title">A projection interface using a default method for custom logic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+class MyBean {
+
+    String getTitleAndAuthor(Book book) {
+        return book.getAuthor().getFirstName().concat(' - ').concat(book.getTitle());
+    }
+}
+
+interface BookTitleAndAuthor {
+
+    @Value("#{@myBean.getTitleAndAuthor(target)}")
+    String getTitleAndAuthor();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Methods backed by SpEL expression evaluation can also use method parameters, which can then be referred to from the expression. The method parameters are available through an Object array named args. The following example shows how to get a method parameter from the args array:</p>
+</div>
+<div class="listingblock">
+<div class="title">A sample Book object</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface NameOnly {
+
+    @Value("args[0] + ' ' + #{target.author.firstName}")
+    String getHonorificName(String honorific);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nullable-wrappers"><a class="anchor" href="#nullable-wrappers"></a>7.4. Nullable Wrappers</h3>
+<div class="paragraph">
+<p>Getters in projection interfaces can make use of nullable wrappers for improved null-safety.
+Currently supported wrapper types are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>java.util.Optional</p>
+</li>
+<li>
+<p>com.google.common.base.Optional</p>
+</li>
+<li>
+<p>scala.Option</p>
+</li>
+<li>
+<p>io.vavr.control.Option</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">A projection interface using nullable wrappers</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">interface TitleOnly {
+
+    Optional&lt;String&gt; getTitle();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="class-based-projections-dtos"><a class="anchor" href="#class-based-projections-dtos"></a>7.5. Class-based Projections (DTOs)</h3>
+<div class="paragraph">
+<p>Another way of defining projections is by using value type DTOs (Data Transfer Objects) that hold properties for the fields that are supposed to be retrieved - similar to the projection interfaces except that no proxying happens and no nested projections can be applied.</p>
+</div>
+<div class="paragraph">
+<p>The fields to be loaded are determined from the parameter names of the constructor that is exposed.</p>
+</div>
+<div class="paragraph">
+<p>The following example shows a projecting DTO:</p>
+</div>
+<div class="listingblock">
+<div class="title">A projecting DTO</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class BookTitleAndPages {
+    private final String title;
+    private final int pages;
+
+    BookTitleAndPages(String title, int pages) {
+        this.title = title;
+        this.pages = pages;
+    }
+
+    String getTitle() {
+        return this.title;
+    }
+
+    int getPages() {
+        return this.pages;
+    }
+
+    // equals(…) and hashCode() implementations
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dynamic-projections"><a class="anchor" href="#dynamic-projections"></a>7.6. Dynamic Projections</h3>
+<div class="paragraph">
+<p>It&#8217;s possible to select the return type to be used at invocation time (up to now all examples shown exact projection type to be used as a return type). To apply dynamic projections, use a query method such as the one shown in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="title">A repository using a dynamic projection parameter</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CoherenceMap("book")
+interface BookRepository extends CrudRepository&lt;Book, UUID&gt; {
+
+    &lt;T&gt; Collection&lt;T&gt; findByTitle(String title, Class&lt;T&gt; type);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Using a repository with dynamic projections</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Collection&lt;BookSummary&gt; aggregates = books.findByTitle("Shadow", BookSummary.class);
+
+Collection&lt;BookTitleAndPages&gt; aggregates = books.findByTitle("Remember", BookTitleAndPages.class);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2024-12-04 05:57:23 UTC
+</div>
+</div>
+<script src="js/highlight/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>
