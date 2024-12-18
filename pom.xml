@@ -153,6 +153,7 @@
 		<coherence.version>24.09</coherence.version>
 		<coherence-hibernate.version>3.0.2</coherence-hibernate.version>
 		<classgraph.version>4.8.168</classgraph.version>
+		<gson.version>2.11.0</gson.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.version>6.6.0.Final</hibernate.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
