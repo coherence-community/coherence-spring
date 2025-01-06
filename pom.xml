@@ -165,7 +165,7 @@
 		<javassist.version>3.30.2-GA</javassist.version>
 		<junit.version>5.11.3</junit.version>
 		<log4j.version>2.24.2</log4j.version>
-		<mockito.version>5.11.0</mockito.version>
+		<mockito.version>5.15.2</mockito.version>
 		<modelmapper.version>3.2.0</modelmapper.version>
 		<org.springframework.version>6.2.1</org.springframework.version>
 		<reactor.version>3.6.10</reactor.version>
