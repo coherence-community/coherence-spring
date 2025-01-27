@@ -151,7 +151,7 @@
 		<bedrock.version>7.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>24.09</coherence.version>
-		<coherence-hibernate.version>3.0.2</coherence-hibernate.version>
+		<coherence-hibernate.version>3.0.3</coherence-hibernate.version>
 		<classgraph.version>4.8.179</classgraph.version>
 		<gson.version>2.11.0</gson.version>
 		<hamcrest.version>2.2</hamcrest.version>
