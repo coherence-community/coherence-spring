@@ -145,7 +145,7 @@
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.27.2</assertj.version>
+		<assertj.version>3.27.3</assertj.version>
 		<awaitility.version>4.2.2</awaitility.version>
 		<bcprov.version>1.79</bcprov.version>
 		<bedrock.version>7.0.2</bedrock.version>
