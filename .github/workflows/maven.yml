@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -Powasp -DautoUpdate=true -Pspring-repo -Pcoverage --settings .mvn/settings.xml
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=coherence-community_coherence-spring -Dsonar.branch.name=${{ env.GITHUB_REF_NAME }} -B -Pspring -DautoUpdate=true -Pspring-repo -Pcoverage --settings .mvn/settings.xml
         env:
           MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
           GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
