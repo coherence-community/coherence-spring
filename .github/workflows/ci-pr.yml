@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Powasp -Pjdk${{ matrix.java-version }}
+          ./mvnw clean install -B -Pjdk${{ matrix.java-version }}
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
