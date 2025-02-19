@@ -1,4 +1,4 @@
-# This workflow will build a Java project with Maven
+﻿# This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 name: CI Coherence Spring
 run-name: ${{ github.event.head_commit.message }} [${{ github.event_name }}][${{ github.ref_name }}]
@@ -54,7 +54,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Pspring -Powasp,jdk${{ matrix.java-version }} -DautoUpdate=true --settings .mvn/settings.xml
+          ./mvnw clean install -B -Pspring -Pjdk${{ matrix.java-version }} -DautoUpdate=true --settings .mvn/settings.xml
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
