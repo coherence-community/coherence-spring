@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.event.Backlog;
 import com.oracle.coherence.spring.annotation.event.Connecting;
@@ -21,6 +22,8 @@ import com.tangosol.net.events.federation.FederatedConnectionEvent;
  * @since 3.0
  */
 public class FederatedConnectionEventHandler extends FederationEventHandler<FederatedConnectionEvent, FederatedConnectionEvent.Type> {
+
+	private static final Set<FederatedConnectionEvent.Type> PRE_EVENT_TYPES = Set.of(FederatedConnectionEvent.Type.CONNECTING);
 
 	public FederatedConnectionEventHandler(MethodEventObserver<FederatedConnectionEvent> observer) {
 		super(observer, FederatedConnectionEvent.Type.class, FederatedConnectionEvent::getParticipantName);
@@ -45,5 +48,10 @@ public class FederatedConnectionEventHandler extends FederationEventHandler<Fede
 				addType(FederatedConnectionEvent.Type.ERROR);
 			}
 		}
+	}
+
+	@Override
+	boolean isPreEvent(FederatedConnectionEvent event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }

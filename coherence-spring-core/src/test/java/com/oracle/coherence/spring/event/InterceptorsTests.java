@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -220,7 +220,7 @@ class InterceptorsTests {
 		void onExecuted(@Executed @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuted", event);
 			assertThat(event.getProcessor(), is(instanceOf(Uppercase.class)));
-			assertThat(event.getEntrySet().size(), is(0));
+			assertThat(event.getEntrySet().size(), is(5));
 		}
 
 		@Synchronous
@@ -228,7 +228,7 @@ class InterceptorsTests {
 		void onExecuting(@Executing @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuting", event);
 			assertThat(event.getProcessor(), is(instanceOf(Uppercase.class)));
-			//assertThat(event.getEntrySet().size(), is(5));
+			assertThat(event.getEntrySet().size(), is(5));
 		}
 
 		// lifecycle events

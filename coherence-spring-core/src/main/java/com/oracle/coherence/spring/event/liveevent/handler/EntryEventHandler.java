@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.event.Inserted;
 import com.oracle.coherence.spring.annotation.event.Inserting;
@@ -27,6 +28,11 @@ import com.tangosol.net.events.partition.cache.EntryEvent;
  * @since 3.0
  */
 public class EntryEventHandler<K, V> extends CacheEventHandler<EntryEvent<K, V>, EntryEvent.Type> {
+
+	private static final Set<EntryEvent.Type> PRE_EVENT_TYPES = Set.of(
+			EntryEvent.Type.INSERTING,
+			EntryEvent.Type.UPDATING,
+			EntryEvent.Type.REMOVING);
 
 	public EntryEventHandler(MethodEventObserver<EntryEvent<K, V>> observer) {
 		super(observer, EntryEvent.Type.class);
@@ -51,5 +57,10 @@ public class EntryEventHandler<K, V> extends CacheEventHandler<EntryEvent<K, V>,
 				addType(EntryEvent.Type.REMOVED);
 			}
 		}
+	}
+
+	@Override
+	boolean isPreEvent(EntryEvent<K, V> event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }
