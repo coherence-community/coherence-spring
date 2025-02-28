@@ -6,6 +6,11 @@
  */
 package com.oracle.coherence.spring.event;
 
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import com.oracle.coherence.spring.CoherenceServer;
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.event.MapName;
@@ -20,11 +25,6 @@ import com.tangosol.util.InvocableMap;
 import data.Person;
 import data.PhoneNumber;
 import jakarta.inject.Inject;
-import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
