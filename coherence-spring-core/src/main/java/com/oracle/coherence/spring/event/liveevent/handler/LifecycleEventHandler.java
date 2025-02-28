@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.event.Activated;
 import com.oracle.coherence.spring.annotation.event.Activating;
@@ -23,6 +24,11 @@ import com.tangosol.net.events.internal.ConfigurableCacheFactoryDispatcher;
  * @since 3.0
  */
 public class LifecycleEventHandler extends EventHandler<LifecycleEvent, LifecycleEvent.Type> {
+
+	private static final Set<LifecycleEvent.Type> PRE_EVENT_TYPES = Set.of(
+			LifecycleEvent.Type.ACTIVATING,
+			LifecycleEvent.Type.DISPOSING);
+
 	public LifecycleEventHandler(MethodEventObserver<LifecycleEvent> observer) {
 		super(observer, LifecycleEvent.Type.class);
 
@@ -47,5 +53,10 @@ public class LifecycleEventHandler extends EventHandler<LifecycleEvent, Lifecycl
 	@Override
 	String getEventScope(LifecycleEvent event) {
 		return event.getConfigurableCacheFactory().getScopeName();
+	}
+
+	@Override
+	boolean isPreEvent(LifecycleEvent event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }

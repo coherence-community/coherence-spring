@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -79,7 +79,7 @@ public abstract class EventHandler<E extends Event<T>, T extends Enum<T>>
 			String eventScope = getEventScope(event);
 
 			if (observerScope == null || eventScope == null || observerScope.equals(eventScope)) {
-				if (this.observer.isAsync()) {
+				if (this.observer.isAsync() && !isPreEvent(event)) {
 					CompletableFuture.supplyAsync(() -> {
 						this.observer.notify(event);
 						return event;
@@ -90,6 +90,17 @@ public abstract class EventHandler<E extends Event<T>, T extends Enum<T>>
 				}
 			}
 		}
+	}
+
+	/**
+	 * Return {@code true} if passed event is pre-event (pre-events
+	 * are emitted synchronously before the entry is mutated).
+	 * @param event the Event to be checked
+	 * @return {@code true} if passed event is pre-event;
+	 * {@code false} otherwise
+	 */
+	boolean isPreEvent(E event) {
+		return false;
 	}
 
 	/**
