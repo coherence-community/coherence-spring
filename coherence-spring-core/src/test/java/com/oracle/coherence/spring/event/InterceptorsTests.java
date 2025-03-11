@@ -221,7 +221,7 @@ class InterceptorsTests {
 		void onExecuted(@Executed @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuted", event);
 			assertThat(event.getProcessor(), is(instanceOf(Uppercase.class)));
-			assertThat(event.getEntrySet().size(), is(0));
+			assertThat(event.getEntrySet().size(), is(5));
 		}
 
 		@Synchronous
@@ -229,7 +229,7 @@ class InterceptorsTests {
 		void onExecuting(@Executing @CacheName("people") @Processor(Uppercase.class) EntryProcessorEvent event) {
 			record("onExecuting", event);
 			assertThat(event.getProcessor(), is(instanceOf(Uppercase.class)));
-			//assertThat(event.getEntrySet().size(), is(5));
+			assertThat(event.getEntrySet().size(), is(5));
 		}
 
 		// lifecycle events
