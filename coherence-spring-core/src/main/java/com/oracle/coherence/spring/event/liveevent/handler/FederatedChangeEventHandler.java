@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.event.CommittingLocal;
 import com.oracle.coherence.spring.annotation.event.CommittingRemote;
@@ -23,6 +24,12 @@ import com.tangosol.net.events.federation.FederatedChangeEvent;
 public class FederatedChangeEventHandler
 		extends FederationEventHandler<FederatedChangeEvent, FederatedChangeEvent.Type> {
 
+	private static final Set<FederatedChangeEvent.Type> PRE_EVENT_TYPES = Set.of(
+			FederatedChangeEvent.Type.COMMITTING_LOCAL,
+			FederatedChangeEvent.Type.COMMITTING_REMOTE,
+			FederatedChangeEvent.Type.REPLICATING
+	);
+
 	public FederatedChangeEventHandler(MethodEventObserver<FederatedChangeEvent> observer) {
 		super(observer, FederatedChangeEvent.Type.class, FederatedChangeEvent::getParticipant);
 
@@ -37,5 +44,10 @@ public class FederatedChangeEventHandler
 				addType(FederatedChangeEvent.Type.REPLICATING);
 			}
 		}
+	}
+
+	@Override
+	boolean isPreEvent(FederatedChangeEvent event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.event.Arrived;
 import com.oracle.coherence.spring.annotation.event.Assigned;
@@ -26,6 +27,9 @@ import com.tangosol.net.events.partition.TransferEvent;
  * @since 3.0
  */
 public class TransferEventHandler extends ServiceEventHandler<TransferEvent, TransferEvent.Type> {
+
+	private static final Set<TransferEvent.Type> PRE_EVENT_TYPES = Set.of(
+			TransferEvent.Type.DEPARTING);
 
 	public TransferEventHandler(MethodEventObserver<TransferEvent> observer) {
 		super(observer, TransferEvent.Type.class);
@@ -53,5 +57,10 @@ public class TransferEventHandler extends ServiceEventHandler<TransferEvent, Tra
 				addType(TransferEvent.Type.ROLLBACK);
 			}
 		}
+	}
+
+	@Override
+	boolean isPreEvent(TransferEvent event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }

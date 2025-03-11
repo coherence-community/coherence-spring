@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -7,6 +7,7 @@
 package com.oracle.coherence.spring.event.liveevent.handler;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import com.oracle.coherence.spring.annotation.Name;
 import com.oracle.coherence.spring.annotation.SessionName;
@@ -28,6 +29,10 @@ import com.tangosol.net.events.internal.SessionEventDispatcher;
 public class SessionLifecycleEventHandler extends EventHandler<SessionLifecycleEvent, SessionLifecycleEvent.Type> {
 
 	private String name;
+
+	private static final Set<SessionLifecycleEvent.Type> PRE_EVENT_TYPES = Set.of(
+			SessionLifecycleEvent.Type.STARTING,
+			SessionLifecycleEvent.Type.STOPPING);
 
 	public SessionLifecycleEventHandler(MethodEventObserver<SessionLifecycleEvent> observer) {
 		super(observer, SessionLifecycleEvent.Type.class);
@@ -58,5 +63,10 @@ public class SessionLifecycleEventHandler extends EventHandler<SessionLifecycleE
 	protected boolean isApplicable(EventDispatcher dispatcher, String scopeName) {
 		return dispatcher instanceof SessionEventDispatcher
 				&& (this.name == null || ((SessionEventDispatcher) dispatcher).getName().equals(this.name));
+	}
+
+	@Override
+	boolean isPreEvent(SessionLifecycleEvent event) {
+		return PRE_EVENT_TYPES.contains(event.getType());
 	}
 }
