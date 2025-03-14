@@ -1402,12 +1402,34 @@ public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
 
 ==== Entry Events
 
-An link:{coherence-api}com/tangosol/net/events/partition/cache/EntryEvent.html[EntryEvent] is emitted when
-a link:{coherence-api}com/tangosol/util/InvocableMap.EntryProcessor.html[EntryProcessor] is invoked on a cache. These
-events are only emitted on the storage enabled member that is the primary owner of the entry that the `EntryProcessor`
-is invoked on.
+link:{coherence-api}com/tangosol/net/events/partition/cache/EntryEvent.html[Entry Events] represent operations for
+inserting, removing, and updating entries in a cache.
 
-To subscribe to `EntryProcessorEvent` simply create a Spring bean with a listener method annotated with
+[NOTE]
+====
+The event types fall into two categories, pre-events (those named _*ing_) and post-events, those named _*ed_). Pre-events
+are emitted synchronously before the entry is mutated. Post-events are emitted asynchronously after the entry has been mutated.
+
+As pre-events are synchronous the listener method should not take a long time to execute as it is blocking the cache
+mutation and could obviously be a performance impact. It is also important that developers understand Coherence reentrancy
+as the pre-events are executing on the Cache Service thread so cannot call into caches owned by the same service.
+====
+
+Precommit entry events (INSERTING, REMOVING, and UPDATING)
+are raised before the operation is performed to allow modification to an entry. The following holds true when
+modifying entries:
+
+* Event interceptors that are registered for precommit entry events are synchronously called.
+
+* A lock is held for each entry during the processing of the event to prevent concurrent updates.
+
+* Throwing an exception prevents the operation from being committed.
+
+Postcommit entry events (INSERTED, REMOVED, and UPDATED) are raised after an operation is performed and in the same
+order as the events occurred. Postcommit events indicate that an entry is no longer able to be modified. Event
+interceptors for postcommit entry events are asynchronously processed.
+
+To subscribe to `EntryEvent` simply create a Spring bean with a listener method annotated with
 link:{coherence-spring-api}com/oracle/coherence/spring/event/CoherenceEventListener.html[@CoherenceEventListener].
 The method should have a single parameter of type `EntryEvent`.
 
