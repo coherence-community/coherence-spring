@@ -20,6 +20,19 @@
     <name>Coherence Spring CacheStore Demo - Server</name>
     <description>Coherence Spring CacheStore Demo Server</description>
 
+    <!-- force netty version, otherwise one from spring will be used-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>4.1.118.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
