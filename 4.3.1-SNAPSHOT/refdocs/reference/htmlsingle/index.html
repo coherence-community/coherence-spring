@@ -3229,13 +3229,54 @@ public void onEvent(@SessionName("BackEnd") CacheLifecycleEvent event) {
 <div class="sect4">
 <h5 id="entry-events"><a class="anchor" href="#entry-events"></a>3.8.2.6. Entry Events</h5>
 <div class="paragraph">
-<p>An <a href="https://coherence.community/24.09.3/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">EntryEvent</a> is emitted when
-a <a href="https://coherence.community/24.09.3/api/java/com/tangosol/util/InvocableMap.EntryProcessor.html">EntryProcessor</a> is invoked on a cache. These
-events are only emitted on the storage enabled member that is the primary owner of the entry that the <code>EntryProcessor</code>
-is invoked on.</p>
+<p><a href="https://coherence.community/24.09.3/api/java/com/tangosol/net/events/partition/cache/EntryEvent.html">Entry Events</a> represent operations for
+inserting, removing, and updating entries in a cache.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The event types fall into two categories, pre-events (those named <em>*ing</em>) and post-events, those named <em>*ed</em>). Pre-events
+are emitted synchronously before the entry is mutated. Post-events are emitted asynchronously after the entry has been mutated.</p>
 </div>
 <div class="paragraph">
-<p>To subscribe to <code>EntryProcessorEvent</code> simply create a Spring bean with a listener method annotated with
+<p>As pre-events are synchronous the listener method should not take a long time to execute as it is blocking the cache
+mutation and could obviously be a performance impact. It is also important that developers understand Coherence reentrancy
+as the pre-events are executing on the Cache Service thread so cannot call into caches owned by the same service.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Precommit entry events (INSERTING, REMOVING, and UPDATING)
+are raised before the operation is performed to allow modification to an entry. The following holds true when
+modifying entries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Event interceptors that are registered for precommit entry events are synchronously called.</p>
+</li>
+<li>
+<p>A lock is held for each entry during the processing of the event to prevent concurrent updates.</p>
+</li>
+<li>
+<p>Throwing an exception prevents the operation from being committed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Postcommit entry events (INSERTED, REMOVED, and UPDATED) are raised after an operation is performed and in the same
+order as the events occurred. Postcommit events indicate that an entry is no longer able to be modified. Event
+interceptors for postcommit entry events are asynchronously processed.</p>
+</div>
+<div class="paragraph">
+<p>To subscribe to <code>EntryEvent</code> simply create a Spring bean with a listener method annotated with
 <a href="https://spring.coherence.community/4.3.1-SNAPSHOT/refdocs/api/com/oracle/coherence/spring/event/CoherenceEventListener.html">@CoherenceEventListener</a>.
 The method should have a single parameter of type <code>EntryEvent</code>.</p>
 </div>
@@ -3288,26 +3329,6 @@ public void onEvent(@Inserted @Removed EntryEvent event) {
     // TODO: process the event
 }</code></pre>
 </div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The event types fall into two categories, pre-events (those named <em>*ing</em>) and post-events, those named <em>*ed</em>). Pre-events
-are emitted synchronously before the entry is mutated. Post-events are emitted asynchronously after the entry has been mutated.</p>
-</div>
-<div class="paragraph">
-<p>As pre-events are synchronous the listener method should not take a long time to execute as it is blocking the cache
-mutation and could obviously be a performance impact. It is also important that developers understand Coherence reentrancy
-as the pre-events are executing on the Cache Service thread so cannot call into caches owned by the same service.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect5">
@@ -8170,7 +8191,7 @@ there are several additional examples that are not part of this repository but t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-14 05:15:44 UTC
+Last updated 2025-03-14 14:07:04 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
