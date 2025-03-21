@@ -146,7 +146,7 @@
 
 		<!-- dependency versions (alphabetically) -->
 		<assertj.version>3.27.3</assertj.version>
-		<awaitility.version>4.2.2</awaitility.version>
+		<awaitility.version>4.3.0</awaitility.version>
 		<bcprov.version>1.79</bcprov.version>
 		<bedrock.version>7.0.2</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
