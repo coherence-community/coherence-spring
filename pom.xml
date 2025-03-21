@@ -163,7 +163,7 @@
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<spring-session.version>2.7.4</spring-session.version>
-		<spring-security.version>5.8.15</spring-security.version>
+		<spring-security.version>6.4.4</spring-security.version>
 		<tomcat.version>9.0.90</tomcat.version>
 	</properties>
 
