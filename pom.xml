@@ -158,7 +158,7 @@
 		<log4j.version>2.23.1</log4j.version>
 		<mockito.version>3.12.4</mockito.version>
 		<org.springframework.version>5.3.39</org.springframework.version>
-		<org.springframework.data.version>2021.2.18</org.springframework.data.version>
+		<org.springframework.data.version>2024.1.4</org.springframework.data.version>
 		<reactor.version>3.4.35</reactor.version>
 		<resilience4j.version>1.7.1</resilience4j.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
