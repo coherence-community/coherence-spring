@@ -92,4 +92,11 @@
         ]]></notes>
         <vulnerabilityName>CVE-2024-7254</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        spring-security-crypto-5.8.16.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2025-22228</vulnerabilityName>
+    </suppress>
 </suppressions>
