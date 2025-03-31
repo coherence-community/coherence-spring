@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+o//////////////////////////////////////////////////////////////////////////////
     Copyright (c) 2013, 2021, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
@@ -51,8 +51,8 @@ engine:
       - "asciidoctor-diagram"
     attributes:
       plantumlconfig: "_plantuml-config.txt"
-      coherence-maven-group-id: "${coherence.group.id}"
-      version-coherence: "${revision}"
+      coherence-maven-group-id: "${coherence.groupId}"
+      version-coherence: "${coherence.version}"
       version-commercial-docs: "14.1.1.0"
       version-helidon: "${helidon.version}"
 ----
