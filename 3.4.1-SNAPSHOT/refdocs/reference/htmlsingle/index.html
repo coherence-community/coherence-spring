@@ -578,6 +578,18 @@ comprehensive infrastructure support for developing Java applications.</p>
 <p>The vast majority of new Spring projects will utilize Spring Boot. Nonetheless, please also study the Spring Framework targeted
 chapters as Spring Frameworks is the foundation for everything related to Spring Boot.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+We are referencing older versions of the Spring Framework in pom.xml because official updates for out-of-support versions are not freely available. The current list of supported versions can be found at <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions">Spring Framework Versions</a>. Access to patches, security fixes, and maintenance for these versions typically requires a commercial support subscription from VMware. As such, we rely on existing versions for continuity and compatibility in the absence of publicly available updates. If you have access to newer, supported dependencies, you can exclude unsupported dependencies from com.oracle.coherence.spring as described in the <a href="https://maven.apache.org/guides/introduction/introduction-to-optional-and-excludes-dependencies.html">Optional Dependencies and Dependency Exclusions</a> document.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -7571,7 +7583,7 @@ Please also see <a href="#spring-boot-config-data-api">Coherence Support of the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-14 05:04:44 UTC
+Last updated 2025-04-14 13:05:54 UTC
 </div>
 </div>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
