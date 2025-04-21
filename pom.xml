@@ -146,7 +146,7 @@
 		<awaitility.version>4.3.0</awaitility.version>
 		<bedrock.version>6.0.4</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
-		<coherence.version>22.06.11</coherence.version>
+		<coherence.version>25.03</coherence.version>
 		<classgraph.version>4.8.179</classgraph.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hsqldb.version>2.7.2</hsqldb.version>
