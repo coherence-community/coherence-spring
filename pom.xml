@@ -172,7 +172,7 @@
 		<resilience4j.version>2.3.0</resilience4j.version>
 		<slf4j-api.version>2.0.17</slf4j-api.version>
 		<spring-boot.version>3.4.5</spring-boot.version>
-		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<spring-cloud.version>2024.0.1</spring-cloud.version>
 		<spring-data-bom.version>2024.1.5</spring-data-bom.version>
 		<spring-session.version>3.4.3</spring-session.version>
 		<spring-security.version>6.4.5</spring-security.version>
