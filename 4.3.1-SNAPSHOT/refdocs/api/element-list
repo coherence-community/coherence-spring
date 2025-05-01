@@ -32,3 +32,4 @@ com.oracle.coherence.spring.session.config.annotation.web.http
 com.oracle.coherence.spring.session.events
 com.oracle.coherence.spring.session.serialization.pof
 com.oracle.coherence.spring.session.support
+com.oracle.coherence.spring.tracing
