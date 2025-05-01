@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025, Oracle and/or its affiliates.
+ *
+ * Licensed under the Universal Permissive License v 1.0 as shown at
+ * https://oss.oracle.com/licenses/upl.
+ */
+
 package com.oracle.coherence.spring.tracing;
 
 import java.util.Map;
@@ -18,28 +25,31 @@ import org.springframework.core.env.ConfigurableEnvironment;
 public class SpringPropertySource
 		implements com.tangosol.internal.tracing.PropertySource {
 
-	public Map<String, String> getProperties() {
-		ApplicationContext applicationContext = CoherenceContext.getApplicationContext();
-		ConfigurableEnvironment environment = (ConfigurableEnvironment) applicationContext.getEnvironment();
+@Override
+public Map<String, String> getProperties()
+	{
+	ApplicationContext applicationContext = CoherenceContext.getApplicationContext();
+	ConfigurableEnvironment environment = (ConfigurableEnvironment) applicationContext.getEnvironment();
 
-		Map<String, String> otelProps = StreamSupport.stream(environment.getPropertySources().spliterator(), false)
+	Map<String, String> otelProps = StreamSupport.stream(environment.getPropertySources().spliterator(), false)
 			.filter((propertySource) -> propertySource.getSource() instanceof Map)
 			.flatMap((propertySource) -> {
-				@SuppressWarnings("unchecked")
-				Map<String, Object> sourceMap = (Map<String, Object>) propertySource.getSource();
-				return sourceMap.entrySet()
+			@SuppressWarnings("unchecked")
+			Map<String, Object> sourceMap = (Map<String, Object>) propertySource.getSource();
+			return sourceMap.entrySet()
 					.stream()
 					.filter((entry) -> entry.getKey().startsWith("otel."))
 					.map((entry) -> Map.entry(entry.getKey(), entry.getValue().toString()));
 			})
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		// Add the service name manually
-		if (!otelProps.containsKey("otel.service.name")) {
-			otelProps.put("otel.service.name", environment.getProperty("spring.application.name", "spring.coherence"));
+	// Add the service name manually
+	if (!otelProps.containsKey("otel.service.name"))
+		{
+		otelProps.put("otel.service.name", environment.getProperty("spring.application.name", "spring.coherence"));
 		}
 
 
-		return otelProps;
+	return otelProps;
 	}
 }
