@@ -26,8 +26,7 @@ public class SpringPropertySource
 		implements com.tangosol.internal.tracing.PropertySource {
 
 @Override
-public Map<String, String> getProperties()
-	{
+public Map<String, String> getProperties() {
 	ApplicationContext applicationContext = CoherenceContext.getApplicationContext();
 	ConfigurableEnvironment environment = (ConfigurableEnvironment) applicationContext.getEnvironment();
 
@@ -44,8 +43,7 @@ public Map<String, String> getProperties()
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 	// Add the service name manually
-	if (!otelProps.containsKey("otel.service.name"))
-		{
+	if (!otelProps.containsKey("otel.service.name")) {
 		otelProps.put("otel.service.name", environment.getProperty("spring.application.name", "spring.coherence"));
 		}
 
