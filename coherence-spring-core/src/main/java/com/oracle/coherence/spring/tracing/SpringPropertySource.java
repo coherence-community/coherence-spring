@@ -10,12 +10,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * A {@link PropertySource} implementation that exposes Spring's configuration to the
+ * A {@link SpringPropertySource} implementation that exposes Spring's configuration to the
  * {@code Coherence} {@code OpenTelemetry} integration.
  *
  * @author Ryan Lubke
  */
-public class PropertySource implements com.tangosol.internal.tracing.PropertySource {
+public class SpringPropertySource
+		implements com.tangosol.internal.tracing.PropertySource {
 
 	public Map<String, String> getProperties() {
 		ApplicationContext applicationContext = CoherenceContext.getApplicationContext();

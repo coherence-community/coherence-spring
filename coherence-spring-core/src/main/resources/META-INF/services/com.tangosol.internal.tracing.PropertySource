@@ -5,4 +5,4 @@
 # https://oss.oracle.com/licenses/upl.
 #
 
-com.oracle.coherence.spring.tracing.PropertySource
+com.oracle.coherence.spring.tracing.SpringPropertySource
