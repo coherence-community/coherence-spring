@@ -199,7 +199,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-scm-publish-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.3.0</version>
 						<configuration>
 							<serverId>github-pages</serverId>
 							<checkinComment>${project.version} Site</checkinComment>
