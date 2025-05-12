@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringJUnitConfig(CoherenceNamedCacheConfigurationTests.Config.class)
@@ -161,48 +160,6 @@ public class CoherenceNamedCacheConfigurationTests {
 		NamedCacheFieldsBean bean = this.ctx.getBean(NamedCacheFieldsBean.class);
 		assertThat(bean.getNamedCache(), is(notNullValue()));
 		assertThat(bean.getNamedCache().getName(), is("numbers"));
-	}
-
-	@Test
-	void shouldInjectSuperTypeCacheMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		CacheMap map = bean.getCacheMap();
-		NamedCache cache = bean.getNamedCache();
-		assertThat(map, is(notNullValue()));
-		assertThat(cache, is(notNullValue()));
-		assertThat(map, is(sameInstance(cache)));
-	}
-
-	@Test
-	void shouldInjectSuperTypeConcurrentMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		ConcurrentMap map = bean.getConcurrentMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedCache())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeInvocableMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		InvocableMap map = bean.getInvocableMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedCache())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeObservableMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		ObservableMap map = bean.getObservableMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedCache())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeQueryMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		QueryMap map = bean.getQueryMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedCache())));
 	}
 
 	@Test

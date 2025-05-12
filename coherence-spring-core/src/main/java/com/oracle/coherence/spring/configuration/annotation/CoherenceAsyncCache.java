@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -17,7 +17,6 @@ import com.oracle.coherence.spring.annotation.SessionName;
 import com.oracle.coherence.spring.configuration.NamedCacheConfiguration;
 import com.tangosol.net.Coherence;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.AliasFor;
 
 /**
@@ -33,7 +32,6 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @CoherenceAsyncMap
-@Lazy
 public @interface CoherenceAsyncCache {
 
 	@AliasFor(annotation = Name.class)
