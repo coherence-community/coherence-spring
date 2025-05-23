@@ -15,6 +15,10 @@
             <cache-name>people</cache-name>
             <scheme-name>remote</scheme-name>
         </cache-mapping>
+        <cache-mapping>
+            <cache-name>customers</cache-name>
+            <scheme-name>remote</scheme-name>
+        </cache-mapping>
     </caching-scheme-mapping>
 
     <caching-schemes>

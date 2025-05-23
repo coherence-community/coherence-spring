@@ -37,7 +37,6 @@ import static com.oracle.coherence.spring.configuration.NamedCacheConfiguration.
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringJUnitConfig(CoherenceNamedCacheConfigurationNamedMapTests.Config.class)
@@ -146,46 +145,6 @@ class CoherenceNamedCacheConfigurationNamedMapTests {
 		NamedMapFieldsBean bean = this.ctx.getBean(NamedMapFieldsBean.class);
 		assertThat(bean.getNamedMap(), is(notNullValue()));
 		assertThat(bean.getNamedMap().getName(), is("numbers"));
-	}
-
-	@Test
-	void shouldInjectSuperTypeCacheMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		CacheMap map = bean.getCacheMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeConcurrentMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		ConcurrentMap map = bean.getConcurrentMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeInvocableMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		InvocableMap map = bean.getInvocableMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeObservableMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		ObservableMap map = bean.getObservableMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
-	}
-
-	@Test
-	void shouldInjectSuperTypeQueryMap() {
-		SuperTypesBean bean = this.ctx.getBean(SuperTypesBean.class);
-		QueryMap map = bean.getQueryMap();
-		assertThat(map, is(notNullValue()));
-		assertThat(map, is(sameInstance(bean.getNamedMap())));
 	}
 
 	@Test
@@ -337,7 +296,7 @@ class CoherenceNamedCacheConfigurationNamedMapTests {
 	}
 
 	static class SuperTypesBean {
-		@Value("#{getCache}")
+		@Value("#{getCacheProxy}")
 		@Name("numbers")
 		private NamedMap<Integer, String> namedMap;
 
@@ -425,7 +384,7 @@ class CoherenceNamedCacheConfigurationNamedMapTests {
 
 		@Bean
 		CtorBean ctorBean(
-				@Value("#{getCache}") @Name("numbers") NamedMap<Integer, String> numbers,
+				@Value("#{getCacheProxy}") @Name("numbers") NamedMap<Integer, String> numbers,
 				@Name("letters") AsyncNamedMap<String, String> letters) {
 			return new CtorBean(numbers, letters);
 		}

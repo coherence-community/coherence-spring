@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2021, Oracle and/or its affiliates.
+ * Copyright (c) 2013, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -52,24 +52,11 @@ public class MapListenerRegistrationBean {
 		this.mapEventTransformerService = mapEventTransformerService;
 	}
 
-	/**
-	 * Listen for {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent.Type#CREATED Created}
-	 * {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent CacheLifecycleEvents}
-	 * and register relevant map listeners when caches are created.
-	 * @param event the {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent}
-	 */
-	@CoherenceEventListener
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	void registerMapListeners(@Created CacheLifecycleEvent event) {
-		String cacheName = event.getCacheName();
-		String eventScope = event.getScopeName();
-		String eventSession = event.getSessionName();
-		String eventService = event.getServiceName();
+	public void registerMapListeners(String cacheName, String scopeName, String sessionName, String serviceName) {
+		Set<AnnotatedMapListener<?, ?>> setListeners = getMapListeners(removeScope(serviceName), cacheName);
 
-		Set<AnnotatedMapListener<?, ?>> setListeners = getMapListeners(removeScope(eventService), cacheName);
-
-		Session session = Coherence.findSession(eventSession)
-				.orElseThrow(() -> new IllegalStateException("Cannot find a Session with name " + eventSession));
+		Session session = Coherence.findSession(sessionName)
+				.orElseThrow(() -> new IllegalStateException("Cannot find a Session with name " + sessionName));
 		NamedCache cache = session.getCache(cacheName);
 
 		for (AnnotatedMapListener<?, ?> listener : setListeners) {
@@ -86,9 +73,9 @@ public class MapListenerRegistrationBean {
 			}
 
 			String sScope = listener.getScopeName();
-			boolean fScopeOK = sScope == null || sScope.equals(eventScope);
+			boolean fScopeOK = sScope == null || sScope.equals(scopeName);
 			String sSession = listener.getSession();
-			boolean fSessionOK = sSession == null || sSession.equals(eventSession);
+			boolean fSessionOK = sSession == null || sSession.equals(sessionName);
 
 			if (fScopeOK && fSessionOK) {
 				Filter filter = listener.getFilter();
@@ -115,6 +102,23 @@ public class MapListenerRegistrationBean {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Listen for {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent.Type#CREATED Created}
+	 * {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent CacheLifecycleEvents}
+	 * and register relevant map listeners when caches are created.
+	 * @param event the {@link com.tangosol.net.events.partition.cache.CacheLifecycleEvent}
+	 */
+	@CoherenceEventListener
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	void registerMapListeners(@Created CacheLifecycleEvent event) {
+		String cacheName = event.getCacheName();
+		String eventScope = event.getScopeName();
+		String eventSession = event.getSessionName();
+		String eventService = event.getServiceName();
+
+		registerMapListeners(cacheName, eventScope, eventSession, eventService);
 	}
 
 
