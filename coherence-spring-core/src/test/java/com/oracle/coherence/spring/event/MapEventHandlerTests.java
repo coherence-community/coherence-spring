@@ -73,7 +73,7 @@ class MapEventHandlerTests {
 		this.observers.asyncMethodEvents.clear();
 		this.observers.syncMethodEvents.clear();
 		// saturate ForkJoinPool to make listener registration slow
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < Runtime.getRuntime().availableProcessors() * 10; i++) {
 			ForkJoinPool.commonPool().execute(() -> {
 				try {
 					Thread.sleep(300);

@@ -31,7 +31,7 @@ class LazyTargetSource implements TargetSource, Serializable {
 	private final String originalFactoryMethodName;
 	private final boolean isAsyncCache;
 	private final Object lock = new Object();
-	private transient volatile Object cachedTarget;
+	private transient Object cachedTarget;
 
 	LazyTargetSource(DefaultListableBeanFactory beanFactory, InjectionPoint injectionPoint,
 			String originalFactoryBeanName, String originalFactoryMethodName, boolean isAsyncCache) {
@@ -86,6 +86,9 @@ class LazyTargetSource implements TargetSource, Serializable {
 
 	@Override
 	public boolean isStatic() {
+		// Returning false even though we're always returning the same object,
+		// because when isStatic is true, CglibAopProxy fetches the target during
+		// proxy creation, thus defeating the purpose of using this TargetSource.
 		return false;
 	}
 }
