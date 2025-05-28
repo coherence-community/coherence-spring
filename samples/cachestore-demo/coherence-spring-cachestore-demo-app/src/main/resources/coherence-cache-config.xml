@@ -23,6 +23,16 @@
                 </init-param>
             </init-params>
         </cache-mapping>
+        <cache-mapping>
+            <cache-name>customers</cache-name>
+            <scheme-name>db-scheme</scheme-name>
+            <init-params>
+                <init-param>
+                    <param-name>repository-bean</param-name>
+                    <param-value>personRepository</param-value>
+                </init-param>
+            </init-params>
+        </cache-mapping>
         <!-- # end::mapping[] -->
     </caching-scheme-mapping>
 
