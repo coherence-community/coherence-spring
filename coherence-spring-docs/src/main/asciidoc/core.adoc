@@ -246,10 +246,10 @@ the name of the Coherence session as part of the annotation. E.g., the above exa
 
 [IMPORTANT]
 ====
-All the annotations `@CoherenceCache`, `@CoherenceMap`, `@CoherenceAsyncCache`, and `@CoherenceAsyncMap` are themselves
-annotated with `@Lazy`. This is to avoid deadlocks where a cache bean requires another bean to be injected in its
-configuration, which will happen on a different thread to the main Spring thread. A consequence of this is that all
-cache beans will be Spring lazy dynamic proxies.
+To avoid deadlocks where a cache bean requires another bean to be injected in its
+configuration, which will happen on a different thread to the main Spring thread, all
+cache beans injected by `@CoherenceCache`, `@CoherenceMap`, `@CoherenceAsyncCache`, and `@CoherenceAsyncMap` annotations
+will be Spring lazy dynamic proxies.
 ====
 
 [[coherence-spring-dependency-injection-type-conversion]]
