@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -9,14 +9,17 @@ package com.oracle.coherence.spring.session;
 import java.time.Duration;
 import java.util.Map;
 
+import com.oracle.coherence.common.base.Logger;
 import com.oracle.coherence.spring.session.support.MyHttpSessionListener;
 import com.oracle.coherence.spring.session.support.SessionEventApplicationListener;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.Session;
 import com.tangosol.net.cache.CacheMap;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,9 +80,16 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 		return null;
 	}
 
-	@AfterEach
-	void tearDown() {
+	@BeforeEach
+	void setup(TestInfo testInfo) {
 		this.myHttpSessionListener.reset();
+		Logger.info("========== Starting test: " + testInfo.getDisplayName() + " ==========");
+	}
+
+	@AfterEach
+	void tearDown(TestInfo testInfo) {
+		this.myHttpSessionListener.reset();
+		Logger.info("========== Finished test: " + testInfo.getDisplayName() + " ==========");
 	}
 
 	@Test

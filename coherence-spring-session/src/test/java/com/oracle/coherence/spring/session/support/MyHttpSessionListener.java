@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Oracle and/or its affiliates.
+ * Copyright (c) 2024, 2025, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -23,14 +23,16 @@ public class MyHttpSessionListener implements HttpSessionListener {
 
 	@Override
 	public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-		System.out.println("MyHttpSessionListener - Session Created " + httpSessionEvent.getSession().getId());
-		this.sessionsCreatedCount.incrementAndGet();
+		int cBefore = this.sessionsCreatedCount.get();
+		int cAfter = this.sessionsCreatedCount.incrementAndGet();
+		System.out.println("MyHttpSessionListener - Session Created " + httpSessionEvent.getSession().getId() + "[cBefore=" + cBefore + ", cAfter=" + cAfter + "]");
 	}
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-		System.out.println("MyHttpSessionListener - Session destroyed " + httpSessionEvent.getSession().getId());
-		this.sessionsDestroyedCount.incrementAndGet();
+		int cBefore = this.sessionsDestroyedCount.get();
+		int cAfter = this.sessionsDestroyedCount.incrementAndGet();
+		System.out.println("MyHttpSessionListener - Session destroyed " + httpSessionEvent.getSession().getId() + "[cBefore=" + cBefore + ", cAfter=" + cAfter + "]");
 	}
 
 	public int getSessionsCreatedCount() {
@@ -42,7 +44,7 @@ public class MyHttpSessionListener implements HttpSessionListener {
 	}
 
 	public void reset() {
-		this.sessionsCreatedCount.set(0);
-		this.sessionsDestroyedCount.set(0);
+		this.sessionsCreatedCount = new AtomicInteger(0);
+		this.sessionsDestroyedCount = new AtomicInteger(0);
 	}
 }
