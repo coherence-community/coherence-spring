@@ -182,7 +182,7 @@
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
 							<bottom>
-								Copyright © 2013, 2024, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
+								Copyright © 2013, 2025, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
 							</bottom>
 						</configuration>
 					</execution>
