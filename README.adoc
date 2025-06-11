@@ -1,6 +1,7 @@
 :main-release-version: 4.3.1
 :main-snapshot-version: 4.3.2-SNAPSHOT
 :website: https://spring.coherence.community/
+:new-website: https://docs.coherence.community/coherence-spring/docs/
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
 
@@ -29,10 +30,8 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 
 [width="75%"]
 |=======
-|*{main-release-version}*  | {website}{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
-|*{main-snapshot-version}* | {website}{main-snapshot-version}[Website]|{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
+|*{main-release-version}*  | {new-website}v{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
-|*{3x-snapshot-version}*   | {website}{3x-snapshot-version}[Website]  |{website}{3x-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML]   |{website}{3x-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]   | {website}{3x-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]   | {website}{3x-snapshot-version}/refdocs/api/index.html[API Doc.]
 |=======
 
 NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
