@@ -166,7 +166,7 @@
 		<junit.version>5.13.2</junit.version>
 		<log4j.version>2.25.0</log4j.version>
 		<mockito.version>5.18.0</mockito.version>
-		<modelmapper.version>3.2.3</modelmapper.version>
+		<modelmapper.version>3.2.4</modelmapper.version>
 		<org.springframework.version>6.2.8</org.springframework.version>
 		<reactor.version>3.7.7</reactor.version>
 		<resilience4j.version>2.3.0</resilience4j.version>
