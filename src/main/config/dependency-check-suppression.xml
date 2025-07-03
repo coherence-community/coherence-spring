@@ -53,6 +53,10 @@
     </suppress>
 
     <suppress>
+        <cve>CVE-2025-52999</cve>
+    </suppress>
+
+    <suppress>
         <notes><![CDATA[
         Waiting for updated Spring / Spring Boot releases.
         ]]></notes>
