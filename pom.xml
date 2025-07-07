@@ -160,7 +160,7 @@
 		<org.springframework.version>5.3.39</org.springframework.version>
 		<org.springframework.data.version>2021.2.18</org.springframework.data.version>
 		<reactor.version>3.7.7</reactor.version>
-		<resilience4j.version>1.7.1</resilience4j.version>
+		<resilience4j.version>2.3.0</resilience4j.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<spring-session.version>2.7.4</spring-session.version>
 		<spring-security.version>5.8.16</spring-security.version>
