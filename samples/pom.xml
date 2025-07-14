@@ -29,7 +29,7 @@
 		<hibernate.version>5.6.15.Final</hibernate.version>
 		<jackson-datatype.version>2.19.1</jackson-datatype.version>
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
-		<spring-data-bom.version>2021.2.18</spring-data-bom.version>
+		<spring-data-bom.version>2022.0.12</spring-data-bom.version>
 	</properties>
 
 	<modules>
