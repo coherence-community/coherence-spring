@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2024, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2025, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -203,7 +203,7 @@
 		</repository>
 		<repository>
 			<id>snapshots-repo</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://central.sonatype.com/repository/maven-snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -650,7 +650,7 @@
 				<repository>
 					<id>coherence-snapshots</id>
 					<name>Coherence Snapshots Repository</name>
-					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+					<url>https://central.sonatype.com/repository/maven-snapshots</url>
 					<snapshots>
 						<enabled>true</enabled>
 					</snapshots>
