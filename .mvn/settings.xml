@@ -72,7 +72,7 @@
 				<repository>
 					<id>ossrh-staging</id>
 					<name>OSS Sonatype Staging</name>
-					<url>https://oss.sonatype.org/content/groups/staging/</url>
+					<url>https://central.sonatype.com/</url>
 					<snapshots>
 						<enabled>false</enabled>
 					</snapshots>
@@ -85,7 +85,7 @@
 				<pluginRepository>
 					<id>ossrh-staging</id>
 					<name>OSS Sonatype Staging</name>
-					<url>https://oss.sonatype.org/content/groups/staging/</url>
+					<url>https://central.sonatype.com/</url>
 					<snapshots>
 						<enabled>false</enabled>
 					</snapshots>
