@@ -147,7 +147,7 @@
 		<bedrock.version>6.0.8</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>22.06.11</coherence.version>
-		<classgraph.version>4.8.179</classgraph.version>
+		<classgraph.version>4.8.181</classgraph.version>
 		<hamcrest.version>3.0</hamcrest.version>
 		<hsqldb.version>2.7.4</hsqldb.version>
 		<javaee-api.version>8.0.1</javaee-api.version>
