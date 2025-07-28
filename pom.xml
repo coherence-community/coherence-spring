@@ -173,7 +173,7 @@
 		<slf4j-api.version>2.0.17</slf4j-api.version>
 		<spring-boot.version>3.5.3</spring-boot.version>
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
-		<spring-data-bom.version>2025.0.1</spring-data-bom.version>
+		<spring-data-bom.version>2025.0.2</spring-data-bom.version>
 		<spring-session.version>3.5.1</spring-session.version>
 		<spring-security.version>6.5.2</spring-security.version>
 		<tomcat.version>11.0.9</tomcat.version>
