@@ -152,7 +152,7 @@
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
 		<coherence.version>25.03.1</coherence.version>
 		<coherence-hibernate.version>3.0.3</coherence-hibernate.version>
-		<classgraph.version>4.8.180</classgraph.version>
+		<classgraph.version>4.8.181</classgraph.version>
 		<gson.version>2.13.1</gson.version>
 		<hamcrest.version>3.0</hamcrest.version>
 		<hibernate.version>6.6.22.Final</hibernate.version>
