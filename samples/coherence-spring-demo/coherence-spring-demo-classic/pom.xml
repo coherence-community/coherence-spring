@@ -24,7 +24,7 @@
 	<properties>
 		<mainClass>com.oracle.coherence.spring.demo.tomcat.Server</mainClass>
 
-		<log4j.version>2.25.0</log4j.version>
+		<log4j.version>2.25.1</log4j.version>
 	</properties>
 
 	<dependencies>
