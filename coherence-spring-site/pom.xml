@@ -25,7 +25,7 @@
 	<properties>
 		<coherence.spring.root>${basedir}/..</coherence.spring.root>
 		<helidon.sitegen.version>2.0.0-RC1</helidon.sitegen.version>
-		<asciidoctor.diagram.version>2.3.2</asciidoctor.diagram.version>
+		<asciidoctor.diagram.version>3.0.1</asciidoctor.diagram.version>
 		<doxia.version>1.11.1</doxia.version>
 
 		<timestamp>${maven.build.timestamp}</timestamp>
