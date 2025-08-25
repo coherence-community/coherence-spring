@@ -136,7 +136,7 @@
 
 		<!-- Other plugin dependency versions -->
 		<asciidoctorj-pdf.version>1.5.4</asciidoctorj-pdf.version>
-		<checkstyle.version>8.45.1</checkstyle.version>
+		<checkstyle.version>11.0.0</checkstyle.version>
 		<spring-javaformat-checkstyle.version>0.0.29</spring-javaformat-checkstyle.version>
 		<spring-asciidoctor-extensions.version>0.6.3</spring-asciidoctor-extensions.version>
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
