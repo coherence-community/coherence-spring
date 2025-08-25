@@ -121,4 +121,11 @@
         ]]></notes>
         <vulnerabilityName>CVE-2025-22228</vulnerabilityName>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+        spring-core-5.3.39.jar
+        ]]></notes>
+        <vulnerabilityName>CVE-2025-41242</vulnerabilityName>
+    </suppress>
 </suppressions>
