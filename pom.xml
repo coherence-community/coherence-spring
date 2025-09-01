@@ -142,7 +142,7 @@
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.27.3</assertj.version>
+		<assertj.version>3.27.4</assertj.version>
 		<awaitility.version>4.3.0</awaitility.version>
 		<bedrock.version>6.0.8</bedrock.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
