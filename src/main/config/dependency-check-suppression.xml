@@ -106,6 +106,7 @@
         spring-web-5.3.39.jar
         ]]></notes>
         <vulnerabilityName>CVE-2024-38828</vulnerabilityName>
+        <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
     </suppress>
 
     <suppress>
@@ -127,5 +128,6 @@
         spring-core-5.3.39.jar
         ]]></notes>
         <vulnerabilityName>CVE-2025-41242</vulnerabilityName>
+        <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
     </suppress>
 </suppressions>
