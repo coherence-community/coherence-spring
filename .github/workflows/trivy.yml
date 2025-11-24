@@ -13,7 +13,7 @@ jobs:
     name: trivy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run static analysis
         uses: aquasecurity/trivy-action@0.33.1
         with:
