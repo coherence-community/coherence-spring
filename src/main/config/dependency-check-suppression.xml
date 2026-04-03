@@ -91,6 +91,8 @@
         <notes><![CDATA[
         sshd-core-2.7.0.jar
         ]]></notes>
+        <vulnerabilityName>CVE-2023-48795</vulnerabilityName>
+        <vulnerabilityName>CVE-2023-35887</vulnerabilityName>
         <vulnerabilityName>CVE-2024-41909</vulnerabilityName>
     </suppress>
 
@@ -107,6 +109,7 @@
         ]]></notes>
         <vulnerabilityName>CVE-2024-38828</vulnerabilityName>
         <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
+        <vulnerabilityName>CVE-2024-38820</vulnerabilityName>
     </suppress>
 
     <suppress>
@@ -129,5 +132,6 @@
         ]]></notes>
         <vulnerabilityName>CVE-2025-41242</vulnerabilityName>
         <vulnerabilityName>CVE-2025-41249</vulnerabilityName>
+        <vulnerabilityName>CVE-2024-38820</vulnerabilityName>
     </suppress>
 </suppressions>
