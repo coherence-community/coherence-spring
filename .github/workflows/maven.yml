@@ -61,6 +61,8 @@ jobs:
           MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
           MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
           NVD_API_KEY: "${{secrets.NVD_API_KEY}}"
+          OSSINDEX_USERNAME: "${{secrets.OSSINDEX_USERNAME}}"
+          OSSINDEX_TOKEN:  "${{secrets.OSSINDEX_TOKEN}}"
       - name: Deploy Snapshots
         if: "github.event_name != 'pull_request' && matrix.java-version == 11"
         env:
