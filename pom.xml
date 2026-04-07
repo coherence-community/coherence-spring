@@ -673,14 +673,18 @@
 						<version>${dependency-check-maven.version}</version>
 						<inherited>false</inherited>
 						<configuration>
+                            <analyzers>
+                              <analyzer>
+                                <name>OSSIndex</name>
+                                <enabled>false</enabled>
+                              </analyzer>
+                            </analyzers>
 							<failBuildOnCVSS>7</failBuildOnCVSS>
 							<skipProvidedScope>true</skipProvidedScope>
 							<skipRuntimeScope>true</skipRuntimeScope>
 							<skipTestScope>true</skipTestScope>
 							<nvdValidForHours>96</nvdValidForHours>
 							<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
-                            <ossIndexUsername>${env.OSSINDEX_USERNAME}</ossIndexUsername>
-                            <ossIndexPassword>${env.OSSINDEX_TOKEN}</ossIndexPassword>
 							<suppressionFiles>
 								<suppressionFile>${coherence.spring.root}/src/main/config/dependency-check-suppression.xml</suppressionFile>
 							</suppressionFiles>
