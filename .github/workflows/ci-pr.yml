@@ -13,7 +13,7 @@ jobs:
       issues: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         name: 📥 Checkout repository
         with:
           fetch-depth: 0
