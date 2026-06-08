@@ -1,4 +1,4 @@
-﻿# This workflow will build a Java project with Maven
+# This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 name: CI Coherence Spring
 run-name: ${{ github.event.head_commit.message }} [${{ github.event_name }}][${{ github.ref_name }}]
@@ -16,7 +16,7 @@ jobs:
         java-version: [ 11, 17, 21 ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v6.0.3
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v5.0.0
         with:
