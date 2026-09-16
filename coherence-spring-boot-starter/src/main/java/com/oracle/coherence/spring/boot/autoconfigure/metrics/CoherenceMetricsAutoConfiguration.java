@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2026, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -11,8 +11,6 @@ import com.oracle.coherence.micrometer.CoherenceMicrometerMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,7 +27,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
  */
 @AutoConfiguration
 @ConditionalOnMissingBean(CoherenceMicrometerMetrics.class)
-@AutoConfigureAfter({CompositeMeterRegistryAutoConfiguration.class, MetricsAutoConfiguration.class})
+@AutoConfigureAfter(name = {
+		"org.springframework.boot.micrometer.metrics.autoconfigure.CompositeMeterRegistryAutoConfiguration",
+		"org.springframework.boot.micrometer.metrics.autoconfigure.MetricsAutoConfiguration"
+})
 @ConditionalOnClass({CoherenceMicrometerMetrics.class, MeterRegistry.class})
 @ConditionalOnBean({ MeterRegistry.class })
 public class CoherenceMetricsAutoConfiguration {
