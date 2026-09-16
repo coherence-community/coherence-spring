@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2026, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -29,8 +29,8 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.PersistentEntityInformation;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
 import org.springframework.data.repository.query.RepositoryQuery;
+import org.springframework.data.repository.query.ValueExpressionDelegate;
 import org.springframework.lang.Nullable;
 
 /**
@@ -146,24 +146,15 @@ public class CoherenceRepositoryFactory extends RepositoryFactorySupport {
 
 	@Override
 	protected Optional<QueryLookupStrategy> getQueryLookupStrategy(@Nullable QueryLookupStrategy.Key key,
-			QueryMethodEvaluationContextProvider evaluationContextProvider) {
+			ValueExpressionDelegate valueExpressionDelegate) {
 
-		return Optional.of(new CoherenceLookupStrategy(evaluationContextProvider));
+		return Optional.of(new CoherenceLookupStrategy());
 	}
 
 	/**
 	 * Coherence implementation of {@link QueryLookupStrategy}.
 	 */
 	private final class CoherenceLookupStrategy implements QueryLookupStrategy {
-
-		/**
-		 * The {@link QueryMethodEvaluationContextProvider}.
-		 */
-		private final QueryMethodEvaluationContextProvider evaluationContextProvider;
-
-		private CoherenceLookupStrategy(QueryMethodEvaluationContextProvider evalContextProvider) {
-			this.evaluationContextProvider = evalContextProvider;
-		}
 
 		@Override
 		public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, ProjectionFactory factory, NamedQueries namedQueries) {

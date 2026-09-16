@@ -690,7 +690,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 ----
 <dependency>
     <groupId>io.github.resilience4j</groupId>
-    <artifactId>resilience4j-spring-boot3</artifactId>
+    <artifactId>resilience4j-spring-boot4</artifactId>
     <version>{resilience4j-version}</version>
 </dependency>
 ----
@@ -698,7 +698,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 .Gradle
 [source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
 ----
-implementation("io.github.resilience4j:resilience4j-spring-boot3:{resilience4j-version}")
+implementation("io.github.resilience4j:resilience4j-spring-boot4:{resilience4j-version}")
 ----
 ====
 

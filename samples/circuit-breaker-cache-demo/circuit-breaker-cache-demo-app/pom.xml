@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2022, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2022, 2026, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -12,17 +12,18 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>circuit-breaker-cache-demo-parent</artifactId>
-		<version>4.3.2-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>circuit-breaker-cache-demo-app</artifactId>
-	<version>4.3.2-SNAPSHOT</version>
+	<version>5.0.0-SNAPSHOT</version>
 
 	<name>Circuit Breaker Cache Demo - App</name>
 	<description>Circuit Breaker Cache Demo - App</description>
 
 	<properties>
 		<coherence.spring.root>${basedir}/../../..</coherence.spring.root>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
 	</properties>
 
 	<dependencies>
@@ -42,7 +43,7 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${coherence.groupId}</groupId>
@@ -81,7 +82,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
-			<artifactId>resilience4j-spring-boot3</artifactId>
+			<artifactId>resilience4j-spring-boot4</artifactId>
 			<version>${resilience4j.version}</version>
 		</dependency>
 	</dependencies>

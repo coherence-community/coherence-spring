@@ -1,7 +1,8 @@
-:main-release-version: 4.3.1
-:main-snapshot-version: 4.3.2-SNAPSHOT
+:main-release-version: 5.0.0-SNAPSHOT
+:main-snapshot-version: 5.0.0-SNAPSHOT
 :website: https://spring.coherence.community/
 :new-website: https://docs.coherence.community/coherence-spring/docs/
+:4x-release-version: 4.3.1
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
 
@@ -31,6 +32,7 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 [width="75%"]
 |=======
 |*{main-release-version}*  | {new-website}v{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{4x-release-version}*    | {new-website}v{4x-release-version}[Website] |{website}{4x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{4x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{4x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{4x-release-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
 |=======
 
@@ -43,15 +45,13 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 |===
 |Coherence Spring | Java            | Coherence CE | Commercial Edition^*^   | Spring| Boot    | Jakarta | Git Branch/Tag
 
-|*4.x*            | `17`, `21`      | `25.03`     | N/A                     | `6.x` | `3.3.x` | ✔       | `main`
+|*5.x*            | `17`, `21`      | `25.03`     | N/A                     | `7.x` | `4.x`   | ✔       | `main`
+|*4.x*            | `17`, `21`      | `25.03`     | `15.1.1.0`              | `6.x` | `3.3.x` | ✔       | `4.x`
 |*3.x*            | `11`, `17`, `21`| `22.06`     | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
 |===
 
-NOTE: Currently, there is no commercial edition of Coherence that is compatible with Coherence Spring `4.x`,
-as the commercial edition still depends on the `javax` namespace, while Coherence Spring 4.x and Spring 6.x
-only support the `jakarta` namespace. Once a commercial edition that supports jakarta namespace is published,
-it will be supported by the Coherence Spring project. Commercial editions compatible with Coherence Spring `3.x` are
-Coherence `14.1.1.2206` and `14.1.2`.
+NOTE: Currently, there is no commercial edition of Coherence that is compatible with Coherence Spring `5.x`.
+Commercial editions compatible with Coherence Spring `4.x` and `3.x` are listed in the table above.
 
 == Quick Start
 
@@ -146,4 +146,3 @@ link:CONTRIBUTING.md[contributor guidelines] for details.
 == License
 
 Coherence Spring is Open Source software released under link:LICENSE.txt[The Universal Permissive License] (UPL), Version 1.0.
-
