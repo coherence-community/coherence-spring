@@ -65,7 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.hibernate</groupId>
-			<artifactId>coherence-hibernate-cache-6</artifactId>
+			<artifactId>coherence-hibernate-cache-7</artifactId>
 			<version>${coherence-hibernate.version}</version>
 		</dependency>
 		<dependency>
