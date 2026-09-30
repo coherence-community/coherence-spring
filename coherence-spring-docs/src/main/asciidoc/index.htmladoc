@@ -3,15 +3,10 @@
 
 Version {coherence-spring-version}
 
-****
-_What's New_, _Upgrade Notes_, _Supported Versions_, and other topics,
-independent of release cadence, are maintained externally on the project's
-http://coherence-community.github.io/coherence-spring[*Website*].
-****
-
 [horizontal]
 <<legal.adoc#legal,Legal>> :: Legal information.
 <<overview.adoc#overview, Overview>> :: Introduction to the various Coherence Spring modules and getting started guide.
+<<upgrade-5.adoc#upgrade-5, Upgrading from 4.x to 5.x>> :: Required baseline and application changes for Coherence Spring 5.x.
 <<quickstart.adoc#quickstart, Quickstart>> :: How to get started quickly
 <<core.adoc#spring-core, Coherence Spring Core>> :: Use Coherence with the Spring Framework
 <<spring-boot.adoc#spring-boot, Spring Boot>> :: Coherence for Spring Boot users
@@ -27,5 +22,5 @@ The reference documentation has the following appendices:
 
 Gunnar Hillert, Ryan Lubke, Vaso Putica, Jonathan Knight
 
-Copyright (c) 2013, 2025, Oracle and/or its affiliates. +
+Copyright (c) 2013, 2026, Oracle and/or its affiliates. +
 Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.

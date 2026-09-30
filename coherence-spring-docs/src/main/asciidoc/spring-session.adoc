@@ -42,9 +42,8 @@ dependencies {
 ----
 ====
 
-NOTE: Coherence Spring support for Spring Session can be used for either the free Coherence Community Edition (CE)
-or the commercial version. Coherence Spring does not bring in the Coherence dependency automatically but users
-must specify the Coherence dependency explicitly.
+NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 25.03. Coherence Spring does
+not bring in the Coherence dependency automatically; users must specify the supported Coherence CE dependency explicitly.
 
 In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
 Session using the `@EnableCoherenceHttpSession` annotation.

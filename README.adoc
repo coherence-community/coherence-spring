@@ -53,6 +53,10 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 NOTE: Currently, there is no commercial edition of Coherence that is compatible with Coherence Spring `5.x`.
 Commercial editions compatible with Coherence Spring `4.x` and `3.x` are listed in the table above.
 
+Applications moving from Coherence Spring 4.x should follow the
+link:coherence-spring-docs/src/main/asciidoc/upgrade-5.adoc[Coherence Spring 5.x upgrade guide]. It covers the Spring 7
+and Boot 4 baselines, Boot's modular dependencies, optional integrations, source-level changes, and validation steps.
+
 == Quick Start
 
 In order to get started quickly, please read the reference guide as it provides a detailed

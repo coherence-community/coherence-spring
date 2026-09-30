@@ -70,12 +70,12 @@ The demo client on the other hand will use the following dependencies:
 <dependency>
     <groupId>com.oracle.coherence.spring</groupId>
     <artifactId>coherence-spring-boot-starter</artifactId> <1>
-    <version>{coherence-spring.version}</version>
+    <version>{coherence-spring-version}</version>
 </dependency>
 <dependency>
     <groupId>com.oracle.coherence.ce</groupId>
     <artifactId>coherence</artifactId>                     <2>
-    <version>{coherence.version}</version>
+    <version>{coherence-version}</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -86,8 +86,8 @@ The demo client on the other hand will use the following dependencies:
 <2> The Oracle Coherence dependency
 <3> The dependency to integrate with the Spring Cloud Config server
 
-NOTE: We made the decision to not automatically bring in the Coherence dependencies. The main reason is that users can
-specify the version they need, either the Oracle Coherence CE (OSS) or the commercial version.
+NOTE: Coherence Spring does not bring in Coherence automatically. Coherence Spring 5.x applications must declare the
+supported Coherence CE dependency explicitly.
 
 [[spring-cloud-config-demo-setup]]
 === Configure the Demo Application
@@ -133,9 +133,9 @@ reports are located at `coherence-{coherence-version}.jar/reports`
 
 For more options please see the following three chapters in the official Oracle Coherence reference guide:
 
-- {oracle-coherence-docs}/develop-applications/operational-configuration-elements.html[Operational Configuration Elements]
-- {oracle-coherence-docs}/develop-applications/system-property-overrides.html[System Property Overrides]
-- {oracle-coherence-docs}/manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
+- {oracle-coherence-docs}develop-applications/operational-configuration-elements.html[Operational Configuration Elements]
+- {oracle-coherence-docs}develop-applications/system-property-overrides.html[System Property Overrides]
+- {oracle-coherence-docs}manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
 
 [[spring-cloud-config-demo-how-to-run]]
 === Run the Demo Application
