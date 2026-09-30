@@ -191,7 +191,7 @@ limitations, for instance, not being usable for constructor injection.
 <1> If not specified, the name of the field will be used to determine the cache name
 <2> Alternatively, you can specify the name of the cache using the `@Name` annotation
 
-TIP: For more information, please see {spring-docs}html/core.html#beans-autowired-annotation-qualifiers[Fine-tuning
+TIP: For more information, please see {spring-docs}core/beans/annotation-config/autowired-qualifiers.html[Fine-tuning
 Annotation-based Autowiring with Qualifiers] in the Spring Framework reference guide.
 
 In order to provide a better user-experience around the dependency injection of maps and caches, Coherence Spring introduces its
@@ -550,7 +550,7 @@ An alternative way to write message driven applications instead of directly inje
 
 ==== Injecting NamedTopic
 
-The simplest way to inject a `NamedTopic` is to just annotate the injection point with `@javax.inject.Inject`.
+The simplest way to inject a `NamedTopic` is to just annotate the injection point with `@jakarta.inject.Inject`.
 
 .Inject NamedTopic
 [source,java]
@@ -869,7 +869,7 @@ actual events received can be controlled further by annotating the method or the
 
 NOTE: Spring `4.2` introduced
 https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2[Annotation-driven event listeners] as
-part of its {spring-docs}html/core.html#context-functionality-events[event support].
+part of its {spring-docs}core/beans/context-introduction.html#context-functionality-events[event support].
 
 Coherence Spring does *NOT* directly use Spring's `ApplicationEvent` class and the corresponding `ApplicationListener`
 interface. However, Coherence Spring follows that pattern conceptually in order to provide a similar user experience.
@@ -2259,7 +2259,7 @@ public class ProductListener {
 == Cache Store
 
 Coherence Spring provides dedicated support for database-backed caches using JPA. Spring Data's
-{spring-docs-data-jpa}#jpa.repositories[JPA Repositories] make basic CRUD database access very simple. An application
+{spring-docs-data-jpa}jpa.html[JPA Repositories] make basic CRUD database access very simple. An application
 developer can just provide an interface that extends `JpaRepository` with the required generic parameters and
 Spring will do the rest.
 

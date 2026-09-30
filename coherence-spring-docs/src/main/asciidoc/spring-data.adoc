@@ -44,7 +44,7 @@ Simple repositories such as the following will, of course, work as expected:
 
 [source,java]
 ----
-public interface PersonRepository extends CrudRepository<String, Person> {
+public interface PersonRepository extends CrudRepository<Person, String> {
 	// ...
 }
 ----
@@ -68,11 +68,11 @@ Example extending the blocking `CoherenceRepository` interface:
 
 [source,java]
 ----
-import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.repository.CoherenceRepository;
 
 // ...
 
-public interface PersonRepository extends CoherenceRepository<String, Person> {
+public interface PersonRepository extends CoherenceRepository<Person, String> {
 	// ...
 }
 ----
@@ -81,11 +81,11 @@ or for the non-blocking flavor:
 
 [source,java]
 ----
-import com.oracle.coherence.spring.data.repository.CoherenceAsyncRespository;
+import com.oracle.coherence.spring.data.repository.CoherenceAsyncRepository;
 
 // ...
 
-public interface PersonRepository extends CoherenceAsyncRepository<String, Person> {
+public interface PersonRepository extends CoherenceAsyncRepository<Person, String> {
 	// ...
 }
 ----
@@ -114,12 +114,12 @@ If this is not desired, the name may instead be passed by the `@CoherenceMap` an
 [source,java]
 ----
 import com.oracle.coherence.spring.data.config.CoherenceMap;
-import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.repository.CoherenceRepository;
 
 // ...
 
 @CoherenceMap("people")
-public interface PersonRepository extends CoherenceRepository<String, Person> {
+public interface PersonRepository extends CoherenceRepository<Person, String> {
 	// ...
 }
 ----
@@ -128,7 +128,7 @@ public interface PersonRepository extends CoherenceRepository<String, Person> {
 
 As Coherence is, at its core, a key-value store, mapping Entities for use with a Coherence
 Repository is relatively simple as only the id needs to be annotated.  It is possible to
-use either `org.springframework.data.annotation.Id` or `javax.persistence.Id` to denote the
+use either `org.springframework.data.annotation.Id` or `jakarta.persistence.Id` to denote the
 entity's id.
 
 For example:
@@ -152,7 +152,7 @@ annotation. A simple configuration example would be:
 [source,java]
 ----
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 
 // ...
 
@@ -170,12 +170,12 @@ Please see the {coherence-spring-api}[API docs] for details.
 === Finder Queries
 
 One of the benefits of Spring Data is the ability to define queries on the Repository interface
-using Spring Data's https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details[finder query] syntax.
+using Spring Data's {spring-docs-data-commons}repositories/query-methods-details.html[finder query] syntax.
 For example:
 
 [source,java]
 ----
-import com.oracle.coherence.spring.data.repository.CoherenceRespository;
+import com.oracle.coherence.spring.data.repository.CoherenceRepository;
 import com.oracle.coherence.spring.data.model.Author;
 import com.oracle.coherence.spring.data.model.Book;
 import com.tangosol.util.UUID;
@@ -217,7 +217,7 @@ Don't forget to include the `@EnableAsync` annotation on the configuration:
 [source, java]
 ----
 import com.oracle.coherence.spring.configuration.annotation.EnableCoherence;
-import com.oracle.coherence.spring.configuration.data.config.EnableCoherenceRepositories;
+import com.oracle.coherence.spring.data.config.EnableCoherenceRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 // ...

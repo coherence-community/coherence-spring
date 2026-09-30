@@ -1,6 +1,6 @@
 = Spring Data Coherence
 
-The primary goal of the https://projects.spring.io/spring-data[Spring Data] project is to make it easier to build Spring-powered applications that use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data services.
+The primary goal of the https://spring.io/projects/spring-data[Spring Data] project is to make it easier to build Spring-powered applications that use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data services.
 
 The Spring Data Coherence project aims to provide a familiar and consistent Spring-based programming model for new
 data stores while retaining store-specific features and capabilities.
@@ -63,8 +63,8 @@ public static class Config {
 the repository type, e.g., `PersonRepository` would use a Coherence Map named `person`
 <2> Alternatively, you may define the name of the Coherence Map explicitly by using
 the `@com.oracle.coherence.spring.data.config.CoherenceMap` annotation
-<2> Enables/starts a Coherence cluster member,
-<3> Enables Coherence-based repositories
+<3> Enables/starts a Coherence cluster member
+<4> Enables Coherence-based repositories
 
 === Maven configuration
 
@@ -75,19 +75,16 @@ Add the Maven dependency:
 <dependency>
   <groupId>com.oracle.coherence.spring</groupId>
   <artifactId>coherence-spring-data</artifactId>
-  <version>${version}.RELEASE</version>
+  <version>5.0.0-SNAPSHOT</version>
 </dependency>
-----
-
-If you'd rather use the latest snapshots of the upcoming major version, reference the `SNAPSHOT` version:
-
-[source,xml]
-----
 <dependency>
-  <groupId>com.oracle.coherence.spring</groupId>
-  <artifactId>coherence-spring-data</artifactId>
-  <version>${version}.BUILD-SNAPSHOT</version>
+  <groupId>com.oracle.coherence.ce</groupId>
+  <artifactId>coherence</artifactId>
+  <version>25.03.2</version>
 </dependency>
 ----
 
-See project main project https://github.com/coherence-community/coherence-spring[README] for details on licensing, getting help, contributing, or logging issues.
+The example uses the current 5.x development coordinate. Use a published 5.x release when one is available, or build
+the snapshot locally from this repository. Coherence is an explicit dependency and is not brought in transitively.
+
+See the main project https://github.com/coherence-community/coherence-spring[README] for details on licensing, getting help, contributing, or logging issues.

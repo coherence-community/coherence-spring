@@ -3,7 +3,7 @@
 include::attributes.adoc[]
 
 This section dives into the Coherence Spring Cache module. It explains how to use
-Coherence's support for the Spring Framework's https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
+Coherence's support for the Spring Framework's {spring-docs-caching}[Cache Abstraction].
 
 [[spring-cache-introduction]]
 == Introduction
@@ -24,7 +24,7 @@ which is provided by the https://github.com/coherence-community/coherence-hibern
 As a start, please familiarize yourself with Spring's Cache Abstraction by reading the following resources:
 
 - The {spring-docs-caching}[Cache Abstraction chapter] in the core Spring Framework reference guide
-- Spring Boot's reference documentation's {spring-docs-boot}features.html#boot-features-caching[support regarding caching]
+- Spring Boot's reference documentation's {spring-docs-boot}io/caching.html[support regarding caching]
 
 Spring's cache abstraction for Coherence will be automatically enabled as soon as you specify `@EnableCaching` in your
 applications configuration classes. In that case a `CoherenceCacheManager` bean implementation is registered as
