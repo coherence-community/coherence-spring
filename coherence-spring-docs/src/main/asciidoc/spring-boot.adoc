@@ -985,9 +985,137 @@ as described at xref:core.adoc#coherence-spring-messaging-with-coherence-topics[
 [[spring-boot-metrics]]
 == Coherence Metrics
 
-By adding the `coherence-spring-boot-starter` and `com.oracle.coherence.ce:coherence-micrometer` dependencies auto-configuration will register `CoherenceMicrometerMetrics` and publish link:{coherence-docs}/manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics] under the `coherence.` name.
+Metrics are an application-level choice. The general `coherence-spring-boot-starter` does not add
+Boot's metrics module or Micrometer core to an application's runtime classpath. To publish
+link:{coherence-docs}/manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics],
+add `coherence-micrometer` and make a Micrometer `MeterRegistry` available using one of the
+following configurations.
 
-To disable the auto-configured Coherence metrics even when `coherence-micrometer` module is on the classpath, set the following property:
+=== Use Spring Boot Actuator
+
+Applications that use Actuator should add its starter. Actuator already includes Boot's metrics starter,
+so the two Boot starters are alternatives and should not both be declared. These examples assume that the
+Spring Boot parent or BOM manages the Boot dependency version.
+
+.Coherence Metrics with Spring Boot Actuator
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence-micrometer</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.ce:coherence-micrometer:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+}
+----
+====
+
+=== Use Boot metrics without Actuator
+
+Applications that want Boot to configure metrics without the full Actuator starter can add the dedicated
+metrics starter instead.
+
+.Coherence Metrics without Spring Boot Actuator
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence-micrometer</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-micrometer-metrics</artifactId>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.ce:coherence-micrometer:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-micrometer-metrics")
+}
+----
+====
+
+=== Supply an application-owned registry
+
+An application can provide its own registry without adding Boot's metrics module. For example, the
+`coherence-micrometer` dependency supplies Micrometer core, allowing the application to define a simple registry:
+
+[source,java]
+----
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration(proxyBeanMethods = false)
+class MetricsConfiguration {
+
+    @Bean
+    MeterRegistry meterRegistry() {
+        return new SimpleMeterRegistry();
+    }
+}
+----
+
+Coherence binds its singleton Micrometer adapter to the selected registry when both the adapter and a
+`MeterRegistry` bean are available. The integration does not necessarily register the adapter itself as a
+Spring bean. Creating a registry, binding Coherence meters, exposing an HTTP endpoint, and exporting meters
+to a monitoring backend are separate steps. In particular, a `SimpleMeterRegistry` does not export metrics
+to a monitoring service.
+
+IMPORTANT: Spring Boot 4 moved registry auto-configuration from `spring-boot-actuator-autoconfigure` to
+`spring-boot-micrometer-metrics`. Under Spring Boot 4, the Coherence starter and `coherence-micrometer` alone
+still allow the application to start, but no registry is created automatically and Coherence metrics are not
+bound. Applications already using Actuator satisfy the new prerequisite.
+
+When Boot manages the registry, the following property filters meters whose names begin with `coherence`:
 
 .application.yaml
 [source,yaml]
@@ -997,6 +1125,9 @@ management:
     enable:
       coherence: false
 ----
+
+This property does not remove metrics dependencies or disable other Boot metrics. An application that uses
+only its own registry is also responsible for configuring any desired Micrometer meter filters.
 
 [[spring-boot-data]]
 == Spring Data Support
