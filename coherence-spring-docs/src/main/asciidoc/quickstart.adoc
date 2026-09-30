@@ -198,7 +198,7 @@ dependency as well as the desired dependency for Coherence.
 </dependency>
 ----
 <1> Activate Autoconfiguration by adding the `coherence-spring-boot-starter` dependency
-<2> Add the desired version of Coherence (CE or Commercial)
+<2> Add the supported Coherence CE version
 
 In this quickstart example we are using Spring's Caching abstraction and therefore, we
 use the `spring-boot-starter-cache` dependency as well:

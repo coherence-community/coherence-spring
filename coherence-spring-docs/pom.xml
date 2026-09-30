@@ -101,6 +101,13 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-web-server</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
 			<version>${spring-boot.version}</version>
 			<scope>test</scope>
@@ -189,7 +196,7 @@
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
 							<bottom>
-								Copyright © 2013, 2025, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
+								Copyright © 2013, 2026, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
 							</bottom>
 						</configuration>
 					</execution>
@@ -251,9 +258,20 @@
 						</resource>
 					</resources>
 					<attributes>
+						<coherence-docs-version>${coherence.docs.version}</coherence-docs-version>
+						<coherence-hibernate-version>${coherence-hibernate.version}</coherence-hibernate-version>
 						<coherence-spring-version>${project.version}</coherence-spring-version>
-						<resilience4j-version>${resilience4j.version}</resilience4j-version>
 						<coherence-version>${coherence.version}</coherence-version>
+						<hibernate-version>${hibernate.version}</hibernate-version>
+						<jakartaee-version>${jakartaee-api.version}</jakartaee-version>
+						<junit-version>${junit.version}</junit-version>
+						<resilience4j-version>${resilience4j.version}</resilience4j-version>
+						<spring-boot-version>${spring-boot.version}</spring-boot-version>
+						<spring-cloud-version>${spring-cloud.version}</spring-cloud-version>
+						<spring-data-bom-version>${spring-data-bom.version}</spring-data-bom-version>
+						<spring-framework-version>${org.springframework.version}</spring-framework-version>
+						<spring-security-version>${spring-security.version}</spring-security-version>
+						<spring-session-version>${spring-session.version}</spring-session-version>
 						<sources-root>${project.basedir}/src</sources-root>
 						<sources-root-samples>${coherence.spring.root}/samples/</sources-root-samples>
 						<tomcat-version>${tomcat.version}</tomcat-version>

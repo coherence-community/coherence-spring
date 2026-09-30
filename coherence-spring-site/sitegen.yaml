@@ -1,4 +1,4 @@
-# Copyright (c) 2013, 2023, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2013, 2026, Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at
 # https://oss.oracle.com/licenses/upl.
 
@@ -19,8 +19,8 @@ engine:
       coherence-maven-group-id: "${coherence.groupId}"
       javadoc-root: "https://coherence.community/${coherence.version}/api/java/"
       version-coherence-maven: "${coherence.version}"
-      version-coherence-spring: "4.3.0"
-      version-coherence: "25.03"
+      version-coherence-spring: "${project.version}"
+      version-coherence: "${coherence.docs.version}"
       timestamp: "${timestamp}"
 assets:
   - target: "/"
@@ -92,6 +92,12 @@ backend:
                   type: "icon"
                   value: "fa-html5"
                 href: "refdocs/reference/html/index.html"
+              - type: "LINK"
+                title: "Upgrade 4.x to 5.x"
+                glyph:
+                  type: "icon"
+                  value: "upgrade"
+                href: "refdocs/reference/html/upgrade-5.html"
               - type: "LINK"
                 title: "Single Page"
                 glyph:

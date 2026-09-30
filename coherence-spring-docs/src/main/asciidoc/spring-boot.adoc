@@ -987,7 +987,7 @@ as described at xref:core.adoc#coherence-spring-messaging-with-coherence-topics[
 
 Metrics are an application-level choice. The general `coherence-spring-boot-starter` does not add
 Boot's metrics module or Micrometer core to an application's runtime classpath. To publish
-link:{coherence-docs}/manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics],
+link:{coherence-docs}manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics],
 add `coherence-micrometer` and make a Micrometer `MeterRegistry` available using one of the
 following configurations.
 

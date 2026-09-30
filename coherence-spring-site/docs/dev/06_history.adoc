@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2024, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2026, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -16,6 +16,15 @@
 
 The following sections outline Coherence Spring project changes in
 reverse chronological order.
+
+=== Version 5.0.0 (in development)
+
+* Upgraded the project baseline to Spring Framework 7, Spring Boot 4, Spring Data 2025.1,
+  Spring Session 4, Spring Security 7, and Jakarta EE 11.
+* Updated the library modules, samples, reference documentation, compatibility data, and
+  third-party notices for the 5.x line.
+* See the link:../refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
+  for application migration requirements and behavioral changes.
 
 === Version 4.3.1 (June 2025)
 
