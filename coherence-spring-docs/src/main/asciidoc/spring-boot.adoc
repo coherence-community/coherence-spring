@@ -34,8 +34,8 @@ as the desired version of Coherence.
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====
@@ -57,8 +57,8 @@ client mode (Coherence*Extend or gRPC), please see the chapter on <<spring-boot-
 up Spring Boot as a Coherence Client>>.
 
 When using Coherence Spring Boot, you may want to verify that only the auto-configuration that you actually need
-is enabled. For example, Coherence is shipped with `Gson`, and the mere presence of the Gson class may trigger
-`GsonAutoConfiguration`.
+is enabled. Spring Boot 4 places feature-specific auto-configuration in dedicated modules. For example, if an application
+includes the `spring-boot-gson` module and Gson is present, Boot may activate `GsonAutoConfiguration`.
 
 To find out which auto-configuration is applied for your application, start your Spring Boot application with the `--debug`
 argument. The auto-configuration report will be logged to the console.
@@ -69,6 +69,8 @@ that you do not want to be applied.
 
 [source,java]
 ----
+import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
+
 @SpringBootApplication(exclude = GsonAutoConfiguration.class)
 public class MyCoherenceApplication {
 	public static void main(String[] args) {
@@ -85,7 +87,7 @@ in your `application.properties` or `application.yaml` file.
 ----
 spring:
     autoconfigure:
-        exclude: org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
+        exclude: org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration
 ----
 
 [[spring-boot-configuration-properties]]
@@ -400,8 +402,9 @@ https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[cust
 import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
 configuration data for your Spring Boot based applications.
 
-NOTE: Please also consult the Spring Boot reference guide on {spring-docs-boot}features.html#boot-features-external-config[Externalized Configuration],
-especially the chapter on {spring-docs-boot}features.html#boot-features-external-config-files-importing[Importing Additional Data].
+NOTE: Please also consult the Spring Boot reference guide on
+{spring-docs-boot}features/external-config.html[Externalized Configuration], especially the chapter on
+{spring-docs-boot}features/external-config.html#features.external-config.files.importing[Importing Additional Data].
 
 NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
 
@@ -440,7 +443,7 @@ Spring's {spring-api}org/springframework/cache/CacheManager.html[CacheManager]) 
 `CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
 
 Once that is in place, you can take advantage of
-https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching[Spring's Cache abstraction]
+{spring-docs-boot}io/caching.html[Spring's Cache abstraction]
 backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEvict`, `@CachePut` etc.
 
 [NOTE]
@@ -450,8 +453,8 @@ following resources:
 
 - <<quickstart.adoc#quickstart, Coherence Spring Quickstart chapter>>
 - <<spring-cache.adoc#spring-cache,Coherence Core Spring Cache Support>>
-- {spring-docs-boot}features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
-- {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
+- {spring-docs-boot}io/caching.html[Spring Boot's reference documentation's support regarding caching]
+- {spring-docs-caching}[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
 [[spring-boot-caching-circuit-breaker]]
@@ -878,7 +881,7 @@ class has a custom query using such a hint for illustration purposes:
 .Using Query Hints
 [source,java,indent=,subs="verbatim,quotes,attributes"]
 ----
-  @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+  @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_CACHEABLE, value = "true"))
   @Query("select p from Plant p")
   List<Plant> getAllPlantsCacheable();
 ----
@@ -932,9 +935,9 @@ project:
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====
@@ -952,8 +955,8 @@ The following Coherence-specific configuration properties are available:
 |Key |Default Value |Description
 
 | coherence.spring.session.enabled
-| `false`
-| Set to `true` to enable Spring Session support
+| `true`
+| Set to `false` to disable Spring Session support
 
 | coherence.spring.session.map-name
 | `spring:session:sessions`
@@ -1163,9 +1166,9 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====

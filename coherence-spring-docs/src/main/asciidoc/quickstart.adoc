@@ -4,7 +4,7 @@ include::attributes.adoc[]
 
 In this getting started chapter we will look a demo to illustrate basic usage of Oracle Coherence when using it with
 Spring. This demo provides an example of using Coherence Spring's
-https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
+{spring-docs-caching}[Cache Abstraction].
 
 The demo application is basically a super-simple event manager. We can create `Events` and assign `People` to them using
 an exposed REST API. The data is saved in an embedded http://hsqldb.org/[HSQL database]. The caching is implemented at
@@ -177,7 +177,7 @@ curl --request POST 'http://localhost:8080/api/people/3/add-to-event/1'
 == Behind the Scenes
 
 What is involved to make this all work? Using Spring Boot, the setup is incredibly simple. We take advantage of Spring Boot's
-https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-auto-configuration[AutoConfiguration]
+{spring-docs-boot}using/auto-configuration.html[auto-configuration]
 capabilities, and the sensible defaults provided by _Coherence Spring_.
 
 In order to activate AutoConfiguration for Coherence Spring you need to add the `coherence-spring-boot-starter`
@@ -229,9 +229,7 @@ public class CoherenceSpringBootDemoApplication {
 ----
 <1> Activate the Spring Cache Abstraction
 
-Please see the relevant chapter on
-https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-caching[Caching] in the Spring Boot
-reference guide.
+Please see the relevant chapter on {spring-docs-boot}io/caching.html[Caching] in the Spring Boot reference guide.
 
 With `@EnableCaching` in place, Coherence's autoconfiguration will also provide a `CoherenceCacheManager` bean to the
 application context.

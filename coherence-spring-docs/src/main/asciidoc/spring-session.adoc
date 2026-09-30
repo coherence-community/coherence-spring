@@ -36,8 +36,8 @@ First you need to add the coherence-spring-session dependency:
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====

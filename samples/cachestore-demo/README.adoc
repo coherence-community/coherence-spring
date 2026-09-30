@@ -7,7 +7,7 @@ to show-case `2` use-cases:
 
 * Embedded Coherence
 * Use a remote Coherence instance cache using
-  https://docs.oracle.com/en/middleware/standalone/coherence/14.1.1.2206/develop-remote-clients/introduction-coherenceextend.html[Coherence*Extend]
+  https://docs.coherence.community/coherence/docs/25.03/reference/develop-remote-clients/introduction-coherenceextend.html[Coherence*Extend]
 
 The Maven Project is structured as follows:
 
@@ -16,4 +16,3 @@ The Maven Project is structured as follows:
 * *coherence-cachestore-demo-core* Used to share common code between the local app and the remote Coherence server version.
 
 For further information, the Chapter **Cache Store** of the Coherence Spring reference documentation for detailed instructions.
-

@@ -29,7 +29,7 @@
 :github-wiki: https://github.com/{github-repo}/wiki/
 :github-releases: https://github.com/{github-repo}/releases/
 
-:hibernate-docs: https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html
+:hibernate-docs: https://docs.jboss.org/hibernate/orm/7.4/userguide/html_single/Hibernate_User_Guide.html
 
 :git-sources-samples: {coherence-spring-code}tree/main/samples/
 :include-source-code: {sources-root}/test/java/com/oracle/coherence/spring/doc/
@@ -37,15 +37,15 @@
 :include-source-code-samples-cachestore-app: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/java/com/oracle/coherence/spring/example/
 :include-source-code-samples-cachestore-resources: {sources-root-samples}cachestore-demo/coherence-spring-cachestore-demo-app/src/main/resources/
 
-:spring-docs: https://docs.spring.io/spring-framework/docs/current/reference/
+:spring-docs: https://docs.spring.io/spring-framework/reference/
 :spring-api:  https://docs.spring.io/spring-framework/docs/current/javadoc-api/
-:spring-docs-caching: {spring-docs}html/integration.html#cache
-:spring-docs-session: https://docs.spring.io/spring-session/docs/current/reference/html5/
-:spring-docs-boot: https://docs.spring.io/spring-boot/docs/current/reference/html/
-:spring-docs-data-commons: https://docs.spring.io/spring-data/commons/docs/current/reference/html/
-:spring-docs-data-jpa: https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
-:spring-docs-data-projections: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#projections
-:spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
+:spring-docs-caching: {spring-docs}integration/cache.html
+:spring-docs-session: https://docs.spring.io/spring-session/reference/4.0/
+:spring-docs-boot: https://docs.spring.io/spring-boot/{spring-boot-version}/reference/
+:spring-docs-data-commons: https://docs.spring.io/spring-data/commons/reference/4.0/
+:spring-docs-data-jpa: https://docs.spring.io/spring-data/jpa/reference/4.0/
+:spring-docs-data-projections: {spring-docs-data-commons}repositories/projections.html
+:spring-docs-cloud-config: https://docs.spring.io/spring-cloud-config/reference/5.0/
 :oracle-coherence-docs: {coherence-docs}
 
 :oracle-coherence: https://coherence.community/
