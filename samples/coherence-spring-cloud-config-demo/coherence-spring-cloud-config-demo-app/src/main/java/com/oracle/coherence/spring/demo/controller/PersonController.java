@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022, Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2026, Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oracle.coherence.spring.demo.model.Person;
+import com.oracle.coherence.spring.demo.model.PersonResponse;
 import com.oracle.coherence.spring.demo.service.PersonService;
 
 /**
@@ -35,8 +35,8 @@ public class PersonController {
 	private PersonService personService;
 
 	@GetMapping
-	public Page<Person> getPeople(Pageable pageable) {
-		return personService.listPeople(pageable);
+	public Page<PersonResponse> getPeople(Pageable pageable) {
+		return personService.listPeople(pageable).map(PersonResponse::from);
 	}
 
 	@PostMapping
