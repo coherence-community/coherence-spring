@@ -158,14 +158,18 @@
 		<hamcrest.version>3.0</hamcrest.version>
 		<hibernate.version>7.4.5.Final</hibernate.version>
 		<hsqldb.version>2.7.3</hsqldb.version>
+		<httpclient5.version>5.6.4</httpclient5.version>
+		<httpcore5.version>5.4.3</httpcore5.version>
 		<jakartaee-api.version>11.0.0</jakartaee-api.version>
 		<jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
 		<jakarta.persistence-api.version>3.2.0</jakarta.persistence-api.version>
 		<jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 		<jakarta.inject.version>2.0.1</jakarta.inject.version>
+		<jackson2-bom.version>2.21.7</jackson2-bom.version>
+		<jackson-bom.version>3.1.7</jackson-bom.version>
 		<javassist.version>3.30.2-GA</javassist.version>
 		<junit.version>6.0.3</junit.version>
-		<log4j.version>2.25.1</log4j.version>
+		<log4j.version>2.25.5</log4j.version>
 		<mockito.version>5.20.0</mockito.version>
 		<modelmapper.version>3.2.4</modelmapper.version>
 		<org.springframework.version>7.0.9</org.springframework.version>
@@ -177,7 +181,7 @@
 		<spring-data-bom.version>2025.1.7</spring-data-bom.version>
 		<spring-session.version>4.0.5</spring-session.version>
 		<spring-security.version>7.0.7</spring-security.version>
-		<tomcat.version>11.0.24</tomcat.version>
+		<tomcat.version>11.0.26</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -216,6 +220,36 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Security maintenance baselines shared by library tests and all samples. -->
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson2-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.client5</groupId>
+				<artifactId>httpclient5</artifactId>
+				<version>${httpclient5.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.core5</groupId>
+				<artifactId>httpcore5</artifactId>
+				<version>${httpcore5.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.core5</groupId>
+				<artifactId>httpcore5-h2</artifactId>
+				<version>${httpcore5.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
