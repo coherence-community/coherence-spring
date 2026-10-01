@@ -80,7 +80,7 @@ Add the Maven dependency:
 <dependency>
   <groupId>com.oracle.coherence.ce</groupId>
   <artifactId>coherence</artifactId>
-  <version>25.03.2</version>
+  <version>26.04</version>
 </dependency>
 ----
 

@@ -31,7 +31,7 @@ implementation("com.oracle.coherence.spring:coherence-spring-core:{coherence-spr
 ====
 
 Next you also need to add the version of Coherence that your application will use. Coherence Spring does not bring in
-Oracle Coherence as a transitive dependency. Coherence Spring 5.x supports Coherence CE 25.03; there is currently no
+Oracle Coherence as a transitive dependency. Coherence Spring 5.x supports Coherence CE 26.04; there is currently no
 compatible commercial edition. Add Coherence CE explicitly:
 
 .Oracle Coherence CE Dependency

@@ -54,4 +54,4 @@ engine:
 
 Use an attribute in a website `.adoc` file by enclosing its name in braces. For example,
 `{version-coherence-spring}` renders the current Coherence Spring project version. Coherence Spring 5.x supports
-Coherence CE 25.03; the website no longer defines a commercial Coherence attribute for this baseline.
+Coherence CE 26.04; the website no longer defines a commercial Coherence attribute for this baseline.

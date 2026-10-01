@@ -35,7 +35,7 @@ Add the Coherence Spring Boot Starter to your generated app's `pom.xml`:
 </dependencies>
 ----
 
-NOTE: Coherence Spring 5.x supports Coherence CE 25.03. There is currently no compatible commercial Coherence edition.
+NOTE: Coherence Spring 5.x supports Coherence CE 26.04. There is currently no compatible commercial Coherence edition.
 
 If you are moving an existing application from Coherence Spring 4.x, follow the
 link:../refdocs/reference/html/upgrade-5.html[Coherence Spring 5.x upgrade guide] before changing dependencies.
