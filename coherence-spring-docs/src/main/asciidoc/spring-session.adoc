@@ -42,7 +42,7 @@ dependencies {
 ----
 ====
 
-NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 25.03. Coherence Spring does
+NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 26.04. Coherence Spring does
 not bring in the Coherence dependency automatically; users must specify the supported Coherence CE dependency explicitly.
 
 In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring

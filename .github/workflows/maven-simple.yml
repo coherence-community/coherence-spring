@@ -6,7 +6,7 @@ on:
       coherence-version:
         description: 'Coherence Version'
         required: false
-        default: '24.03'
+        default: '26.04'
 jobs:
   build:
     if: github.repository_owner == 'coherence-community'
