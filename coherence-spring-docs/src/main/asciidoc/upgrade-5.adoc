@@ -194,6 +194,12 @@ Boot 4 moved session auto-configuration into `spring-boot-session`. The 5.x `coh
 that module as a normal dependency so that applications using the starter retain Coherence-backed HTTP session
 auto-configuration. The standalone `coherence-spring-session` module remains independent of Spring Boot.
 
+Coherence session timeouts use Boot's `SessionTimeout` provider, available since Boot 4.0.1. For embedded servlet
+applications, `spring.session.timeout` takes precedence over `server.servlet.session.timeout`. For WAR deployments
+in an external servlet container, set `spring.session.timeout`; the server property is not a fallback. If no session
+timeout is configured for a WAR deployment, the repository retains its default of 30 minutes. A `ServerProperties`
+bean is not required for WAR session auto-configuration.
+
 The existing back-off controls remain valid:
 
 * Set `coherence.spring.session.enabled=false` to disable Coherence Spring Session auto-configuration.

@@ -14,14 +14,12 @@ import com.oracle.coherence.spring.session.config.annotation.web.http.CoherenceH
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.session.autoconfigure.SessionProperties;
-import org.springframework.boot.web.server.autoconfigure.ServerProperties;
+import org.springframework.boot.session.autoconfigure.SessionAutoConfiguration;
+import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.session.SessionRepository;
 
@@ -31,8 +29,8 @@ import org.springframework.session.SessionRepository;
  * @author Gunnar Hillert
  * @since 3.0
  */
-@AutoConfigureAfter(CoherenceAutoConfiguration.class)
-@AutoConfiguration
+@AutoConfiguration(after = CoherenceAutoConfiguration.class, before = SessionAutoConfiguration.class,
+		beforeName = "org.springframework.boot.session.autoconfigure.SessionsEndpointAutoConfiguration")
 @EnableConfigurationProperties(CoherenceSpringSessionProperties.class)
 @Conditional(CoherenceSpringSessionCondition.class)
 @ConditionalOnClass(CoherenceIndexedSessionRepository.class)
@@ -41,17 +39,13 @@ import org.springframework.session.SessionRepository;
 public class CoherenceSpringSessionAutoConfiguration {
 
 	@AutoConfiguration
-	@AutoConfigureBefore(name = "org.springframework.boot.session.autoconfigure.SessionsEndpointAutoConfiguration")
 	@ConditionalOnClass(name = "org.springframework.boot.session.autoconfigure.SessionProperties")
 	public static class SpringBootCoherenceHttpSessionConfiguration extends CoherenceHttpSessionConfiguration {
 
 		@Autowired
-		public void customize(SessionProperties sessionProperties,
-				CoherenceSpringSessionProperties coherenceSpringSessionProperties, ServerProperties serverProperties) {
-			Duration timeout = sessionProperties.getTimeout();
-			if (timeout == null) {
-				timeout = serverProperties.getServlet().getSession().getTimeout();
-			}
+		public void customize(SessionTimeout sessionTimeout,
+				CoherenceSpringSessionProperties coherenceSpringSessionProperties) {
+			Duration timeout = sessionTimeout.getTimeout();
 			if (timeout != null) {
 				setMaxInactiveIntervalInSeconds((int) timeout.getSeconds());
 			}
