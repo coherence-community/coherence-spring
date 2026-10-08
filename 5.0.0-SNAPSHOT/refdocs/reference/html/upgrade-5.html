@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>Upgrading from Coherence Spring 4.x to 5.x</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body id="upgrade-5" class="book toc2 toc-left">
+<div id="header">
+<h1>Upgrading from Coherence Spring 4.x to 5.x</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#upgrade-5-baseline">1. Baseline changes</a></li>
+<li><a href="#upgrade-5-sequence">2. Recommended migration sequence</a></li>
+<li><a href="#upgrade-5-dependencies">3. Update dependency management</a></li>
+<li><a href="#upgrade-5-behavior">4. Review feature-specific changes</a>
+<ul class="sectlevel2">
+<li><a href="#upgrade-5-metrics">4.1. Metrics</a></li>
+<li><a href="#upgrade-5-session">4.2. Spring Session</a></li>
+<li><a href="#upgrade-5-resilience4j">4.3. Resilience4j</a></li>
+<li><a href="#upgrade-5-hibernate">4.4. Hibernate second-level cache</a></li>
+</ul>
+</li>
+<li><a href="#upgrade-5-source">5. Review application source and tests</a></li>
+<li><a href="#upgrade-5-validation">6. Validate the upgraded application</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coherence Spring 5.x moves the project to Spring Framework 7 and Spring Boot 4. It is a major-version upgrade because
+the surrounding Spring, Jakarta EE, persistence, JSON, security, and test ecosystems also move to new major versions.
+The Coherence Spring artifact names and configuration-property prefixes remain unchanged, but applications may need
+dependency and source changes according to the features they use.</p>
+</div>
+<div class="paragraph">
+<p>This guide covers Coherence Spring-specific work. Also review the
+<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide">Spring Boot 4 migration guide</a>
+and <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-7.0-Release-Notes">Spring Framework 7 release notes</a>
+for the complete upstream changes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-baseline"><a class="anchor" href="#upgrade-5-baseline"></a>1. Baseline changes</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Coherence Spring 4.x</th>
+<th class="tableblock halign-left valign-top">Coherence Spring 5.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17 or 21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17 or 21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coherence Spring</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.0.0-SNAPSHOT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Framework</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.0.9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Boot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025.0.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025.1.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Data BOM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025.0.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025.1.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Session</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Security</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jakarta EE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11.0.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hibernate ORM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.6.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.4.5.Final</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coherence Hibernate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resilience4j</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.3.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.4.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JUnit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.0.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coherence CE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25.03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26.04</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Commercial Coherence</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the 4.x compatibility table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not currently supported</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The Java baseline does not change: Coherence Spring tests and supports Java 17 and Java 21. Coherence Spring 5.x
+continues to use the <code>jakarta.*</code> namespace, but its Jakarta EE baseline advances from 10 to 11. Applications using
+Servlet, Persistence, Validation, or other Jakarta APIs must use EE 11-compatible providers.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Upgrade a Spring Boot application to the latest 3.5.x maintenance release and remove use of APIs deprecated
+in Boot 3 before moving to Boot 4, as recommended by the Spring Boot migration guide.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-sequence"><a class="anchor" href="#upgrade-5-sequence"></a>2. Recommended migration sequence</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>On Coherence Spring 4.x, first move to its current Spring Boot 3.5 and Spring Framework 6.2 baseline and resolve all
+deprecation warnings that affect application code.</p>
+</li>
+<li>
+<p>Update the Spring Boot parent or BOM, Coherence Spring artifacts, and the explicitly declared Coherence CE dependency
+together. Do not mix Coherence Spring 4.x and 5.x modules in one application.</p>
+</li>
+<li>
+<p>Replace feature-specific integrations: Boot metrics and session modules, the Resilience4j Boot adapter, and the
+Coherence Hibernate adapter where applicable.</p>
+</li>
+<li>
+<p>Compile application and test source, then address the package and SPI changes listed below.</p>
+</li>
+<li>
+<p>Start the packaged application and exercise each enabled integration on the supported Java versions. Compilation alone
+does not prove that Boot 4 optional auto-configuration is active.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-dependencies"><a class="anchor" href="#upgrade-5-dependencies"></a>3. Update dependency management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use one source of Spring dependency management. Spring Boot applications should normally use the Boot 4 parent or BOM
+and should not independently override the versions of Spring Framework, Spring Data, Spring Session, or Spring Security.</p>
+</div>
+<div class="listingblock">
+<div class="title">Spring Boot parent and Coherence Spring dependencies</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;4.0.8&lt;/version&gt;
+&lt;/parent&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;26.04&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Plain Spring Framework applications should align Spring dependencies with its BOM and update the Coherence Spring
+module version without adding the Boot starter.</p>
+</div>
+<div class="listingblock">
+<div class="title">Plain Spring Framework dependency management</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-framework-bom&lt;/artifactId&gt;
+            &lt;version&gt;7.0.9&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-core&lt;/artifactId&gt;
+        &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;26.04&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Review exclusions and direct dependencies that compensated for Boot 3&#8217;s larger modules. Boot 4 uses smaller,
+feature-specific modules. Prefer Boot starters rather than depending directly on Boot&#8217;s auto-configuration modules.
+In particular, direct Boot integrations may now require <code>spring-boot-cache</code>, <code>spring-boot-session</code>,
+<code>spring-boot-web-server</code>, or <code>spring-boot-micrometer-metrics</code> instead of relying on a larger Boot 3 module to provide
+their classes transitively. The Coherence Spring starter supplies its required session module; metrics remain an
+application-level choice.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-behavior"><a class="anchor" href="#upgrade-5-behavior"></a>4. Review feature-specific changes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="upgrade-5-metrics"><a class="anchor" href="#upgrade-5-metrics"></a>4.1. Metrics</h3>
+<div class="paragraph">
+<p>Boot 4 moved registry auto-configuration out of <code>spring-boot-actuator-autoconfigure</code> and into
+<code>spring-boot-micrometer-metrics</code>. Under Coherence Spring 4.x, adding <code>coherence-micrometer</code> could be sufficient to
+activate a Boot-created registry. Under 5.x, the Coherence starter and <code>coherence-micrometer</code> still allow the application
+to start, but no registry is created automatically and Coherence metrics are not bound.</p>
+</div>
+<div class="paragraph">
+<p>Choose one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>spring-boot-starter-actuator</code> if the application uses Actuator.</p>
+</li>
+<li>
+<p>Add <code>spring-boot-starter-micrometer-metrics</code> for Boot-managed metrics without Actuator.</p>
+</li>
+<li>
+<p>Supply an application-owned <code>MeterRegistry</code> bean.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See <a href="spring-boot.html#spring-boot-metrics">Coherence Metrics</a> for complete Maven and Gradle examples and meter-filter behavior.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="upgrade-5-session"><a class="anchor" href="#upgrade-5-session"></a>4.2. Spring Session</h3>
+<div class="paragraph">
+<p>Boot 4 moved session auto-configuration into <code>spring-boot-session</code>. The 5.x <code>coherence-spring-boot-starter</code> includes
+that module as a normal dependency so that applications using the starter retain Coherence-backed HTTP session
+auto-configuration. The standalone <code>coherence-spring-session</code> module remains independent of Spring Boot.</p>
+</div>
+<div class="paragraph">
+<p>Coherence session timeouts use Boot&#8217;s <code>SessionTimeout</code> provider, available since Boot 4.0.1. For embedded servlet
+applications, <code>spring.session.timeout</code> takes precedence over <code>server.servlet.session.timeout</code>. For WAR deployments
+in an external servlet container, set <code>spring.session.timeout</code>; the server property is not a fallback. If no session
+timeout is configured for a WAR deployment, the repository retains its default of 30 minutes. A <code>ServerProperties</code>
+bean is not required for WAR session auto-configuration.</p>
+</div>
+<div class="paragraph">
+<p>The existing back-off controls remain valid:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set <code>coherence.spring.session.enabled=false</code> to disable Coherence Spring Session auto-configuration.</p>
+</li>
+<li>
+<p>Set <code>spring.session.store-type</code> when another session store owns auto-configuration.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the application excludes starter dependencies or assembles Boot modules directly, ensure that <code>spring-boot-session</code>
+is present at runtime.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="upgrade-5-resilience4j"><a class="anchor" href="#upgrade-5-resilience4j"></a>4.3. Resilience4j</h3>
+<div class="paragraph">
+<p>Replace the Boot 3 integration with its Boot 4 counterpart:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
+    &lt;artifactId&gt;resilience4j-spring-boot4&lt;/artifactId&gt;
+    &lt;version&gt;2.4.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Retaining <code>resilience4j-spring-boot3</code> can leave health integration inactive because it references Boot 3 health APIs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="upgrade-5-hibernate"><a class="anchor" href="#upgrade-5-hibernate"></a>4.4. Hibernate second-level cache</h3>
+<div class="paragraph">
+<p>Applications using the Coherence Hibernate integration must move to its Hibernate 7 adapter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-hibernate-cache-7&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Update the region factory class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  jpa:
+    properties:
+      hibernate.cache.region.factory_class:
+        com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Coherence Spring 5.x is tested with Hibernate ORM 7.4.5.Final. Applications using Hibernate-specific query hints
+or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
+<code>org.hibernate.annotations.QueryHints.CACHEABLE</code> constant with <code>org.hibernate.jpa.HibernateHints.HINT_CACHEABLE</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-source"><a class="anchor" href="#upgrade-5-source"></a>5. Review application source and tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most Coherence Spring application code does not need source changes. Check the following when the corresponding
+technology is used directly:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Jackson 3:</strong> Boot 4&#8217;s preferred JSON library uses <code>tools.jackson.*</code> coordinates and packages. Update imports such as
+<code>com.fasterxml.jackson.databind.ObjectMapper</code> to <code>tools.jackson.databind.ObjectMapper</code> when using Boot&#8217;s managed mapper.
+Jackson annotations remain in <code>com.fasterxml.jackson.annotation</code>.</p>
+</li>
+<li>
+<p><strong>Spring Security 7:</strong> use the lambda security DSL and <code>PathPatternRequestMatcher</code> where code previously used removed
+chained DSL methods or <code>AntPathRequestMatcher</code>.</p>
+</li>
+<li>
+<p><strong>Spring MVC parameter names:</strong> compile with <code>-parameters</code> or give controller parameters explicit names. This is
+required when request binding or expressions such as <code>#id</code> depend on Java parameter names.</p>
+</li>
+<li>
+<p><strong>Spring Data extensions:</strong> code extending Spring Data internals may need <code>org.springframework.data.core.TypeInformation</code>
+and the <code>ValueExpressionDelegate</code>-based repository-factory SPI. Ordinary Coherence repositories are adapted by 5.x.</p>
+</li>
+<li>
+<p><strong>Boot test modules:</strong> Boot 4 modularized its test support. MVC tests may need <code>spring-boot-starter-webmvc-test</code>, and
+<code>@AutoConfigureMockMvc</code> is in <code>org.springframework.boot.webmvc.test.autoconfigure</code>.</p>
+</li>
+<li>
+<p><strong>Boot extension APIs:</strong> custom Boot integrations may need <code>BootstrapRegistry</code> and <code>ConfigurableBootstrapContext</code> from
+<code>org.springframework.boot.bootstrap</code>, and must update imports for feature-specific auto-configuration packages.</p>
+</li>
+<li>
+<p><strong>JUnit:</strong> the 5.x project baseline uses JUnit 6. Review custom extensions and test-engine dependencies even when
+ordinary Jupiter tests continue to compile unchanged.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Coherence Spring 5.x does not intentionally rename its <code>coherence.<strong></code> or <code>coherence.spring.</strong></code> configuration properties.
+Cache names, session properties, repository enablement, ConfigData locations, and resource-injection annotations retain
+their 4.x semantics unless an underlying Spring or Coherence feature imposes a change.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upgrade-5-validation"><a class="anchor" href="#upgrade-5-validation"></a>6. Validate the upgraded application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform the migration on one supported JDK at a time and then verify both Java 17 and Java 21 if the application supports
+both. At minimum:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generate and compare the resolved runtime dependency tree before and after the upgrade.</p>
+</li>
+<li>
+<p>Start the application with Boot&#8217;s condition report enabled and confirm that the expected Coherence, cache, data,
+session, and metrics auto-configurations match.</p>
+</li>
+<li>
+<p>Exercise real cache access and any Coherence client or cluster topology used in production.</p>
+</li>
+<li>
+<p>Verify session creation, timeout, and back-off behavior when Spring Session is used.</p>
+</li>
+<li>
+<p>Verify meter registration and Actuator endpoints when metrics are used.</p>
+</li>
+<li>
+<p>Exercise HTTP parameter binding, Spring Security login/logout flows, serialization, persistence, and Hibernate
+second-level caching when those features are present.</p>
+</li>
+<li>
+<p>Run the complete application test and packaging lifecycle on every supported Java version.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Do not treat a successful compilation alone as migration acceptance. Boot&#8217;s modular classpath and several relocated APIs
+can allow startup while silently leaving an optional integration inactive.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2026-10-08 15:19:08 UTC
+</div>
+</div>
+<script src="js/highlight/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>
