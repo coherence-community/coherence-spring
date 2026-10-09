@@ -29,8 +29,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven2-
       - name: Build and test with Maven - ${{ matrix.java-version }}
+        env:
+          COHERENCE_VERSION: ${{ inputs.coherence-version }}
         run: |
-          ./mvnw clean install -B -Dcoherence.version=${{ inputs.coherence-version }} -Pspring,jdk${{ matrix.java-version }} -DautoUpdate=false --settings .mvn/settings.xml
+          ./mvnw clean install -B "-Dcoherence.version=$COHERENCE_VERSION" -Pspring,jdk${{ matrix.java-version }} -DautoUpdate=false --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
           find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
