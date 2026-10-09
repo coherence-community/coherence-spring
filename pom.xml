@@ -100,10 +100,7 @@
 		<skip-sign-artifacts>true</skip-sign-artifacts>
 
 		<sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-		<sonar.coverage.jacoco.xmlReportPaths>
-			${coherence.spring.root}/coherence-spring-docs/target/site/
-			jacoco-aggregate/jacoco.xml
-		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.jacoco.xmlReportPaths>${coherence.spring.root}/coherence-spring-docs/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
 		<!-- source code repository information -->
 		<source.owner>coherence-community</source.owner>
