@@ -132,7 +132,11 @@ $(globalSwitch);
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#spring-boot-getting-started">1. Getting Started</a></li>
-<li><a href="#spring-boot-autoconfiguration">2. Auto-configuration</a></li>
+<li><a href="#spring-boot-autoconfiguration">2. Auto-configuration</a>
+<ul class="sectlevel2">
+<li><a href="#spring-boot-testing-without-coherence">2.1. Testing without starting Coherence</a></li>
+</ul>
+</li>
 <li><a href="#spring-boot-configuration-properties">3. Configuration Properties</a></li>
 <li><a href="#spring-boot-coherence-cluster-setup">4. Coherence Cluster Setup</a>
 <ul class="sectlevel2">
@@ -302,6 +306,178 @@ in your <code>application.properties</code> or <code>application.yaml</code> fil
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
     autoconfigure:
         exclude: org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring-boot-testing-without-coherence"><a class="anchor" href="#spring-boot-testing-without-coherence"></a>2.1. Testing without starting Coherence</h3>
+<div class="paragraph">
+<p>For mock-based <code>@SpringBootTest</code> tests that do not need a running Coherence instance, exclude Coherence&#8217;s core,
+Spring Session, and Spring Data auto-configurations in the test configuration. Session and Data auto-configuration
+are registered independently of <code>CoherenceAutoConfiguration</code> and can remain active when their conditions match,
+even if only the core auto-configuration is excluded. Session configuration requires Coherence-backed sessions,
+and Data configuration can create Coherence repositories; these are usually unwanted when testing with mock caches.</p>
+</div>
+<div class="paragraph">
+<p>Use <code>@TestPropertySource</code> to keep the exclusions scoped to the test. Place the following test in your application&#8217;s
+test sources, where <code>@SpringBootTest</code> can discover your <code>@SpringBootApplication</code> class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+@SpringBootTest
+@TestPropertySource(properties = {
+    "spring.autoconfigure.exclude="
+        + "com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.session."
+        + "CoherenceSpringSessionAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.data."
+        + "CoherenceRepositoriesAutoConfiguration"
+})
+class MockCacheTests {
+
+    @Test
+    void testWithMockCaches() {
+        // Add assertions for application behavior using your test's mock caches.
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The exclusions do not supply mock beans. Configure the mocks needed by your application, including any cache,
+session, or repository dependencies, separately in the test context.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These exclusions apply to Spring Boot auto-configuration. They do not disable explicit <code>@EnableCoherence</code>
+imports or other manually configured Coherence startup. Omit or replace that configuration in mock-based tests as well.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If your production <code>@SpringBootApplication</code> class declares <code>@EnableCoherence</code>, select a dedicated test bootstrap
+with <code>@SpringBootTest(classes = &#8230;&#8203;)</code>. For example, the following application service reads an order&#8217;s status from
+the <code>orders</code> cache through <code>@CoherenceMap</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package com.oracle.coherence.spring.doc.boot.mockcache;
+
+import com.oracle.coherence.spring.configuration.annotation.CoherenceMap;
+import com.tangosol.net.NamedCache;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderService {
+
+    private final NamedCache&lt;Long, String&gt; orders;
+
+    public OrderService(@CoherenceMap("orders") NamedCache&lt;Long, String&gt; orders) {
+        this.orders = orders;
+    }
+
+    public String getStatus(long orderId) {
+        return this.orders.get(orderId);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Place this test in your test sources and adapt the packages and imported application components as needed.
+Spring Framework&#8217;s <code>@MockitoBean</code> supplies the cache mock to both the test and the service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package com.oracle.coherence.spring.doc.boot.mockcache.tests;
+
+import com.oracle.coherence.spring.configuration.NamedCacheConfiguration;
+import com.oracle.coherence.spring.doc.boot.mockcache.OrderService;
+import com.tangosol.net.NamedCache;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest(classes = IsolatedMockCacheTests.TestApplication.class)
+@TestPropertySource(properties = {
+    "spring.autoconfigure.exclude="
+        + "com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.session."
+        + "CoherenceSpringSessionAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.data."
+        + "CoherenceRepositoriesAutoConfiguration"
+})
+class IsolatedMockCacheTests {
+
+    @MockitoBean(name = NamedCacheConfiguration.COHERENCE_CACHE_BEAN_NAME)
+    NamedCache&lt;Long, String&gt; orders;
+
+    @Autowired
+    OrderService orderService;
+
+    @Test
+    void readsOrderStatusFromCache() {
+        when(this.orders.get(42L)).thenReturn("SHIPPED");
+
+        assertEquals("SHIPPED", this.orderService.getStatus(42L));
+        verify(this.orders).get(42L);
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @EnableAutoConfiguration
+    @Import(OrderService.class)
+    static class TestApplication {
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The explicit mock bean name matters: <code>@CoherenceMap</code> is meta-annotated with <code>@Value</code> resolving <code>#{getCacheProxy}</code>,
+and <code>NamedCacheConfiguration.COHERENCE_CACHE_BEAN_NAME</code> supplies that bean name. The <code>orders</code> annotation value
+is the logical cache name used by production cache resolution. A mock registered only by type or named <code>orders</code>
+does not satisfy this expression. With Coherence configuration excluded, <code>@MockitoBean</code> creates the named bean;
+leave <code>enforceOverride</code> at its default of <code>false</code>, since there is no production cache bean to replace.</p>
+</div>
+<div class="paragraph">
+<p>This example uses one cache mock. Every <code>@CoherenceMap</code> injection point resolving <code>getCacheProxy</code> receives that
+same singleton mock, even if it specifies a different cache or session name. This does not reproduce production&#8217;s
+cache- and session-aware resolution. Separate tests work when each test isolates a component that uses one cache.
+Splitting tests cannot supply distinct cache mocks to one component whose injection points all resolve <code>getCacheProxy</code>.
+For such a component, introduce application-level collaborators, each wrapping a cache operation, and mock those
+collaborators independently.</p>
+</div>
+<div class="paragraph">
+<p>The explicitly selected, plain <code>@Configuration</code> supplies the test&#8217;s primary configuration, so Boot does not search
+for the production <code>@SpringBootApplication</code> class or load its explicit Coherence enablement. This bootstrap uses
+targeted imports without component scanning. <code>@EnableAutoConfiguration</code> enables Boot&#8217;s auto-configuration support,
+so the same three exclusions remain necessary. A <code>@TestConfiguration</code> alone supplements the primary configuration
+and does not prevent Boot from discovering it, even when supplied through <code>classes</code>.</p>
+</div>
+<div class="paragraph">
+<p>Do not import or scan the production application configuration from this bootstrap. Check that imported components
+do not transitively import or scan configuration that enables or starts Coherence. Their dependencies still need
+appropriate test beans or mocks; selecting a different bootstrap does not provide them.</p>
 </div>
 </div>
 </div>
@@ -1786,7 +1962,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-09 01:51:13 UTC
+Last updated 2026-10-12 17:03:37 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
