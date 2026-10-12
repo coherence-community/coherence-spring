@@ -90,6 +90,89 @@ spring:
         exclude: org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration
 ----
 
+[[spring-boot-testing-without-coherence]]
+=== Testing without starting Coherence
+
+For mock-based `@SpringBootTest` tests that do not need a running Coherence instance, exclude Coherence's core,
+Spring Session, and Spring Data auto-configurations in the test configuration. Session and Data auto-configuration
+are registered independently of `CoherenceAutoConfiguration` and can remain active when their conditions match,
+even if only the core auto-configuration is excluded. Session configuration requires Coherence-backed sessions,
+and Data configuration can create Coherence repositories; these are usually unwanted when testing with mock caches.
+
+Use `@TestPropertySource` to keep the exclusions scoped to the test. Place the following test in your application's
+test sources, where `@SpringBootTest` can discover your `@SpringBootApplication` class:
+
+[source,java]
+----
+import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+@SpringBootTest
+@TestPropertySource(properties = {
+    "spring.autoconfigure.exclude="
+        + "com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.session."
+        + "CoherenceSpringSessionAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.data."
+        + "CoherenceRepositoriesAutoConfiguration"
+})
+class MockCacheTests {
+
+    @Test
+    void testWithMockCaches() {
+        // Add assertions for application behavior using your test's mock caches.
+    }
+}
+----
+
+The exclusions do not supply mock beans. Configure the mocks needed by your application, including any cache,
+session, or repository dependencies, separately in the test context.
+
+NOTE: These exclusions apply to Spring Boot auto-configuration. They do not disable explicit `@EnableCoherence`
+imports or other manually configured Coherence startup. Omit or replace that configuration in mock-based tests as well.
+
+If your production `@SpringBootApplication` class declares `@EnableCoherence`, select a dedicated test bootstrap
+with `@SpringBootTest(classes = ...)`. For example, the following application service reads an order's status from
+the `orders` cache through `@CoherenceMap`:
+
+[source,java]
+----
+include::{include-source-code}boot/mockcache/OrderService.java[tags=example]
+----
+
+Place this test in your test sources and adapt the packages and imported application components as needed.
+Spring Framework's `@MockitoBean` supplies the cache mock to both the test and the service:
+
+[source,java]
+----
+include::{include-source-code}boot/mockcache/tests/IsolatedMockCacheTests.java[tags=example]
+----
+
+The explicit mock bean name matters: `@CoherenceMap` is meta-annotated with `@Value` resolving `#\{getCacheProxy}`,
+and `NamedCacheConfiguration.COHERENCE_CACHE_BEAN_NAME` supplies that bean name. The `orders` annotation value
+is the logical cache name used by production cache resolution. A mock registered only by type or named `orders`
+does not satisfy this expression. With Coherence configuration excluded, `@MockitoBean` creates the named bean;
+leave `enforceOverride` at its default of `false`, since there is no production cache bean to replace.
+
+This example uses one cache mock. Every `@CoherenceMap` injection point resolving `getCacheProxy` receives that
+same singleton mock, even if it specifies a different cache or session name. This does not reproduce production's
+cache- and session-aware resolution. Separate tests work when each test isolates a component that uses one cache.
+Splitting tests cannot supply distinct cache mocks to one component whose injection points all resolve `getCacheProxy`.
+For such a component, introduce application-level collaborators, each wrapping a cache operation, and mock those
+collaborators independently.
+
+The explicitly selected, plain `@Configuration` supplies the test's primary configuration, so Boot does not search
+for the production `@SpringBootApplication` class or load its explicit Coherence enablement. This bootstrap uses
+targeted imports without component scanning. `@EnableAutoConfiguration` enables Boot's auto-configuration support,
+so the same three exclusions remain necessary. A `@TestConfiguration` alone supplements the primary configuration
+and does not prevent Boot from discovering it, even when supplied through `classes`.
+
+Do not import or scan the production application configuration from this bootstrap. Check that imported components
+do not transitively import or scan configuration that enables or starts Coherence. Their dependencies still need
+appropriate test beans or mocks; selecting a different bootstrap does not provide them.
+
 [[spring-boot-configuration-properties]]
 == Configuration Properties
 
