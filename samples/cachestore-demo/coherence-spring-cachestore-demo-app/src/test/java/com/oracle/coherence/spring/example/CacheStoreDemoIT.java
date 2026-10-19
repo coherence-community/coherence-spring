@@ -7,10 +7,15 @@
 package com.oracle.coherence.spring.example;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.oracle.bedrock.Option;
+import com.oracle.bedrock.options.Timeout;
 import com.oracle.bedrock.runtime.LocalPlatform;
 import com.oracle.bedrock.runtime.coherence.CoherenceClusterMember;
 import com.oracle.bedrock.runtime.coherence.callables.IsServiceRunning;
@@ -43,7 +48,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -86,6 +90,8 @@ public class CacheStoreDemoIT {
 	 */
 	private static Session session;
 
+	private static Coherence coherence;
+
 	/**
 	 * A JUnit5 extension to capture logs from processes started by Bedrock.
 	 */
@@ -125,23 +131,29 @@ public class CacheStoreDemoIT {
 				DisplayName.of("HSQLDB"));
 
 		// Start the Coherence demo server
-		server = platform.launch(CoherenceClusterMember.class,
+		server = platform.launch(CoherenceClusterMember.class, serverOptions(
 				ClassName.of(CacheStoreDemo.class),
 				testLogs,
 				SystemProperty.of("spring.jmx.enabled", true),
+				SystemProperty.of("spring.application.admin.enabled", true),
+				SystemProperty.of("server.port", 0),
 				LocalHost.only(),
 				IPv4Preferred.yes(),
-				DisplayName.of("server"));
+				DisplayName.of("server")));
 
 		// Wait for Spring to start
-		Eventually.assertDeferred(() -> server.invoke(IsSpringUp.INSTANCE), is(true));
+		Eventually.assertDeferred("Spring application admin Ready must become true; see the server process log",
+				() -> server.submit(IsSpringUp.INSTANCE).orTimeout(10, TimeUnit.SECONDS).join(), is(true),
+				Timeout.after(1, TimeUnit.MINUTES));
 		// Ensure the Coherence Extend proxy has started
-		Eventually.assertDeferred(() -> server.invoke(new IsServiceRunning("Proxy")), is(true));
+		Eventually.assertDeferred("Coherence Extend Proxy must start; see the server process log",
+				() -> server.submit(new IsServiceRunning("Proxy")).orTimeout(10, TimeUnit.SECONDS).join(), is(true),
+				Timeout.after(1, TimeUnit.MINUTES));
 
 		// Create the local Coherence Extend client
 		CoherenceConfiguration config = CoherenceConfiguration.builder()
 				.withSession(SessionConfiguration.create("client-cache-config.xml")).build();
-		Coherence coherence = Coherence.client(config);
+		coherence = Coherence.client(config);
 		// wait at most 1 minute for the Coherence DefaultCacheServer to start
 		// DefaultCacheServer is started automatically by the application but for the
 		// tests to pass we need to ensure it has finished starting cache services.
@@ -149,16 +161,46 @@ public class CacheStoreDemoIT {
 
 		// Create the Coherence Session using the client cache configuration that will connect over Extend.
 		session = coherence.getSession();
+		PersonSerializationTests.assertEndpoint(session.getCache("people").getCacheService().getSerializer());
+		assertServerPerson(null);
 	}
 
 	@AfterAll
 	static void cleanup() {
-		if (hsqldb != null) {
-			hsqldb.close();
+		try {
+			if (coherence != null) {
+				coherence.close();
+			}
 		}
-		if (server != null) {
-			server.close();
+		finally {
+			try {
+				if (server != null) {
+					server.close();
+				}
+			}
+			finally {
+				if (hsqldb != null) {
+					hsqldb.close();
+				}
+			}
 		}
+	}
+
+	private static void assertServerPerson(Long personId) {
+		assertThat(server.submit(new PersonSerializationTests.ServerProbe(personId))
+				.orTimeout(10, TimeUnit.SECONDS).join(), is(System.getProperty("coherence.security.mode", "unset")));
+	}
+
+	private static Option[] serverOptions(Option... options) {
+		List<Option> result = new ArrayList<>(Arrays.asList(options));
+		for (String name : new String[] { "coherence.security.mode", "coherence.remote.dynamic.unauthenticated",
+				"java.io.tmpdir" }) {
+			String value = System.getProperty(name);
+			if (value != null) {
+				result.add(SystemProperty.of(name, value));
+			}
+		}
+		return result.toArray(Option[]::new);
 	}
 
 	/**
@@ -177,19 +219,22 @@ public class CacheStoreDemoIT {
 	 * which will cause a read-through from the db into the cache.
 	 */
 	@Test
-	public void shouldGetPersonInDB() {
+	public void shouldGetPersonInDB() throws Exception {
 		Person person = new Person();
 		person.setId(id.getAndIncrement());
 		person.setFirstname("Foo");
 		person.setLastname("Bar");
 
 		person = repository.saveAndFlush(person);
+		PersonSerializationTests.assertPersonGraph(person);
 
 		NamedCache<Long, Person> departments = session.getCache("people");
 		Person result = departments.get(person.getId());
 		assertThat(result, is(notNullValue()));
+		PersonSerializationTests.assertPersonGraph(result);
 		assertThat(result.getFirstname(), is(person.getFirstname()));
 		assertThat(result.getLastname(), is(person.getLastname()));
+		assertServerPerson(person.getId());
 	}
 
 	/**
@@ -197,7 +242,7 @@ public class CacheStoreDemoIT {
 	 * a write-through to the db.
 	 */
 	@Test
-	public void shouldCreatePerson() {
+	public void shouldCreatePerson() throws Exception {
 		Person person = new Person();
 		person.setId(id.getAndIncrement());
 		person.setFirstname("Foo");
@@ -205,14 +250,17 @@ public class CacheStoreDemoIT {
 		person.setAge(21);
 
 		NamedCache<Long, Person> departments = session.getCache("people");
+		PersonSerializationTests.assertPersonGraph(person);
 		departments.put(person.getId(), person);
 
 		Optional<Person> byId = repository.findById(person.getId());
 		assertThat(byId.isPresent(), is(true));
 		Person result = byId.get();
+		PersonSerializationTests.assertPersonGraph(result);
 		assertThat(result.getFirstname(), is(person.getFirstname()));
 		assertThat(result.getLastname(), is(person.getLastname()));
 		assertThat(result.getAge(), is(person.getAge()));
+		assertServerPerson(person.getId());
 	}
 
 	/**
@@ -220,7 +268,7 @@ public class CacheStoreDemoIT {
 	 * then put the updated person back into the cache causing a db update.
 	 */
 	@Test
-	public void shouldUpdatePerson() {
+	public void shouldUpdatePerson() throws Exception {
 		Person person = new Person();
 		person.setId(id.getAndIncrement());
 		person.setFirstname("Foo");
@@ -228,24 +276,29 @@ public class CacheStoreDemoIT {
 		person.setAge(19);
 
 		person = repository.saveAndFlush(person);
+		PersonSerializationTests.assertPersonGraph(person);
 
 		NamedCache<Long, Person> cache = session.getCache("people");
 		Person cached = cache.get(person.getId());
 
 		assertThat(cached, is(notNullValue()));
+		PersonSerializationTests.assertPersonGraph(cached);
 		assertThat(cached.getId(), is(person.getId()));
 		assertThat(cached.getFirstname(), is(person.getFirstname()));
 		assertThat(cached.getLastname(), is(person.getLastname()));
 		assertThat(cached.getAge(), is(19));
 
 		cached.setAge(20);
+		PersonSerializationTests.assertPersonGraph(cached);
 		cache.put(cached.getId(), cached);
 
 		Optional<Person> byId = repository.findById(person.getId());
 		assertThat(byId.isPresent(), is(true));
 		Person result = byId.get();
 		assertThat(result, is(notNullValue()));
+		PersonSerializationTests.assertPersonGraph(result);
 		assertThat(result.getAge(), is(20));
+		assertServerPerson(person.getId());
 	}
 
 }

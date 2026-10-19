@@ -37,7 +37,7 @@ import static org.hamcrest.CoreMatchers.is;
  */
 @DirtiesContext
 @SpringJUnitWebConfig
-public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
+public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends AbstractRemoteSessionTests {
 
 	public ExtendSessionCoherenceIndexedSessionRepositoryTests() {
 		super.sessionName = "coherence_extend";
@@ -45,19 +45,24 @@ public class ExtendSessionCoherenceIndexedSessionRepositoryTests extends Abstrac
 
 	static CoherenceClusterMember server;
 
+	@Override
+	protected CoherenceClusterMember getServer() {
+		return server;
+	}
+
 	@BeforeAll
 	static void setup() {
 
 		final LocalPlatform platform = LocalPlatform.get();
 
 		// Start the Coherence server
-		server = platform.launch(CoherenceClusterMember.class,
+		server = platform.launch(CoherenceClusterMember.class, SessionTestSupport.serverOptions(
 			CacheConfig.of("server-coherence-cache-config.xml"),
 			LocalHost.only(),
 			IPv4Preferred.yes(),
 			SystemProperty.of("coherence.cluster", "ExtendSessionTestsCluster"),
 			SystemProperty.of("coherence.wka", "127.0.0.1"),
-			DisplayName.of("server"));
+			DisplayName.of("server")));
 
 		// Wait for Coherence to start
 		Eventually.assertDeferred(() -> server.invoke(new IsServiceRunning("ExtendTcpCacheService")), is(true));
