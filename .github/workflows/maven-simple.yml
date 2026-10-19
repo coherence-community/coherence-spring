@@ -30,12 +30,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Initialize qualification evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/qualification"
+          git rev-parse HEAD > "$RUNNER_TEMP/qualification/source-sha.txt"
       - name: Validate snapshot runner
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v5.0.0
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
       - name: Cache Maven packages
         uses: actions/cache@v4
@@ -70,7 +74,9 @@ jobs:
       - name: Clean Maven snapshot cache
         if: always()
         run: |
-          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +
+          if [ -d "$HOME/.m2/repository" ]; then
+            find "$HOME/.m2/repository" -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +
+          fi
   requested-version:
     # Preserve manual testing of additional versions.
     if: github.repository_owner == 'coherence-community' && inputs.coherence-version != '' && inputs.coherence-version != '26.04' && inputs.coherence-version != '26.10-SNAPSHOT'
@@ -78,11 +84,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Initialize qualification evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/qualification"
+          git rev-parse HEAD > "$RUNNER_TEMP/qualification/source-sha.txt"
       - name: Validate snapshot runner
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - uses: actions/setup-java@v5.0.0
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '21'
       - uses: actions/cache@v4
         with:
@@ -113,4 +123,6 @@ jobs:
       - name: Clean Maven snapshot cache
         if: always()
         run: |
-          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +
+          if [ -d "$HOME/.m2/repository" ]; then
+            find "$HOME/.m2/repository" -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +
+          fi

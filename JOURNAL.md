@@ -96,3 +96,21 @@ Imported additions/updates and reasons:
 - Next: commit this review, push the new upstream branch without force, create a
   draft PR, and dispatch the two required rows on that exact SHA. Hosted results
   remain pending. No Maven reactor was rerun locally during review preparation.
+
+## October 19, 2026 at 13:26:47 CEST (UTC+0200; Europe/Belgrade) — Correct hosted Java setup and early-failure diagnostics
+
+- Hosted run 39244491126 is bound to review commit
+  `f8395322c92f2b0d4bbebe38d6e04eafb88f1761`; both mandatory rows fail before
+  Maven because actions/setup-java@v5.0.0 distribution=adopt returns HTTP 502.
+  Seven runner tests passed on each runner; no project module/test executed.
+  Optional requested-version job correctly skipped. No artifact was uploaded
+  because setup failed before the runner created any evidence. Cleanup also
+  reported the absent Maven repository. Retained raw run JSON/logs task-locally.
+- Changed only the manual qualification workflow's two JDK selections to
+  Temurin, supported by this exact setup-java version and matching prior local
+  qualification. The existing JDK17/JDK21 and release17 matrix stays intact.
+- Added pre-setup source-sha.txt evidence for artifact upload on early failure;
+  guarded cleanup for an absent cache while preserving snapshot removal.
+  No owner/permission/security/test changes and no dependency pinning.
+- Both required rows must be dispatched together on the new review head; first
+  run is setup-failure evidence only, with no hosted reactor qualification.
