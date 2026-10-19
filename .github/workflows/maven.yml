@@ -56,7 +56,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Pspring -Pjdk${{ matrix.java-version }} -DautoUpdate=true --settings .mvn/settings.xml
+          ./mvnw clean install -B -Pspring -Pjdk17 -DautoUpdate=true --settings .mvn/settings.xml
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
@@ -73,4 +73,4 @@ jobs:
         run: ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
       - name: Clean Maven cache
         run: |
-          find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
+          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +

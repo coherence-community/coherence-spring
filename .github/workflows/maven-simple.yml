@@ -1,21 +1,37 @@
 name: Simple CI Coherence Spring
-run-name: CI with Coherence ${{ inputs.coherence-version }}
+run-name: Full qualification matrix (optional Coherence ${{ inputs.coherence-version }})
 on:
   workflow_dispatch:
     inputs:
       coherence-version:
-        description: 'Coherence Version'
+        description: 'Optional additional version on JDK 21; baseline and latest 26.10-SNAPSHOT always run'
         required: false
         default: '26.04'
+permissions:
+  contents: read
 jobs:
   build:
     if: github.repository_owner == 'coherence-community'
     strategy:
+      fail-fast: false
       matrix:
-        java-version: [ 17, 21 ]
+        include:
+          - lane: baseline
+            java-version: 17
+            coherence-version: '26.04'
+            compiler-release: 17
+            security-mode: unset
+          - lane: snapshot
+            java-version: 21
+            coherence-version: '26.10-SNAPSHOT'
+            compiler-release: 17
+            security-mode: hardened
+    name: ${{ matrix.lane }} / JDK ${{ matrix.java-version }} / release ${{ matrix.compiler-release }} / ${{ matrix.security-mode }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Validate snapshot runner
+        run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v5.0.0
         with:
@@ -25,14 +41,76 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-qualification-${{ matrix.lane }}-${{ hashFiles('**/pom.xml', '.github/scripts/*.py') }}
           restore-keys: |
-            ${{ runner.os }}-maven2-
-      - name: Build and test with Maven - ${{ matrix.java-version }}
+            ${{ runner.os }}-qualification-${{ matrix.lane }}-
+      - name: Discard cached Coherence snapshots before resolving latest
+        if: matrix.lane == 'snapshot'
+        run: |
+          if [ -d "$HOME/.m2/repository/com/oracle/coherence/ce" ]; then
+            find "$HOME/.m2/repository/com/oracle/coherence/ce" -type d -name '*-SNAPSHOT' -prune -exec rm -rf '{}' +
+          fi
+      - name: Full clean verify and runtime/dependency/bytecode audit
+        env:
+          QUALIFICATION_LANE: ${{ matrix.lane }}
+        run: python3 .github/scripts/full_reactor.py --lane "$QUALIFICATION_LANE" --output "$RUNNER_TEMP/qualification"
+      - name: Preserve reports and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qualification-${{ matrix.lane }}-jdk${{ matrix.java-version }}
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/qualification/
+            **/target/surefire-reports/
+            **/target/failsafe-reports/
+            **/target/checkstyle-*.xml
+            **/target/test-output/
+            **/target/**/logs/
+      - name: Clean Maven snapshot cache
+        if: always()
+        run: |
+          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +
+  requested-version:
+    # Preserve manual testing of additional versions.
+    if: github.repository_owner == 'coherence-community' && inputs.coherence-version != '' && inputs.coherence-version != '26.04' && inputs.coherence-version != '26.10-SNAPSHOT'
+    name: Optional requested version / JDK 21 / release 17
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate snapshot runner
+        run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
+      - uses: actions/setup-java@v5.0.0
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-requested-${{ hashFiles('**/pom.xml') }}
+      - name: Discard cached Coherence snapshots before resolving latest
+        if: endsWith(inputs.coherence-version, '-SNAPSHOT')
+        run: |
+          if [ -d "$HOME/.m2/repository/com/oracle/coherence/ce" ]; then
+            find "$HOME/.m2/repository/com/oracle/coherence/ce" -type d -name '*-SNAPSHOT' -prune -exec rm -rf '{}' +
+          fi
+      - name: Full clean verify (refresh snapshots)
         env:
           COHERENCE_VERSION: ${{ inputs.coherence-version }}
+        run: python3 .github/scripts/full_reactor.py --lane requested --version "$COHERENCE_VERSION" --output "$RUNNER_TEMP/qualification"
+      - name: Preserve reports and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: requested-version-jdk21
+          path: |
+            ${{ runner.temp }}/qualification/
+            **/target/surefire-reports/
+            **/target/failsafe-reports/
+            **/target/checkstyle-*.xml
+            **/target/test-output/
+            **/target/**/logs/
+      - name: Clean Maven snapshot cache
+        if: always()
         run: |
-          ./mvnw clean install -B "-Dcoherence.version=$COHERENCE_VERSION" -Pspring,jdk${{ matrix.java-version }} -DautoUpdate=false --settings .mvn/settings.xml
-      - name: Clean Maven cache
-        run: |
-          find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
+          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +

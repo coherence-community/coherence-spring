@@ -44,7 +44,7 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 		"coherence.tcmp.enabled = 'false'",
 		"coherence-spring.test-cluster-name = " + GrpcSessionCoherenceIndexedSessionRepositoryTests.CLUSTER_NAME
 })
-public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
+public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractRemoteSessionTests {
 
 	static final String CLUSTER_NAME = "GrpcSessionCoherenceIndexedSessionRepositoryTestsCluster";
 
@@ -61,28 +61,36 @@ public class GrpcSessionCoherenceIndexedSessionRepositoryTests extends AbstractC
 		return CLUSTER_NAME;
 	}
 
+	@Override
+	protected CoherenceClusterMember getServer() {
+		return server;
+	}
+
 	@BeforeAll
 	static void setup() throws Exception {
 		final LocalPlatform platform = LocalPlatform.get();
 
 		// Start the Coherence server
-		server = platform.launch(CoherenceClusterMember.class,
+		server = platform.launch(CoherenceClusterMember.class, SessionTestSupport.serverOptions(
 				CacheConfig.of("server-coherence-cache-config.xml"),
 				LocalHost.only(),
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.cluster", CLUSTER_NAME),
 				SystemProperty.of("coherence.grpc.enabled", true),
+				SystemProperty.of("session.test.serializer", "java"),
+				SystemProperty.of("coherence.grpc.serializer.allowlist", "java"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
-				DisplayName.of("server"));
+				DisplayName.of("server")));
 		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll
 	static void cleanup() {
 		if (server != null) {
+			int port = server.getGrpcProxyPort();
 			server.close();
+			Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isPortInUse(port));
 		}
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isGrpcPortInUse());
 	}
 
 	@Configuration

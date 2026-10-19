@@ -1,0 +1,217 @@
+{
+  "description": "Exact 2026-10-16 full-reactor qualification inputs; compiler release 17 on both runtimes. The untimestamped Micrometer input is guarded by its original hash and may be unavailable publicly.",
+  "repository": "https://central.sonatype.com/repository/maven-snapshots",
+  "baseline": [
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "8f233e9a85c35d192127f16203b1b420a50fb308a5435a37f4d5c7acd635142b",
+      "pom_sha256": "399c90f759e38eca618de5034b28a68b46912b50c73806ae3d384a9965ed359f"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "b1a905d6db5ef112ab15f17f419900b184f08a5f8e33f1ad96a1cf221a2e8384",
+      "pom_sha256": "fc3ebd53f5947393fea249cc09ab9ee404176183be9ff16329086c94b1ef9e2b"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock-testing-support",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "648925b7e77ab478706e4171daee1d85be270bae8aa0c89e3296b1708ddfeb9b",
+      "pom_sha256": "ad1bcac1b681275b0a214944e4059980b837f957014b3c01a2a4ac30b6cbb821"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-cdi",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "86e688510ce35e73bb8ab02e756a56e1bd90a0c3bc0f38e2eebe0cdad68bb4b7",
+      "pom_sha256": "5e740b715b3c1d4592e120d6957069a0053f065d793629eea9d7899e84fe7fc7"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-cdi-server",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "12a4f0dfc071698b0f2b1cba3f9ff2f20764a0998d2bea9dce631d592587b9dd",
+      "pom_sha256": "e185d68e89c1b7ec2f7980cbf991217191ad68d73ea729bb6534e7314a4bc0bc"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "0bf22f4a4660211790707192a95f244f8e1bded62d3cd92350b377162d157228",
+      "pom_sha256": "a8578a25c5bfe0436dfdd076b2a2addda5c18d8b4da46a428c2f0fe0561da158"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-client-common",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "0b413ef48993cf898620b10164d267e49aadee7bd919a6cccced7ef9c431355b",
+      "pom_sha256": "17e197a0e3b6eb0de32499e900cb8946d1437f687147568f4bf83f69062553af"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "01725181a96e260f890febb899f11e4592bc1acddc508261b8c3e9b1c266cb08",
+      "pom_sha256": "c4ed21d7dfecaf2ed2922421f1d4c8c30e797ddabd916da7652130f53964951e"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy-common",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "639036dd7a34eb200091db3e0faed816a8f64111f57b5c83d420a87eae702d0a",
+      "pom_sha256": "7aa0adfec47998f2014ee69f5870622c65d42b9af5e3cc7e7f155ed85aa0bc92"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy-helidon",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "b4b3eea9bec4ea00bb944e0031532a9444e8d2168c9b8dbc3b2eeb68d21c53b1",
+      "pom_sha256": "b3d410f35d2bd652702c76799da345c4194667fdfef266addde860c6e4a6adfb"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-java-client",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "ace0726be6b1747ba6f0adb51c33e9113ddb2e82840e3f6746ffcd21a932b9ff",
+      "pom_sha256": "238d32a6b4c513553fdcb39dbca65cd0066e9fb2d3fb32f6db8ae992f97653f7"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-json",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "d1e6f63193f8e37048f54b89a70cfb2a97cc7860e9c446df72f65c90eed8f6e0",
+      "pom_sha256": "ef54b2c8a71a7d97ee4a763cf9cbb8d809f0e505ef18cdffd6756a400cf8dd85"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-micrometer",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "1651d28d884f57cd0d8c921cc9424d7df688bdbecc38f19c8091a4cfbb10369c",
+      "pom_sha256": "54dd0da2a8e149c8ae1a182df7c951fe68a187056c56fd032ff7d1cf3a5b3acb"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-mp-config",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "2bad2ad9d7807f154844a3cd4988e9ef870ce7d5f9acee908cd7844863726817",
+      "pom_sha256": "48fc4327ce1d5d42080693a3c4422345df9d8155629533e9e43977c67de568f5"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-protobuf",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "157045420bccdcce588b10065dfc6fb5e0c932db75742445fadc70f6d3dbaed7",
+      "pom_sha256": "b115e3b55babe560ac2316b789d002a0c102dcea0ca372cdb11f19488af6dc83"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "pof-maven-plugin",
+      "version": "26.04",
+      "resolved_snapshot": null,
+      "sha256": "0bcca29f83344d1096b9c3af36dbb24e0e1cacf0a133e36183ff6da1a78a0d3e",
+      "pom_sha256": "08353b682d26e7f35f0a2d71bcefd0817f2e56ff6cfe40f7c5e689e83446a5a4"
+    }
+  ],
+  "frozen": [
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.200824-3",
+      "sha256": "9c48703a5112025dac8afd315338eff914a00fd9c7de1e4316badc755b2dadc7",
+      "pom_sha256": "09bdcbe01a7266abacde4973f28d179bff41c7939c163cc05553292cf38a61bd"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "dd53be42e41750358dd66566b7e431c89f6ca21b4071ce36e1947d6ab845222d",
+      "pom_sha256": "6585a2a4b855b013c7387088b10a14b65f3c078a2dfeed608f36e8df80ea49d5"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock-testing-support",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "1b73e1795c1747707ca07afd14aaf4c478b76ded30f13cb2eb67cc63757a4431",
+      "pom_sha256": "7d3febc194fcfeae1b047c23a9b836966ae1bbfa0bdbe31a133b4df1d1aef5ca"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "20c2833787e5cf0640aa185b181c79b48e48d992abcc8cf8677a47e5e4a2e462",
+      "pom_sha256": "81ef5fcd318e83e4fbf18612aaad6e550b3e5b3bdca91a018611a4c82ec19ad1"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-client-common",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "302a05af039727f43d4d26ea1720ecb499207f1a33f02b6e0a872b0b2e062278",
+      "pom_sha256": "831a56d1772301b675ab327f43bca5f768452d5621d5d906cdb30dcb49697bce"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "8e04e3c5909c2e995c5be7258f83f3f2dbc1477b3d459dc1612a3da9b107a899",
+      "pom_sha256": "427d743312f7f7fa4be16f7f8fbbc6cbee5b179c507da7d1eddc43451ec22605"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy-common",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "06914d29739ffe1cf9e082514bf130b500ea09731268320a9d1c50279e2fd5e6",
+      "pom_sha256": "0b1168086847ecc1e3d9714a9c56997ebb167927072d13976a868f4243d6ca95"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-java-client",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "e838cea1368d10c4f64c3045f0e316203ba808a517281300e6e68cfab4523c1c",
+      "pom_sha256": "a3092667cff90f041bba950d5a0f613051d900fa5cda8ffa7b4f60b1961cbb91"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-micrometer",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": null,
+      "sha256": "43f9079c664c42f51973163977a501e308f4c38ac214708cea2b08781f97b83f",
+      "pom_sha256": "ffe9b511e7717eefd37e28e6bddce9f6bbfc5b48d880b9daf2db88ce6b3b7a50",
+      "provenance": "Historical locally installed dev-vasac build; no published timestamp recorded. Download must match this hash or fail; do not substitute a newer build."
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-protobuf",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "55e80942715c3d1b157c28e6c0e90e6cc2ad1ba524f2cb0f7467f5d69a1eff16",
+      "pom_sha256": "610e3ef2ab229ef8b04ee512d27685abb2b412bb37bd73e9e09405c6777d7281"
+    }
+  ]
+}

@@ -94,6 +94,34 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- The repackaged Boot JAR keeps application classes under BOOT-INF. -->
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+					<failIfNoTests>true</failIfNoTests>
+					<systemPropertyVariables>
+						<coherence.localhost>127.0.0.1</coherence.localhost>
+						<coherence.ttl>0</coherence.ttl>
+						<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+						<coherence.wka>127.0.0.1</coherence.wka>
+					</systemPropertyVariables>
+					<forkCount>1</forkCount>
+					<reuseForks>false</reuseForks>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>

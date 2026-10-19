@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "GitHub Action"
-          ./mvnw clean install -B -Pjdk${{ matrix.java-version }}
+          ./mvnw clean install -B -Pjdk17
         env:
           GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
           HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
@@ -46,4 +46,4 @@ jobs:
           check_retries: 'true'
       - name: 🧹 Clean Maven cache
         run: |
-          find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
+          find ~/.m2/repository -type d -name '*SNAPSHOT' -prune -exec rm -rf '{}' +

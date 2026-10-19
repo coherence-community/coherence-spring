@@ -1,0 +1,2791 @@
+{
+  "spring_commit": "37cf05ea59bd60c03b21b52acc1eb4c1045859a3",
+  "runtime": "Temurin 21.0.12.1",
+  "core_snapshot": "26.10-20261013.200824-3",
+  "security_mode": "unset (hardened)",
+  "modules": {
+    "coherence-spring-boot-starter": {
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 12
+    },
+    "coherence-spring-core": {
+      "tests": 166,
+      "failures": 0,
+      "errors": 8,
+      "skipped": 0,
+      "suites": 31
+    },
+    "coherence-spring-data": {
+      "tests": 335,
+      "failures": 0,
+      "errors": 267,
+      "skipped": 0,
+      "suites": 5
+    },
+    "coherence-spring-docs": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 4,
+      "skipped": 0,
+      "suites": 7
+    },
+    "coherence-spring-session": {
+      "tests": 93,
+      "failures": 14,
+      "errors": 75,
+      "skipped": 0,
+      "suites": 8
+    },
+    "samples/cachestore-demo/coherence-spring-cachestore-demo-app": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 2
+    },
+    "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 2
+    },
+    "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "samples/coherence-spring-demo/coherence-spring-demo-boot": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "samples/hibernate-cache-demo": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    },
+    "samples/spring-session-demo/spring-session-demo-app": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 3,
+      "skipped": 0,
+      "suites": 3
+    },
+    "samples/spring-session-demo/spring-session-demo-server": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 1
+    }
+  },
+  "total": {
+    "tests": 669,
+    "suites": 76,
+    "errors": 357,
+    "failures": 15
+  },
+  "scope_note": "Includes 668 ordinary test cases plus one CacheStoreDemoIT class-level setup failure; its four methods did not execute in this unmodified baseline. Diagnostic runs are separate.",
+  "failed_cases": [
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.CoherenceInjectorTests",
+      "test": "shouldInjectAfterDeserialization",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.IOException: Class initialization failed: java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.CoherenceInjectorTests$BeanOne was rejected\n at com.tangosol.util.ExternalizableHelper.validateLoadClass(ExternalizableHelper.java:2724)\n at com.tangosol.util.ExternalizableHelper.readExternalizableLite(ExternalizableHelper.java:2622)\n at com.tangosol.util.ExternalizableHelper.readObjectInternal(ExternalizableHelper.java:3124)\n at com.tangosol.util.ExternalizableHelper.deserializeInternal(ExternalizableHelper.java:3691)\n at com.tangosol.util.ExternalizableHelper.fromBinary(ExternalizableHelper.java:465)\n at com.tangosol.util.ExternalizableHelper.fromBinary(Ext"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests",
+      "test": "shouldInjectContinuousQueryCacheWithFilters",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:29:21.927, Address=127.0.0.1:51973, MachineId=10131, Location=machine:localhost,process:72575, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests",
+      "test": "shouldInjectContinuousQueryCacheWithTransformerAndFilter",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests",
+      "test": "shouldInjectContinuousQueryCacheWithTransformer",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.event.EventHandlerTests",
+      "test": "testEventInterceptorMethods",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for Test:StorageService service on Member(Id=1, Timestamp=2026-10-14 09:30:43.189, Address=127.0.0.1:52093, MachineId=10131, Location=machine:localhost,process:72922, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.event.InterceptorsTests",
+      "test": "testEventInterceptorMethods",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for Test:StorageService service on Member(Id=1, Timestamp=2026-10-14 09:30:58.435, Address=127.0.0.1:52106, MachineId=10131, Location=machine:localhost,process:72960, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.event.MapEventHandlerTests",
+      "test": "testEventInterceptorMethods",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for Test:StorageService service on Member(Id=1, Timestamp=2026-10-14 09:30:50.761, Address=127.0.0.1:52101, MachineId=10131, Location=machine:localhost,process:72939, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-core",
+      "class": "com.oracle.coherence.spring.event.mapevent.MapListenerTests",
+      "test": "testMapEvents",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for Test:StorageService service on Member(Id=1, Timestamp=2026-10-14 09:31:05.219, Address=127.0.0.1:52111, MachineId=10131, Location=machine:localhost,process:72984, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNullQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureIsTrueQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseSensitiveLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureOrderedAscQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotNullQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureEndingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureIsFalseQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureContainsFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseSensitiveNotLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureAfterFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseInsensitiveLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureDeleteQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureGreaterThanFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotEmptyQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureGreaterThanEqualFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseInsensitiveStartingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureMatchesQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureStreamingQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureStartingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureSimpleIgnoreCase",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotInFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureSimplePageQueryWithSliceReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLimitedDescQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLessThanFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureNotContainsFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureBasicFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureInFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureBetweenQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLimitedAscQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureOrderedDescQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureSimplePageQueryWithPageReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureBeforeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseInsensitiveNotLikeFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLessThanEqualFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseInsensitiveEndingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseSensitiveStartingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureCaseSensitiveEndingWithFinderQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureEmptyQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureExistsQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+      "test": "ensureLimitedCustomSort",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:09.578, Address=127.0.0.1:52361, MachineId=10131, Location=machine:localhost,process:73947, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageLong",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopByFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateWithIdRemoteBiFunctionAndEntityFactory",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxLong",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopWithRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllWithRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "java.lang.RuntimeException: java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllByIdWithNoReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithFilterAndRemoteCollector",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinLong",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithStreamNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateWithIdAndRemoteFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureUpdateWithIdAndRemoteFunction$6985ebc9$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithCollectionNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumBigDecimal",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateWithEntityFactory",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinDoubleWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxDoubleWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateAllWithFilterAndRemoteBiFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureUpdateAllWithFilterAndRemoteBiFunction$257dfd95$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinLongWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumBigDecimalWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllByIdWithIterable",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinBigDecimalWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMax",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMin",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSum",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTop",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllByIdWithReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageDoubleWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithCollectionAndReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithFilterAndReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureCountWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageBigDecimal",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinWithFilterAndRemoteCompareFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureRemoteWithNoReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumLongWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateAllWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$setPages$ED55926CE0BFB4A79813155B39654ED0 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxBigDecimal",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithFilterAndFragment",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopByWithRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithStream",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithFilterAndSort",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureGroupByWithFilterAndSort$b6fc021b$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumLong",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllWithFilterAndRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithStreamAndNoReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllById",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "java.lang.RuntimeException: java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateAllWithFilterAndRemoteFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureUpdateAllWithFilterAndRemoteFunction$6985ebc9$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinWithRemoteCompareFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllById",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxBigDecimalWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetWithFragment",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageDouble",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinByWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxBy",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinBy",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopBy",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithCollectionAndNoReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithCollection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageLongWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithStreamAndReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithSort",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureGroupByWithSort$b6fc021b$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetWithIdAndValueExtractor",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxDouble",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllWithFilterOrdered",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopByWithFilterAndRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDistinctFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithIdAndExtractor",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithIdsAndFragment",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "com.tangosol.net.RequestIncompleteException: Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFinderQueries",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithRemoteCollector",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithFilterAndExtractor",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAll",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "java.lang.RuntimeException: java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxLongWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxWithFilterAndRemoteCompareFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithFilterAndNoReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithExtractor",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverage",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdate",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$setPages$ED55926CE0BFB4A79813155B39654ED0 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindById",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "java.lang.RuntimeException: java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinDouble",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxWithRemoteCompareFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMinBigDecimal",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithRemoteCollectorAndMapFactory",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxByWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGetAllWithFragment",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllWithFilterNoMatch",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureRemoteWithReturn",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureTopWithFilterAndRemoteComparator",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupByWithFilterRemoteCollectorAndMapFactory",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureFindAllOrdered",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "java.lang.RuntimeException: java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumDoubleWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureMaxWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureSumDouble",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureAverageBigDecimalWithFilter",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDeleteAllByIdNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureGroupBy",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateWithIdAndRemoteBiFunction",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.repository.AsyncRepositoryTests$lambda$ensureUpdateWithIdAndRemoteBiFunction$257dfd95$1$0:ED27A0F1E6AACB17AA53E548F0616488 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureUpdateWithIdRemoteFunctionAndEntityFactory",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+      "test": "ensureDistinct",
+      "type": "java.util.concurrent.ExecutionException",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:54.73, Address=127.0.0.1:52343, MachineId=10131, Location=machine:localhost,process:73839, Role=ApacheMavenSurefireBooterForkedBooter)) java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureOrderedAscQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureNestedInterfaceProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureStartingWithOrder",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureNestedOpenInterfaceProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureInterfaceProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureClassBasedProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureOrderedDescQuery",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureDynamicProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureFindAllOrdered",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+      "test": "ensureOpenRootInterfaceProjection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:31:47.85, Address=127.0.0.1:52334, MachineId=10131, Location=machine:localhost,process:73814, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageLong",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopByFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateWithIdRemoteBiFunctionAndEntityFactory",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxLong",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopWithRemoteComparator",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithRemoteComparator",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithSort",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllByIdWithNoReturn",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithFilterAndRemoteCollector",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinLong",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithStreamNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureStreamWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateWithIdAndRemoteFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureUpdateWithIdAndRemoteFunction$6985ebc9$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithCollectionNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumBigDecimal",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateWithEntityFactory",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureStreamWithIds",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinDoubleWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxDoubleWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateAllWithFilterAndRemoteBiFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureUpdateAllWithFilterAndRemoteBiFunction$257dfd95$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinLongWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumBigDecimalWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllByIdWithIterable",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinBigDecimalWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMax",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMin",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSum",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTop",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllByIdWithReturn",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageDoubleWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithCollectionAndReturn",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithFilterAndReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureCountWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageBigDecimal",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinWithFilterAndRemoteCompareFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureRemoteWithNoReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumLongWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateAllWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$setPages$ED55926CE0BFB4A79813155B39654ED0 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxBigDecimal",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithFilterAndFragment",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopByWithRemoteComparator",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithStream",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithFilterAndSort",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureGroupByWithFilterAndSort$b6fc021b$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumLong",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithFilterAndRemoteComparator",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithStreamAndNoReturn",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllById",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateAllWithFilterAndRemoteFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureUpdateAllWithFilterAndRemoteFunction$6985ebc9$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinWithRemoteCompareFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllById",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxBigDecimalWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetWithFragment",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageDouble",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinByWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxBy",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinBy",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopBy",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithCollectionAndNoReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithCollection",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageLongWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithStreamAndReturn",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithSort",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureGroupByWithSort$b6fc021b$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetWithIdAndValueExtractor",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxDouble",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithFilterOrdered",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopByWithFilterAndRemoteComparator",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDistinctFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithIdAndExtractor",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteById",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithIdsAndFragment",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": "Partial failure"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFinderQueries",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithRemoteCollector",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithFilterAndExtractor",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAll",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxLongWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxWithFilterAndRemoteCompareFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithFilterAndNoReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithExtractor",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverage",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureStream",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdate",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$setPages$ED55926CE0BFB4A79813155B39654ED0 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindById",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinDouble",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxWithRemoteCompareFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPublicationYear$EAAEFFEAE34A862F35C34F3158C30695 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMinBigDecimal",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithRemoteCollectorAndMapFactory",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxByWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGetAllWithFragment",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllWithFilterNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureRemoteWithReturn",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureTopWithFilterAndRemoteComparator",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupByWithFilterRemoteCollectorAndMapFactory",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllOrdered",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumDoubleWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureMaxWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureSumDouble",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureAverageBigDecimalWithFilter",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$getPagesAsBigDecimal$DB4C11B671CB61FEB3E5E7DC329D73EB was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDeleteAllByIdNoMatch",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureGroupBy",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateWithIdAndRemoteBiFunction",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.repository.RepositoryTests$lambda$ensureUpdateWithIdAndRemoteBiFunction$257dfd95$1$0:C323F187F823E0D1E7A3C5B906C25E48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureUpdateWithIdRemoteFunctionAndEntityFactory",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) Deserialization of class com.oracle.coherence.spring.data.model.Book$<init>$5DC269E5D399F756637A041566198A48 was rejected"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureFindAllWithPageable",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-data",
+      "class": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+      "test": "ensureDistinct",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:32:01.909, Address=127.0.0.1:52350, MachineId=10131, Location=machine:localhost,process:73870, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-docs",
+      "class": "com.oracle.coherence.spring.doc.di.viewtransformer.ViewTransformerTests",
+      "test": "testExtractorBindingAnnotation",
+      "type": "java.lang.reflect.UndeclaredThrowableException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-docs",
+      "class": "com.oracle.coherence.spring.doc.di.wherefilter.WhereFilterTests",
+      "test": "testExtractorBindingAnnotation",
+      "type": "java.lang.reflect.UndeclaredThrowableException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-docs",
+      "class": "com.oracle.coherence.spring.doc.extractorbinding.ExtractorBindingTests",
+      "test": "testExtractorBindingAnnotation",
+      "type": "java.lang.reflect.UndeclaredThrowableException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-docs",
+      "class": "com.oracle.coherence.spring.doc.filterbinding.FilterBindingTests",
+      "test": "testFilterBindingAnnotation",
+      "type": "java.lang.reflect.UndeclaredThrowableException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithoutSaving",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithImmediateFlushMode",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:33:05.465, Address=127.0.0.1:52657, MachineId=10131, Location=machine:localhost,process:74202, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: ON_SAVE\n but was: IMMEDIATE"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "resetMaxInactiveIntervalForActiveSessions",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "clearAllSessions",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "createAndDestroyCoherenceSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContextAndFindByPrincipal",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:33:05.465, Address=127.0.0.1:52657, MachineId=10131, Location=machine:localhost,process:74202, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSession",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:33:05.465, Address=127.0.0.1:52657, MachineId=10131, Location=machine:localhost,process:74202, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAndAddNewAttributeToChangedSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdTwice",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "tryToUpdateSessionAfterDeletion",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContext",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:33:05.465, Address=127.0.0.1:52657, MachineId=10131, Location=machine:localhost,process:74202, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdOnce",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:33:05.465, Address=127.0.0.1:52657, MachineId=10131, Location=machine:localhost,process:74202, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "createAndUpdateSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdWhenSessionWasNotSavedYet",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "addSessionAttributeToSessionWithoutSaving",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "addSessionAttributeToSessionWithImmediateFlushMode",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: ON_SAVE\n but was: IMMEDIATE"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "resetMaxInactiveIntervalForActiveSessions",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "clearAllSessions",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "createAndDestroyCoherenceSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "createSessionWithSecurityContextAndFindByPrincipal",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "addSessionAttributeToSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "changeSessionIdAndAddNewAttributeToChangedSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "changeSessionIdTwice",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "tryToUpdateSessionAfterDeletion",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "createSessionWithSecurityContext",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "changeSessionIdOnce",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "createAndUpdateSession",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+      "test": "changeSessionIdWhenSessionWasNotSavedYet",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.CustomSessionIdGeneratorTests",
+      "test": "createAndDestroyCoherenceSessionAndValidatedSessionId",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "updateMaxInactiveIntervalTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "expiredSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "deletedSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "saveUpdatesTimeToLiveTest",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "changeSessionIdTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+      "test": "saveSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: 0\n but was: 2"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithoutSaving",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithImmediateFlushMode",
+      "type": "(Wrapped) java.io.InvalidClassException",
+      "message": "(Wrapped) filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: ON_SAVE\n but was: IMMEDIATE"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "resetMaxInactiveIntervalForActiveSessions",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "clearAllSessions",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndDestroyCoherenceSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContextAndFindByPrincipal",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAndAddNewAttributeToChangedSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdTwice",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "tryToUpdateSessionAfterDeletion",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContext",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdOnce",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndUpdateSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdWhenSessionWasNotSavedYet",
+      "type": "java.lang.IllegalStateException",
+      "message": "SafeNamedCache was explicitly destroyed"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "updateMaxInactiveIntervalTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "expiredSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "deletedSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "saveUpdatesTimeToLiveTest",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "changeSessionIdTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nExpecting value to be true but was false"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+      "test": "saveSessionTest",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: 0\n but was: 2"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithoutSaving",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithImmediateFlushMode",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "\nexpected: ON_SAVE\n but was: IMMEDIATE"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "resetMaxInactiveIntervalForActiveSessions",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "clearAllSessions",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndDestroyCoherenceSession",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContextAndFindByPrincipal",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSession",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAndAddNewAttributeToChangedSession",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdTwice",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "tryToUpdateSessionAfterDeletion",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContext",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdOnce",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndUpdateSession",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdWhenSessionWasNotSavedYet",
+      "type": "com.tangosol.net.RequestIncompleteException",
+      "message": ""
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithoutSaving",
+      "type": "java.lang.IllegalStateException",
+      "message": "Failed to load ApplicationContext for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTestsCluster\"], contextCustomizers = [org.springframework.test."
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSessionWithImmediateFlushMode",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "resetMaxInactiveIntervalForActiveSessions",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "clearAllSessions",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndDestroyCoherenceSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContextAndFindByPrincipal",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "addSessionAttributeToSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdAndAddNewAttributeToChangedSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdTwice",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "tryToUpdateSessionAfterDeletion",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "createSessionWithSecurityContext",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdOnce",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "createAndUpdateSession",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "verifyCoherenceIndexedSessionRepositoryProperties",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "coherence-spring-session",
+      "class": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+      "test": "changeSessionIdWhenSessionWasNotSavedYet",
+      "type": "java.lang.IllegalStateException",
+      "message": "ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context for [WebMergedContextConfiguration@30036a18 testClass = com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests, locations = [], classes = [com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests.CoherenceConfig], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [PropertySourceDescriptor[locations=[], ignoreResourceNotFound=false, name=null, propertySourceFactory=null, encoding=null]], propertySourceProperties = [\"coherence.tcmp.enabled = 'false'\", \"coherence-spring.test-cluster-name = PofCoherenceIndexedSessionRepositoryTest"
+    },
+    {
+      "module": "samples/cachestore-demo/coherence-spring-cachestore-demo-app",
+      "class": "com.oracle.coherence.spring.example.CacheStoreDemoIT",
+      "test": "",
+      "type": "java.lang.AssertionError",
+      "message": "Matcher [is <true>] failed to match last resolved value [false] for [com.oracle.coherence.spring.example.CacheStoreDemoIT$$Lambda/0x000000f001214600@20ed3303] due to was <false>"
+    },
+    {
+      "module": "samples/spring-session-demo/spring-session-demo-app",
+      "class": "com.oracle.coherence.spring.samples.session.RestTests",
+      "test": "shouldReturnOk",
+      "type": "(Wrapped",
+      "message": "(Wrapped: Failed request execution for PartitionedCache service on Member(Id=1, Timestamp=2026-10-14 09:39:05.952, Address=127.0.0.1:53165, MachineId=10131, Location=machine:localhost,process:75292, Role=ApacheMavenSurefireBooterForkedBooter)) filter status: REJECTED"
+    },
+    {
+      "module": "samples/spring-session-demo/spring-session-demo-app",
+      "class": "com.oracle.coherence.spring.samples.session.RestTests",
+      "test": "login",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    },
+    {
+      "module": "samples/spring-session-demo/spring-session-demo-app",
+      "class": "com.oracle.coherence.spring.samples.session.SessionTimeoutTests",
+      "test": "login",
+      "type": "java.lang.RuntimeException",
+      "message": "java.io.InvalidClassException: filter status: REJECTED"
+    }
+  ],
+  "coherence_artifacts": [
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.200824-3",
+      "sha256": "9c48703a5112025dac8afd315338eff914a00fd9c7de1e4316badc755b2dadc7"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "dd53be42e41750358dd66566b7e431c89f6ca21b4071ce36e1947d6ab845222d"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-bedrock-testing-support",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "1b73e1795c1747707ca07afd14aaf4c478b76ded30f13cb2eb67cc63757a4431"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "20c2833787e5cf0640aa185b181c79b48e48d992abcc8cf8677a47e5e4a2e462"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-client-common",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "302a05af039727f43d4d26ea1720ecb499207f1a33f02b6e0a872b0b2e062278"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "8e04e3c5909c2e995c5be7258f83f3f2dbc1477b3d459dc1612a3da9b107a899"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-grpc-proxy-common",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "06914d29739ffe1cf9e082514bf130b500ea09731268320a9d1c50279e2fd5e6"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-java-client",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "e838cea1368d10c4f64c3045f0e316203ba808a517281300e6e68cfab4523c1c"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-micrometer",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": null,
+      "sha256": "43f9079c664c42f51973163977a501e308f4c38ac214708cea2b08781f97b83f"
+    },
+    {
+      "group": "com.oracle.coherence.ce",
+      "artifact": "coherence-protobuf",
+      "version": "26.10-SNAPSHOT",
+      "resolved_snapshot": "26.10-20261013.201141-3",
+      "sha256": "55e80942715c3d1b157c28e6c0e90e6cc2ad1ba524f2cb0f7467f5d69a1eff16"
+    }
+  ]
+}
