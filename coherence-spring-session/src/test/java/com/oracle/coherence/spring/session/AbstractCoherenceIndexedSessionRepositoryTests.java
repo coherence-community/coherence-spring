@@ -7,12 +7,16 @@
 package com.oracle.coherence.spring.session;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.oracle.coherence.common.base.Logger;
 import com.oracle.coherence.spring.session.support.MyHttpSessionListener;
 import com.oracle.coherence.spring.session.support.SessionEventApplicationListener;
 import com.tangosol.net.Coherence;
+import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
 import com.tangosol.net.cache.CacheMap;
 import org.junit.jupiter.api.AfterEach;
@@ -26,6 +30,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.FactorGrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -36,6 +42,7 @@ import org.springframework.session.events.SessionDeletedEvent;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 /**
  * Base class for {@link CoherenceIndexedSessionRepository} tests.
@@ -78,6 +85,12 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 
 	protected String getLocalClusterName() {
 		return null;
+	}
+
+	protected NamedCache<String, MapSession> getSessionCache() {
+		Session session = StringUtils.hasText(this.sessionName)
+				? this.coherenceInstance.getSession(this.sessionName) : this.coherenceInstance.getSession();
+		return session.getCache(CoherenceIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
 	}
 
 	@BeforeEach
@@ -355,6 +368,31 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 	}
 
 	@Test
+	void resetPreservesExpiredSessionsAndUpdatesCacheExpiry() {
+		NamedCache<String, MapSession> cache = getSessionCache();
+		MapSession active = new MapSession();
+		MapSession expired = new MapSession();
+		expired.setMaxInactiveInterval(Duration.ofSeconds(1));
+		expired.setLastAccessedTime(Instant.now().minusSeconds(60));
+		Duration previous = this.repository.createSession().getMaxInactiveInterval();
+		try {
+			cache.put(active.getId(), active, CacheMap.EXPIRY_NEVER);
+			cache.put(expired.getId(), expired, CacheMap.EXPIRY_NEVER);
+			this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(2));
+			this.repository.resetMaxInactiveIntervalForActiveSessions();
+			assertThat(cache.get(active.getId()).getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(2));
+			assertThat(cache.get(expired.getId()).getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(1));
+			await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> assertThat(cache.containsKey(active.getId())).isFalse());
+			assertThat(cache.containsKey(expired.getId())).isTrue();
+		}
+		finally {
+			cache.remove(active.getId());
+			cache.remove(expired.getId());
+			this.repository.setDefaultMaxInactiveInterval(previous);
+		}
+	}
+
+	@Test
 	void clearAllSessions() {
 		this.repository.setDefaultMaxInactiveInterval(Duration.ofSeconds(100));
 
@@ -404,8 +442,10 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 		final CoherenceSpringSession session = this.repository.createSession();
 
 		final String username = "coherence_rocks";
+		final Instant issuedAt = Instant.parse("2026-01-01T00:00:00Z");
 		final Authentication authentication = new UsernamePasswordAuthenticationToken(username, "password",
-				AuthorityUtils.createAuthorityList("ROLE_USER"));
+				List.of(new SimpleGrantedAuthority("ROLE_USER"),
+						FactorGrantedAuthority.withAuthority(FactorGrantedAuthority.PASSWORD_AUTHORITY).issuedAt(issuedAt).build()));
 		final SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 		securityContext.setAuthentication(authentication);
 		session.setAttribute(SPRING_SECURITY_CONTEXT, securityContext);
@@ -422,6 +462,14 @@ abstract class AbstractCoherenceIndexedSessionRepositoryTests {
 		final CoherenceSpringSession coherenceSpringSession = sessions.values().iterator().next();
 		final SecurityContext retrievedSecurityContext = coherenceSpringSession.getAttribute(SPRING_SECURITY_CONTEXT);
 		assertThat(retrievedSecurityContext.getAuthentication().getName()).isEqualTo("coherence_rocks");
+		assertThat(retrievedSecurityContext.getAuthentication().getPrincipal()).isEqualTo(username);
+		assertThat(retrievedSecurityContext.getAuthentication().getCredentials()).isEqualTo("password");
+		assertThat(retrievedSecurityContext.getAuthentication().getAuthorities()).extracting("authority")
+				.containsExactly("ROLE_USER", FactorGrantedAuthority.PASSWORD_AUTHORITY);
+		assertThat(retrievedSecurityContext.getAuthentication().getAuthorities().stream()
+				.filter(FactorGrantedAuthority.class::isInstance).map(FactorGrantedAuthority.class::cast).findFirst().orElseThrow()
+				.getIssuedAt()).isEqualTo(issuedAt);
+		assertThat(retrievedSecurityContext.getAuthentication().isAuthenticated()).isTrue();
 		this.repository.deleteById(session.getId());
 		assertThat(this.repository.findById(session.getId())).isNull();
 	}

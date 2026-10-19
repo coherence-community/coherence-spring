@@ -23,6 +23,7 @@
 			<scheme-name>remote-grpc</scheme-name>
 			<service-name>RemoteGrpcCache</service-name>
 			<cluster-name system-property="coherence-spring.test-cluster-name">GrpcSessionTestsCluster</cluster-name>
+			<serializer>java</serializer>
 		</remote-grpc-cache-scheme>
 	</caching-schemes>
 

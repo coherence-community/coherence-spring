@@ -42,7 +42,7 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 		"coherence.tcmp.enabled = 'false'",
 		"coherence-spring.test-cluster-name = " + PofCoherenceIndexedSessionRepositoryTests.CLUSTER_NAME
 })
-class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexedSessionRepositoryTests {
+class PofCoherenceIndexedSessionRepositoryTests extends AbstractRemoteSessionTests {
 
 	static final String CLUSTER_NAME = "PofCoherenceIndexedSessionRepositoryTestsCluster";
 
@@ -56,29 +56,41 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 		return CLUSTER_NAME;
 	}
 
-@BeforeAll
+	@Override
+	protected CoherenceClusterMember getServer() {
+		return server;
+	}
+
+	@Override
+	protected String expectedSerializer() {
+		return "pof";
+	}
+
+	@BeforeAll
 	static void setup() {
 		final LocalPlatform platform = LocalPlatform.get();
 
 		// Start the Coherence server
-		server = platform.launch(CoherenceClusterMember.class,
+		server = platform.launch(CoherenceClusterMember.class, SessionTestSupport.serverOptions(
 				CacheConfig.of("server-coherence-cache-config.xml"),
 				LocalHost.only(),
 				IPv4Preferred.yes(),
 				SystemProperty.of("coherence.cluster", CLUSTER_NAME),
 				SystemProperty.of("coherence.grpc.enabled", true),
+				SystemProperty.of("session.test.serializer", "pof"),
 				SystemProperty.of("coherence.wka", "127.0.0.1"),
 				DisplayName.of("server"),
-				SystemProperty.of("tangosol.pof.enabled", "true"));
+				SystemProperty.of("coherence.pof.config", "pof-config.xml")));
 		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> server.invoke(IsGrpcProxyRunning.INSTANCE));
 	}
 
 	@AfterAll
 	static void cleanup() {
 		if (server != null) {
+			int port = server.getGrpcProxyPort();
 			server.close();
+			Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isPortInUse(port));
 		}
-		Awaitility.await().atMost(70, TimeUnit.SECONDS).until(() -> !NetworkUtils.isGrpcPortInUse());
 	}
 
 	@Configuration
@@ -90,7 +102,7 @@ class PofCoherenceIndexedSessionRepositoryTests extends AbstractCoherenceIndexed
 		ClientSessionConfigurationBean sessionConfigurationBean() {
 			ClientSessionConfigurationBean sessionConfigurationBean = new ClientSessionConfigurationBean();
 			sessionConfigurationBean.setName("grpcSession");
-			sessionConfigurationBean.setConfig("grpc-test-coherence-cache-config.xml");
+			sessionConfigurationBean.setConfig("grpc-pof-test-coherence-cache-config.xml");
 			return sessionConfigurationBean;
 		}
 	}

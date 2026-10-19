@@ -76,30 +76,263 @@ you may need `Coherence Spring Session`, `Spring Security Core`, `Spring Securit
 version between Coherence server and application clients matches exactly.
 
 An alternative is to set `useEntryProcessor` to `false`. This is less efficient as the entire session has to be sent over
-the wire when updating session properties. The positive side effect is that your Coherence server instance will not need
-to be aware of the additional dependencies on its classpath.
+the wire when updating session properties. The server still needs any classes and serializers required to deserialize
+session data or run repository operations such as principal lookup and resetting active sessions.
 
 [[spring-session-pof]]
 == POF Serialization
 
-In case that you configured the cache using
+When the Session cache uses
 {oracle-coherence-docs}develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913[POF serialization],
-additional POF configuration for the class `MapSession` is necessary:
+the application must register the Session types and any session payload types
+with its POF context. Coherence Spring Session supplies the serializers and
+`PortableObject` implementations listed below, but does not ship a POF
+registration XML file, assign type IDs through annotations, or register these
+types programmatically. Implementing `PortableObject` defines how a type is
+serialized; it does not automatically register or discover that type.
+Applications using Java serialization do not need these POF registrations.
 
-.POF Configuration
-[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+=== Supported types and operations
+
+All custom serializers in the table belong to Coherence Spring's
+`coherence-spring-session` module, in the package
+`com.oracle.coherence.spring.session.serialization.pof`. Their fully qualified
+class names appear in the complete configuration below. For a registered
+`PortableObject` without an explicit serializer, `ConfigurablePofContext` uses
+Coherence's `com.tangosol.io.pof.PortableObjectSerializer`.
+
+[cols="3,2,2,1,3",options="header"]
+|===
+|Type (fully qualified class name) |Owning project / module |POF mechanism |Example ID |When needed
+
+|`org.springframework.session.MapSession`
+|Spring Session / `spring-session-core`
+|`MapSessionPofSerializer`
+|2001
+|Session storage using POF.
+
+|`com.oracle.coherence.spring.session.SessionUpdateEntryProcessor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4000
+|Updates to existing sessions with `useEntryProcessor=true` (the default).
+
+|`com.oracle.coherence.spring.session.SessionResetEntryProcessor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4001
+|Calls to `resetMaxInactiveIntervalForActiveSessions()`, independently of `useEntryProcessor`.
+
+|`com.oracle.coherence.spring.session.support.PrincipalNameExtractor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4010
+|Principal lookup through `findByPrincipalName()` or `findByIndexNameAndIndexValue()` for the principal-name index.
+
+|`org.springframework.security.authentication.UsernamePasswordAuthenticationToken`
+|Spring Security / `spring-security-core`
+|`AuthenticationPofSerializer`
+|3000
+|Sessions containing this authentication token, including inside a security context.
+
+|`org.springframework.security.core.context.SecurityContextImpl`
+|Spring Security / `spring-security-core`
+|`SecurityContextPofSerializer`
+|3001
+|Sessions containing this Spring Security context implementation.
+
+|`org.springframework.security.core.authority.SimpleGrantedAuthority`
+|Spring Security / `spring-security-core`
+|`GrantedAuthorityPofSerializer`
+|3002
+|Authentication tokens containing this authority type.
+
+|`org.springframework.security.core.authority.FactorGrantedAuthority`
+|Spring Security / `spring-security-core`
+|`FactorGrantedAuthorityPofSerializer`
+|3003
+|Authentication tokens containing Spring Security 7 factor authorities; preserves the authority and issuance time.
+|===
+
+`PrincipalNameExtractor` is sent as part of a principal lookup query; repository
+initialization does not install it. Setting `useEntryProcessor=false` avoids the
+update processor, but does not disable the reset operation or principal lookup.
+`SessionResetEntryProcessor` carries only the interval in milliseconds: Java
+serialization uses serial version `1`; POF uses a long at index `0`.
+
+=== Application POF configuration
+
+Save the following complete configuration as `session-pof-config.xml` on the
+application and server classpaths. It includes Coherence's built-in types, the
+Session storage and operation types, and the supported Spring Security payload
+types. Applications that do not store Spring Security payloads can omit the
+four registrations in the Spring Security group. Operation registrations are
+needed when the corresponding operations in the table are used.
+
+IMPORTANT: Every ID below is an illustrative application mapping. These numbers
+are not reserved IDs or reserved ranges for Coherence Spring, Spring Session,
+or Spring Security. Check for collisions with all included registries and your
+application types, and choose unused IDs consistently on clients and servers.
+Preserve existing mappings for as long as stored or persisted POF data needs
+them; changing or reusing an ID can make that data unreadable or resolve it to
+the wrong type. Coordinate a data migration before changing an existing mapping.
+
+.session-pof-config.xml
+[source,xml]
 ----
-<user-type>
-    <type-id>2001</type-id>
-    <class-name>org.springframework.session.MapSession</class-name>
-    <serializer>
-        <class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
-    </serializer>
-</user-type>
+<?xml version="1.0" encoding="UTF-8"?>
+<pof-config xmlns="http://xmlns.oracle.com/coherence/coherence-pof-config"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-pof-config coherence-pof-config.xsd">
+    <user-type-list>
+        <include>coherence-pof-config.xml</include>
+
+        <!-- Session storage and operations -->
+        <user-type>
+            <type-id>2001</type-id>
+            <class-name>org.springframework.session.MapSession</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>4000</type-id>
+            <class-name>com.oracle.coherence.spring.session.SessionUpdateEntryProcessor</class-name>
+        </user-type>
+        <user-type>
+            <type-id>4001</type-id>
+            <class-name>com.oracle.coherence.spring.session.SessionResetEntryProcessor</class-name>
+        </user-type>
+        <user-type>
+            <type-id>4010</type-id>
+            <class-name>com.oracle.coherence.spring.session.support.PrincipalNameExtractor</class-name>
+        </user-type>
+
+        <!-- Spring Security payloads: include when these types are stored -->
+        <user-type>
+            <type-id>3000</type-id>
+            <class-name>org.springframework.security.authentication.UsernamePasswordAuthenticationToken</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.AuthenticationPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3001</type-id>
+            <class-name>org.springframework.security.core.context.SecurityContextImpl</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.SecurityContextPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3002</type-id>
+            <class-name>org.springframework.security.core.authority.SimpleGrantedAuthority</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.GrantedAuthorityPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3003</type-id>
+            <class-name>org.springframework.security.core.authority.FactorGrantedAuthority</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.FactorGrantedAuthorityPofSerializer</class-name>
+            </serializer>
+        </user-type>
+    </user-type-list>
+</pof-config>
 ----
 
-IMPORTANT: Depending on your serialization requirements and your session data, additional POF configuration
-may be necessary.
+Deploy matching type-ID, class and serializer mappings to every client and
+server that serializes or deserializes these objects. Each receiving process
+needs the registered classes and serializer implementations on its classpath:
+`coherence-spring-session` and its required dependencies, `spring-session-core`,
+and `spring-security-core` when using the security registrations. Keep client
+and server dependency versions aligned. POF registration does not supply the
+classes to a remote server.
+
+Select POF and load this configuration before starting Coherence. With cache
+and client configurations that use the `coherence.serializer` property, set
+these JVM properties on both application clients and servers:
+
+[source,shell]
+----
+java -Dcoherence.serializer=pof \
+     -Dcoherence.pof.config=session-pof-config.xml \
+     -jar application.jar
+----
+
+The named `pof` serializer uses `ConfigurablePofContext`, which loads the file
+selected by `coherence.pof.config`. If your cache, Extend or gRPC client
+configuration explicitly selects a serializer, select `pof` there as well;
+setting the default property does not override an explicit serializer choice.
+For example, the cache configuration can select POF in its `<defaults>` element:
+
+[source,xml]
+----
+<defaults>
+    <serializer>pof</serializer>
+</defaults>
+----
+
+The configuration covers the listed library-supported types. Add registrations
+and suitable serializers for any additional application session attributes,
+principal or authentication details types that POF does not already support,
+including other types reachable from those objects. `MapSessionPofSerializer`
+writes attribute values as objects, and `AuthenticationPofSerializer` writes
+principal and details as objects. A Spring Security `User` principal or
+`WebAuthenticationDetails` is an application choice and has no serializer in
+the list above; the application must provide the corresponding POF support.
+Other authentication token, context or authority implementations also need
+their own serializers and registrations.
+
+=== Hardened serialization and execution
+
+POF registration and `META-INF/coherence/security-config.xml` permissions have
+different purposes. POF configuration maps wire type IDs to classes and
+serializers. The production Session JAR's security metadata grants exact
+serialization permissions and classifies permitted executables on Coherence
+versions that enforce that policy; it does not register POF types or select a
+serializer. Configure both for a hardened POF deployment, including the
+application-owned types required by your session data.
+
+The Session JAR supplies exact security metadata for `MapSession`, its two named
+processors, `PrincipalNameExtractor`, `UsernamePasswordAuthenticationToken`,
+its serializable `AbstractAuthenticationToken` superclass, `SecurityContextImpl`,
+`SimpleGrantedAuthority`, and `FactorGrantedAuthority`. Only the processors and extractor are classified
+as executable. Deploy the Session JAR to every receiving server and client.
+
+Application session attributes and principal/details classes need their own
+exact security metadata. `MapSessionPofSerializer` writes attribute values as
+objects; `AuthenticationPofSerializer` writes principal and details as objects.
+POF applications must also register these application types and their serializers.
+The supplied token serializer handles `UsernamePasswordAuthenticationToken`
+with string or erased/null credentials; it does not define a general authentication serializer.
+It preserves mixed registered authority types and authentication state. Legacy
+POF token data without the new authentication-state field keeps its historical
+authenticated state when read.
+A built-in Spring Security principal such as `User` is also an application choice
+and is not implicitly permitted by the Session policy.
+Applications choosing `User` and `WebAuthenticationDetails` must supply their
+own exact security metadata, including metadata for other serialized classes
+in that graph, such as `User`'s authority comparator for Java serialization.
+
+An explicit POF registration also trusts its configured serializer. In the tested
+Coherence 26.10 snapshot, a registered `PortableObjectSerializer` can construct
+and read a type absent from the XML allowlist. Review application POF
+registrations and serializers independently; the Session XML does not prevent
+callbacks from arbitrary explicitly registered serializers. Review the complete
+application object graph for additional POF registrations before deployment.
+
+Serialization permission, executable classification, and gRPC serializer approval
+are separate checks. Select matching serializers explicitly on clients and
+servers. POF requires matching registrations. A Java-format gRPC client requires
+server approval for the exact `java` format on Coherence versions that enforce
+serializer policy. Such approval is a server deployment decision; Session does
+not change the global policy. Configure the approved format on the gRPC
+server and select that same format on its clients.
+
+The named reset operation does not require generated-lambda permission. This
+does not establish support for all application lambdas under dynamic-code deny.
+Security metadata does not configure endpoint authentication or TLS.
 
 [[spring-session-sample]]
 == Spring Session Samples

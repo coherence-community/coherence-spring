@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<security-config xmlns="http://xmlns.oracle.com/coherence/coherence-security-config" version="1.0">
+	<allowed-classes>
+		<class name="com.oracle.coherence.spring.session.SessionResetEntryProcessor" source="manual" executable="true"/>
+		<class name="com.oracle.coherence.spring.session.SessionUpdateEntryProcessor" source="manual" executable="true"/>
+		<class name="com.oracle.coherence.spring.session.support.PrincipalNameExtractor" source="manual" executable="true"/>
+		<class name="org.springframework.session.MapSession" source="manual"/>
+		<class name="org.springframework.security.authentication.AbstractAuthenticationToken" source="manual"/>
+		<class name="org.springframework.security.authentication.UsernamePasswordAuthenticationToken" source="manual"/>
+		<class name="org.springframework.security.core.context.SecurityContextImpl" source="manual"/>
+		<class name="org.springframework.security.core.authority.SimpleGrantedAuthority" source="manual"/>
+		<class name="org.springframework.security.core.authority.FactorGrantedAuthority" source="manual"/>
+	</allowed-classes>
+</security-config>

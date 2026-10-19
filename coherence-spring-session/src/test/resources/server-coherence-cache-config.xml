@@ -8,6 +8,9 @@
               xmlns="http://xmlns.oracle.com/coherence/coherence-cache-config"
               xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-cache-config
 	coherence-cache-config.xsd">
+  <defaults>
+    <serializer system-property="session.test.serializer">java</serializer>
+  </defaults>
   <caching-scheme-mapping>
     <cache-mapping>
       <cache-name>*</cache-name>
