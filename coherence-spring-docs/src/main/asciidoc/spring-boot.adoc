@@ -822,6 +822,10 @@ autowiring has https://stackoverflow.com/questions/5152686/self-injection-with-s
 Spring's cache abstraction is not your only option with regard to caching. Another option is to use Hibernate's
 {hibernate-docs}#caching[Second-Level cache] support.
 
+For this baseline, use `coherence-hibernate-cache-7` {coherence-hibernate-version} with Hibernate ORM
+{hibernate-version}. The adapter supports ORM 7.4.x; Spring Boot's managed ORM version must be overridden when
+using it. See xref:upgrade-5.adoc#upgrade-5-hibernate[Hibernate version selection and dependencies].
+
 When using only Hibernate's second-level cache without the requirement of using Coherence for non-Hibernate application
 needs, you may want to disable Coherence's auto-configuration support for Spring
 Boot as it is not needed:
@@ -838,7 +842,7 @@ public class HibernateApplication {
 ----
 
 In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
-Hibernate property `hibernate.cache.region.factory_class` to `com.oracle.coherence.hibernate.cache.CoherenceRegionFactory`.
+Hibernate property `hibernate.cache.region.factory_class` to `com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory`.
 
 Your Spring Boot `application.yaml` file may look like the following:
 
@@ -850,7 +854,7 @@ spring:
     name: Your Spring Boot App
   jpa:
     properties:
-      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <1>
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory <1>
       hibernate.cache.use_query_cache: true
       hibernate.cache.use_second_level_cache: true
       hibernate.format_sql: true
@@ -868,7 +872,7 @@ documentation.
 === Hibernate Second Level Cache Example
 
 The Coherence Spring source code repository also provides an
-{coherence-spring-code}tree/main/samples/hibernate-cache-demo[example application], illustrating the Coherence support for
+{git-sources-samples}hibernate-cache-demo[example application], illustrating the Coherence support for
 Hibernate's Second Level caching using https://spring.io/projects/spring-boot[Spring Boot].
 
 The example application has 1 REST endpoint that can persist, retrieve and delete a `Plant` object with taxonomic properties

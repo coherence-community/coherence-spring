@@ -1,14 +1,12 @@
-:main-release-version: 5.0.0-SNAPSHOT
+:main-release-version: 4.3.1
 :main-snapshot-version: 5.0.0-SNAPSHOT
 :website: https://spring.coherence.community/
-:new-website: https://docs.coherence.community/coherence-spring/docs/
-:4x-release-version: 4.3.1
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
 
 = Welcome to the Oracle Coherence Spring Project
 
-image:https://github.com/coherence-community/coherence-spring/actions/workflows/maven.yml/badge.svg?branch=main[CI Coherence Spring,link=https://github.com/coherence-community/coherence-spring/actions]
+image:https://github.com/coherence-community/coherence-spring/actions/workflows/maven.yml/badge.svg?branch=5.x[CI Coherence Spring,link=https://github.com/coherence-community/coherence-spring/actions]
 image:https://sonarcloud.io/api/project_badges/measure?project=coherence-community_coherence-spring&metric=alert_status[Quality Gate Status,link=https://sonarcloud.io/summary/new_code?id=coherence-community_coherence-spring]
 image:https://img.shields.io/badge/Coherence-Join%20Slack-brightgreen[Chat with us on slack,link=https://join.slack.com/t/oraclecoherence/shared_invite/zt-9ufv220y-Leudk0o5ntgNV0xraa8DNw]
 image:https://img.shields.io/stackexchange/stackoverflow/t/oracle-coherence?label=%20StackOverflow%20%7C%20oracle-coherence[Stack Exchange questions,link=https://stackoverflow.com/questions/tagged/oracle-coherence]
@@ -31,13 +29,16 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 
 [width="75%"]
 |=======
-|*{main-release-version}*  | {new-website}v{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
-|*{4x-release-version}*    | {new-website}v{4x-release-version}[Website] |{website}{4x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{4x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{4x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{4x-release-version}/refdocs/api/index.html[API Doc.]
+|*{main-release-version}* (release) | {website}{main-release-version}/[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{main-snapshot-version}* (development snapshot) | {website}{main-snapshot-version}/[Website] |{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
 |=======
 
-NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
-http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
+Coherence Spring 5.x is in development. Published snapshot documentation may lag the checked-out source; build the
+documentation locally for the current branch. Release documentation will be linked when the release is published.
+
+NOTE: Releases are available from https://repo.maven.apache.org/maven2/com/oracle/coherence/spring/[Maven Central].
+Development snapshots use the https://central.sonatype.com/repository/maven-snapshots/com/oracle/coherence/spring/[Sonatype snapshot repository].
 
 == Supported Versions
 
@@ -45,13 +46,18 @@ http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
 |===
 |Coherence Spring | Java            | Coherence CE | Commercial Edition^*^   | Spring| Boot    | Jakarta | Git Branch/Tag
 
-|*5.x*            | `17`, `21`      | `26.04`     | N/A                     | `7.x` | `4.x`   | ✔       | `main`
-|*4.x*            | `17`, `21`      | `25.03`     | `15.1.1.0`              | `6.x` | `3.5.x` | ✔       | `4.x`
+|*5.x* (development) | `17`, `21`   | `26.04`     | Unverified              | `7.x` | `4.x`   | ✔       | `5.x`
+|*4.x*            | `17`, `21`      | `25.03`     | Unverified              | `6.x` | `3.5.x` | ✔       | `v4.3.1`
 |*3.x*            | `11`, `17`, `21`| `22.06`     | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
 |===
 
-NOTE: Currently, there is no commercial edition of Coherence that is compatible with Coherence Spring `5.x`.
-Commercial editions compatible with Coherence Spring `4.x` and `3.x` are listed in the table above.
+NOTE: Commercial Coherence compatibility with Coherence Spring `4.x` and `5.x` remains unverified.
+https://docs.oracle.com/en/middleware/standalone/coherence/15.1.1/install/upgrading-coherence-previous-releases.html[Coherence 15.1.1.0.0 uses Jakarta EE 9.1],
+but namespace alignment alone does not establish a supported Coherence Spring combination.
+The commercial editions listed for `3.x` retain that line's existing compatibility guidance.
+
+The 5.x row describes the development baseline. The 4.x source reference is the published `v4.3.1` tag;
+`main` currently contains the 4.x line, and there is no `4.x` branch.
 
 Applications moving from Coherence Spring 4.x should follow the
 link:coherence-spring-docs/src/main/asciidoc/upgrade-5.adoc[Coherence Spring 5.x upgrade guide]. It covers the Spring 7
@@ -61,10 +67,12 @@ and Boot 4 baselines, Boot's modular dependencies, optional integrations, source
 
 In order to get started quickly, please read the reference guide as it provides a detailed
 https://spring.coherence.community/{main-release-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter] (v{main-release-version}).
+For the 5.x development baseline, use the
+link:coherence-spring-docs/src/main/asciidoc/quickstart.adoc[5.x Quick Start] and the upgrade guide linked above.
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
-https://github.com/coherence-community/coherence-spring/tree/main/samples[samples] module.
+https://github.com/coherence-community/coherence-spring/tree/5.x/samples[samples] module on the `5.x` branch.
 
 == Building from Source
 
@@ -83,6 +91,7 @@ Check out the project using https://git-scm.com/[Git]:
 ----
 git clone https://github.com/coherence-community/coherence-spring.git
 cd coherence-spring
+git switch 5.x
 ----
 
 Coherence Spring uses https://maven.apache.org/[Apache Maven] as build tool. You do not need to have Maven installed to
