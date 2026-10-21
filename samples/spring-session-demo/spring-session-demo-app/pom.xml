@@ -49,26 +49,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-session</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
-			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.coherence.spring</groupId>
-			<artifactId>coherence-spring-session</artifactId>
+			<artifactId>coherence-spring-session-boot-starter</artifactId>
 			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

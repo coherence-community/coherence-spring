@@ -15,15 +15,14 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from coherence_artifacts import ROOT, cache_files, dependency_record, digest
+from consumer_evidence import audit_consumers, junit
+
+INVENTORY = Path(__file__).with_name('full-reactor-inventory.json')
 
 PROPERTIES = {'java.version', 'java.runtime.version', 'java.specification.version', 'java.home',
               'coherence.security.mode', 'coherence.cluster', 'java.class.path', 'sun.java.command',
               'maven.test.failure.ignore', 'coherence.remote.dynamic.unauthenticated',
-              'spring.application.admin.enabled', 'server.port'}
-CLUSTERS = {'CoherenceExtendTestsCluster', 'GrpcSessionBeanTestsCluster', 'GrpcSessionTestsCluster',
-            'ExtendSessionTestsCluster', 'GrpcSessionCoherenceIndexedSessionRepositoryTestsCluster',
-            'PofCoherenceIndexedSessionRepositoryTestsCluster', 'CoherenceConfigDataLoaderTests',
-            'CoherenceGrpcClientTestsCluster'}
+              'spring.application.admin.enabled', 'server.port', 'user.dir', 'consumer.fixture'}
 
 
 def observe(parent, stop, output, env):
@@ -53,10 +52,66 @@ def observe(parent, stop, output, env):
                         seen.add(pid)
                         output.write_text(json.dumps(rows, indent=2))
                 except (OSError, subprocess.SubprocessError):
-                    pass  # Short forks are also verified through every suite's XML properties.
+                    pass  # XML covers test forks only; required children must be observed.
         except (OSError, subprocess.SubprocessError, ValueError) as error:
             (output.parent / 'observer-error.txt').write_text(str(error))
         stop.wait(0.5)
+
+
+def reactor_modules(source):
+    ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+    identities = set()
+
+    def visit(path):
+        pom = ET.parse(source / path / 'pom.xml').getroot()
+        identity = (str(path), pom.findtext('m:artifactId', namespaces=ns), pom.findtext('m:name', namespaces=ns))
+        if identity in identities:
+            raise ValueError(f'Duplicate reactor module {path}')
+        identities.add(identity)
+        for child in pom.findall('m:modules/m:module', ns):
+            visit(path / child.text)
+    visit(Path('.'))
+    return identities
+
+
+def audit_runtime(rows, inventory, source, properties, issues):
+    runtime, children = [], collections.Counter()
+    roles = inventory['child_jvms']
+    fixtures = source / inventory['consumers']['module'] / 'target/it'
+    pids = set()
+    for row in rows:
+        props = row['properties']
+        command = props.get('sun.java.command', '')
+        matches = [r for r in roles if (command == r['command'] or command.startswith(r['command'] + ' '))
+                   and props.get('coherence.cluster') == r['cluster']]
+        if len(matches) == 1:
+            matched = matches[0]
+            role = matched['role']
+            children[(role, matched['command'], matched['cluster'])] += 1
+        elif command.startswith('org.codehaus.plexus.classworlds.launcher.Launcher '):
+            cwd = Path(props.get('user.dir', '')).resolve()
+            role = 'maven' if cwd == source else 'consumer-maven' if cwd.parent == fixtures else 'unknown'
+        elif command.startswith('org.apache.maven.surefire.booter.ForkedBooter '):
+            role = 'consumer-fork' if props.get('consumer.fixture') else 'fork'
+        elif command.startswith('jdk.compiler/com.sun.tools.javac.launcher.Main '
+                                + str(source / inventory['consumers']['module'] / 'src/it/harness/ConsumerHarness.java') + ' '):
+            role = 'consumer-harness'
+        else:
+            role = 'unknown'
+        if row['pid'] in pids:
+            issues.append(f'Duplicate JVM property observation: {row["pid"]}')
+        pids.add(row['pid'])
+        if role == 'unknown':
+            issues.append(f'Unclassified Java process: {command}')
+        properties(props, f'{role}:{row["pid"]}')
+        runtime.append(dict(row, role=role))
+    wanted = collections.Counter({(r['role'], r['command'], r['cluster']): r['count'] for r in roles})
+    if children != wanted:
+        issues.append('Actual property evidence for all nine Coherence children and database is required: '
+                      f'missing={list((wanted - children).elements())}, extra={list((children - wanted).elements())}')
+    if not any(r['role'] == 'maven' for r in runtime):
+        issues.append('Maven JVM evidence is missing')
+    return runtime
 
 
 def audit(source, output, lane, version, java, mode, repository, status):
@@ -69,6 +124,8 @@ def audit(source, output, lane, version, java, mode, repository, status):
             issues.append(f'{origin}: security mode {props.get("coherence.security.mode")} != {mode}')
         if props.get('java.version', '').split('.')[0] != java:
             issues.append(f'{origin}: unexpected JVM {props.get("java.version")}')
+        if Path(props.get('java.home', '')).resolve() != home:
+            issues.append(f'{origin}: unexpected JDK home {props.get("java.home")}')
         if props.get('coherence.remote.dynamic.unauthenticated') is not None:
             issues.append(f'{origin}: dynamic-code override is forbidden')
         for key in ['java.class.path', 'surefire.test.class.path']:
@@ -89,51 +146,86 @@ def audit(source, output, lane, version, java, mode, repository, status):
                         issues.append(f'{origin}: Coherence POM evidence is missing: {path}')
                 dependencies[str(path)] = row
 
+    inventory = json.loads(INVENTORY.read_text())
+    invocation = json.loads((output / 'invocation.json').read_text()) if (output / 'invocation.json').is_file() else {}
+    home = Path(invocation.get('java_home', os.environ.get('JAVA_HOME', ''))).resolve()
+    if invocation.get('inventory_sha256', digest(INVENTORY)) != digest(INVENTORY):
+        issues.append('Reviewed inventory changed during the run')
     observations = output / 'jvms.json'
-    for row in json.loads(observations.read_text()) if observations.is_file() else []:
-        props = row['properties']
-        command = props.get('sun.java.command', '')
-        role = ('database' if 'org.hsqldb.Server' in command else 'cachestore' if 'CacheStoreDemo' in command
-                else 'coherence') if 'JavaApplicationRunner' in command else 'fork' if 'ForkedBooter' in command else 'maven'
-        properties(props, f'{role}:{row["pid"]}')
-        runtime.append(dict(row, role=role))
-    children = [r for r in runtime if r['role'] in ['coherence', 'cachestore']]
-    if len(children) != 9 or {r['properties'].get('coherence.cluster') for r in children if r['role'] == 'coherence'} != CLUSTERS:
-        issues.append('Actual property evidence for all nine Coherence children is required')
-    if not any(r['role'] == 'maven' for r in runtime) or not any(r['role'] == 'database' for r in runtime):
-        issues.append('Maven/database JVM evidence is missing')
-    for path in sorted(source.glob('**/target/*-reports/TEST-*.xml')):
-        suite = ET.parse(path).getroot()
-        module = str(path.parent.parent.parent.relative_to(source))
-        counts = modules.setdefault(module, collections.Counter())
-        for key in ['tests', 'failures', 'errors', 'skipped']:
-            counts[key] += int(suite.get(key, '0'))
-        counts['suites'] += 1
-        props = {p.get('name'): p.get('value') for p in suite.findall('properties/property')}
-        properties(props, suite.get('name'))
-        if props.get('maven.test.failure.ignore') != 'false':
-            issues.append(suite.get('name') + ': fatal failures were not enabled')
-        for case in suite.findall('testcase'):
-            kind = next((k for k in ['failure', 'error', 'skipped'] if case.find(k) is not None), 'passed')
-            element = case.find(kind)
-            cases.append({'module': module, 'class': case.get('classname'), 'name': case.get('name'),
-                          'result': kind, 'message': element.get('message') if element is not None else None})
+    rows = json.loads(observations.read_text()) if observations.is_file() else []
+    runtime = audit_runtime(rows, inventory, source, properties, issues)
+    expected_reports = set()
+    expected_cases = set()
+    for module in inventory['modules']:
+        name = module['path']
+        counts = collections.Counter()
+        for report in module['suites']:
+            path = source / name / 'target' / report['report'] / ('TEST-' + report['name'] + '.xml')
+            expected_reports.add(path)
+            expected_cases.update((name, c) for c in report['cases'])
+            try:
+                suite, tests = junit(path)
+                actual = [c['class'] + '#' + c['name'] for c in tests]
+                if suite.get('name') != report['name'] or collections.Counter(actual) != collections.Counter(report['cases']):
+                    issues.append(f'{path}: suite/case inventory differs')
+                props = {p.get('name'): p.get('value') for p in suite.findall('properties/property')}
+                properties(props, report['name'])
+                if props.get('maven.test.failure.ignore') != 'false':
+                    issues.append(report['name'] + ': fatal failures were not enabled')
+                for case in tests:
+                    cases.append(dict(case, module=name))
+                    counts[{'passed': 'passed', 'failure': 'failures', 'error': 'errors', 'skipped': 'skipped'}[case['result']]] += 1
+                counts['tests'] += len(tests)
+                counts['suites'] += 1
+            except (OSError, ValueError, ET.ParseError) as error:
+                issues.append(f'Missing/invalid reactor report {path}: {error}')
+        if counts:
+            modules[name] = counts
+    # Discovery detects unclassified reports; it never supplies acceptance criteria.
+    consumer_target = source / inventory['consumers']['module'] / 'target'
+    for path in source.glob('**/target/*-reports/TEST-*.xml'):
+        if path in expected_reports:
+            continue
+        relative = path.relative_to(consumer_target) if path.is_relative_to(consumer_target) else None
+        if relative and (relative.parts[0] == 'invoker-reports' or
+                         (len(relative.parts) == 5 and relative.parts[0] == 'it'
+                          and relative.parts[2:4] == ('target', 'failsafe-reports'))):
+            continue  # Independently audited below, never included in reactor totals.
+        issues.append(f'Unclassified test report: {path}')
     totals = dict(sum(modules.values(), collections.Counter()))
     log = (output / 'maven.log').read_text(errors='replace')
     summary = log[log.rfind('[INFO] Reactor Summary'):]
     reactor = re.findall(r'^\[INFO\] (.*?) \.{2,} (SUCCESS|FAILURE|SKIPPED)', summary, re.MULTILINE)
     (output / 'reactor-summary.txt').write_text(summary)
-    if status or len(reactor) != 28 or any(state != 'SUCCESS' for _, state in reactor):
-        issues.append(f'Full reactor failed or incomplete: Maven exit {status}, {len(reactor)} modules')
-    if totals.get('tests') != 706 or totals.get('suites') != 83 or totals.get('failures') or totals.get('errors'):
-        issues.append('Complete passing 706-case / 83-suite inventory is required; update qualification counts when adding tests')
+    if status or collections.Counter(name for name, _ in reactor) != collections.Counter(m['name'] for m in inventory['modules']) or any(state != 'SUCCESS' for _, state in reactor):
+        issues.append(f'Full reactor failed or module identities differ: Maven exit {status}, {len(reactor)} modules')
+    # Verify source POM identities too: a renamed/replaced project cannot hide behind
+    # the same display name in the log.
+    try:
+        actual_modules = reactor_modules(source)
+        wanted_modules = {(m['path'], m['artifact'], m['name']) for m in inventory['modules']}
+        if actual_modules != wanted_modules:
+            issues.append('Source reactor module identities differ from reviewed inventory')
+    except (OSError, ValueError, ET.ParseError) as error:
+        issues.append(f'Invalid source reactor: {error}')
+    if totals.get('tests', 0) != len(expected_cases) or totals.get('suites', 0) != len(expected_reports) or totals.get('failures') or totals.get('errors'):
+        issues.append('Complete passing reviewed reactor suite/case inventory is required')
     skipped = [c for c in cases if c['result'] == 'skipped']
-    if lane != 'requested' and (len(skipped) != (9 if lane == 'baseline' else 0)
-                               or any('securityPolicyAvailable' not in (c['message'] or '') for c in skipped)):
+    permitted = {(c['module'], c['case']): c['message_contains'] for c in inventory['permitted_baseline_skips']}
+    actual_skips = {(c['module'], c['class'] + '#' + c['name']) for c in skipped}
+    if lane in ('baseline', 'baseline21'):
+        valid_skips = actual_skips == set(permitted)
+    elif lane == 'snapshot':
+        valid_skips = not skipped
+    else:
+        valid_skips = actual_skips <= set(permitted)
+    if not valid_skips or any(permitted.get((c['module'], c['class'] + '#' + c['name']), '__unexpected__') not in (c['message'] or '') for c in skipped):
         issues.append('Unexpected security API skips')
     its = [c for c in cases if c['class'].endswith('.CacheStoreDemoIT')]
-    if len(its) != 4 or any(c['result'] != 'passed' for c in its):
+    if collections.Counter(c['class'] + '#' + c['name'] for c in its) != collections.Counter(inventory['required_cachestore_cases']) or any(c['result'] != 'passed' for c in its):
         issues.append('All four ordinary CacheStore Failsafe methods must pass')
+    consumers = audit_consumers(source, inventory['consumers'], expected, java, home, mode, properties)
+    issues.extend(consumers['issues'])
     bytecode = collections.Counter()
     for target in source.glob('**/target'):
         for directory in ['classes', 'test-classes']:
@@ -158,7 +250,9 @@ def audit(source, output, lane, version, java, mode, repository, status):
                 packaged.append({'package': str(path), 'entry': name, 'sha256': sha})
     (output / 'resolved-coherence.json').write_text(json.dumps(resolved, indent=2))
     result = {'lane': lane, 'coherence_version': version, 'compiler_release': 17, 'maven_exit': status,
-              'totals': totals, 'modules': modules, 'reactor': reactor, 'cases': cases,
+              'inventory_sha256': digest(INVENTORY), 'totals': totals, 'modules': modules, 'reactor': reactor, 'cases': cases,
+              'auditor_sha256': {p.name: digest(p) for p in [Path(__file__), Path(__file__).with_name('consumer_evidence.py')]},
+              'consumers': consumers,
               'jvms': runtime, 'dependencies': list(dependencies.values()), 'coherence_cache_after': resolved,
               'packaged_coherence': packaged, 'class_major_counts': bytecode, 'issues': issues}
     (output / 'qualification.json').write_text(json.dumps(result, indent=2))
@@ -168,7 +262,8 @@ def audit(source, output, lane, version, java, mode, repository, status):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--lane', choices=['baseline', 'snapshot', 'requested'], required=True)
+    parser.add_argument('--lane', choices=['baseline', 'baseline21', 'snapshot', 'requested'], required=True,
+                        help='baseline/baseline21: default 26.04 on JDK 17/21, with identical strict skip policy')
     parser.add_argument('--version', help='Only for the optional requested lane')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--maven', default='./mvnw', help='Matching cached Maven may be used for a local exercise')
@@ -176,12 +271,12 @@ def main():
     parser.add_argument('--offline', action='store_true', help='Local cached exercise only')
     parser.add_argument('--jvm-tmpdir', type=Path, help='Task-owned JVM temporary directory for a local exercise')
     args = parser.parse_args()
-    version = {'baseline': '26.04', 'snapshot': '26.10-SNAPSHOT'}.get(args.lane, args.version)
+    version = {'baseline': '26.04', 'baseline21': '26.04', 'snapshot': '26.10-SNAPSHOT'}.get(args.lane, args.version)
     if not version or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', version) or (args.version and args.lane != 'requested'):
         parser.error('A safe explicit version is required only for the requested lane')
     if args.offline and version.endswith('-SNAPSHOT'):
         parser.error('Snapshot qualification must resolve the latest published artifacts online')
-    java, mode = ('17', None) if args.lane == 'baseline' else ('21', 'hardened')
+    java, mode = {'baseline': ('17', None), 'baseline21': ('21', None)}.get(args.lane, ('21', 'hardened'))
     env = os.environ.copy()
     for name in ['JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', '_JAVA_OPTIONS', 'MAVEN_ARGS', 'MAVEN_OPTS']:
         env.pop(name, None)
@@ -212,13 +307,15 @@ def main():
     if args.offline:
         command.append('-o')
     command += ['clean', 'verify']
-    manifest = {'command': command, 'runtime': runtime, 'security_mode': mode,
+    manifest = {'command': command, 'runtime': runtime, 'java_home': str(home.resolve()),
+                'inventory_sha256': digest(INVENTORY), 'security_mode': mode,
                 'JAVA_TOOL_OPTIONS': env.get('JAVA_TOOL_OPTIONS'), 'started': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 'source_sha256': {str(p.relative_to(ROOT)): digest(p) for p in ROOT.rglob('*')
                                   if p.is_file() and '.git' not in p.parts and 'target' not in p.parts
                                   and (p.suffix in ['.java', '.xml'] or p.name == 'pom.xml')
                                   and p.name != '.flattened-pom.xml'}}
     (output / 'invocation.json').write_text(json.dumps(manifest, indent=2))
+    (output / 'reviewed-inventory.json').write_bytes(INVENTORY.read_bytes())
     stop = threading.Event()
     with (output / 'maven.log').open('w') as log:
         process = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, env=env)

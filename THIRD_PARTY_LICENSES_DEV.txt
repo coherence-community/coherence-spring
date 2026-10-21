@@ -755,3 +755,179 @@ Glyphicons Halflings (part of Bootstrap by Twitter) - licensed under the Creativ
 Commons Attribution 3.0 Unported (CC BY 3.0)
 This product includes software developed by
 Jan Kovařík (http://glyphicons.com/)
+
+
+Optional-session consumer build tooling
+=======================================
+
+The following plugins and scripting helpers are used only while building and
+checking independent consumers. They are not bundled in the session starter.
+The Apache License, Version 2.0 text at the start of this file applies unless
+an additional license is reproduced below.
+
+***********************
+Apache Maven Invoker Plugin
+"org.apache.maven.plugins:maven-invoker-plugin"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Maven Invoker Plugin
+Copyright 2002-2024 The Apache Software Foundation
+
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+***********************
+Apache Maven Dependency Plugin
+"org.apache.maven.plugins:maven-dependency-plugin"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Maven Dependency Plugin
+Copyright 2002-2023 The Apache Software Foundation
+
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+***********************
+Exec Maven Plugin
+"org.codehaus.mojo:exec-maven-plugin"
+***********************
+Apache License, Version 2.0
+
+***********************
+Apache Maven Invoker
+"org.apache.maven.shared:maven-invoker"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Maven Invoker
+Copyright 2002-2022 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+***********************
+Apache Maven Script Interpreter
+"org.apache.maven.shared:maven-script-interpreter"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Maven Script Interpreter
+Copyright 2002-2022 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+***********************
+Apache Commons Exec
+"org.apache.commons:commons-exec"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Commons Exec
+Copyright 2005-2014 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+***********************
+BeanShell
+"org.apache-extras.beanshell:bsh"
+***********************
+Apache License, Version 2.0
+
+***********************
+Apache Groovy (core, JSON and XML modules)
+"org.apache.groovy:groovy"
+"org.apache.groovy:groovy-json"
+"org.apache.groovy:groovy-xml"
+***********************
+Apache License, Version 2.0
+
+NOTICE
+------
+Apache Groovy
+Copyright 2003-2023 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+This product includes/uses ANTLR4 (https://github.com/antlr/antlr4)
+Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
+
+Additional licenses for the shaded ANTLR4 and ASM components:
+
+ANTLR 4 License
+
+[The "BSD 3-clause license"]
+Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. Neither the name of the copyright holder nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ASM License
+
+ASM: a very small and fast Java bytecode manipulation framework
+Copyright (c) 2000-2011 INRIA, France Telecom
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holders nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.

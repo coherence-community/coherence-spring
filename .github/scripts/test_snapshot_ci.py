@@ -53,6 +53,25 @@ class SnapshotCiTests(unittest.TestCase):
         self.assertIn('-U', call.args[0])
         self.assertIn('-Dcoherence.version=26.11-SNAPSHOT', call.args[0])
 
+    def test_jdk21_default_baseline_retains_release_unset_mode_and_fatal_tests(self):
+        call = self.invoke('baseline21', '21')
+        command, env = call.args[0], call.kwargs['env']
+        self.assertIn('-Dcoherence.version=26.04', command)
+        self.assertIn('-Pjdk17', command)
+        self.assertIn('-Dmaven.test.failure.ignore=false', command)
+        self.assertNotIn('-U', command)
+        self.assertNotIn('-Dcoherence.security.mode=hardened', command)
+        self.assertNotIn('JAVA_TOOL_OPTIONS', env)
+        self.assertEqual(command[-2:], ['clean', 'verify'])
+
+    def test_default_baselines_reject_wrong_jdk_and_version_override(self):
+        for lane, java, extra in [('baseline', '21', ()), ('baseline21', '17', ()),
+                                  ('baseline21', '21', ('--version', '26.10-SNAPSHOT'))]:
+            with self.subTest(lane=lane, java=java, extra=extra), \
+                    contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as failure:
+                self.invoke(lane, java, extra)
+            self.assertEqual(failure.exception.code, 2)
+
     def test_snapshot_cannot_claim_latest_offline(self):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as failure:
             self.invoke('snapshot', '21', ('--offline',))

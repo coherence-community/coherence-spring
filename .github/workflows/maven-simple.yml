@@ -45,7 +45,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-qualification-${{ matrix.lane }}-${{ hashFiles('**/pom.xml', '.github/scripts/*.py') }}
+          key: ${{ runner.os }}-qualification-${{ matrix.lane }}-${{ hashFiles('**/pom.xml', '.github/scripts/*.py', '.github/scripts/full-reactor-inventory.json') }}
           restore-keys: |
             ${{ runner.os }}-qualification-${{ matrix.lane }}-
       - name: Discard cached Coherence snapshots before resolving latest
@@ -71,6 +71,13 @@ jobs:
             **/target/checkstyle-*.xml
             **/target/test-output/
             **/target/**/logs/
+            coherence-spring-session-boot-starter/target/invoker-reports/*.xml
+            coherence-spring-session-boot-starter/target/consumer-evidence/
+            coherence-spring-session-boot-starter/target/it/*/build.log
+            coherence-spring-session-boot-starter/target/it/*/target/runtime-dependencies.txt
+            coherence-spring-session-boot-starter/target/it/*/target/test-dependencies.txt
+            coherence-spring-session-boot-starter/target/it/*/target/runtime-classpath.txt
+            coherence-spring-session-boot-starter/target/it/*/target/consumer-evidence/*.properties
       - name: Clean Maven snapshot cache
         if: always()
         run: |
@@ -120,6 +127,13 @@ jobs:
             **/target/checkstyle-*.xml
             **/target/test-output/
             **/target/**/logs/
+            coherence-spring-session-boot-starter/target/invoker-reports/*.xml
+            coherence-spring-session-boot-starter/target/consumer-evidence/
+            coherence-spring-session-boot-starter/target/it/*/build.log
+            coherence-spring-session-boot-starter/target/it/*/target/runtime-dependencies.txt
+            coherence-spring-session-boot-starter/target/it/*/target/test-dependencies.txt
+            coherence-spring-session-boot-starter/target/it/*/target/runtime-classpath.txt
+            coherence-spring-session-boot-starter/target/it/*/target/consumer-evidence/*.properties
       - name: Clean Maven snapshot cache
         if: always()
         run: |
