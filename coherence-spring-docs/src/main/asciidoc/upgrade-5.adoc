@@ -55,7 +55,7 @@ for the complete upstream changes.
 |10
 |{jakartaee-version}
 
-|Hibernate ORM
+|Hibernate ORM (explicit project selection)
 |6.6.x
 |{hibernate-version}
 
@@ -76,13 +76,18 @@ for the complete upstream changes.
 |{coherence-version}
 
 |Commercial Coherence
-|See the 4.x compatibility table
-|Not currently supported
+|Unverified
+|Unverified
 |===
 
 The Java baseline does not change: Coherence Spring tests and supports Java 17 and Java 21. Coherence Spring 5.x
 continues to use the `jakarta.*` namespace, but its Jakarta EE baseline advances from 10 to 11. Applications using
 Servlet, Persistence, Validation, or other Jakarta APIs must use EE 11-compatible providers.
+
+The Hibernate row is the project's explicit selection, not Spring Boot's managed default. See
+xref:upgrade-5.adoc#upgrade-5-hibernate[Hibernate version selection] for the combinations used by the tests and samples.
+Commercial Coherence compatibility has not been established for either line. Coherence 15.1.1.0.0's move to Jakarta
+EE 9.1 does not by itself qualify a Spring 6 or Spring 7 application; see the repository README's compatibility note.
 
 IMPORTANT: Upgrade a Spring Boot application to the latest 3.5.x maintenance release and remove use of APIs deprecated
 in Boot 3 before moving to Boot 4, as recommended by the Spring Boot migration guide.
@@ -390,7 +395,10 @@ Retaining `resilience4j-spring-boot3` can leave health integration inactive beca
 [[upgrade-5-hibernate]]
 === Hibernate second-level cache
 
-Applications using the Coherence Hibernate integration must move to its Hibernate 7 adapter:
+Applications using Coherence as Hibernate's second-level cache must move to the Hibernate 7 adapter.
+https://github.com/coherence-community/coherence-hibernate/blob/v4.0.0/README.adoc[Coherence Hibernate 4.0.x supports Hibernate ORM 7.4.x only].
+Declare both the adapter and a compatible ORM version; the adapter's Hibernate dependency is `provided` and does not
+select the application's ORM version:
 
 [source,xml,subs="verbatim,quotes,attributes"]
 ----
@@ -398,6 +406,11 @@ Applications using the Coherence Hibernate integration must move to its Hibernat
     <groupId>com.oracle.coherence.hibernate</groupId>
     <artifactId>coherence-hibernate-cache-7</artifactId>
     <version>{coherence-hibernate-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>{hibernate-version}</version>
 </dependency>
 ----
 
@@ -412,8 +425,40 @@ spring:
         com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory
 ----
 
-Coherence Spring 5.x is tested with Hibernate ORM {hibernate-version}. Applications using Hibernate-specific query hints
-or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
+The Spring Boot {spring-boot-version} BOM manages `hibernate-core` at `7.2.24.Final`. This project combines that
+managed default with explicit Hibernate ORM {hibernate-version} declarations as follows:
+
+[cols="2,1,3",options="header"]
+|===
+|Usage |Hibernate ORM |Scope
+
+|Boot starter tests
+|{hibernate-version}
+|Test dependency only; the general starter does not bring Hibernate into applications.
+
+|`hibernate-cache-demo`
+|{hibernate-version}
+|Explicit runtime selection with `coherence-hibernate-cache-7` {coherence-hibernate-version}.
+
+|`coherence-spring-demo-core` and `coherence-spring-demo-classic`
+|{hibernate-version}
+|Provided API dependency in core; explicit runtime dependency in the classic sample. These do not use the Hibernate cache adapter.
+
+|`coherence-spring-demo-boot`, CacheStore, circuit-breaker and Cloud Config samples
+|7.2.24.Final
+|Boot-managed runtime selection, including `coherence-spring-demo-boot`; these do not use the Hibernate cache adapter.
+|===
+
+The project's `hibernate.version` property supplies explicit dependency declarations; it does not override the
+Hibernate version inside an imported Boot BOM. Boot's managed 7.2 line is outside the Coherence Hibernate 4.0.x
+adapter's supported 7.4 line. Applications enabling that adapter must select a compatible ORM version explicitly.
+
+In local Java 17 and Java 21 reactor qualification, the starter tests had ORM {hibernate-version} on their test
+classpath, the Hibernate cache sample started with that ORM version and adapter {coherence-hibernate-version},
+and the CacheStore integration tests used Boot's managed ORM version. The Hibernate cache sample test verifies
+application-context startup; it does not establish correctness of every second-level cache strategy or deployment combination.
+
+Applications using Hibernate-specific query hints or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
 `org.hibernate.annotations.QueryHints.CACHEABLE` constant with `org.hibernate.jpa.HibernateHints.HINT_CACHEABLE`.
 
 [[upgrade-5-source]]
