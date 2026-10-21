@@ -99,6 +99,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Aggregate Javadoc includes the starter's optional SessionTimeout signature. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-session</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>

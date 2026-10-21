@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.oracle.coherence.spring</groupId>
+		<artifactId>coherence-spring-parent</artifactId>
+		<version>5.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>coherence-spring-session-boot-starter</artifactId>
+
+	<name>Coherence Spring Session Boot Starter</name>
+	<description>Coherence-backed Spring Session integration for Spring Boot servlet applications</description>
+
+	<properties>
+		<coherence.spring.root>${basedir}/..</coherence.spring.root>
+		<!-- Consumer tests deliberately have their own skip, independent of unit-test selectors. -->
+		<consumer.tests.skip>false</consumer.tests.skip>
+		<consumer.security.mode>unset</consumer.security.mode>
+		<consumer.security.arg></consumer.security.arg>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-boot-starter</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-session</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-session</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+		<!-- Resolve the outer run's exact runtime bytes for the isolated consumer repository. -->
+		<dependency>
+			<groupId>${coherence.groupId}</groupId>
+			<artifactId>coherence</artifactId>
+			<version>${coherence.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Central requires companion archives even for this dependency-only JAR. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<forceCreation>true</forceCreation>
+					<includePom>true</includePom>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<executions>
+					<!-- There are no Java APIs for the inherited Javadoc goal to document. -->
+					<execution>
+						<id>source-free-javadoc</id>
+						<phase>package</phase>
+						<goals><goal>jar</goal></goals>
+						<configuration>
+							<classifier>javadoc</classifier>
+							<includes>
+								<include>META-INF/LICENSE.txt</include>
+								<include>META-INF/THIRD_PARTY_LICENSES.txt</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-invoker-plugin</artifactId>
+				<configuration>
+					<projectsDirectory>${basedir}/src/it</projectsDirectory>
+					<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+					<localRepositoryPath>${project.build.directory}/it-repository</localRepositoryPath>
+					<settingsFile>${basedir}/src/it/settings.xml</settingsFile>
+					<scope>test</scope>
+					<parallelThreads>1</parallelThreads>
+					<javaHome>${java.home}</javaHome>
+					<failIfNoProjects>true</failIfNoProjects>
+					<ignoreFailures>false</ignoreFailures>
+					<skipInstallation>${consumer.tests.skip}</skipInstallation>
+					<skipInvocation>${consumer.tests.skip}</skipInvocation>
+					<showVersion>true</showVersion>
+					<streamLogsOnFailures>true</streamLogsOnFailures>
+					<writeJunitReport>true</writeJunitReport>
+					<timeoutInSeconds>300</timeoutInSeconds>
+					<goals><goal>clean</goal><goal>verify</goal></goals>
+					<properties>
+						<!-- Independent builds do not inherit the outer Maven failure policy. -->
+						<maven.test.failure.ignore>false</maven.test.failure.ignore>
+					</properties>
+					<filterProperties>
+						<product.group>${project.groupId}</product.group>
+						<product.version>${project.version}</product.version>
+						<boot.version>${spring-boot.version}</boot.version>
+						<spring.version>${org.springframework.version}</spring.version>
+						<session.version>${spring-session.version}</session.version>
+						<junit.version>${junit.version}</junit.version>
+						<tomcat.version>${tomcat.version}</tomcat.version>
+						<coherence.group>${coherence.groupId}</coherence.group>
+						<coherence.version>${coherence.version}</coherence.version>
+						<consumer.release>${java.version}</consumer.release>
+						<consumer.java.home>${java.home}</consumer.java.home>
+						<consumer.security.mode>${consumer.security.mode}</consumer.security.mode>
+						<consumer.security.arg>${consumer.security.arg}</consumer.security.arg>
+						<consumer.support>${basedir}/src/it/support</consumer.support>
+						<consumer.outer.manifest>${project.build.directory}/consumer-evidence/outer-artifacts.properties</consumer.outer.manifest>
+					</filterProperties>
+				</configuration>
+				<executions>
+					<execution><id>install-consumer-artifacts</id><phase>pre-integration-test</phase><goals><goal>install</goal></goals></execution>
+					<!-- run propagates fixture failures; integration-test alone does not. -->
+					<execution><id>packaged-consumers</id><phase>integration-test</phase><goals><goal>run</goal></goals></execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.6.1</version>
+				<executions><execution>
+					<id>outer-consumer-artifacts</id><phase>pre-integration-test</phase><goals><goal>list</goal></goals>
+					<configuration>
+						<includeGroupIds>${project.groupId},${coherence.groupId}</includeGroupIds>
+						<outputAbsoluteArtifactFilename>true</outputAbsoluteArtifactFilename>
+						<outputFile>${project.build.directory}/consumer-evidence/outer-dependencies.txt</outputFile>
+					</configuration>
+				</execution></executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<skip>${consumer.tests.skip}</skip>
+					<executable>${java.home}/bin/java</executable>
+				</configuration>
+				<executions>
+					<execution>
+						<id>consumer-inventory</id><phase>initialize</phase><goals><goal>exec</goal></goals>
+						<configuration><skip>false</skip><arguments>
+							<argument>${basedir}/src/it/harness/ConsumerHarness.java</argument>
+							<argument>inventory</argument><argument>${basedir}</argument>
+							<argument>${consumer.tests.skip}</argument><argument>${project.groupId}</argument><argument>${project.version}</argument>
+						</arguments></configuration>
+					</execution>
+					<execution>
+						<id>consumer-freeze</id><phase>pre-integration-test</phase><goals><goal>exec</goal></goals>
+						<configuration><arguments>
+							<argument>${basedir}/src/it/harness/ConsumerHarness.java</argument>
+							<argument>freeze</argument><argument>${basedir}</argument>
+							<argument>${project.groupId}</argument><argument>${project.version}</argument>
+						</arguments></configuration>
+					</execution>
+					<execution>
+						<id>consumer-audit</id><phase>verify</phase><goals><goal>exec</goal></goals>
+						<configuration><arguments>
+							<argument>${basedir}/src/it/harness/ConsumerHarness.java</argument>
+							<argument>audit</argument><argument>${basedir}</argument>
+							<argument>${project.groupId}</argument><argument>${project.version}</argument>
+						</arguments></configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles><profile>
+		<id>consumer-explicit-security-mode</id>
+		<activation><property><name>coherence.security.mode</name></property></activation>
+		<properties>
+			<consumer.security.mode>${coherence.security.mode}</consumer.security.mode>
+			<consumer.security.arg>-Dcoherence.security.mode=${coherence.security.mode}</consumer.security.arg>
+		</properties>
+	</profile></profiles>
+</project>

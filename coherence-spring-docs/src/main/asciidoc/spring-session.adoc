@@ -11,7 +11,13 @@ Coherence's support for {spring-docs-session}[Spring Session].
 In this chapter you will learn how to configure {oracle-coherence}[Coherence] as an HTTP session store using
 {spring-docs-session}[Spring Session].
 
-First you need to add the coherence-spring-session dependency:
+For a Spring Boot servlet application, use `coherence-spring-session-boot-starter` with an explicit Coherence runtime
+and your servlet web dependencies, as shown in xref:spring-boot.adoc#spring-boot-sessions[Spring Boot Session Support].
+The starter supplies the general Coherence starter, this session library and Boot Session, and enables HTTP-session
+integration automatically when its conditions match. Non-web and reactive applications do not activate that integration.
+
+For standalone Spring Framework applications, add the Boot-independent `coherence-spring-session` library and
+configure Spring Session explicitly. Keep your servlet API/container and Spring web dependencies available:
 
 .Adding the Coherence Spring Session Dependency
 ====
@@ -45,8 +51,9 @@ dependencies {
 NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 26.04. Coherence Spring does
 not bring in the Coherence dependency automatically; users must specify the supported Coherence CE dependency explicitly.
 
-In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
-Session using the `@EnableCoherenceHttpSession` annotation.
+For standalone configuration, make sure Coherence is enabled and then enable Spring Session using the
+`@EnableCoherenceHttpSession` annotation. Also register the HTTP filter, for example through
+`AbstractHttpSessionApplicationInitializer`, as shown in the plain Spring WAR sample below.
 
 .Enabling Coherence Spring Sessions
 [source,java,indent=0]
@@ -70,10 +77,12 @@ static class CoherenceSessionConfig {
 <5> The session timeout. Optional. Defaults to `1800` seconds (`30` minutes)
 <6> When doing HTTP session updates, shall we use a Coherence entry processor? The default is {@code true}.
 
-Are you running Coherence as a dedicated server instance? Then you need to make sure that your Coherence
-server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
-you may need `Coherence Spring Session`, `Spring Security Core`, `Spring Security Web`. Please also ensure that dependency
-version between Coherence server and application clients matches exactly.
+Dedicated storage servers need the session processors, serializers and payload classes they receive. Use the
+standalone `coherence-spring-session` library there, with `spring-security-core` and `spring-security-web` when the
+stored authentication graph requires them. A Boot storage server can combine the general Coherence starter with
+this library; it does not need `coherence-spring-session-boot-starter` or `spring-boot-session` for storage. Keep
+client/server dependency versions aligned. The sample server retains `spring.session.store-type=none` to opt out
+of Coherence's HTTP-session auto-configuration even if integration dependencies are added later.
 
 An alternative is to set `useEntryProcessor` to `false`. This is less efficient as the entire session has to be sent over
 the wire when updating session properties. The server still needs any classes and serializers required to deserialize
@@ -284,6 +293,7 @@ the list above; the application must provide the corresponding POF support.
 Other authentication token, context or authority implementations also need
 their own serializers and registrations.
 
+[[spring-session-hardened-serialization]]
 === Hardened serialization and execution
 
 POF registration and `META-INF/coherence/security-config.xml` permissions have
@@ -350,6 +360,12 @@ The example application show-cases 2 use-cases:
 - Use Spring Session with embedded Coherence instances and Java serialization
 - Use Spring Session with remote Coherence instances (Coherence*Extends) and Java serialization
 
+`spring-session-demo-app` uses `coherence-spring-session-boot-starter`, an explicit Coherence runtime and its existing
+web, Security and Actuator dependencies. The separate `spring-session-demo-server` uses the general starter plus
+the standalone session library to store and process sessions, with HTTP-session auto-configuration disabled.
+The `spring-session-demo-war` application below uses explicit Spring configuration and the standalone library;
+it contains no Spring Boot runtime and is not a Boot WAR.
+
 Even though this demo is targeting Spring Session, we use Spring Security as well, since the authentication details are
 stored in the session as well. In regard to authentication, users have 2 choices:
 
@@ -372,10 +388,10 @@ require an authenticated user using the session cookie or the `username` and `pa
 [[spring-session-sample-start-embedded-coherence]]
 ==== Start Spring Session with Embedded Coherence Instances
 
-.Build the Coherence Server instance
+.Build the web application and its prerequisites
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-app -am clean install
 ----
 
 Now we are ready to run the application. Let's launch 2 instances, one listening on the pre-configured port
@@ -397,13 +413,13 @@ Coherence instance as a Coherence*Extend client.
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-server -am clean install
 ----
 
 .Build the Application instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-app -am clean install
 ----
 
 Now we are ready to run the application. We will activate the `coherence-client` Spring Boot profile as well:
@@ -419,14 +435,10 @@ By default, Coherence Spring Session uses a Coherence Entry Processor to perform
 will prevent the entire session to be sent over the wire. A drawback of that approach is that the Coherence instance needs
 to be aware of Coherence Spring classes for serialization purposes.
 
-Alternatively, you can also set the Coherence Spring Session property `coherence.spring.session.use-entry-processor` and
-set it to `false` (It is `true` by default) in the client application `spring-session-demo-app`. With that in place, you
-can now remove the relevant Maven dependencies:
-
-- spring-security-web
-- coherence-spring-session
-
-from the server application module `spring-session-demo-server` and the application will still work.
+Alternatively, set `coherence.spring.session.use-entry-processor=false` (the default is `true`) in
+`spring-session-demo-app` to send the entire session for ordinary updates. Keep the server's session library and
+payload dependencies: stored authentication graphs, deserialization, principal lookup and reset operations still
+require their classes and serializers. Disabling the update processor does not remove those requirements.
 
 [[spring-session-sample-rest-endpoints]]
 ==== Accessing the REST Endpoints
@@ -498,7 +510,7 @@ Coherence Spring source code repository:
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-server -am clean install
 ----
 
 Next, we will build the client application:
@@ -506,7 +518,7 @@ Next, we will build the client application:
 .Build the Client Application
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-war
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-war -am clean install
 ----
 
 The Coherence-specific configuration of the client is fairly straight-forward and mostly
@@ -548,6 +560,10 @@ for the cache `spring:session:sessions` to the `remote-cache-scheme` that uses t
 Now we are ready to run the application. First, we will start the server. The server application uses Spring Boot and by
 activating a custom Spring Boot profile, Coherence will be started with POF serialization enabled:
 
+Keep the sample's application-owned `pof-config.xml` on both client and server classpaths. This WAR stores a simple
+counter; the Boot application's Java-serialized authentication graph is a separate sample path. Applications using
+POF for authentication must add the payload registrations described in <<spring-session-pof>>.
+
 .coherence-cache-config-pof.xml
 [source,xml,indent=1,subs="verbatim,quotes,attributes"]
 ----
@@ -566,16 +582,42 @@ activating a custom Spring Boot profile, Coherence will be started with POF seri
 $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-{coherence-spring-version}.jar --spring.profiles.active=pof
 ----
 
-For the client application, deploy the generated WAR file `spring-session-demo.war` in
-`samples/spring-session-demo/spring-session-demo-war/target` to a Servlet container, for example Tomcat {tomcat-version}.
+For the client application, deploy the generated `spring-session-demo.war` together with the sample's external
+Tomcat Context file. This sample forwards to a JSP after updating the session. On Tomcat 11.0.26, the default
+`suspendWrappedResponseAfterForward=true` finishes the response before Spring Session can send its initial cookie;
+successive requests then each show `Counter: 1`. The supplied Context sets this attribute to `false`, allowing
+the wrapped response to close and send the cookie after the forward. See Tomcat's
+https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Common_Attributes[Context attributes] and
+https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Naming[context naming rules].
+
+.samples/spring-session-demo/tomcat/spring-session-demo.xml
+[source,xml]
+----
+include::{sources-root-samples}/spring-session-demo/tomcat/spring-session-demo.xml[tag=context]
+----
+
+Use an initialized Tomcat 11 installation with the standard `Catalina` engine, `localhost` host and `webapps`
+appBase. Stop that instance before copying these files. Run from the repository root with Java 17 or 21 selected:
 
 .Deploy WAR file to Tomcat {tomcat-version}
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-{tomcat-version}/webapps
+export CATALINA_HOME=/path/to/apache-tomcat-{tomcat-version}
+export CATALINA_BASE="$CATALINA_HOME"
+mkdir -p "$CATALINA_BASE/conf/Catalina/localhost" "$CATALINA_BASE/webapps"
+cp samples/spring-session-demo/tomcat/spring-session-demo.xml \
+  "$CATALINA_BASE/conf/Catalina/localhost/spring-session-demo.xml"
+cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war \
+  "$CATALINA_BASE/webapps/spring-session-demo.war"
+"$CATALINA_HOME/bin/catalina.sh" run
 ----
 
-The application should start up and connect to the Coherence server instance. You can then access the application at
+If using a separate initialized Tomcat instance directory, set `CATALINA_BASE` to that directory instead.
+The matching `spring-session-demo.xml` and `spring-session-demo.war` base names select `/spring-session-demo`.
+The Context deliberately omits `path` and `docBase`: Tomcat derives them from the filenames and standard appBase.
+This setting applies only to this application. Keep it in the external Context file when redeploying the WAR.
+
+The application starts and connects to the Coherence server. Access it at
 
 `http://localhost:8080/spring-session-demo/hello`.
 
@@ -584,6 +626,23 @@ image::spring-session-demo-war.png[Spring Session Demo,width=50%, pdfwidth=50%]
 
 The invoked `HelloController` will display a simple counter that is incremented with each request and whose value is
 stored in the HTTP Session.
+
+Use a fresh cookie jar in another terminal to check normal cookie delivery and counter progression:
+
+[source,shell]
+----
+curl -i -c war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+----
+
+The first response must return `Set-Cookie: SESSION=...` with `Path=/spring-session-demo`; the three pages show
+`Counter: 1`, `Counter: 2` and `Counter: 3` under the same session. Use Ctrl-C in the Tomcat terminal to stop it.
+
+NOTE: This configured deployment is validated on Java 17/21 with Tomcat 11.0.26, Spring Session 4.0.5 and Coherence
+26.04, using the real JSP WAR and a separate POF storage server. The default Tomcat deployment remains affected.
+The setting is specific to Tomcat's servlet-forward handling; it does not establish behavior on other servlet
+containers. The Boot application's Java-serialization login/session path above is validated separately.
 
 [[spring-session-expiration-strategies]]
 == Session Expiration Strategies

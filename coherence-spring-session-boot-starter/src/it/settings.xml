@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+  <!-- Only release Central is reachable by consumers. Outer-resolved snapshots are
+       installed locally; no mutable remote snapshot publication can be selected. -->
+  <mirrors><mirror><id>consumer-central</id><mirrorOf>*</mirrorOf>
+    <url>https://repo.maven.apache.org/maven2</url>
+  </mirror></mirrors>
+</settings>

@@ -118,6 +118,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-session</artifactId>
 			<version>${spring-boot.version}</version>
+			<!-- Applications opt into HTTP sessions with coherence-spring-session-boot-starter. -->
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

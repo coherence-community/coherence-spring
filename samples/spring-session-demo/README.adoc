@@ -1,10 +1,109 @@
 = Spring Session Sample
 
-This example provides a basic https://spring.io/projects/spring-session[Spring Session] and
-https://spring.io/projects/spring-security[Spring Security] demo using https://spring.io/projects/spring-boot[Spring Boot].
+This example stores https://spring.io/projects/spring-session[Spring Session] HTTP sessions in Coherence.
+Its three modules have different roles:
 
-Please check out the **Spring Session chapter** of the http://spring.coherence.community/[Coherence Spring Reference documentation]
-for further details.
+* `spring-session-demo-app` is a https://spring.io/projects/spring-boot[Spring Boot] servlet application using
+  `coherence-spring-session-boot-starter`, an explicit Coherence runtime, web, Spring Security and Actuator.
+  The starter supplies the session library and Boot Session; no direct `spring-session-core` or `spring-boot-session`
+  declaration is needed. It stores the authenticated user's security context in Coherence.
+* `spring-session-demo-server` is a storage server using the general `coherence-spring-boot-starter` and standalone
+  `coherence-spring-session` library. It needs session processors, serializers and stored payload classes, including
+  the security classes used by the Boot app. It keeps `spring.session.store-type=none` and does not need the HTTP
+  session starter or Boot Session. Disabling entry-processor updates does not remove payload/operation dependencies.
+* `spring-session-demo-war` is a traditional Spring Framework WAR with the standalone session library, explicit
+  `@EnableCoherenceHttpSession` configuration and HTTP filter initialization. It contains no Boot runtime. It stores
+  a counter through Coherence*Extend using POF; it is separate from the Boot WAR consumer test fixture.
+
+See the Spring Session chapter of the https://spring.coherence.community/[Coherence Spring reference documentation]
+for the application-owned POF mappings, security metadata and serialization/migration limits.
+
+== Build and run
+
+Run from the repository root with Java 17 or Java 21 selected through `JAVA_HOME` and `PATH`. Use `-Pjdk17` on
+both JDKs to build Java 17 bytecode. Default Coherence is 26.04.
+
+[source,shell]
+----
+./mvnw -Pjdk17 -pl :spring-session-demo-app,:spring-session-demo-server,:spring-session-demo-war -am clean install
+----
+
+For the Boot application's remote Java-serialization path, start the storage server and then the client:
+
+[source,shell]
+----
+java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0-SNAPSHOT.jar
+java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-5.0.0-SNAPSHOT.jar --spring.profiles.active=coherence-client
+----
+
+The server's HTTP port is 8081; the app listens on 8090. Without the `coherence-client` profile, the Boot app starts
+an embedded Coherence member instead. Log in and reuse the cookie for successive requests:
+
+[source,shell]
+----
+curl -i -c cookie.txt -H 'Content-Type: application/json' \
+  -d '{"username":"coherence","password":"rocks"}' http://localhost:8090/login
+curl -i -b cookie.txt http://localhost:8090/hello
+curl -i -b cookie.txt 'http://localhost:8090/actuator/sessions?username=coherence'
+----
+
+== Traditional WAR on Tomcat 11
+
+For the non-Boot WAR, use a separate run of the server with POF enabled. Start it in another terminal:
+
+[source,shell]
+----
+java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0-SNAPSHOT.jar --spring.profiles.active=pof
+----
+
+Keep the matching `pof-config.xml` on the WAR and server classpaths. The WAR's counter POF path
+does not supply POF mappings for the Boot app's authentication graph; follow the reference chapter when adding
+such payloads. Preserve the app/server `META-INF/coherence/security-config.xml` resources for runtimes enforcing
+hardened serialization.
+
+This sample forwards to a JSP after updating the session. On Tomcat 11.0.26, the default
+`suspendWrappedResponseAfterForward=true` finishes the response before Spring Session can send its initial cookie;
+successive requests then each show `Counter: 1`. The supplied link:tomcat/spring-session-demo.xml[per-application Context]
+sets this attribute to `false`, allowing the wrapped response to close and send the cookie after the forward.
+See Tomcat's https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Common_Attributes[Context attributes]
+and https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Naming[context naming rules].
+
+Use an initialized Tomcat 11 installation with the standard `Catalina` engine, `localhost` host and `webapps`
+appBase. Stop that instance before copying these files. From the repository root, with Java 17 or 21 selected:
+
+[source,shell]
+----
+export CATALINA_HOME=/path/to/apache-tomcat-11.0.26
+export CATALINA_BASE="$CATALINA_HOME"
+mkdir -p "$CATALINA_BASE/conf/Catalina/localhost" "$CATALINA_BASE/webapps"
+cp samples/spring-session-demo/tomcat/spring-session-demo.xml \
+  "$CATALINA_BASE/conf/Catalina/localhost/spring-session-demo.xml"
+cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war \
+  "$CATALINA_BASE/webapps/spring-session-demo.war"
+"$CATALINA_HOME/bin/catalina.sh" run
+----
+
+If using a separate initialized Tomcat instance directory, set `CATALINA_BASE` to that directory instead.
+The matching `spring-session-demo.xml` and `spring-session-demo.war` base names select `/spring-session-demo`.
+The Context deliberately omits `path` and `docBase`: Tomcat derives them from the filenames and standard appBase.
+This setting applies only to this application. Keep it in the external Context file when redeploying the WAR.
+
+Open `http://localhost:8080/spring-session-demo/hello` in a browser, or use a fresh cookie jar in another terminal:
+
+[source,shell]
+----
+curl -i -c war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+----
+
+The first response must return `Set-Cookie: SESSION=...` with `Path=/spring-session-demo`; the three pages show
+`Counter: 1`, `Counter: 2` and `Counter: 3` under the same session. Use Ctrl-C in the Tomcat terminal to stop it.
+
+NOTE: This configured deployment is validated on Java 17/21 with Tomcat 11.0.26, Spring Session 4.0.5 and Coherence
+26.04, using the real JSP WAR and a separate POF storage server. The default Tomcat deployment remains affected.
+The setting is specific to Tomcat's servlet-forward handling; it does not establish behavior on other servlet
+containers. The Boot app's login/session path is validated separately.
 
 == Additional Options
 

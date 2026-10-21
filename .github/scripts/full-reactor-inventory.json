@@ -1,0 +1,1629 @@
+{
+  "schema": 1,
+  "provenance": "Reviewed module POMs and test method sources, cross-checked with complete historical clean reactor and accepted A/B evidence. Expectations change only through review; CI never derives them from the run under judgment.",
+  "modules": [
+    {
+      "path": ".",
+      "artifact": "coherence-spring-parent",
+      "name": "Coherence Spring Project",
+      "suites": []
+    },
+    {
+      "path": "coherence-spring-core",
+      "artifact": "coherence-spring-core",
+      "name": "Coherence Spring Core",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.CoherenceContextTests",
+          "cases": [
+            "com.oracle.coherence.spring.CoherenceContextTests#shouldSupplyContext"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/CoherenceContextTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.CoherenceInjectorTests",
+          "cases": [
+            "com.oracle.coherence.spring.CoherenceInjectorTests#shouldInjectAfterDeserialization"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/CoherenceInjectorTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.FixtureSerializationTests",
+          "cases": [
+            "com.oracle.coherence.spring.FixtureSerializationTests#rejectsUnlistedPayloadBeforeItsReadCallback",
+            "com.oracle.coherence.spring.FixtureSerializationTests#restoresTheCompletePersonGraph"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/FixtureSerializationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.NamedTopicConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectIntoConstructor",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectNamedTopicUsingFieldName",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectNamedTopicWithGenericValues",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectNamedTopicWithGenerics",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectPublisher",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectQualifiedNamedTopic",
+            "com.oracle.coherence.spring.NamedTopicConfigurationTests#shouldInjectTopicsFromDifferentSessions"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/NamedTopicConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.NamedTopicPreDestroyTests",
+          "cases": [
+            "com.oracle.coherence.spring.NamedTopicPreDestroyTests#shouldClosePublisherOnScopeDeactivation"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/NamedTopicPreDestroyTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.SpringApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.SpringApplicationTests#testBackingMapManagerContextInjection",
+            "com.oracle.coherence.spring.SpringApplicationTests#testCacheStore",
+            "com.oracle.coherence.spring.SpringApplicationTests#testInterceptor",
+            "com.oracle.coherence.spring.SpringApplicationTests#testManualRegistration"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/SpringApplicationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.SpringNamespaceHandlerTests",
+          "cases": [
+            "com.oracle.coherence.spring.SpringNamespaceHandlerTests#testBackingMapManagerContextInjection",
+            "com.oracle.coherence.spring.SpringNamespaceHandlerTests#testCacheStore",
+            "com.oracle.coherence.spring.SpringNamespaceHandlerTests#testInterceptor",
+            "com.oracle.coherence.spring.SpringNamespaceHandlerTests#testManualRegistration"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/SpringNamespaceHandlerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.cache.CacheManagerUnitTests",
+          "cases": [
+            "com.oracle.coherence.spring.cache.CacheManagerUnitTests#instantiateBasicCacheManager",
+            "com.oracle.coherence.spring.cache.CacheManagerUnitTests#instantiateCacheManagerWithCoherenceCacheConfiguration",
+            "com.oracle.coherence.spring.cache.CacheManagerUnitTests#instantiateCacheManagerWithCustomDefaultCacheConfiguration"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/cache/CacheManagerUnitTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.cache.CacheManagerWithCoherenceCacheConfigurationBeanTests",
+          "cases": [
+            "com.oracle.coherence.spring.cache.CacheManagerWithCoherenceCacheConfigurationBeanTests#validateCacheConfigurationSettings"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/cache/CacheManagerWithCoherenceCacheConfigurationBeanTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests",
+          "cases": [
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#getBasicCaches",
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#getCacheNames",
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#getNativeCacheAndCacheStatisticsFromCacheManager",
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#testCacheEviction",
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#testCachePuts",
+            "com.oracle.coherence.spring.cache.CoherenceCacheManagerTests#testCacheSize"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/cache/CoherenceCacheManagerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.cache.CoherenceCacheTests",
+          "cases": [
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testBasicGet",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testCacheEviction",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testClearingOfCache",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetCorrectType",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetNameOfCache",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetUsingValueLoader",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetUsingValueLoaderThrowingException",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetUsingValueLoaderWithLockingEntireCache",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetUsingValueLoaderWithValueInCache",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetUsingValueLoaderWithValueInCacheAfterLock",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetWithValueLoaderAndLockFailure",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetWithValueLoaderSpecifiedTimeoutAndLockFailure",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGetWrongType",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testGettingNativeCache",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testPutWithNullValue",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testPutWithTtl",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testPutWithZeroTtl",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testSettingOfCacheConfiguration",
+            "com.oracle.coherence.spring.cache.CoherenceCacheTests#testSize"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/cache/CoherenceCacheTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectAsyncNamedMapUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectAsyncNamedMapWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectAsyncNamedMapWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectAsyncNamedMapWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectCachesFromDifferentSessions",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectNamedMapUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectNamedMapWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectNamedMapWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectNamedMapWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectQualifiedAsyncNamedMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectQualifiedNamedMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectSuperTypeCacheMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectSuperTypeConcurrentMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectSuperTypeInvocableMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectSuperTypeObservableMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#shouldInjectSuperTypeQueryMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#testAnotherConstructorBeanInjection",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapAnnotationTests#testCtorInjection"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/CoherenceNamedCacheConfigurationNamedMapAnnotationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectAsyncNamedMapUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectAsyncNamedMapWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectAsyncNamedMapWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectAsyncNamedMapWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectCachesFromDifferentSessions",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectNamedMapUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectNamedMapWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectNamedMapWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectNamedMapWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectQualifiedAsyncNamedMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#shouldInjectQualifiedNamedMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationNamedMapTests#testCtorInjection"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/CoherenceNamedCacheConfigurationNamedMapTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#getDefaultSession",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectAsyncNamedCacheUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectAsyncNamedCacheWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectAsyncNamedCacheWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectAsyncNamedCacheWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectCachesFromDifferentSessions",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectNamedCacheUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectNamedCacheWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectNamedCacheWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectNamedCacheWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectQualifiedAsyncNamedCache",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#shouldInjectQualifiedNamedCache",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationTests#testCtorInjection"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/CoherenceNamedCacheConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectCachesFromDifferentSessions",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheUsingFieldName",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithFilters",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithGenericKeys",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithGenericValues",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithGenerics",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithKeysOnly",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithTransformer",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectContinuousQueryCacheWithTransformerAndFilter",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectQualifiedNamedCache",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeCacheMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeConcurrentMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeContinuousQueryCache",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeInvocableMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeNamedCache",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeObservableMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#shouldInjectSuperTypeQueryMap",
+            "com.oracle.coherence.spring.configuration.CoherenceNamedCacheConfigurationViewTests#testCtorInjection"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/CoherenceNamedCacheConfigurationViewTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.CoherenceSpringConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.CoherenceSpringConfigurationTests#getDefaultSession",
+            "com.oracle.coherence.spring.configuration.CoherenceSpringConfigurationTests#getDefaultSessionByName"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/CoherenceSpringConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectChainedExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectCustomExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectMultiChainedExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectMultiExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectMultiPofExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectMultiPropertyExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectPofExtractor",
+            "com.oracle.coherence.spring.configuration.ExtractorConfigurationTests#shouldInjectPropertyExtractor"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/ExtractorConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.FilterConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.FilterConfigurationTests#shouldInjectAlwaysFilter",
+            "com.oracle.coherence.spring.configuration.FilterConfigurationTests#shouldInjectCustomFilter",
+            "com.oracle.coherence.spring.configuration.FilterConfigurationTests#shouldInjectRepeatableHolderQualifiedFilter",
+            "com.oracle.coherence.spring.configuration.FilterConfigurationTests#shouldInjectRepeatebleQualifiedFilter",
+            "com.oracle.coherence.spring.configuration.FilterConfigurationTests#shouldInjectWhereFilter"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/FilterConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.MapEventTransformerConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.MapEventTransformerConfigurationTests#shouldInjectCustomTransformer"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/MapEventTransformerConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.SerializerConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.SerializerConfigurationTests#shouldGetJavaSerializer",
+            "com.oracle.coherence.spring.configuration.SerializerConfigurationTests#shouldGetPofSerializer",
+            "com.oracle.coherence.spring.configuration.SerializerConfigurationTests#shouldNotGetJsonSerializer"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/SerializerConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.configuration.support.CoherenceGenericConverterTests",
+          "cases": [
+            "com.oracle.coherence.spring.configuration.support.CoherenceGenericConverterTests#testContinuousQueryCacheConversion",
+            "com.oracle.coherence.spring.configuration.support.CoherenceGenericConverterTests#testNamedCacheConversion"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/configuration/support/CoherenceGenericConverterTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.event.EventHandlerTests",
+          "cases": [
+            "com.oracle.coherence.spring.event.EventHandlerTests#testEventInterceptorMethods"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/event/EventHandlerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.event.InterceptorsTests",
+          "cases": [
+            "com.oracle.coherence.spring.event.InterceptorsTests#testEventInterceptorMethods"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/event/InterceptorsTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.event.MapEventHandlerTests",
+          "cases": [
+            "com.oracle.coherence.spring.event.MapEventHandlerTests#testEventInterceptorMethods"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/event/MapEventHandlerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.event.mapevent.MapListenerTests",
+          "cases": [
+            "com.oracle.coherence.spring.event.mapevent.MapListenerTests#testMapEvents"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/event/mapevent/MapListenerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.messaging.CoherencePublisherTests",
+          "cases": [
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendAllReactiveMessages",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendAllReactiveMessagesWithAsyncResponse",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendAllReactiveMessagesWithReactiveResponse",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendMessage",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendMessageToNamedTopic",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendMessageWithAsyncResponse",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendMessageWithReactiveResponse",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendSingleReactiveMessages",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendSingleReactiveMessagesWithAsyncResponse",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendSingleReactiveMessagesWithAsyncResponse2",
+            "com.oracle.coherence.spring.messaging.CoherencePublisherTests#shouldSendSingleReactiveMessagesWithReactiveResponse"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/messaging/CoherencePublisherTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests",
+          "cases": [
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldHaveSubscribed",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldHaveSubscribedToTopicFromMethodName",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldHaveSubscribedWithConverter",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldHaveSubscribedWithFilter",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldHaveSubscribedWithGroups",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldNotSendVoidResultToTargetTopic",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldReceiveElementBinderArguments",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldReceiveMessagesForMultipleSubscribersInSameGroup",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldSendListenerAsyncResultToTargetTopic",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldSendListenerReactiveResultToTargetTopic",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldSendListenerResultToMultipleTargetTopics",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldSendListenerResultToTargetTopic",
+            "com.oracle.coherence.spring.messaging.CoherenceTopicListenerTests#shouldSendListenerSingleReactiveResultToTargetTopic"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/messaging/CoherenceTopicListenerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.namespace.BeanBuilderTests",
+          "cases": [
+            "com.oracle.coherence.spring.namespace.BeanBuilderTests#shouldBuildBean",
+            "com.oracle.coherence.spring.namespace.BeanBuilderTests#shouldNotBuildUnknownBean",
+            "com.oracle.coherence.spring.namespace.BeanBuilderTests#shouldNotRealizeUnknownBean",
+            "com.oracle.coherence.spring.namespace.BeanBuilderTests#shouldRealizeNamedBean"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/namespace/BeanBuilderTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.namespace.NamespaceHandlerTests",
+          "cases": [
+            "com.oracle.coherence.spring.namespace.NamespaceHandlerTests#shouldInjectBean",
+            "com.oracle.coherence.spring.namespace.NamespaceHandlerTests#shouldInjectOverriddenBean"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/namespace/NamespaceHandlerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.CoherenceExtendTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.CoherenceExtendTests#testBasicGrpcClient"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/CoherenceExtendTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.GrpcSessionBeanTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.GrpcSessionBeanTests#testBasicGrpcClient"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/GrpcSessionBeanTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.GrpcSessionTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.GrpcSessionTests#testBasicGrpcClient"
+          ],
+          "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/GrpcSessionTests.java"
+        }
+      ]
+    },
+    {
+      "path": "coherence-spring-data",
+      "artifact": "coherence-spring-data",
+      "name": "Coherence Spring Data",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.data.query.QueryCreatorTests",
+          "cases": [
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureAfterQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureAndQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureBeforeQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureBetweenQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCaseInsensitiveEndingWithQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCaseInsensitiveLikeQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCaseInsensitiveNotLikeQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCaseInsensitiveStartingWithQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureContainingQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCountQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureCreatesQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureDistinctQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureEmptyQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureEndingWithQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureExistsQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureFalseQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureFirstQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureFirstQueryWithValue",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureGreaterThanEqualQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureGreaterThanQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureInQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureIsNotNullQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureIsNullQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureLessThanEqualQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureLessThanQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureLikeQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureMultipleAndQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureMultipleOrQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNearQueryThrows",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNotContainingQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNotEmptyQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNotInQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNotLikeQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureNotQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureOrQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureOrderedAscQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureOrderedDescQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensurePropertyExpressions",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureRegexQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureSimpleIgnoreCase",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureStartingWithQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureTopQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureTopQueryWithValue",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureTrueQuery",
+            "com.oracle.coherence.spring.data.query.QueryCreatorTests#ensureWithinQueryThrows"
+          ],
+          "source": "coherence-spring-data/src/test/java/com/oracle/coherence/spring/data/query/QueryCreatorTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.data.query.QueryFinderTests",
+          "cases": [
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureAfterFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureBasicFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureBeforeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureBetweenQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseInsensitiveEndingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseInsensitiveLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseInsensitiveNotLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseInsensitiveStartingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseSensitiveEndingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseSensitiveLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseSensitiveNotLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureCaseSensitiveStartingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureContainsFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureDeleteQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureEmptyQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureEndingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureExistsQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureGreaterThanEqualFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureGreaterThanFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureInFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureIsFalseQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureIsTrueQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLessThanEqualFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLessThanFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLimitedAscQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLimitedCustomSort",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureLimitedDescQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureMatchesQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotContainsFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotEmptyQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotInFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotLikeFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotNullQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNotQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureNullQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureOrderedAscQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureOrderedDescQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureSimpleIgnoreCase",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureSimplePageQueryWithPageReturn",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureSimplePageQueryWithSliceReturn",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureStartingWithFinderQuery",
+            "com.oracle.coherence.spring.data.query.QueryFinderTests#ensureStreamingQuery"
+          ],
+          "source": "coherence-spring-data/src/test/java/com/oracle/coherence/spring/data/query/QueryFinderTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverage",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageBigDecimal",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageDouble",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageLong",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureAverageWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureCount",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureCountWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDelete",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAll",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllById",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllByIdNoMatch",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllByIdWithIterable",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllByIdWithNoReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllByIdWithReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithCollection",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithCollectionAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithCollectionAndReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithCollectionNoMatch",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithFilterAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithFilterAndReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithFilterNoMatch",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithIterable",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithStream",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithStreamAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithStreamAndReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteAllWithStreamNoMatch",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDeleteById",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDistinct",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureDistinctFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureExistsById",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureExistsByIdNotFound",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAll",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllById",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllOrdered",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllWithFilterOrdered",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindAllWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindById",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFindByIdNotFound",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureFinderQueries",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithExtractor",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithFilterAndExtractor",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithFilterAndFragment",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithFragment",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithIdAndExtractor",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetAllWithIdsAndFragment",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetMap",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetWithFragment",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGetWithIdAndValueExtractor",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupBy",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithFilterAndRemoteCollector",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithFilterAndSort",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithFilterRemoteCollectorAndMapFactory",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithRemoteCollector",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithRemoteCollectorAndMapFactory",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureGroupByWithSort",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMax",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxBigDecimal",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxBy",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxByWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxDouble",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxLong",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxWithFilterAndRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMaxWithRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMin",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinBigDecimal",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinBy",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinByWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinDouble",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinLong",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinWithFilterAndRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureMinWithRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureRemoteWithNoReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureRemoteWithReturn",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSave",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSaveAllWithIterable",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSaveAllWithStream",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSum",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumBigDecimal",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumDouble",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumLong",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureSumWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTop",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopBy",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopByFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopByWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopByWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureTopWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdate",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateAllWithFilterAndRemoteBiFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateAllWithFilterAndRemoteFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateWithEntityFactory",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateWithIdAndRemoteBiFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateWithIdAndRemoteFunction",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateWithIdRemoteBiFunctionAndEntityFactory",
+            "com.oracle.coherence.spring.data.repository.AsyncRepositoryTests#ensureUpdateWithIdRemoteFunctionAndEntityFactory"
+          ],
+          "source": "coherence-spring-data/src/test/java/com/oracle/coherence/spring/data/repository/AsyncRepositoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.data.repository.ProjectionTests",
+          "cases": [
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureClassBasedProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureDynamicProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureFindAllOrdered",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureInterfaceProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureNestedInterfaceProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureNestedOpenInterfaceProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureOpenRootInterfaceProjection",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureOrderedAscQuery",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureOrderedDescQuery",
+            "com.oracle.coherence.spring.data.repository.ProjectionTests#ensureStartingWithOrder"
+          ],
+          "source": "coherence-spring-data/src/test/java/com/oracle/coherence/spring/data/repository/ProjectionTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.data.repository.RepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverage",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageBigDecimal",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageDouble",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageLong",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureAverageWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureCount",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureCountWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDelete",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAll",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllById",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllByIdNoMatch",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllByIdWithIterable",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllByIdWithNoReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllByIdWithReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithCollection",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithCollectionAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithCollectionAndReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithCollectionNoMatch",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithFilterAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithFilterAndReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithFilterNoMatch",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithIterable",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithStream",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithStreamAndNoReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithStreamAndReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteAllWithStreamNoMatch",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDeleteById",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDistinct",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureDistinctFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureExistsById",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureExistsByIdNotFound",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAll",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllById",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllOrdered",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithFilterOrdered",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithPageable",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindAllWithSort",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindById",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFindByIdNotFound",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureFinderQueries",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithExtractor",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithFilterAndExtractor",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithFilterAndFragment",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithFragment",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithIdAndExtractor",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetAllWithIdsAndFragment",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetMap",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetWithFragment",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGetWithIdAndValueExtractor",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupBy",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithFilterAndRemoteCollector",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithFilterAndSort",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithFilterRemoteCollectorAndMapFactory",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithRemoteCollector",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithRemoteCollectorAndMapFactory",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureGroupByWithSort",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMax",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxBigDecimal",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxBy",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxByWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxDouble",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxLong",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxWithFilterAndRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMaxWithRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMin",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinBigDecimal",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinBy",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinByWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinDouble",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinLong",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinWithFilterAndRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureMinWithRemoteCompareFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureRemoteWithNoReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureRemoteWithReturn",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSave",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSaveAllWithIterable",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSaveAllWithStream",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureStream",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureStreamWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureStreamWithIds",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSum",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumBigDecimal",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumBigDecimalWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumDouble",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumDoubleWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumLong",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumLongWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureSumWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTop",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopBy",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopByFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopByWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopByWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopWithFilterAndRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureTopWithRemoteComparator",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdate",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateAllWithFilter",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateAllWithFilterAndRemoteBiFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateAllWithFilterAndRemoteFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateWithEntityFactory",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateWithIdAndRemoteBiFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateWithIdAndRemoteFunction",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateWithIdRemoteBiFunctionAndEntityFactory",
+            "com.oracle.coherence.spring.data.repository.RepositoryTests#ensureUpdateWithIdRemoteFunctionAndEntityFactory"
+          ],
+          "source": "coherence-spring-data/src/test/java/com/oracle/coherence/spring/data/repository/RepositoryTests.java"
+        }
+      ]
+    },
+    {
+      "path": "coherence-spring-session",
+      "artifact": "coherence-spring-session",
+      "name": "Coherence Spring Session",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.AuthenticationPofSerializerTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.AuthenticationPofSerializerTests#preservesMixedAuthoritiesAndErasedCredentials",
+            "com.oracle.coherence.spring.session.AuthenticationPofSerializerTests#preservesUnauthenticatedState",
+            "com.oracle.coherence.spring.session.AuthenticationPofSerializerTests#readsLegacyUniformAuthoritiesAndAbsentAuthenticationFlag"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/AuthenticationPofSerializerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#addSessionAttributeToSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithoutSaving",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#changeSessionIdAndAddNewAttributeToChangedSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#changeSessionIdOnce",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#changeSessionIdTwice",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#changeSessionIdWhenSessionWasNotSavedYet",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#clearAllSessions",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#createAndDestroyCoherenceSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#createAndUpdateSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContext",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContextAndFindByPrincipal",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#resetMaxInactiveIntervalForActiveSessions",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#resetPreservesExpiredSessionsAndUpdatesCacheExpiry",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#tryToUpdateSessionAfterDeletion",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryTests#verifyCoherenceIndexedSessionRepositoryProperties"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/CoherenceIndexedSessionRepositoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#addSessionAttributeToSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#addSessionAttributeToSessionWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#addSessionAttributeToSessionWithoutSaving",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#changeSessionIdAndAddNewAttributeToChangedSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#changeSessionIdOnce",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#changeSessionIdTwice",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#changeSessionIdWhenSessionWasNotSavedYet",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#clearAllSessions",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#createAndDestroyCoherenceSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#createAndUpdateSession",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#createSessionWithSecurityContext",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#createSessionWithSecurityContextAndFindByPrincipal",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#resetMaxInactiveIntervalForActiveSessions",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#resetPreservesExpiredSessionsAndUpdatesCacheExpiry",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#tryToUpdateSessionAfterDeletion",
+            "com.oracle.coherence.spring.session.CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests#verifyCoherenceIndexedSessionRepositoryProperties"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/CoherenceIndexedSessionRepositoryWithoutEntryProcessorTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.CustomSessionIdGeneratorTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.CustomSessionIdGeneratorTests#createAndDestroyCoherenceSessionAndValidatedSessionId"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/CustomSessionIdGeneratorTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.DefaultSessionEventTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#changeSessionIdTest",
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#deletedSessionTest",
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#expiredSessionTest",
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#saveSessionTest",
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#saveUpdatesTimeToLiveTest",
+            "com.oracle.coherence.spring.session.DefaultSessionEventTests#updateMaxInactiveIntervalTest"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/DefaultSessionEventTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSession",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithoutSaving",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdAndAddNewAttributeToChangedSession",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdOnce",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdTwice",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdWhenSessionWasNotSavedYet",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#clearAllSessions",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#createAndDestroyCoherenceSession",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#createAndUpdateSession",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContext",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContextAndFindByPrincipal",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#resetMaxInactiveIntervalForActiveSessions",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#resetPreservesExpiredSessionsAndUpdatesCacheExpiry",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#tryToUpdateSessionAfterDeletion",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#verifiesRemoteConfiguration",
+            "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#verifyCoherenceIndexedSessionRepositoryProperties"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/ExtendSessionCoherenceIndexedSessionRepositoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.FoobarSessionEventTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#changeSessionIdTest",
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#deletedSessionTest",
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#expiredSessionTest",
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#saveSessionTest",
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#saveUpdatesTimeToLiveTest",
+            "com.oracle.coherence.spring.session.FoobarSessionEventTests#updateMaxInactiveIntervalTest"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/FoobarSessionEventTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSession",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithoutSaving",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdAndAddNewAttributeToChangedSession",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdOnce",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdTwice",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#changeSessionIdWhenSessionWasNotSavedYet",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#clearAllSessions",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#createAndDestroyCoherenceSession",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#createAndUpdateSession",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContext",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContextAndFindByPrincipal",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#resetMaxInactiveIntervalForActiveSessions",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#resetPreservesExpiredSessionsAndUpdatesCacheExpiry",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#tryToUpdateSessionAfterDeletion",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#verifiesRemoteConfiguration",
+            "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#verifyCoherenceIndexedSessionRepositoryProperties"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/GrpcSessionCoherenceIndexedSessionRepositoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSession",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#addSessionAttributeToSessionWithoutSaving",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#changeSessionIdAfterSessionWasSavedWithImmediateFlushMode",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#changeSessionIdAndAddNewAttributeToChangedSession",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#changeSessionIdOnce",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#changeSessionIdTwice",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#changeSessionIdWhenSessionWasNotSavedYet",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#clearAllSessions",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#createAndDestroyCoherenceSession",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#createAndUpdateSession",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContext",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#createSessionWithSecurityContextAndFindByPrincipal",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#resetMaxInactiveIntervalForActiveSessions",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#resetPreservesExpiredSessionsAndUpdatesCacheExpiry",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#tryToUpdateSessionAfterDeletion",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#verifiesRemoteConfiguration",
+            "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#verifyCoherenceIndexedSessionRepositoryProperties"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/PofCoherenceIndexedSessionRepositoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.SessionRejectionEvidenceTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.SessionRejectionEvidenceTests#acceptsTheCompleteReceiverRejection",
+            "com.oracle.coherence.spring.session.SessionRejectionEvidenceTests#excludesStaleAndSubsequentEvents",
+            "com.oracle.coherence.spring.session.SessionRejectionEvidenceTests#rejectsMissingDuplicateAndEmbeddedEvidence",
+            "com.oracle.coherence.spring.session.SessionRejectionEvidenceTests#rejectsOtherRoutesClassesGatesAndReasons"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/SessionRejectionEvidenceTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.session.SessionResetEntryProcessorTests",
+          "cases": [
+            "com.oracle.coherence.spring.session.SessionResetEntryProcessorTests#doesNotReviveExpiredSessions",
+            "com.oracle.coherence.spring.session.SessionResetEntryProcessorTests#ignoresAbsentEntries",
+            "com.oracle.coherence.spring.session.SessionResetEntryProcessorTests#preservesJavaAndPofIntervalsAndExpirySentinels"
+          ],
+          "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/SessionResetEntryProcessorTests.java"
+        }
+      ]
+    },
+    {
+      "path": "coherence-spring-boot-starter",
+      "artifact": "coherence-spring-boot-starter",
+      "name": "Coherence Spring Boot Starter",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.autoconfigure.messaging.CoherencePublisherAutoConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.autoconfigure.messaging.CoherencePublisherAutoConfigurationTests#testPublisherAutoConfiguration",
+            "com.oracle.coherence.spring.boot.autoconfigure.messaging.CoherencePublisherAutoConfigurationTests#testWhenBasePackageConfigured"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/autoconfigure/messaging/CoherencePublisherAutoConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.config.CoherenceConfigDataLoaderTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.config.CoherenceConfigDataLoaderTests#testDataLoader"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/config/CoherenceConfigDataLoaderTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.config.CoherenceGrpcClientTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.config.CoherenceGrpcClientTests#testCoherenceGrpcClient"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/config/CoherenceGrpcClientTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.config.GrpcPropertiesTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.config.GrpcPropertiesTests#testCoherencePropertiesWithSessions",
+            "com.oracle.coherence.spring.boot.config.GrpcPropertiesTests#testThatApplicationContextContainsGrpcSessionConfigurationBean"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/config/GrpcPropertiesTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherencePropertyPrecedenceForSpringEnvironment",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherenceServerDefaultStartupTimeoutIsSet",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherenceServerStartupTimeoutIsSet",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testDefaultCacheManagerExists",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testExistenceOfCoherenceGenericConverter",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testExistenceOfSingleSpringSystemPropertyResolver",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testSpringSystemPropertyResolverForSpringBoot",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testThatNoCacheManagerExists",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testThatYamlConfiguredSessionConfigurationBeanExists",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testUserProvidedCacheManagerExists",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testUserProvidedNonCoherenceCacheManagerExists",
+            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testUserProvidedSessionConfigurationBeanExists"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherenceAutoConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testCacheProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testCoherenceConfiguration",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testCoherenceLoggingProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testCoherencePropertiesWithSessions",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testInstanceProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testNativeCoherenceProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertiesTests#testServerProperties"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherencePropertiesTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherenceSpringFactoryTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringFactoryTests#testPresenceOfCoherenceAutoConfigurationClasses",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringFactoryTests#testPresenceOfConfigDataClasses"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherenceSpringFactoryTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#customCookieSerializerIsUsedBySessionFilter",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#embeddedSessionFilterRegistrationHonorsConfiguredSettings",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#manualSessionConfigurationTakesPrecedence",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#serverSessionTimeoutIsUsedAsFallback",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#sessionRepositoryHonorsCoherenceProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#sessionTimeoutTakesPrecedenceOverServerSessionTimeout",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationBacksOffWithAlternativeStoreType",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationBacksOffWithCustomSessionRepository",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationBacksOffWithEmptyStoreType",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationDisabledWithCoherenceSpringSessionDisabled",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationDisabledWithStoreTypeSetToNone",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationEnabledWithCoherenceSpringSessionEnabled",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationWithUseEntryProcessorFalse",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationWithUseEntryProcessorTrue",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#testAutoConfigurationWithUseEntryProcessorTrueButNotSet",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#warDoesNotUseServerSessionTimeoutAsFallback",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#warSessionFilterRegistrationHonorsConfiguredSettings",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#warSessionTimeoutIsAppliedWithoutServerProperties",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionAutoConfigurationTests#warWithoutSessionTimeoutRetainsRepositoryDefault"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherenceSpringSessionAutoConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffInNonWebApplicationWithServletClassesPresent",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffInReactiveApplicationWithServletClassesPresent",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffWithoutBootSession",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffWithoutBootSessionTimeout",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffWithoutCoherenceSession",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffWithoutServletApi",
+            "com.oracle.coherence.spring.boot.tests.CoherenceSpringSessionOptionalDependenciesTests#backsOffWithoutSpringSession"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherenceSpringSessionOptionalDependenciesTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.cache.CacheAbstractionTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.cache.CacheAbstractionTests#testCacheExpiration"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/cache/CacheAbstractionTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.cache.CacheAbstractionWithPrefixTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.cache.CacheAbstractionWithPrefixTests#testCachePrefix"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/cache/CacheAbstractionWithPrefixTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.data.SpringDataAutoConfigurationTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.data.SpringDataAutoConfigurationTests#autoConfigurationShouldBackOff",
+            "com.oracle.coherence.spring.boot.tests.data.SpringDataAutoConfigurationTests#autoConfigurationShouldBackOffWithRepositoriesDisabledUsingProperty",
+            "com.oracle.coherence.spring.boot.tests.data.SpringDataAutoConfigurationTests#testInitializationOfSpringDataRepository",
+            "com.oracle.coherence.spring.boot.tests.data.SpringDataAutoConfigurationTests#testSpringDataRepositoryAutoConfiguration"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/data/SpringDataAutoConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.event.CoherenceEventListenerTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.event.CoherenceEventListenerTests#testCoherenceEventListener"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/event/CoherenceEventListenerTests.java"
+        }
+      ]
+    },
+    {
+      "path": "coherence-spring-session-boot-starter",
+      "artifact": "coherence-spring-session-boot-starter",
+      "name": "Coherence Spring Session Boot Starter",
+      "suites": []
+    },
+    {
+      "path": "coherence-spring-tests",
+      "artifact": "coherence-spring-tests",
+      "name": "Coherence Spring Integration Tests",
+      "suites": []
+    },
+    {
+      "path": "coherence-spring-docs",
+      "artifact": "coherence-spring-docs",
+      "name": "Coherence Spring Docs",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.boot.mockcache.tests.IsolatedMockCacheTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.boot.mockcache.tests.IsolatedMockCacheTests#readsOrderStatusFromCache"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/boot/mockcache/tests/IsolatedMockCacheTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheBootstrapTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheBootstrapTests#logicalCacheNameCannotResolveCoherenceMap",
+            "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheBootstrapTests#testConfigurationStillDiscoversProductionApplication",
+            "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheBootstrapTests#typeOnlyMockCannotResolveCoherenceMap"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/boot/mockcache/tests/MockCacheBootstrapTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheLifecycleTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.boot.mockcache.tests.MockCacheLifecycleTests#closesAndRecreatesDocumentedContextInSameJvm"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/boot/mockcache/tests/MockCacheLifecycleTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.di.viewtransformer.ViewTransformerTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.di.viewtransformer.ViewTransformerTests#testExtractorBindingAnnotation"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/di/viewtransformer/ViewTransformerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.di.wherefilter.WhereFilterTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.di.wherefilter.WhereFilterTests#testExtractorBindingAnnotation"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/di/wherefilter/WhereFilterTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.extractorbinding.ExtractorBindingTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.extractorbinding.ExtractorBindingTests#testExtractorBindingAnnotation"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/extractorbinding/ExtractorBindingTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.filterbinding.FilterBindingTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.filterbinding.FilterBindingTests#testFilterBindingAnnotation"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/filterbinding/FilterBindingTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.doc.security.FixtureSerializationTests",
+          "cases": [
+            "com.oracle.coherence.spring.doc.security.FixtureSerializationTests#rejectsUnlistedPayloadBeforeItsReadCallback",
+            "com.oracle.coherence.spring.doc.security.FixtureSerializationTests#restoresTheExamplePayloadGraphs"
+          ],
+          "source": "coherence-spring-docs/src/test/java/com/oracle/coherence/spring/doc/security/FixtureSerializationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "coherence-spring-site",
+      "artifact": "coherence-spring-site",
+      "name": "Coherence Spring Website",
+      "suites": []
+    },
+    {
+      "path": "samples",
+      "artifact": "samples",
+      "name": "Coherence Spring Samples",
+      "suites": []
+    },
+    {
+      "path": "samples/cachestore-demo",
+      "artifact": "coherence-spring-cachestore-demo",
+      "name": "Coherence Spring CacheStore Demo - Parent",
+      "suites": []
+    },
+    {
+      "path": "samples/cachestore-demo/coherence-spring-cachestore-demo-core",
+      "artifact": "coherence-spring-cachestore-demo-core",
+      "name": "Coherence Spring CacheStore Demo - Core",
+      "suites": []
+    },
+    {
+      "path": "samples/cachestore-demo/coherence-spring-cachestore-demo-app",
+      "artifact": "coherence-spring-cachestore-demo-app",
+      "name": "Coherence Spring CacheStore Demo - App",
+      "suites": [
+        {
+          "report": "failsafe-reports",
+          "name": "com.oracle.coherence.spring.example.CacheStoreDemoIT",
+          "cases": [
+            "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldCreatePerson",
+            "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldGetPersonInDB",
+            "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldNotGetPersonNotInDB",
+            "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldUpdatePerson"
+          ],
+          "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/CacheStoreDemoIT.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.example.IsSpringUpTests",
+          "cases": [
+            "com.oracle.coherence.spring.example.IsSpringUpTests#preservesFatalFailure",
+            "com.oracle.coherence.spring.example.IsSpringUpTests#preservesManagementFailure",
+            "com.oracle.coherence.spring.example.IsSpringUpTests#waitsForAdminMBeanRegistration",
+            "com.oracle.coherence.spring.example.IsSpringUpTests#waitsForApplicationReadyEvent"
+          ],
+          "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/IsSpringUpTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.example.PersonSerializationTests",
+          "cases": [
+            "com.oracle.coherence.spring.example.PersonSerializationTests#permitsOnlyTheSamplePayloadWithoutExecutablePermission",
+            "com.oracle.coherence.spring.example.PersonSerializationTests#restoresPersonWithoutAdditionalApplicationTypes"
+          ],
+          "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/PersonSerializationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/cachestore-demo/coherence-spring-cachestore-demo-server",
+      "artifact": "coherence-spring-cachestore-demo-server",
+      "name": "Coherence Spring CacheStore Demo - Server",
+      "suites": []
+    },
+    {
+      "path": "samples/circuit-breaker-cache-demo",
+      "artifact": "circuit-breaker-cache-demo-parent",
+      "name": "Circuit Breaker Cache Demo - Parent",
+      "suites": []
+    },
+    {
+      "path": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server",
+      "artifact": "circuit-breaker-cache-demo-server",
+      "name": "Circuit Breaker Cache Demo - Server",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.circuitbreaker.CoherenceServerApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.circuitbreaker.CoherenceServerApplicationTests#contextLoads"
+          ],
+          "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-server/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/CoherenceServerApplicationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app",
+      "artifact": "circuit-breaker-cache-demo-app",
+      "name": "Circuit Breaker Cache Demo - App",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.circuitbreaker.BookControllerTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.circuitbreaker.BookControllerTests#bindsBookIdForRetrievalAndEviction"
+          ],
+          "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/BookControllerTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.circuitbreaker.CircuitBreakerHealthTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.circuitbreaker.CircuitBreakerHealthTests#healthEndpointIncludesCircuitBreakerState"
+          ],
+          "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/CircuitBreakerHealthTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/coherence-spring-cloud-config-demo",
+      "artifact": "coherence-spring-cloud-config-demo-parent",
+      "name": "Coherence Spring Cloud Config Demo - Parent",
+      "suites": []
+    },
+    {
+      "path": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app",
+      "artifact": "coherence-spring-cloud-config-demo-parent-app",
+      "name": "Coherence Spring Cloud Config Demo - App",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.demo.CoherenceAppTests",
+          "cases": [
+            "com.oracle.coherence.spring.demo.CoherenceAppTests#contextLoads"
+          ],
+          "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/CoherenceAppTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.demo.PersonControllerTests",
+          "cases": [
+            "com.oracle.coherence.spring.demo.PersonControllerTests#shouldSerializePeopleAndLazyCollectionsAfterTransactionCloses"
+          ],
+          "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/PersonControllerTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server",
+      "artifact": "coherence-spring-cloud-config-demo-server",
+      "name": "Coherence Spring Cloud Config Demo - Server",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.config.SpringCloudConfigServerTests",
+          "cases": [
+            "com.oracle.coherence.spring.config.SpringCloudConfigServerTests#contextLoads"
+          ],
+          "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/src/test/java/com/oracle/coherence/spring/config/SpringCloudConfigServerTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/coherence-spring-demo",
+      "artifact": "coherence-spring-demo-parent",
+      "name": "Coherence Spring Demo - Parent",
+      "suites": []
+    },
+    {
+      "path": "samples/coherence-spring-demo/coherence-spring-demo-core",
+      "artifact": "coherence-spring-demo-core",
+      "name": "Coherence Spring Demo - Core",
+      "suites": []
+    },
+    {
+      "path": "samples/coherence-spring-demo/coherence-spring-demo-classic",
+      "artifact": "coherence-spring-demo-classic",
+      "name": "Coherence Spring Demo - Classic Spring Framework",
+      "suites": []
+    },
+    {
+      "path": "samples/coherence-spring-demo/coherence-spring-demo-boot",
+      "artifact": "coherence-spring-demo-boot",
+      "name": "Coherence Spring Demo - Spring Boot",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.demo.SpringDemoApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.demo.SpringDemoApplicationTests#contextLoads"
+          ],
+          "source": "samples/coherence-spring-demo/coherence-spring-demo-boot/src/test/java/com/oracle/coherence/spring/demo/SpringDemoApplicationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/hibernate-cache-demo",
+      "artifact": "hibernate-cache-demo",
+      "name": "Hibernate Cache Demo - App",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.hibernate.HibernateApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.hibernate.HibernateApplicationTests#contextLoads"
+          ],
+          "source": "samples/hibernate-cache-demo/src/test/java/com/oracle/coherence/spring/samples/hibernate/HibernateApplicationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/spring-session-demo",
+      "artifact": "spring-session-demo-parent",
+      "name": "Spring Session Demo - Parent",
+      "suites": []
+    },
+    {
+      "path": "samples/spring-session-demo/spring-session-demo-server",
+      "artifact": "spring-session-demo-server",
+      "name": "Spring Session Demo - Server",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.session.CoherenceServerApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.session.CoherenceServerApplicationTests#startsStorageWithoutHttpSessionIntegration"
+          ],
+          "source": "samples/spring-session-demo/spring-session-demo-server/src/test/java/com/oracle/coherence/spring/samples/session/CoherenceServerApplicationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/spring-session-demo/spring-session-demo-app",
+      "artifact": "spring-session-demo-app",
+      "name": "Spring Session Demo - App",
+      "suites": [
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.session.RestTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.session.RestTests#login",
+            "com.oracle.coherence.spring.samples.session.RestTests#shouldReturnDefaultMessage",
+            "com.oracle.coherence.spring.samples.session.RestTests#shouldReturnOk",
+            "com.oracle.coherence.spring.samples.session.RestTests#wrongLogin"
+          ],
+          "source": "samples/spring-session-demo/spring-session-demo-app/src/test/java/com/oracle/coherence/spring/samples/session/RestTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.session.SessionTimeoutTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.session.SessionTimeoutTests#login"
+          ],
+          "source": "samples/spring-session-demo/spring-session-demo-app/src/test/java/com/oracle/coherence/spring/samples/session/SessionTimeoutTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.samples.session.SpringSessionApplicationTests",
+          "cases": [
+            "com.oracle.coherence.spring.samples.session.SpringSessionApplicationTests#starterEnablesCoherenceHttpSessions"
+          ],
+          "source": "samples/spring-session-demo/spring-session-demo-app/src/test/java/com/oracle/coherence/spring/samples/session/SpringSessionApplicationTests.java"
+        }
+      ]
+    },
+    {
+      "path": "samples/spring-session-demo/spring-session-demo-war",
+      "artifact": "spring-session-demo-war",
+      "name": "Spring Session Demo - War",
+      "suites": []
+    }
+  ],
+  "permitted_baseline_skips": [
+    {
+      "module": "coherence-spring-core",
+      "case": "com.oracle.coherence.spring.FixtureSerializationTests#rejectsUnlistedPayloadBeforeItsReadCallback",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-docs",
+      "case": "com.oracle.coherence.spring.doc.security.FixtureSerializationTests#rejectsUnlistedPayloadBeforeItsReadCallback",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.ExtendSessionCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.GrpcSessionCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#rejectsAllowedButUnclassifiedNamedProcessorBeforeInvocation",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "coherence-spring-session",
+      "case": "com.oracle.coherence.spring.session.PofCoherenceIndexedSessionRepositoryTests#rejectsUnlistedSessionAttributeBeforeReadingIt",
+      "message_contains": "securityPolicyAvailable"
+    },
+    {
+      "module": "samples/cachestore-demo/coherence-spring-cachestore-demo-app",
+      "case": "com.oracle.coherence.spring.example.PersonSerializationTests#permitsOnlyTheSamplePayloadWithoutExecutablePermission",
+      "message_contains": "securityPolicyAvailable"
+    }
+  ],
+  "required_cachestore_cases": [
+    "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldGetPersonInDB",
+    "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldCreatePerson",
+    "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldUpdatePerson",
+    "com.oracle.coherence.spring.example.CacheStoreDemoIT#shouldNotGetPersonNotInDB"
+  ],
+  "child_jvms": [
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "CoherenceExtendTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/CoherenceExtendTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "GrpcSessionBeanTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/GrpcSessionBeanTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "GrpcSessionTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-core/src/test/java/com/oracle/coherence/spring/session/GrpcSessionTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "ExtendSessionTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/ExtendSessionCoherenceIndexedSessionRepositoryTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "GrpcSessionCoherenceIndexedSessionRepositoryTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/GrpcSessionCoherenceIndexedSessionRepositoryTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "PofCoherenceIndexedSessionRepositoryTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-session/src/test/java/com/oracle/coherence/spring/session/PofCoherenceIndexedSessionRepositoryTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "CoherenceConfigDataLoaderTests",
+      "count": 1,
+      "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/config/CoherenceConfigDataLoaderTests.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.tangosol.net.Coherence",
+      "cluster": "CoherenceGrpcClientTestsCluster",
+      "count": 1,
+      "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/config/CoherenceGrpcClientTests.java"
+    },
+    {
+      "role": "database",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner org.hsqldb.Server",
+      "cluster": null,
+      "count": 1,
+      "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/CacheStoreDemoIT.java"
+    },
+    {
+      "role": "cachestore",
+      "command": "com.oracle.bedrock.runtime.java.JavaApplicationRunner com.oracle.coherence.spring.example.CacheStoreDemo",
+      "cluster": null,
+      "count": 1,
+      "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/CacheStoreDemoIT.java"
+    }
+  ],
+  "consumers": {
+    "module": "coherence-spring-session-boot-starter",
+    "inventory": "coherence-spring-session-boot-starter/src/it/inventory.properties",
+    "test_class": "consumer.ConsumerIT",
+    "separate_coherence_children": false
+  }
+}

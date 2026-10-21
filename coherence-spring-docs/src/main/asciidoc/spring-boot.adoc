@@ -987,8 +987,10 @@ Coherence Spring also provides support for Spring Session. This includes auto-co
 Coherence-specific configuration properties. Before you continue, please consider reading the chapter
 on <<spring-session.adoc#spring-session, Coherence Spring Session>> first.
 
-In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
-project:
+For a Spring Boot servlet web application, select `coherence-spring-session-boot-starter`. It supplies the general
+Coherence starter, `coherence-spring-session` and Boot's `spring-boot-session`, including `spring-session-core`.
+Keep an explicit Coherence runtime and the application's servlet web dependencies. The following recipes assume
+the Spring Boot parent or BOM manages Boot versions; Security and Actuator remain application choices.
 
 .Add Coherence Spring Session Support
 ====
@@ -998,18 +1000,17 @@ project:
 <dependencies>
     <dependency>
         <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-boot-starter</artifactId>
-        <version>{coherence-spring-version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-session</artifactId>
+        <artifactId>coherence-spring-session-boot-starter</artifactId>
         <version>{coherence-spring-version}</version>
     </dependency>
     <dependency>
         <groupId>com.oracle.coherence.ce</groupId>
         <artifactId>coherence</artifactId>
         <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
 </dependencies>
 ----
@@ -1018,18 +1019,31 @@ project:
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    implementation("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session-boot-starter:{coherence-spring-version}")
     implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
 }
 ----
 ====
 
-Basically, adding the `coherence-spring-session` dependency will activate the `CoherenceSpringSessionAutoConfiguration`
-class. Auto-configuration will back-off in certain situations:
+With these dependencies, Boot discovery activates `CoherenceSpringSessionAutoConfiguration` automatically in a
+servlet web application and creates the Coherence repository and `springSessionRepositoryFilter`. No
+`@EnableCoherenceHttpSession` annotation is required. The general starter alone does not supply Spring Session;
+the old general-starter plus session-library combination also needs Boot Session explicitly. See
+xref:upgrade-5.adoc#upgrade-5-session[the 5.x dependency migration] for the manual combination.
+
+Auto-configuration backs off in these situations:
 
 - Set property `coherence.spring.session.enabled` to `false`
-- Define `spring.session.store-type`. Any value will deactivate auto-configuration.
+- Define `spring.session.store-type`. Any value, including an empty value or `none`, deactivates Coherence's
+  auto-configuration. This property does not install or configure another store by itself.
+- Supply an application-owned `SessionRepository`, including one enabled through `@EnableCoherenceHttpSession`.
+  The application then owns its repository and HTTP-session configuration. A bare repository bean does not create
+  an HTTP filter; configure that explicitly, for example with `@EnableSpringHttpSession` when supplying the repository.
+
+This integration supports servlet applications, including embedded servers and Boot WAR deployments. It does not
+provide reactive WebSession support or enable HTTP sessions in non-web applications. Required Session, Boot Session
+and servlet classes must be present; `coherence.spring.session.enabled=true` cannot supply a missing dependency.
 
 The following Coherence-specific configuration properties are available:
 

@@ -12,8 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration;
 import com.oracle.coherence.spring.boot.autoconfigure.session.CoherenceSpringSessionAutoConfiguration;
 import com.oracle.coherence.spring.session.CoherenceIndexedSessionRepository;
+import com.oracle.coherence.spring.session.config.annotation.web.http.EnableCoherenceHttpSession;
 import com.tangosol.net.Coherence;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -25,12 +27,17 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.web.context.servlet.AnnotationConfigServletWebApplicationContext;
 import org.springframework.boot.web.server.autoconfigure.ServerProperties;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.session.FlushMode;
 import org.springframework.session.MapSession;
 import org.springframework.session.MapSessionRepository;
 import org.springframework.session.SaveMode;
 import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,6 +88,44 @@ public class CoherenceSpringSessionAutoConfigurationTests {
 	void testAutoConfigurationBacksOffWithAlternativeStoreType() {
 		this.warContextRunner.withPropertyValues("spring.session.store-type=redis")
 				.run((context) -> assertThat(context).doesNotHaveBean(CoherenceIndexedSessionRepository.class));
+	}
+
+	@Test
+	void testAutoConfigurationBacksOffWithEmptyStoreType() {
+		this.warContextRunner.withPropertyValues("spring.session.store-type=")
+				.run((context) -> assertThat(context).doesNotHaveBean(CoherenceIndexedSessionRepository.class));
+	}
+
+	@Test
+	void manualSessionConfigurationTakesPrecedence() {
+		this.warContextRunner.withUserConfiguration(ManualSessionConfiguration.class)
+				.withPropertyValues("coherence.spring.session.map-name=ignored-auto-map", "spring.session.timeout=15m")
+				.run((context) -> {
+					assertThat(context).hasSingleBean(SessionRepository.class);
+					assertThat(context).hasSingleBean(SessionRepositoryFilter.class);
+					assertThat(context).doesNotHaveBean(CoherenceSpringSessionAutoConfiguration.class);
+					Session session = context.getBean(CoherenceIndexedSessionRepository.class).createSession();
+					assertThat(session.getMaxInactiveInterval()).isEqualTo(Duration.ofSeconds(123));
+				});
+	}
+
+	@Test
+	void customCookieSerializerIsUsedBySessionFilter() {
+		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+		serializer.setCookieName("CUSTOM_SESSION");
+		serializer.setUseBase64Encoding(false);
+		this.warContextRunner.withBean(CookieSerializer.class, () -> serializer).run((context) -> {
+			SessionRepositoryFilter<?> filter = context.getBean(SessionRepositoryFilter.class);
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			MockHttpServletResponse response = new MockHttpServletResponse();
+			filter.doFilter(request, response,
+					(servletRequest, servletResponse) -> ((HttpServletRequest) servletRequest)
+							.getSession().setAttribute("cookie-test", "stored"));
+			assertThat(response.getCookie("CUSTOM_SESSION")).isNotNull();
+			String sessionId = response.getCookie("CUSTOM_SESSION").getValue();
+			Session session = context.getBean(CoherenceIndexedSessionRepository.class).findById(sessionId);
+			assertThat((String) session.getAttribute("cookie-test")).isEqualTo("stored");
+		});
 	}
 
 	@Test
@@ -218,5 +263,10 @@ public class CoherenceSpringSessionAutoConfigurationTests {
 					assertThat(context.getBean(Coherence.class).getSession().getCache("custom-sessions"))
 							.containsKey(session.getId());
 				});
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@EnableCoherenceHttpSession(cache = "manual-sessions", sessionTimeoutInSeconds = 123)
+	static class ManualSessionConfiguration {
 	}
 }

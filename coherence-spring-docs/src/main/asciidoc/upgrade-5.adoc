@@ -190,9 +190,110 @@ See xref:spring-boot.adoc#spring-boot-metrics[Coherence Metrics] for complete Ma
 [[upgrade-5-session]]
 === Spring Session
 
-Boot 4 moved session auto-configuration into `spring-boot-session`. The 5.x `coherence-spring-boot-starter` includes
-that module as a normal dependency so that applications using the starter retain Coherence-backed HTTP session
-auto-configuration. The standalone `coherence-spring-session` module remains independent of Spring Boot.
+Boot 4 moved session auto-configuration into `spring-boot-session`. Coherence Spring 5.x makes that module and
+`coherence-spring-session` optional dependencies of the general `coherence-spring-boot-starter`. Applications using
+only the general starter no longer receive Spring Session through it. The standalone session library remains
+independent of Spring Boot.
+
+Replace the previous two-artifact Boot session recipe:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-boot-starter</artifactId>
+    <version>${previous-coherence-spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-session</artifactId>
+    <version>${previous-coherence-spring.version}</version>
+</dependency>
+----
+
+with the dedicated starter. Retain an explicit Coherence runtime and the application's servlet web dependencies;
+the following assumes the Boot parent or BOM manages Boot versions:
+
+.Boot servlet session dependencies for 5.x
+====
+.Maven
+[source,xml,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-session-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-session-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+}
+----
+====
+
+The supported manual alternative is to declare all three integration artifacts instead of the new starter,
+alongside the same Coherence and servlet prerequisites:
+
+.Manual Boot session integration
+====
+.Maven
+[source,xml,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-boot-starter</artifactId>
+    <version>{coherence-spring-version}</version>
+</dependency>
+<dependency>
+    <groupId>com.oracle.coherence.spring</groupId>
+    <artifactId>coherence-spring-session</artifactId>
+    <version>{coherence-spring-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-session</artifactId>
+</dependency>
+----
+
+.Gradle
+[source,groovy,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    implementation("org.springframework.boot:spring-boot-session")
+}
+----
+====
+
+The old general-starter plus session-library combination alone no longer guarantees Boot HTTP-session activation.
+It can start successfully without a Coherence session repository or HTTP filter. Setting
+`coherence.spring.session.enabled=true` does not supply missing dependencies. After migration, verify the actual
+`CoherenceIndexedSessionRepository` and `springSessionRepositoryFilter`, and exercise successive HTTP requests
+using the same cookie with state stored in Coherence. Successful startup alone is insufficient.
+
+Automatic integration supports servlet web applications, including Boot WARs; it does not provide reactive
+WebSession support or enable HTTP sessions in a non-web application. Standalone Spring applications and storage
+nodes can keep the session library without adding the new starter. See
+xref:spring-boot.adoc#spring-boot-sessions[Spring Boot Session Support] and
+xref:spring-session.adoc#spring-session-introduction[standalone configuration and storage dependencies].
 
 Coherence session timeouts use Boot's `SessionTimeout` provider, available since Boot 4.0.1. For embedded servlet
 applications, `spring.session.timeout` takes precedence over `server.servlet.session.timeout`. For WAR deployments
@@ -203,10 +304,72 @@ bean is not required for WAR session auto-configuration.
 The existing back-off controls remain valid:
 
 * Set `coherence.spring.session.enabled=false` to disable Coherence Spring Session auto-configuration.
-* Set `spring.session.store-type` when another session store owns auto-configuration.
+* Define `spring.session.store-type` to opt out of Coherence's auto-configuration. Any value, including `none` or
+  an empty value, disables it; this does not install or configure another store.
+* Supply an application-owned `SessionRepository`. Coherence backs off; the application owns the repository
+  and HTTP-session enabling. A bare repository bean does not create the HTTP filter. For a supplied repository,
+  configure that explicitly, for example with `@EnableSpringHttpSession`.
 
-If the application excludes starter dependencies or assembles Boot modules directly, ensure that `spring-boot-session`
-is present at runtime.
+If the application excludes starter dependencies or assembles Boot modules directly, verify that all three
+integration artifacts and their required servlet/Session classes are present at runtime.
+
+==== POF registrations
+
+Existing applications using POF for sessions must extend their application-owned POF configuration for the operations
+and authentication payloads they use:
+
+* Register `com.oracle.coherence.spring.session.SessionResetEntryProcessor` when calling
+  `CoherenceIndexedSessionRepository.resetMaxInactiveIntervalForActiveSessions()`. The method sends this processor to
+  reset active sessions' inactivity intervals and cache expiry, independently of `use-entry-processor` /
+  `useEntryProcessor`. Setting that option to `false` changes ordinary session updates; it does not avoid this registration.
+* Register `org.springframework.security.core.authority.FactorGrantedAuthority` with
+  `com.oracle.coherence.spring.session.serialization.pof.FactorGrantedAuthorityPofSerializer` when authentication graphs
+  contain Spring Security 7 factor authorities. Without this mapping, saving or transporting such a graph with POF fails;
+  this can affect login and subsequent session access. The serializer preserves both the authority and its issuance time.
+
+See xref:spring-session.adoc#spring-session-pof[POF Serialization] for the complete configuration and operation table.
+The example IDs `4001` (reset processor) and `3003` (factor authority) are illustrative, not reserved. Select unused IDs
+and preserve all existing type-ID mappings while stored or persisted data depends on them. Deploy compatible mappings,
+registered classes and serializer implementations to every application client and Coherence server that serializes,
+deserializes or executes the affected objects. POF registration does not deploy those classes to remote endpoints.
+Applications using Java serialization do not need these POF registrations, but receiving endpoints still need compatible
+classes for their session graphs and repository operations.
+
+==== Serialization compatibility and cut-over
+
+Mixed Coherence Spring 4.x/5.x access to a session cache has not been qualified. Compatibility depends on the serializer,
+the actual session attribute and authentication graph, and the classes and registrations available at each endpoint.
+One concrete incompatibility is a 5.x authentication graph containing `FactorGrantedAuthority`: a stock 4.x application
+using Spring Security 6 lacks that class and, for POF, its mapping and serializer. It cannot read that graph.
+
+The 5.x `AuthenticationPofSerializer`, specific to `UsernamePasswordAuthenticationToken`, has regression coverage for
+reading the legacy POF token format with uniform `SimpleGrantedAuthority` values and no authentication-state field.
+Such legacy data retains its historical authenticated state because the old format did not record that state.
+This demonstrates new-reader support for that legacy format; it does not establish old-reader compatibility with new
+data, compatibility for arbitrary session graphs, or a safe mixed-version rolling upgrade or rollback.
+
+Before reusing an existing session cache, validate the application's actual stored graphs, serializers and endpoint
+registrations, and coordinate a cut-over that stops 4.x access before 5.x writes sessions. If compatibility cannot be
+established, use an isolated session cache for 5.x (for example, set `coherence.spring.session.map-name` in Boot or the
+`cache` attribute of `@EnableCoherenceHttpSession` to a different name) and require users to authenticate again. Ensure
+requests and session cookies are routed to the intended deployment. Do not assume automatic data conversion or safe
+rollback after 5.x has written sessions. Plan and validate rollback separately, including what happens to those sessions.
+
+==== Hardened Coherence serialization
+
+The project's default Coherence dependency remains 26.04; the hardened-serialization evidence described here concerns
+Coherence 26.10 snapshots. On versions enforcing that policy, the Session JAR's permissions do
+not cover arbitrary application-selected session attributes, principals or authentication details. Supply exact
+application-owned `META-INF/coherence/security-config.xml` metadata for the required classes on the relevant receiving
+endpoints. POF registrations and security permissions serve separate purposes; hardened POF deployments require both.
+
+Follow xref:spring-session.adoc#spring-session-hardened-serialization[Hardened serialization and execution] for the
+supported library graph and policy limits. The xref:spring-session.adoc#spring-session-sample[Spring Session samples]
+provide separate app and server policies in the `spring-session-demo-app` and `spring-session-demo-server` modules at
+`src/main/resources/META-INF/coherence/security-config.xml`. Each permits the chosen
+`org.springframework.security.core.userdetails.User`, its `User$AuthorityComparator` (needed for Java serialization),
+and `org.springframework.security.web.authentication.WebAuthenticationDetails`. These are examples for that concrete
+graph; applications must review their own graph and supply any additional POF serializers and registrations it requires.
 
 [[upgrade-5-resilience4j]]
 === Resilience4j
