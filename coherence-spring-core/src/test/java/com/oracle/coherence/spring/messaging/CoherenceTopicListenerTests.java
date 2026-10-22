@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2023 Oracle and/or its affiliates.
+ * Copyright (c) 2021, 2026 Oracle and/or its affiliates.
  *
  * Licensed under the Universal Permissive License v 1.0 as shown at
  * https://oss.oracle.com/licenses/upl.
@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -49,7 +50,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * Topic listener integration tests with bounded service worker pools.
+ */
 @SpringJUnitConfig(CoherenceTopicListenerTests.Config.class)
+@TestPropertySource(properties = {
+		"coherence.distributed.threads.min=1",
+		"coherence.distributed.threads.max=8"
+})
 @DirtiesContext
 class CoherenceTopicListenerTests {
 
