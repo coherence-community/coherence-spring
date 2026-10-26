@@ -255,8 +255,8 @@ class RuntimeEvidenceTests(unittest.TestCase):
     def test_source_harness_uses_actual_jdk17_and_21_launcher_command(self):
         inv = json.loads(full_reactor.INVENTORY.read_text())
         source = Path('/source')
-        rows = [{'pid': i, 'properties': {'sun.java.command': child['command'], 'coherence.cluster': child['cluster']}}
-                for i, child in enumerate(inv['child_jvms'])]
+        rows = [{'pid': i, 'properties': {'sun.java.command': child['command'], 'coherence.cluster': child['cluster_prefix'] + 'fixture' if child.get('cluster_prefix') else child['cluster']}}
+                for i, child in enumerate(child for child in inv['child_jvms'] for _ in range(child['count']))]
         rows += [{'pid': 100, 'properties': {'sun.java.command': 'org.codehaus.plexus.classworlds.launcher.Launcher verify',
                                            'user.dir': str(source)}},
                  {'pid': 101, 'properties': {'sun.java.command': 'jdk.compiler/com.sun.tools.javac.launcher.Main '
@@ -273,8 +273,8 @@ class RuntimeEvidenceTests(unittest.TestCase):
     def test_xml_cannot_substitute_for_missing_child_or_unknown_jvm(self):
         inv = json.loads(full_reactor.INVENTORY.read_text())
         source = Path('/source')
-        rows = [{'pid': i, 'properties': {'sun.java.command': child['command'], 'coherence.cluster': child['cluster']}}
-                for i, child in enumerate(inv['child_jvms'])]
+        rows = [{'pid': i, 'properties': {'sun.java.command': child['command'], 'coherence.cluster': child['cluster_prefix'] + 'fixture' if child.get('cluster_prefix') else child['cluster']}}
+                for i, child in enumerate(child for child in inv['child_jvms'] for _ in range(child['count']))]
         rows.append({'pid': 100, 'properties': {'sun.java.command': 'org.codehaus.plexus.classworlds.launcher.Launcher verify',
                                               'user.dir': str(source)}})
         issues = []
@@ -282,7 +282,7 @@ class RuntimeEvidenceTests(unittest.TestCase):
         self.assertEqual(issues, [])
         issues = []
         full_reactor.audit_runtime(rows[1:], inv, source, lambda *_: None, issues)
-        self.assertTrue(any('all nine' in i for i in issues))
+        self.assertTrue(any('every inventoried child JVM' in i for i in issues))
         rows.append({'pid': 101, 'properties': {'sun.java.command': 'unknown.Application'}})
         issues = []
         full_reactor.audit_runtime(rows, inv, source, lambda *_: None, issues)

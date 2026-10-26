@@ -25,6 +25,22 @@ PROPERTIES = {'java.version', 'java.runtime.version', 'java.specification.versio
               'spring.application.admin.enabled', 'server.port', 'user.dir', 'consumer.fixture'}
 
 
+def manifest_launcher(command):
+    """Capture ephemeral Surefire launcher identity while its JVM is alive."""
+    match = re.match(r'^(.*[/\\]target[/\\]surefire[/\\]surefirebooter-[^/\\ ]+\.jar)(?: |$)', command)
+    if not match:
+        return None
+    path = Path(match[1])
+    try:
+        with zipfile.ZipFile(path) as archive:
+            manifest = archive.read('META-INF/MANIFEST.MF').decode('utf-8')
+        main = re.search(r'^Main-Class: (.+)\r?$', manifest, re.MULTILINE)
+        return {'path': str(path), 'sha256': digest(path),
+                'main_class': main[1].strip() if main else None}
+    except (OSError, KeyError, ValueError, zipfile.BadZipFile):
+        return None
+
+
 def observe(parent, stop, output, env):
     seen, rows = set(), []
     jcmd = str(Path(env['JAVA_HOME']) / 'bin/jcmd')
@@ -48,7 +64,8 @@ def observe(parent, stop, output, env):
                     props = dict(line.split('=', 1) for line in text.splitlines()
                                  if '=' in line and line.split('=', 1)[0] in PROPERTIES)
                     if 'java.version' in props:
-                        rows.append({'pid': pid, 'ppid': processes[pid][0], 'properties': props})
+                        rows.append({'pid': pid, 'ppid': processes[pid][0], 'properties': props,
+                                     'manifest_launcher': manifest_launcher(props.get('sun.java.command', ''))})
                         seen.add(pid)
                         output.write_text(json.dumps(rows, indent=2))
                 except (OSError, subprocess.SubprocessError):
@@ -78,12 +95,16 @@ def audit_runtime(rows, inventory, source, properties, issues):
     runtime, children = [], collections.Counter()
     roles = inventory['child_jvms']
     fixtures = source / inventory['consumers']['module'] / 'target/it'
+    booter_directories = {source / m['path'] / 'target/surefire' for m in inventory.get('modules', [])}
+    booter_directories |= {fixtures / p.parent.name / 'target/surefire'
+                          for p in (source / inventory['consumers']['module'] / 'src/it').glob('*/pom.xml')}
     pids = set()
     for row in rows:
         props = row['properties']
         command = props.get('sun.java.command', '')
         matches = [r for r in roles if (command == r['command'] or command.startswith(r['command'] + ' '))
-                   and props.get('coherence.cluster') == r['cluster']]
+                   and ((props.get('coherence.cluster') or '').startswith(r['cluster_prefix'])
+                        if r.get('cluster_prefix') else props.get('coherence.cluster') == r['cluster'])]
         if len(matches) == 1:
             matched = matches[0]
             role = matched['role']
@@ -92,6 +113,12 @@ def audit_runtime(rows, inventory, source, properties, issues):
             cwd = Path(props.get('user.dir', '')).resolve()
             role = 'maven' if cwd == source else 'consumer-maven' if cwd.parent == fixtures else 'unknown'
         elif command.startswith('org.apache.maven.surefire.booter.ForkedBooter '):
+            role = 'consumer-fork' if props.get('consumer.fixture') else 'fork'
+        elif (row.get('manifest_launcher')
+              and row['manifest_launcher'].get('main_class') == 'org.apache.maven.surefire.booter.ForkedBooter'
+              and re.fullmatch(r'[0-9a-f]{64}', row['manifest_launcher'].get('sha256', ''))
+              and Path(row['manifest_launcher']['path']).parent in booter_directories
+              and command.startswith(row['manifest_launcher']['path'] + ' ')):
             role = 'consumer-fork' if props.get('consumer.fixture') else 'fork'
         elif command.startswith('jdk.compiler/com.sun.tools.javac.launcher.Main '
                                 + str(source / inventory['consumers']['module'] / 'src/it/harness/ConsumerHarness.java') + ' '):
@@ -107,7 +134,7 @@ def audit_runtime(rows, inventory, source, properties, issues):
         runtime.append(dict(row, role=role))
     wanted = collections.Counter({(r['role'], r['command'], r['cluster']): r['count'] for r in roles})
     if children != wanted:
-        issues.append('Actual property evidence for all nine Coherence children and database is required: '
+        issues.append('Actual property evidence for every inventoried child JVM is required: '
                       f'missing={list((wanted - children).elements())}, extra={list((children - wanted).elements())}')
     if not any(r['role'] == 'maven' for r in runtime):
         issues.append('Maven JVM evidence is missing')
