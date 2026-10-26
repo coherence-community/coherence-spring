@@ -15,6 +15,65 @@ import full_reactor
 
 
 class SnapshotCiTests(unittest.TestCase):
+    def test_manifest_forks_require_observed_main_class_and_reviewed_module_path(self):
+        with tempfile.TemporaryDirectory(prefix='manifest-fork-') as temporary:
+            source = Path(temporary).resolve() / 'source with spaces'
+            jar = source / 'sample/target/surefire/surefirebooter-test.jar'
+            jar.parent.mkdir(parents=True)
+            command = str(jar) + ' arguments'
+            inventory = {'modules': [{'path': 'sample'}], 'child_jvms': [], 'consumers': {'module': 'consumer'}}
+            maven = {'pid': 1, 'properties': {'sun.java.command': 'org.codehaus.plexus.classworlds.launcher.Launcher verify',
+                                            'user.dir': str(source)}}
+            for main, valid in [('org.apache.maven.surefire.booter.ForkedBooter', True), ('unrelated.Main', False)]:
+                with zipfile.ZipFile(jar, 'w') as archive:
+                    archive.writestr('META-INF/MANIFEST.MF', 'Manifest-Version: 1.0\r\nMain-Class: ' + main + '\r\n')
+                evidence = full_reactor.manifest_launcher(command)
+                self.assertEqual(evidence['sha256'], artifacts.digest(jar))
+                row = {'pid': 2, 'properties': {'sun.java.command': command}, 'manifest_launcher': evidence}
+                issues = []
+                runtime = full_reactor.audit_runtime([maven, row], inventory, source, lambda *args: None, issues)
+                self.assertEqual(runtime[1]['role'], 'fork' if valid else 'unknown')
+                self.assertEqual(bool(issues), not valid)
+            row['manifest_launcher']['main_class'] = 'org.apache.maven.surefire.booter.ForkedBooter'
+            for change in [dict(path=str(source / 'unreviewed/target/surefire/surefirebooter-test.jar')),
+                           dict(sha256=''), dict(main_class=None)]:
+                with self.subTest(change=change):
+                    bad = dict(row, manifest_launcher=dict(row['manifest_launcher'], **change))
+                    if 'path' in change:
+                        bad['properties'] = {'sun.java.command': change['path'] + ' arguments'}
+                    issues = []
+                    full_reactor.audit_runtime([maven, bad], inventory, source, lambda *args: None, issues)
+                    self.assertTrue(issues)
+            jar.unlink()
+            self.assertIsNone(full_reactor.manifest_launcher(command))
+
+    def test_sample_children_require_exact_command_cluster_prefix_and_counts(self):
+        role = {'role': 'sample-cache-app', 'command': 'sample.Probe app', 'cluster': None,
+                'cluster_prefix': 'SampleCacheIT-', 'count': 1}
+        inventory = {'child_jvms': [role], 'consumers': {'module': 'consumer'}}
+        maven = {'pid': 1, 'properties': {'sun.java.command': 'org.codehaus.plexus.classworlds.launcher.Launcher verify',
+                                        'user.dir': '/source'}}
+        child = {'pid': 2, 'properties': {'sun.java.command': 'sample.Probe app production',
+                                        'coherence.cluster': 'SampleCacheIT-unique'}}
+        issues = []
+        observed = []
+        full_reactor.audit_runtime([maven, child], inventory, Path('/source'),
+                                   lambda props, origin: observed.append(origin), issues)
+        self.assertEqual(issues, [])
+        self.assertEqual(observed, ['maven:1', 'sample-cache-app:2'])
+        for command, cluster in [('sample.Probe appOther', 'SampleCacheIT-unique'),
+                                 ('sample.Probe app', 'SampleCacheITOther-unique'),
+                                 ('sample.Probe app', ''), ('sample.Probe app', None)]:
+            with self.subTest(command=command, cluster=cluster):
+                bad = {'pid': 2, 'properties': {'sun.java.command': command, 'coherence.cluster': cluster}}
+                issues = []
+                full_reactor.audit_runtime([maven, bad], inventory, Path('/source'), lambda *args: None, issues)
+                self.assertTrue(any('Unclassified Java process' in issue for issue in issues))
+                self.assertTrue(any('every inventoried child JVM' in issue for issue in issues))
+        issues = []
+        full_reactor.audit_runtime([maven], inventory, Path('/source'), lambda *args: None, issues)
+        self.assertTrue(any('every inventoried child JVM' in issue for issue in issues))
+
     def invoke(self, lane, java, extra=()):
         temporary = tempfile.TemporaryDirectory(prefix='snapshot-ci-test-')
         self.addCleanup(temporary.cleanup)

@@ -1367,6 +1367,14 @@
             "com.oracle.coherence.spring.demo.PersonControllerTests#shouldSerializePeopleAndLazyCollectionsAfterTransactionCloses"
           ],
           "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/PersonControllerTests.java"
+        },
+        {
+          "report": "failsafe-reports",
+          "name": "com.oracle.coherence.spring.demo.CloudConfigCacheIT",
+          "cases": [
+            "com.oracle.coherence.spring.demo.CloudConfigCacheIT#readsEventCacheAndChecksEachPermissionWithLocalConfiguration"
+          ],
+          "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/CloudConfigCacheIT.java"
         }
       ]
     },
@@ -1618,6 +1626,29 @@
       "cluster": null,
       "count": 1,
       "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/CacheStoreDemoIT.java"
+    },
+    {
+      "role": "sample-cache-storage",
+      "command": "com.oracle.coherence.spring.samples.cacheprobe.CloudConfigCacheProbe storage",
+      "cluster": null,
+      "cluster_prefix": "CloudConfigCacheIT-",
+      "count": 5,
+      "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/CloudConfigCacheIT.java"
+    },
+    {
+      "role": "sample-cache-app",
+      "command": "com.oracle.coherence.spring.samples.cacheprobe.CloudConfigCacheProbe app",
+      "cluster": null,
+      "cluster_prefix": "CloudConfigCacheIT-",
+      "count": 5,
+      "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/CloudConfigCacheIT.java"
+    },
+    {
+      "role": "sample-config-server",
+      "command": "com.oracle.coherence.spring.config.SpringCloudConfigServer",
+      "cluster": null,
+      "count": 1,
+      "source": "samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/src/test/java/com/oracle/coherence/spring/demo/CloudConfigCacheIT.java"
     }
   ],
   "consumers": {

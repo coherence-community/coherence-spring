@@ -65,10 +65,46 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Build the packaged fixture before this app's integration test, without
+		     adding the server or its dependencies to the application classpath. -->
+		<dependency>
+			<groupId>com.oracle.coherence.spring</groupId>
+			<artifactId>coherence-spring-cloud-config-demo-server</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+					<failIfNoTests>true</failIfNoTests>
+					<systemPropertyVariables>
+						<sample.app.archive>${project.build.directory}/${project.build.finalName}.jar</sample.app.archive>
+						<sample.config.archive>${project.basedir}/../coherence-spring-cloud-config-demo-server/target/coherence-spring-cloud-config-demo-server-${project.version}.jar</sample.config.archive>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

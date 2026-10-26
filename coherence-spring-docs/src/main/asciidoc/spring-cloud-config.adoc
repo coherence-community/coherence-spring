@@ -137,6 +137,19 @@ For more options please see the following three chapters in the official Oracle 
 - {oracle-coherence-docs}develop-applications/system-property-overrides.html[System Property Overrides]
 - {oracle-coherence-docs}manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
 
+The sample's `EventService` uses Spring's `events` cache; `PersonService` reads the
+database. Its default configuration does not enable Hibernate second-level/query
+caching or select the shipped Hibernate-oriented XML. The app packages exact,
+non-executable payload metadata for `Event`, the two Hibernate persistent-set
+classes observed in the cached creation result, and the JDBC `java.sql.Timestamp`
+that can populate its date field after a database reload. See the sample README for the
+packaged `CloudConfigCacheIT`, its isolated Config Server fixture and per-permission
+negative controls. The shared compiler retains production parameter names for
+the named cache key `#id` and implicit controller argument names. The integration
+check requires annotated service and HTTP cache hits with zero SQL after a
+controlled database change, plus eviction and database reload through both paths.
+It does not qualify arbitrary populated association graphs.
+
 [[spring-cloud-config-demo-how-to-run]]
 === Run the Demo Application
 
