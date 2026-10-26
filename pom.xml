@@ -336,7 +336,7 @@
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
-                        <testCompilerArgument>-parameters</testCompilerArgument>
+						<parameters>true</parameters>
 						<showDeprecation>true</showDeprecation>
 					</configuration>
 				</plugin>
