@@ -1,59 +1,48 @@
 = Coherence Spring Cloud Config Demo
 
-The configuration server supplies Spring properties. The application uses the
-Coherence Spring `events` cache through `DefaultEventService`'s Spring cache
-annotations. `PersonService` reads the database. The shipped
-`spring-coherence-cache-config.xml` is not selected by the sample's default
-configuration; neither the Hibernate second-level cache nor the query cache is
-enabled. The active events service is `PartitionedCache`, using Java serialization.
+Spring Cloud Config Server supplies the application properties.
+`DefaultEventService` stores `Event` objects in the Coherence `events` cache through Spring cache annotations.
+`PersonService` reads the database directly.
 
-The application's production `META-INF/coherence/security-config.xml` permits
-exactly `Event`, `org.hibernate.collection.spi.PersistentSet`, its serializable
-superclass `org.hibernate.collection.spi.AbstractPersistentCollection` and
-`java.sql.Timestamp` as non-executable payloads. The two collection types belong
-to Hibernate ORM: the actual `@CachePut` result contains an ORM-managed participants
-set. After eviction, loading the Event from the database can populate its declared
-`java.util.Date` field with a JDBC `java.sql.Timestamp`. These grants apply
-only where this sample artifact is loaded. They do not grant `Person`, packages,
-entry processors or general Hibernate cache-provider permissions. The exercised
-creation flow has an empty participants set; arbitrary populated association
-graphs are not covered by these grants.
+== Run the tests
 
-Run the packaged integration regression from the repository root:
+The defaults are Java 17 and Coherence 26.04.
+From the repository root, run:
 
 [source,shell]
 ----
 ./mvnw -Pjdk17 -pl :coherence-spring-cloud-config-demo-parent-app -am verify
 ----
 
-`CloudConfigCacheIT` uses the packaged configuration server with an authenticated,
-local native fixture. No Git repository is cloned or modified. A disposable copy
-of the packaged client YAML changes only the Config Server URL, and a loaded
-property must reach the actual Coherence member. Five fresh storage/app pairs
-exercise the production policy and remove each of its four permissions in turn.
-Child classpaths contain production archive resources/dependencies, only the probe
-classes and AssertJ; test policies cannot supply missing grants. The test checks
-archive-root policy bytes against main resources, rejects an unrelated payload
-and `Person` under hardening, and verifies none of the four types is executable.
-The Timestamp negative must pass the creation-cache reads and database reload,
-then reject the reloaded Event on its next cache read.
+For hardened snapshot tests, use Java 21 and a separate Maven repository without inherited Coherence snapshots.
+Keep `-Pjdk17` for Java 17 bytecode.
+Add `-U -Dcoherence.version=26.10-SNAPSHOT -Dcoherence.security.mode=hardened` to the command.
 
-After a controlled JDBC change, the test reads the actual `@CachePut` result
-through Spring CacheManager, the annotated `EventService.getEvent` method and
-`GET /api/events/{id}`. Successful cache reads must return the cached title with
-zero Hibernate SQL; the direct and service reads also require a distinct object
-identity. Service eviction and `DELETE /api/events/{id}` must each remove the
-entry. The next service or HTTP read must load the changed database value with
-SQL, and subsequent cache hits must execute zero SQL. Person reads must observe
-a database change. Logs and commands are in `target/cloud-config-cache-paths/`.
+== Cache permissions
 
-The shared compiler configuration retains parameter names in production and test
-classes. This supports the named cache key `#id` and the controller's unnamed
-`@PathVariable` arguments. The regression requires successful annotated and HTTP
-reads; it does not accept a missing-parameter-name error. The `addPersonToEvent`
-service remains a stub, and populated association graphs remain outside this test.
+The `events` cache uses `PartitionedCache` and Java serialization.
+The default configuration does not enable Hibernate second-level or query caching.
 
-The default remains Java 17 and Coherence 26.04. For hardened snapshot validation,
-use Java 21, an isolated Maven repository excluding inherited Coherence snapshots,
-and add `-U -Dcoherence.version=26.10-SNAPSHOT -Dcoherence.security.mode=hardened`
-to the command. Keep `-Pjdk17` for Java 17 bytecode.
+The application's `META-INF/coherence/security-config.xml` permits these data classes:
+
+* `com.oracle.coherence.spring.demo.model.Event`
+* `org.hibernate.collection.spi.PersistentSet`
+* `org.hibernate.collection.spi.AbstractPersistentCollection`
+* `java.sql.Timestamp`
+
+The Hibernate collection classes support the participants set.
+Database reads can return `java.sql.Timestamp` values for the event date.
+These permissions apply only where the sample artifact is loaded.
+They do not permit class execution, `Person`, or general Hibernate cache-provider operations.
+
+== Test coverage
+
+`CloudConfigCacheIT` starts the packaged Config Server with local test data.
+It checks service and HTTP cache hits, eviction, and database reloads.
+Cache hits must run no SQL.
+In hardened mode, it also checks rejection when each permission is removed.
+Find the test logs and commands in `target/cloud-config-cache-paths/`.
+
+The test uses events with no participants.
+It does not cover populated association graphs.
+The `addPersonToEvent` service remains a stub.
