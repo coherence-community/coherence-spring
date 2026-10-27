@@ -1338,6 +1338,14 @@
             "com.oracle.coherence.spring.samples.circuitbreaker.CircuitBreakerHealthTests#healthEndpointIncludesCircuitBreakerState"
           ],
           "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/CircuitBreakerHealthTests.java"
+        },
+        {
+          "report": "failsafe-reports",
+          "name": "com.oracle.coherence.spring.samples.circuitbreaker.BookCacheIT",
+          "cases": [
+            "com.oracle.coherence.spring.samples.circuitbreaker.BookCacheIT#readsPopulatedBookGraphsAndExposesMissingPermissionFallback"
+          ],
+          "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/BookCacheIT.java"
         }
       ]
     },
@@ -1626,6 +1634,20 @@
       "cluster": null,
       "count": 1,
       "source": "samples/cachestore-demo/coherence-spring-cachestore-demo-app/src/test/java/com/oracle/coherence/spring/example/CacheStoreDemoIT.java"
+    },
+    {
+      "role": "coherence",
+      "command": "com.tangosol.net.Coherence",
+      "cluster": "CircuitBreakerBookCacheIT",
+      "count": 2,
+      "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/BookCacheIT.java"
+    },
+    {
+      "role": "circuit-breaker-app",
+      "command": "com.oracle.coherence.spring.samples.cachetesting.BookCacheProbe",
+      "cluster": "CircuitBreakerBookCacheIT",
+      "count": 2,
+      "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/BookCacheIT.java"
     },
     {
       "role": "sample-cache-storage",

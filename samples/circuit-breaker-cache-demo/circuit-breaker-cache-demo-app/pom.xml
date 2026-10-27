@@ -89,6 +89,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Keep compiled main classes visible after Boot repackaging. -->
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+					<failIfNoTests>true</failIfNoTests>
+					<systemPropertyVariables>
+						<book.app.archive>${project.build.directory}/${project.build.finalName}.jar</book.app.archive>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>
