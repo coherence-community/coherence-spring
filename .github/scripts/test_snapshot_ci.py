@@ -47,6 +47,23 @@ class SnapshotCiTests(unittest.TestCase):
             jar.unlink()
             self.assertIsNone(full_reactor.manifest_launcher(command))
 
+    def invoke(self, lane, java, extra=()):
+        temporary = tempfile.TemporaryDirectory(prefix='snapshot-ci-test-')
+        self.addCleanup(temporary.cleanup)
+        output = Path(temporary.name) / 'output'
+        process = MagicMock(pid=123, stdout=iter(()))
+        process.wait.return_value = 0
+        with patch.dict(os.environ, {'JAVA_HOME': '/test/jdk', 'JAVA_TOOL_OPTIONS': '-Dcoherence.security.mode=compatibility'}), \
+                patch('sys.argv', ['full_reactor.py', '--lane', lane, '--output', str(output), *extra]), \
+                patch.object(full_reactor.subprocess, 'check_output', return_value=f'java.specification.version = {java}\n'), \
+                patch.object(full_reactor.subprocess, 'Popen', return_value=process) as launch, \
+                patch.object(full_reactor.threading, 'Thread'), \
+                patch.object(full_reactor, 'audit', return_value=False):
+            self.assertEqual(full_reactor.main(), 0)
+            self.invocation = json.loads((output / 'invocation.json').read_text())
+            return launch.call_args
+
+
     def test_sample_children_require_exact_command_cluster_prefix_and_counts(self):
         role = {'role': 'sample-cache-app', 'command': 'sample.Probe app', 'cluster': None,
                 'cluster_prefix': 'SampleCacheIT-', 'count': 1}
@@ -74,21 +91,6 @@ class SnapshotCiTests(unittest.TestCase):
         full_reactor.audit_runtime([maven], inventory, Path('/source'), lambda *args: None, issues)
         self.assertTrue(any('every inventoried child JVM' in issue for issue in issues))
 
-    def invoke(self, lane, java, extra=()):
-        temporary = tempfile.TemporaryDirectory(prefix='snapshot-ci-test-')
-        self.addCleanup(temporary.cleanup)
-        output = Path(temporary.name) / 'output'
-        process = MagicMock(pid=123, stdout=iter(()))
-        process.wait.return_value = 0
-        with patch.dict(os.environ, {'JAVA_HOME': '/test/jdk', 'JAVA_TOOL_OPTIONS': '-Dcoherence.security.mode=compatibility'}), \
-                patch('sys.argv', ['full_reactor.py', '--lane', lane, '--output', str(output), *extra]), \
-                patch.object(full_reactor.subprocess, 'check_output', return_value=f'java.specification.version = {java}\n'), \
-                patch.object(full_reactor.subprocess, 'Popen', return_value=process) as launch, \
-                patch.object(full_reactor.threading, 'Thread'), \
-                patch.object(full_reactor, 'audit', return_value=False):
-            self.assertEqual(full_reactor.main(), 0)
-            return launch.call_args
-
     def test_snapshot_refreshes_and_propagates_hardening(self):
         call = self.invoke('snapshot', '21')
         command, env = call.args[0], call.kwargs['env']
@@ -99,6 +101,7 @@ class SnapshotCiTests(unittest.TestCase):
         self.assertIn('-Dmaven.test.failure.ignore=false', command)
         self.assertEqual(env['JAVA_TOOL_OPTIONS'], '-Dcoherence.security.mode=hardened')
         self.assertEqual(command[-2:], ['clean', 'verify'])
+        self.assertEqual(self.invocation['qualification_scope'], 'standard')
 
     def test_baseline_retains_release_and_unset_mode(self):
         call = self.invoke('baseline', '17')
@@ -135,6 +138,33 @@ class SnapshotCiTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as failure:
             self.invoke('snapshot', '21', ('--offline',))
         self.assertEqual(failure.exception.code, 2)
+
+    def test_frozen_local_snapshot_is_explicit_offline_and_propagates_provider(self):
+        call = self.invoke('snapshot', '21', ('--local-frozen', '--offline',
+                           '--repository', '/task/repository', '--hibernate-version', '4.0.1-SNAPSHOT'))
+        command, env = call.args[0], call.kwargs['env']
+        self.assertIn('-o', command)
+        self.assertNotIn('-U', command)
+        self.assertIn('-Dcoherence-hibernate.version=4.0.1-SNAPSHOT', command)
+        self.assertIn('-Dspring.cloud.config.enabled=false', command)
+        self.assertEqual(env['MAVEN_ARGS'], '-o -Dcoherence-hibernate.version=4.0.1-SNAPSHOT')
+        self.assertEqual(self.invocation['qualification_scope'], 'local-frozen-offline')
+        self.assertEqual(self.invocation['hibernate_version'], '4.0.1-SNAPSHOT')
+        self.assertEqual(env['JAVA_TOOL_OPTIONS'], '-Dcoherence.security.mode=hardened')
+        self.assertIn('-Pjdk17', command)
+
+    def test_local_frozen_requires_isolation_and_offline_and_safe_provider(self):
+        for extra in [('--local-frozen',), ('--local-frozen', '--offline'),
+                      ('--hibernate-version', '4.0.1-SNAPSHOT'),
+                      ('--local-frozen', '--offline', '--repository', '/task/repo',
+                       '--hibernate-version', '../other')]:
+            with self.subTest(extra=extra), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                self.invoke('snapshot', '21', extra)
+
+    def test_offline_baseline_propagates_to_independent_maven_launchers(self):
+        call = self.invoke('baseline', '17', ('--offline',))
+        self.assertEqual(call.kwargs['env']['MAVEN_ARGS'], '-o')
+        self.assertNotIn('JAVA_TOOL_OPTIONS', call.kwargs['env'])
 
     def test_records_new_snapshot_bytes_without_historical_pin(self):
         with tempfile.TemporaryDirectory(prefix='snapshot-ci-test-') as temporary:

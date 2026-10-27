@@ -153,6 +153,18 @@ JAR/POM hashes and the actually loaded Coherence JAR to that run's manifest.
 These are per-run identities, never historical snapshot pins. Other release
 plugins/BOMs/dependencies may be retrieved from Central on the first run.
 
+For an explicitly authorized frozen local exercise, the full runner accepts
+`--local-frozen --offline --repository TASK_CACHE --hibernate-version 4.0.1-SNAPSHOT`.
+Use cached Maven 3.9 or newer: `MAVEN_ARGS=-o` propagates offline resolution to
+Invoker launchers. Seed their isolated repository from independent local cache
+copies after outer clean; retain the freshly frozen product artifacts. No cache
+copy may overwrite the user repository or replace the outer frozen identities.
+The runner records `local-frozen-offline` scope, selects the provider explicitly,
+and omits snapshot refresh only for that scope. Such evidence establishes local
+compatibility with recorded bytes; fresh published-snapshot CI remains separate.
+The local runner disables optional Cloud Config lookup in outer context tests;
+the packaged integration still starts and verifies its real native loopback server.
+
 The strict release-qualification matrix is separate from ordinary selected-release
 runs. `.github/scripts/full_reactor.py` always selects `-Pjdk17`, including on
 JDK 21, and `consumer_evidence.py` requires release 17 / major 61. A successful
