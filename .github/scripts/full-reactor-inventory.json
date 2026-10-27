@@ -1446,6 +1446,14 @@
             "com.oracle.coherence.spring.samples.hibernate.HibernateApplicationTests#contextLoads"
           ],
           "source": "samples/hibernate-cache-demo/src/test/java/com/oracle/coherence/spring/samples/hibernate/HibernateApplicationTests.java"
+        },
+        {
+          "report": "failsafe-reports",
+          "name": "com.oracle.coherence.spring.samples.hibernate.HibernateCacheIT",
+          "cases": [
+            "com.oracle.coherence.spring.samples.hibernate.HibernateCacheIT#readsEntityAndQueryCachesAcrossMembers"
+          ],
+          "source": "samples/hibernate-cache-demo/src/test/java/com/oracle/coherence/spring/samples/hibernate/HibernateCacheIT.java"
         }
       ]
     },
@@ -1648,6 +1656,22 @@
       "cluster": "CircuitBreakerBookCacheIT",
       "count": 2,
       "source": "samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app/src/test/java/com/oracle/coherence/spring/samples/circuitbreaker/BookCacheIT.java"
+    },
+    {
+      "role": "sample-cache-storage",
+      "command": "com.oracle.coherence.spring.samples.cacheprobe.HibernateCacheProbe storage",
+      "cluster": null,
+      "cluster_prefix": "HibernateCacheIT-",
+      "count": 1,
+      "source": "samples/hibernate-cache-demo/src/test/java/com/oracle/coherence/spring/samples/hibernate/HibernateCacheIT.java"
+    },
+    {
+      "role": "sample-cache-app",
+      "command": "com.oracle.coherence.spring.samples.cacheprobe.HibernateCacheProbe app",
+      "cluster": null,
+      "cluster_prefix": "HibernateCacheIT-",
+      "count": 1,
+      "source": "samples/hibernate-cache-demo/src/test/java/com/oracle/coherence/spring/samples/hibernate/HibernateCacheIT.java"
     },
     {
       "role": "sample-cache-storage",
