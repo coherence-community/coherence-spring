@@ -1,0 +1,39 @@
+= Hibernate Cache Demo
+
+This sample uses Hibernate ORM 7.4, Coherence Hibernate's v7 region factory,
+READ_WRITE entity caching and the cacheable `PlantRepository` query. Its
+`coherence_hibernate` session loads `hibernate-second-level-cache-config.xml`
+from the published provider's core JAR. `Plant` is disassembled into Hibernate
+cache state; its entity class name alone does not identify the serialized graph.
+
+Run the packaged cache regression from the repository root:
+
+[source,shell]
+----
+./mvnw -Pjdk17 -pl samples/hibernate-cache-demo -am verify
+----
+
+`HibernateCacheIT` extracts the production Boot archive and launches a separate
+storage JVM and an application JVM. It changes only the provider XML's
+`local-storage` setting in a disposable client copy. Both use the production
+serializer and dependencies. Fresh repository transactions must yield a
+second-level hit with zero SQL; the test then clears query/timestamp near-cache
+front maps and requires a query hit, timestamp hit and zero SQL. Logs, exact
+commands, runtime identities and Java serialization descriptors are retained in
+`target/hibernate-cache-paths/`. The test does not establish READ_WRITE
+concurrency or stale-cache correctness.
+
+IMPORTANT: Published `coherence-hibernate-cache-7:4.0.0` and
+`coherence-hibernate-cache-core:4.0.0` currently lack the metadata required by
+security-hardened Coherence 26.10. The storage JVM rejects the provider-owned
+`AfterInsertProcessor` during request deserialization after an insert. The
+regression remains a failing qualification on that combination. An application
+permission for `Plant` does not fix it. Use a published provider that supplies
+and qualifies its exact executable and payload metadata before qualifying this
+combination; do not copy neighboring builds or disable hardening.
+
+The default remains Coherence 26.04 and Java 17. To reproduce the outstanding
+provider failure, use Java 21, an isolated Maven repository without inherited
+Coherence snapshots, and add `-U -Dcoherence.version=26.10-SNAPSHOT
+-Dcoherence.security.mode=hardened` to the command above. `-Pjdk17` retains the
+Java 17 bytecode target.

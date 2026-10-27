@@ -877,6 +877,15 @@ For more detailed information please see the {hibernate-docs}#caching[Caching ch
 documentation.
 
 [[spring-boot-hibernate-second-level-cache-example]]
+IMPORTANT: The sample's published Coherence Hibernate {coherence-hibernate-version} artifacts
+lack the provider metadata needed by security-hardened Coherence 26.10. A real
+cross-member insert rejects the provider's `AfterInsertProcessor` during storage-side
+deserialization. Adding a permission for the application entity cannot repair this
+provider requirement. Use a published, qualified provider update before qualifying
+that combination. The sample's `HibernateCacheIT` requires actual entity and query
+cache hits and remains a failing qualification until that dependency is remedied.
+Coherence 26.04 remains the project default.
+
 === Hibernate Second Level Cache Example
 
 The Coherence Spring source code repository also provides an
