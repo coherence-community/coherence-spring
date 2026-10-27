@@ -1,3 +1,58 @@
 = Circuit Breaker Cache Sample
 
 Please see the xref:../../coherence-spring-docs/src/main/asciidoc/spring-boot.adoc#spring-boot-caching-circuit-breaker[Spring Boot circuit-breaker caching chapter] of the Coherence Spring reference documentation for a detailed guide.
+
+== Serialization permissions
+
+The application owns `META-INF/coherence/security-config.xml`, which permits exactly
+`com.oracle.coherence.spring.samples.circuitbreaker.model.Book` as a payload.
+It grants no executable permission. Coherence 26.10 hardening checks this permission
+in the *application JVM* when the Extend client deserializes cached response values
+with `DefaultSerializer`. Both a populated `Book` (including its publication date)
+and an `ArrayList<Book>` use this permission. Their JDK graph types are covered by
+Coherence's built-in policy; no package wildcard or global filter change is needed.
+Coherence 26.04 remains the default dependency and accepts the metadata resource.
+Boot repackaging retains this metadata at the archive root. Standard Boot launchers
+make it visible; an exploded launch must include the archive root as well as
+`BOOT-INF/classes` and `BOOT-INF/lib`.
+
+The separate server stores and returns opaque binary values on this path. It has
+no `Book` dependency or sample payload policy. Operations that deserialize values
+on the server would require their own separately qualified model and permissions.
+
+A successful HTTP response alone does not establish a cache hit: the sample's
+Throwable fallbacks can return database data after a serialization failure.
+`BookCacheIT` runs under Failsafe after packaging. It extracts the Boot archive,
+keeps archive-root metadata and `BOOT-INF` classes/libraries visible, and starts a
+model-free server and fresh application JVMs. It checks
+full direct cache reads, changes database titles behind populated caches, and
+requires cached HTTP results with four successful breaker events and no fallback.
+An isolated application copy with only the production permission resource removed
+proves the hardened rejection and the resulting HTTP 200/database fallback. A
+separate unpermitted test payload must remain rejected before its read callback.
+There is no test policy that grants `Book` permission. On 26.04 the missing-policy
+copy also reads successfully because the newer allowlist API is absent.
+
+Run the focused tests from the repository root (requires loopback socket access):
+
+[source,bash]
+----
+# JAVA_HOME selects Java 17 or Java 21; both compile for Java 17.
+./mvnw -Pjdk17 -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app -am \
+  -Dtest=BookControllerTests,CircuitBreakerHealthTests -Dit.test=BookCacheIT \
+  -Dsurefire.failIfNoSpecifiedTests=false verify
+
+# Latest published snapshot: use Java 21, a fresh Maven repository and explicit hardening.
+# JAVA_TOOL_OPTIONS also sets the mode before initialization in every test/child JVM.
+JAVA_TOOL_OPTIONS=-Dcoherence.security.mode=hardened ./mvnw -U -Pjdk17 \
+  -Dmaven.repo.local="$CIRCUIT_MAVEN_REPOSITORY" -Dcoherence.version=26.10-SNAPSHOT \
+  -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app -am \
+  -Dtest=BookControllerTests,CircuitBreakerHealthTests -Dit.test=BookCacheIT \
+  -Dsurefire.failIfNoSpecifiedTests=false verify
+----
+
+Set `CIRCUIT_MAVEN_REPOSITORY` to a new disposable directory before the snapshot
+command. Test logs and exact child commands are retained in the app module's
+`target/book-cache-tests/`; copied class directories are deleted after each run.
+The two scenarios use separate server lifetimes, an isolated cluster identity,
+an allocated loopback port and bounded waits. Fallback behavior remains enabled.

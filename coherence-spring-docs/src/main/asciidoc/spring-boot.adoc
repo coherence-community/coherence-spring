@@ -568,6 +568,14 @@ be able to retrieve cached domain data from Coherence. Instead, the Resilience4j
 exception and invoke a fallback method. In this case the data is returned from the main persistence store, bi-passing
 the Spring cache until the connection to the Coherence server has been restored.
 
+With security-hardened Coherence 26.10, the application permits its exact `Book` payload in
+`META-INF/coherence/security-config.xml`. The permission is checked in the application JVM when
+cached Extend response values are deserialized. The model-free server stores and returns binary
+values on this path. HTTP 200 can also come from a database fallback after a cache failure; the
+sample's `BookCacheIT` verify actual individual and collection cache hits independently.
+See the link:{git-sources-samples}circuit-breaker-cache-demo[Sample README] for the permission boundary
+and focused positive and missing-permission checks. The default Coherence version remains 26.04.
+
 [[spring-boot-caching-circuit-breaker-running-example]]
 ==== Running the Example
 
