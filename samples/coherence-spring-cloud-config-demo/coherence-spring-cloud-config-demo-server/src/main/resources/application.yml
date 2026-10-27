@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///Users/hillert/dev/spring-cloud-config-repo
+          uri: ${CONFIG_SERVER_GIT_URI}
           clone-on-start: false
   security:
     user:

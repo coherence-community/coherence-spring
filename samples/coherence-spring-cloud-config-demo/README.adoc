@@ -4,6 +4,8 @@ Spring Cloud Config Server supplies the application properties.
 `DefaultEventService` stores `Event` objects in the Coherence `events` cache through Spring cache annotations.
 `PersonService` reads the database directly.
 
+To run the Config Server with Git, set `CONFIG_SERVER_GIT_URI` to the URI of your configuration repository.
+
 == Run the tests
 
 The defaults are Java 17 and Coherence 26.04.
