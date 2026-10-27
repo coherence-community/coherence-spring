@@ -277,6 +277,8 @@ def audit(source, output, lane, version, java, mode, repository, status):
                 packaged.append({'package': str(path), 'entry': name, 'sha256': sha})
     (output / 'resolved-coherence.json').write_text(json.dumps(resolved, indent=2))
     result = {'lane': lane, 'coherence_version': version, 'compiler_release': 17, 'maven_exit': status,
+              'qualification_scope': invocation.get('qualification_scope', 'standard'),
+              'hibernate_version': invocation.get('hibernate_version'),
               'inventory_sha256': digest(INVENTORY), 'totals': totals, 'modules': modules, 'reactor': reactor, 'cases': cases,
               'auditor_sha256': {p.name: digest(p) for p in [Path(__file__), Path(__file__).with_name('consumer_evidence.py')]},
               'consumers': consumers,
@@ -296,17 +298,30 @@ def main():
     parser.add_argument('--maven', default='./mvnw', help='Matching cached Maven may be used for a local exercise')
     parser.add_argument('--repository', type=Path, help='Disposable repository for a local exercise; CI uses its ordinary Maven cache')
     parser.add_argument('--offline', action='store_true', help='Local cached exercise only')
+    parser.add_argument('--local-frozen', action='store_true',
+                        help='Explicit offline frozen-input exercise, never fresh published-snapshot qualification')
+    parser.add_argument('--hibernate-version', help='Explicit provider selection for a local frozen exercise')
     parser.add_argument('--jvm-tmpdir', type=Path, help='Task-owned JVM temporary directory for a local exercise')
     args = parser.parse_args()
     version = {'baseline': '26.04', 'baseline21': '26.04', 'snapshot': '26.10-SNAPSHOT'}.get(args.lane, args.version)
     if not version or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', version) or (args.version and args.lane != 'requested'):
         parser.error('A safe explicit version is required only for the requested lane')
-    if args.offline and version.endswith('-SNAPSHOT'):
+    if args.local_frozen and (not args.offline or not args.repository):
+        parser.error('Local frozen exercises require --offline and a disposable --repository')
+    if args.hibernate_version and (not args.local_frozen or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', args.hibernate_version)):
+        parser.error('A safe provider version may be selected only for a local frozen exercise')
+    if args.offline and version.endswith('-SNAPSHOT') and not args.local_frozen:
         parser.error('Snapshot qualification must resolve the latest published artifacts online')
     java, mode = {'baseline': ('17', None), 'baseline21': ('21', None)}.get(args.lane, ('21', 'hardened'))
     env = os.environ.copy()
     for name in ['JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', '_JAVA_OPTIONS', 'MAVEN_ARGS', 'MAVEN_OPTS']:
         env.pop(name, None)
+    if args.offline:
+        # Maven 3.9+ consumes this in both the outer launcher and Invoker's
+        # independent Maven launchers; the outer -o alone is not inherited.
+        env['MAVEN_ARGS'] = '-o'
+    if args.hibernate_version:
+        env['MAVEN_ARGS'] += f' -Dcoherence-hibernate.version={args.hibernate_version}'
     if mode:
         env['JAVA_TOOL_OPTIONS'] = '-Dcoherence.security.mode=hardened'
     if args.jvm_tmpdir:
@@ -325,8 +340,14 @@ def main():
     repository = (args.repository or Path.home() / '.m2/repository').resolve()
     command = [args.maven, '-B', '-ntp', '-Pjdk17', '-Dmaven.test.failure.ignore=false',
                f'-Dcoherence.version={version}', '--settings', '.mvn/settings.xml', '--fail-at-end']
-    if version.endswith('-SNAPSHOT'):
+    if version.endswith('-SNAPSHOT') and not args.local_frozen:
         command.append('-U')
+    if args.hibernate_version:
+        command.append(f'-Dcoherence-hibernate.version={args.hibernate_version}')
+    if args.local_frozen:
+        # Outer context tests must not consult the sample's optional Config
+        # Server. The packaged integration starts its own native local server.
+        command.append('-Dspring.cloud.config.enabled=false')
     if mode:
         command.append('-Dcoherence.security.mode=hardened')
     if args.repository:
@@ -335,6 +356,8 @@ def main():
         command.append('-o')
     command += ['clean', 'verify']
     manifest = {'command': command, 'runtime': runtime, 'java_home': str(home.resolve()),
+                'qualification_scope': 'local-frozen-offline' if args.local_frozen else 'standard',
+                'hibernate_version': args.hibernate_version, 'MAVEN_ARGS': env.get('MAVEN_ARGS'),
                 'inventory_sha256': digest(INVENTORY), 'security_mode': mode,
                 'JAVA_TOOL_OPTIONS': env.get('JAVA_TOOL_OPTIONS'), 'started': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 'source_sha256': {str(p.relative_to(ROOT)): digest(p) for p in ROOT.rglob('*')
