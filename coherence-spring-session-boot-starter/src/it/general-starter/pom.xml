@@ -26,12 +26,12 @@
       <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.11.0</version>
         <configuration><release>${maven.compiler.release}</release></configuration>
       </plugin>
-      <!-- Copy only our two consumer helpers into the cloned fixture's test source root. -->
+      <!-- Copy only our consumer helpers into the cloned fixture's test source root. -->
       <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.3.1</version>
         <executions><execution><id>consumer-contract</id><phase>generate-test-sources</phase><goals><goal>copy-resources</goal></goals>
           <configuration><outputDirectory>${project.basedir}/src/test/java/consumer</outputDirectory>
             <resources><resource><directory>@consumer.support@</directory><filtering>false</filtering>
-              <includes><include>Contract.java</include><include>HttpChecks.java</include></includes>
+              <includes><include>Contract.java</include><include>ReleaseContract.java</include><include>PathContract.java</include><include>HttpChecks.java</include></includes>
             </resource></resources>
           </configuration>
         </execution></executions>
@@ -50,6 +50,7 @@
             <consumer.outer.manifest>@consumer.outer.manifest@</consumer.outer.manifest>
             <consumer.java.home>@consumer.java.home@</consumer.java.home>
             <consumer.release>@consumer.release@</consumer.release>
+            <consumer.compiler.release>${maven.compiler.release}</consumer.compiler.release>
             <consumer.security.mode>@consumer.security.mode@</consumer.security.mode>
             <consumer.coherence.group>@coherence.group@</consumer.coherence.group>
             <consumer.coherence.version>@coherence.version@</consumer.coherence.version>

@@ -29,8 +29,8 @@ class ConsumerHarness {
                     System.out.println("Consumer tests explicitly skipped; this run cannot qualify package C");
                 }
             }
-            case "freeze" -> freeze(args[2], args[3]);
-            case "audit" -> audit();
+            case "freeze" -> freeze(args[2], args[3], args[4]);
+            case "audit" -> audit(args[4]);
             default -> throw new IllegalArgumentException(args[0]);
         }
     }
@@ -62,11 +62,13 @@ class ConsumerHarness {
                 + inventory.values().stream().mapToInt(v -> v.toString().split(",").length).sum());
     }
 
-    static void freeze(String productGroup, String productVersion) throws Exception {
+    static void freeze(String productGroup, String productVersion, String release) throws Exception {
+        Properties selected = new Properties(); selected.setProperty("consumer.release", release);
+        save(selected, target.resolve("consumer-evidence/outer-release.properties"));
         Properties manifest = new Properties();
         Path repo = target.resolve("it-repository");
         for (String line : Files.readAllLines(target.resolve("consumer-evidence/outer-dependencies.txt"))) {
-            String[] fields = line.trim().split(":", 6);
+            String[] fields = dependency(line);
             if (fields.length != 6 || !fields[2].equals("jar")) continue;
             Path jar = Path.of(fields[5].replaceFirst(" --.*", "").trim());
             // Reactor artifacts have their flattened POM beside their source, external ones beside the JAR.
@@ -104,7 +106,10 @@ class ConsumerHarness {
                 + artifact + "-" + version + ".pom>=\n");
     }
 
-    static void audit() throws Exception {
+    static void audit(String release) throws Exception {
+        Properties outer = load(target.resolve("consumer-evidence/outer-release.properties"));
+        if (!release.equals(outer.getProperty("consumer.release")))
+            throw new AssertionError("Outer consumer.release differs from selected release " + release);
         int count = 0;
         for (String name : new TreeSet<>(inventory.stringPropertyNames())) {
             Path clone = target.resolve("it/" + name);
@@ -132,6 +137,9 @@ class ConsumerHarness {
                                 || !method.equals(evidence.getProperty("scenario"))
                                 || !name.equals(evidence.getProperty("consumer.fixture")))
                             throw new AssertionError("Missing/mismatched pass evidence: " + name + ":" + method);
+                        for (String field : List.of("consumer.release", "consumer.compiler.release"))
+                            if (!release.equals(evidence.getProperty(field)))
+                                throw new AssertionError(name + ":" + method + ": " + field + " differs from selected release " + release);
                         count++;
                     }
                 }
@@ -147,6 +155,9 @@ class ConsumerHarness {
         save(summary, target.resolve("consumer-evidence/summary.properties"));
         System.out.println("Consumer contract PASS: " + inventory.size() + " fixtures, " + count + " tests, zero skips");
     }
+
+    // Source launch on Java17 is standalone; retain drive letters in the final path field.
+    static String[] dependency(String line) { return line.trim().split(":", 6); }
 
     static Document xml(Path path) throws Exception {
         var factory = DocumentBuilderFactory.newInstance();

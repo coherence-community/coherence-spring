@@ -54,7 +54,8 @@ class ConsumerIT {
             assertEquals(Set.of("REQUEST", "ERROR"), Set.of(mappings.get(0).getDispatcherNames()));
             assertEquals(Set.of("/*"), Set.of(mappings.get(0).getURLPatterns()));
             Object repository = HttpChecks.bean(context, "sessionRepository");
-            Contract.loadedCoherence(repository.getClass().getClassLoader());
+            Contract.loadedCoherence(repository.getClass().getClassLoader(),
+                    Path.of(deployment.getServletContext().getRealPath("/")));
             Class<?> reportClass = Class.forName("org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport", true, loader);
             Class<?> factoryClass = Class.forName("org.springframework.beans.factory.config.ConfigurableListableBeanFactory", true, loader);
             Object factory = context.getClass().getMethod("getBeanFactory").invoke(context);
