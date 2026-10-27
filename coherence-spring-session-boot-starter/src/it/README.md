@@ -63,6 +63,42 @@ fixture inventory at initialize and exact method/report/evidence inventory at
 verify. Missing fixtures, tests, reports, failures and skips are fatal. Java source
 launch requires the project's Java 17 baseline and adds no starter classes.
 
+The same focused command on Windows PowerShell (with an installed JDK and Maven
+wrapper prerequisites) is:
+
+```powershell
+$env:JAVA_HOME = 'C:\Java\jdk-17'
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+.\mvnw.cmd -B -ntp -Pjdk17 -Dmaven.test.failure.ignore=false `
+  -pl coherence-spring-session-boot-starter -am clean verify
+```
+
+Repeat on JDK 21 with `-Pjdk17` and `-Pjdk21` to cover both supported targets.
+For the bounded consumer-only run, add `-DskipTests`: this skips outer unit tests
+while the independent consumers still run all ten fixtures/nineteen methods.
+Do not narrow `invoker.test` for acceptance. Run the focused path regressions with
+`python -m unittest discover -s .github/scripts -p 'test_consumer_paths.py'` on each selected JDK.
+Retain the evidence listed below and the native OS/JDK/Maven versions.
+
+`PathContract` checks native real filesystem identities: each product/Coherence
+JAR must be the exact coordinate under this build's isolated repository, and the
+WAR's loaded Coherence must be directly in `WEB-INF/lib` of the actual deployed
+ServletContext root. Hash checks remain mandatory. Repository siblings, another
+build's repository, wrong coordinates and another deployment cannot satisfy these
+checks merely by having a similar path string. The loaded test-JVM Coherence must
+also be the exact isolated artifact. Classpaths use the running OS's path-list
+separator (`:` or `;`); Maven dependency lines retain Windows drive-letter colons
+in their final filename field. Component checks reject reactor/test directories
+and Boot leakage using either filesystem separator. ZIP/JAR entry names continue
+to use `/`, as required by the archive format.
+
+The path regressions exercise the actual shared helper and outer freeze/copy
+behavior, including native filesystem boundaries, spaces, POSIX/Windows classpath
+strings and drive letters. Cross-platform strings on a POSIX JVM are syntax
+checks; they do not establish native Windows execution. The 22 October 2026
+item4 validation ran locally on macOS; native Windows consumer qualification
+remains outstanding because no authorized Windows runtime was available.
+
 A bare custom `SessionRepository` bean makes Coherence back off and does not
 create `springSessionRepositoryFilter`. The custom HTTP case explicitly owns
 `@EnableSpringHttpSession` as well as its Coherence repository/cache/timeout.
@@ -77,7 +113,7 @@ The fixtures use explicit pinned plugins compatible with Maven 3.6.0. Invoker's
 actual 3.6.1 descriptor requires Maven 3.2.5/Java 8; no Maven-floor change is made.
 The surrounding project's pre-existing plugin requirements are separate from
 this harness; this task does not qualify the complete reactor on Maven 3.6.0.
-The two shared consumer-only helpers are copied into each cloned test source
+The four shared consumer-only helpers are copied into each cloned test source
 root. They are never packaged into the starter/application JAR or WAR. No Boot
 test starter, library test helper, test resource, mock framework or Bedrock
 substitute supplies the consumer application.
@@ -90,9 +126,20 @@ qualification. Use the full default fixture set for acceptance. Nested Failsafe
 has fatal failures and no-test behavior explicitly configured.
 
 The outer build passes product/Boot/Coherence versions and group, release,
-`java.home` and the requested security mode explicitly. `Contract` checks actual
-test JVM properties, classpaths, product bytecode major 61, dependency graphs and
-JAR/POM bytes. An unset security mode remains absent; an explicit
+`java.home` and the requested security mode explicitly. The default and `-Pjdk17`
+select compiler release 17 (class major 61). With JDK 21 selected, `-Pjdk21`
+selects release 21 (major 65); JDK 21 with `-Pjdk17` still produces major 61.
+For an ordinary release-21 consumer run, use the same command above with
+`-Pjdk21` and JDK 21 in `JAVA_HOME`/`PATH`.
+
+`Contract` requires a declared supported release (`17` or `21`), matching the
+nested `maven.compiler.release` and the outer build's separately recorded
+`outer-release.properties`. The actual JVM must support that target. Missing,
+unfiltered, malformed or inconsistent declarations fail; the target is never
+inferred from the running JVM. `ReleaseContract` derives the expected class major
+from the selected release and checks every fixture main/test class and packaged
+product class. `Contract` also checks actual test JVM properties, classpaths,
+dependency graphs and JAR/POM bytes. An unset security mode remains absent; an explicit
 `-Dcoherence.security.mode=hardened` becomes a test JVM argument. Nothing changes
 production security or serialization permissions.
 
@@ -106,6 +153,17 @@ JAR/POM hashes and the actually loaded Coherence JAR to that run's manifest.
 These are per-run identities, never historical snapshot pins. Other release
 plugins/BOMs/dependencies may be retrieved from Central on the first run.
 
+The strict release-qualification matrix is separate from ordinary selected-release
+runs. `.github/scripts/full_reactor.py` always selects `-Pjdk17`, including on
+JDK 21, and `consumer_evidence.py` requires release 17 / major 61. A successful
+`-Pjdk21` run demonstrates ordinary profile support and cannot qualify that
+release-17 matrix. The default Java 17 and Coherence 26.04 remain unchanged.
+
+CI script regressions (`python3 -m unittest discover -s .github/scripts -p 'test_*.py'`) include real compiler/class/JAR checks, declaration/runtime and outer
+guard negative controls, and a coherent release-21 result rejected by the strict
+qualification collector. Run with `JAVA_HOME`/`PATH` on both JDKs; JDK 21 exercises
+both compiler targets, while JDK 17 verifies that release 21 cannot execute there.
+
 ## Evidence contract v1 (for package E)
 
 All paths below are relative to this module's `target/`. Retain these small files
@@ -113,6 +171,8 @@ and logs, never the whole isolated repository:
 
 - `consumer-evidence/inventory.properties`: copied reviewed fixture/method list.
 - `consumer-evidence/outer-dependencies.txt`: outer absolute packaged paths.
+- `consumer-evidence/outer-release.properties`: independently selected outer
+  `consumer.release`, checked against the nested compiler declaration and audit.
 - `consumer-evidence/outer-artifacts.properties`: coordinates, original paths and
   SHA-256 for each outer product/Coherence JAR and POM.
 - `consumer-evidence/summary.properties`: PASS only after every fixture and exact
@@ -125,8 +185,10 @@ and logs, never the whole isolated repository:
 - `it/<fixture>/target/{runtime-dependencies,test-dependencies,runtime-classpath}.txt`:
   resolved graph and absolute packaged paths, including scope/test separation.
 - `it/<fixture>/target/consumer-evidence/<method>.properties`: actual JVM/home,
-  security-mode presence/value, classpath, release and Coherence version, compared
-  product/Coherence JAR/POM hashes; WAR additionally records loaded archive bytes.
+  security-mode presence/value, classpath, declared/compiler release, verified
+  `consumer.bytecode.major` and fixture main/test class counts, Coherence version, compared
+  product/Coherence JAR/POM hashes; WAR additionally records the actual
+  `war.deployment` root and loaded archive bytes.
 
 Package E's CI collector cross-checks expected outer values and these identities;
 the summary alone is insufficient. The fixture JVMs run Coherence in-process and

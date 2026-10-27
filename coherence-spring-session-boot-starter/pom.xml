@@ -169,6 +169,7 @@
 							<argument>${basedir}/src/it/harness/ConsumerHarness.java</argument>
 							<argument>freeze</argument><argument>${basedir}</argument>
 							<argument>${project.groupId}</argument><argument>${project.version}</argument>
+							<argument>${java.version}</argument>
 						</arguments></configuration>
 					</execution>
 					<execution>
@@ -177,6 +178,7 @@
 							<argument>${basedir}/src/it/harness/ConsumerHarness.java</argument>
 							<argument>audit</argument><argument>${basedir}</argument>
 							<argument>${project.groupId}</argument><argument>${project.version}</argument>
+							<argument>${java.version}</argument>
 						</arguments></configuration>
 					</execution>
 				</executions>
