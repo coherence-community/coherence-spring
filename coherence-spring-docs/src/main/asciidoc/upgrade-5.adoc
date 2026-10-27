@@ -396,7 +396,10 @@ Retaining `resilience4j-spring-boot3` can leave health integration inactive beca
 === Hibernate second-level cache
 
 Applications using Coherence as Hibernate's second-level cache must move to the Hibernate 7 adapter.
-https://github.com/coherence-community/coherence-hibernate/blob/v4.0.0/README.adoc[Coherence Hibernate 4.0.x supports Hibernate ORM 7.4.x only].
+Coherence Hibernate 4.1.0 is the required provider baseline; use {coherence-hibernate-version}
+until release. Its Hibernate 7 adapter supports Hibernate ORM 7.4.x and packages the processor
+and payload security declarations needed by hardened Coherence 26.10. Earlier provider versions
+are outside this project's current qualification scope.
 Declare both the adapter and a compatible ORM version; the adapter's Hibernate dependency is `provided` and does not
 select the application's ORM version:
 
@@ -450,13 +453,13 @@ managed default with explicit Hibernate ORM {hibernate-version} declarations as 
 |===
 
 The project's `hibernate.version` property supplies explicit dependency declarations; it does not override the
-Hibernate version inside an imported Boot BOM. Boot's managed 7.2 line is outside the Coherence Hibernate 4.0.x
+Hibernate version inside an imported Boot BOM. Boot's managed 7.2 line is outside the Coherence Hibernate 4.1.0
 adapter's supported 7.4 line. Applications enabling that adapter must select a compatible ORM version explicitly.
 
-In local Java 17 and Java 21 reactor qualification, the starter tests had ORM {hibernate-version} on their test
-classpath, the Hibernate cache sample started with that ORM version and adapter {coherence-hibernate-version},
-and the CacheStore integration tests used Boot's managed ORM version. The Hibernate cache sample test verifies
-application-context startup; it does not establish correctness of every second-level cache strategy or deployment combination.
+The Hibernate cache sample's packaged integration test requires cross-member entity, query and timestamp
+cache hits with zero SQL on measured reads. Qualify the selected provider and runtime on Java 17 and Java 21;
+results for earlier provider artifacts do not qualify {coherence-hibernate-version}. These checks do not
+establish READ_WRITE concurrency or stale-cache correctness.
 
 Applications using Hibernate-specific query hints or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
 `org.hibernate.annotations.QueryHints.CACHEABLE` constant with `org.hibernate.jpa.HibernateHints.HINT_CACHEABLE`.

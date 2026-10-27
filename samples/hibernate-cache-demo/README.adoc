@@ -3,7 +3,7 @@
 This sample uses Hibernate ORM 7.4, Coherence Hibernate's v7 region factory,
 READ_WRITE entity caching and the cacheable `PlantRepository` query. Its
 `coherence_hibernate` session loads `hibernate-second-level-cache-config.xml`
-from the published provider's core JAR. `Plant` is disassembled into Hibernate
+from the provider's core JAR. `Plant` is disassembled into Hibernate
 cache state; its entity class name alone does not identify the serialized graph.
 
 Run the packaged cache regression from the repository root:
@@ -23,17 +23,18 @@ commands, runtime identities and Java serialization descriptors are retained in
 `target/hibernate-cache-paths/`. The test does not establish READ_WRITE
 concurrency or stale-cache correctness.
 
-IMPORTANT: Published `coherence-hibernate-cache-7:4.0.0` and
-`coherence-hibernate-cache-core:4.0.0` currently lack the metadata required by
-security-hardened Coherence 26.10. The storage JVM rejects the provider-owned
-`AfterInsertProcessor` during request deserialization after an insert. The
-regression remains a failing qualification on that combination. An application
-permission for `Plant` does not fix it. Use a published provider that supplies
-and qualifies its exact executable and payload metadata before qualifying this
-combination; do not copy neighboring builds or disable hardening.
+Coherence Hibernate 4.1.0 is the required provider baseline. Until release, the
+project selects `4.1.0-SNAPSHOT`. The v7 adapter packages
+`META-INF/coherence/security-config.xml` with executable processor and cache
+payload declarations for hardened Coherence 26.10. Application-specific values
+may need additional permissions. Earlier provider versions are outside the
+current compatibility and qualification scope. Metadata inspection alone does
+not establish runtime qualification; run the packaged regression for the selected
+artifacts.
 
-The default remains Coherence 26.04 and Java 17. To reproduce the outstanding
-provider failure, use Java 21, an isolated Maven repository without inherited
-Coherence snapshots, and add `-U -Dcoherence.version=26.10-SNAPSHOT
+The default remains Coherence 26.04 and Java 17. To test hardened Coherence 26.10,
+use Java 21 and add `-U -Dcoherence.version=26.10-SNAPSHOT
 -Dcoherence.security.mode=hardened` to the command above. `-Pjdk17` retains the
-Java 17 bytecode target.
+Java 17 bytecode target. Snapshot resolution requires the configured snapshot
+repository or a locally installed provider; local results do not establish
+remote artifact availability.
