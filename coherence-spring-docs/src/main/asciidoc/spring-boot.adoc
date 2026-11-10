@@ -877,8 +877,8 @@ For more detailed information please see the {hibernate-docs}#caching[Caching ch
 documentation.
 
 [[spring-boot-hibernate-second-level-cache-example]]
-NOTE: Coherence Spring uses Coherence Hibernate 4.1.0, with {coherence-hibernate-version}
-until the release is available. The v7 adapter packages `META-INF/coherence/security-config.xml`
+NOTE: Coherence Spring uses Coherence Hibernate {coherence-hibernate-version}.
+The v7 adapter packages `META-INF/coherence/security-config.xml`
 with executable processor and cache payload declarations for security-hardened Coherence 26.10.
 Application-specific serialized values may require additional permissions.
 The sample's `HibernateCacheIT` requires actual cross-member entity, query and timestamp cache hits

@@ -141,21 +141,21 @@ class SnapshotCiTests(unittest.TestCase):
 
     def test_frozen_local_snapshot_is_explicit_offline_and_propagates_provider(self):
         call = self.invoke('snapshot', '21', ('--local-frozen', '--offline',
-                           '--repository', '/task/repository', '--hibernate-version', '4.1.0-SNAPSHOT'))
+                           '--repository', '/task/repository', '--hibernate-version', '4.1.0'))
         command, env = call.args[0], call.kwargs['env']
         self.assertIn('-o', command)
         self.assertNotIn('-U', command)
-        self.assertIn('-Dcoherence-hibernate.version=4.1.0-SNAPSHOT', command)
+        self.assertIn('-Dcoherence-hibernate.version=4.1.0', command)
         self.assertIn('-Dspring.cloud.config.enabled=false', command)
-        self.assertEqual(env['MAVEN_ARGS'], '-o -Dcoherence-hibernate.version=4.1.0-SNAPSHOT')
+        self.assertEqual(env['MAVEN_ARGS'], '-o -Dcoherence-hibernate.version=4.1.0')
         self.assertEqual(self.invocation['qualification_scope'], 'local-frozen-offline')
-        self.assertEqual(self.invocation['hibernate_version'], '4.1.0-SNAPSHOT')
+        self.assertEqual(self.invocation['hibernate_version'], '4.1.0')
         self.assertEqual(env['JAVA_TOOL_OPTIONS'], '-Dcoherence.security.mode=hardened')
         self.assertIn('-Pjdk17', command)
 
     def test_local_frozen_requires_isolation_and_offline_and_safe_provider(self):
         for extra in [('--local-frozen',), ('--local-frozen', '--offline'),
-                      ('--hibernate-version', '4.1.0-SNAPSHOT'),
+                      ('--hibernate-version', '4.1.0'),
                       ('--local-frozen', '--offline', '--repository', '/task/repo',
                        '--hibernate-version', '../other')]:
             with self.subTest(extra=extra), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):

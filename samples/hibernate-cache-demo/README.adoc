@@ -23,8 +23,7 @@ commands, runtime identities and Java serialization descriptors are retained in
 `target/hibernate-cache-paths/`. The test does not establish READ_WRITE
 concurrency or stale-cache correctness.
 
-Coherence Hibernate 4.1.0 is the required provider baseline. Until release, the
-project selects `4.1.0-SNAPSHOT`. The v7 adapter packages
+Coherence Hibernate 4.1.0 is the required provider baseline. The v7 adapter packages
 `META-INF/coherence/security-config.xml` with executable processor and cache
 payload declarations for hardened Coherence 26.10. Application-specific values
 may need additional permissions. Earlier provider versions are outside the
@@ -36,5 +35,5 @@ The default remains Coherence 26.04 and Java 17. To test hardened Coherence 26.1
 use Java 21 and add `-U -Dcoherence.version=26.10-SNAPSHOT
 -Dcoherence.security.mode=hardened` to the command above. `-Pjdk17` retains the
 Java 17 bytecode target. Snapshot resolution requires the configured snapshot
-repository or a locally installed provider; local results do not establish
+repository for Coherence; local results do not establish
 remote artifact availability.

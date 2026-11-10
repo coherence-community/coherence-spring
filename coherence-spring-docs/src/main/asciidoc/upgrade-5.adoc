@@ -396,8 +396,8 @@ Retaining `resilience4j-spring-boot3` can leave health integration inactive beca
 === Hibernate second-level cache
 
 Applications using Coherence as Hibernate's second-level cache must move to the Hibernate 7 adapter.
-Coherence Hibernate 4.1.0 is the required provider baseline; use {coherence-hibernate-version}
-until release. Its Hibernate 7 adapter supports Hibernate ORM 7.4.x and packages the processor
+Coherence Hibernate {coherence-hibernate-version} is the required provider baseline.
+Its Hibernate 7 adapter supports Hibernate ORM 7.4.x and packages the processor
 and payload security declarations needed by hardened Coherence 26.10. Earlier provider versions
 are outside this project's current qualification scope.
 Declare both the adapter and a compatible ORM version; the adapter's Hibernate dependency is `provided` and does not
