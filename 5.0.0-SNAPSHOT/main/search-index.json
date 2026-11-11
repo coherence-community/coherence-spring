@@ -32,7 +32,7 @@
         },
         {
             "location": "/dev/02_source-code",
-            "text": " The Source Code for the Oracle Coherence Spring Integration is hosted by github.com . It is located here: https://github.com/coherence-community/coherence-spring Alternatively, if you&#8217;re not using or want to avoid setting up git , you can download a zip containing the latest development branch from here: https://github.com/coherence-community/coherence-spring/archive/main.zip Important Pull Requests are welcome! Just make sure to become an official contributor . ",
+            "text": " The Source Code for the Oracle Coherence Spring Integration is hosted by github.com . It is located here: https://github.com/coherence-community/coherence-spring Alternatively, if you&#8217;re not using or want to avoid setting up git , you can download the latest development source from the main branch as a zip: https://github.com/coherence-community/coherence-spring/archive/main.zip Important Pull Requests are welcome! Just make sure to become an official contributor . ",
             "title": "Source Code"
         },
         {

@@ -164,7 +164,7 @@ $(globalSwitch);
 </li>
 <li><a href="#spring-boot-hibernate-second-level-cache">7. Configure Hibernate Second-Level Caching</a>
 <ul class="sectlevel2">
-<li><a href="#spring-boot-hibernate-second-level-cache-example">7.1. Hibernate Second Level Cache Example</a>
+<li><a href="#hibernate-second-level-cache-example">7.1. Hibernate Second Level Cache Example</a>
 <ul class="sectlevel3">
 <li><a href="#spring-boot-hibernate-second-level-cache-example-run">7.1.1. Run the Hibernate Application</a></li>
 </ul>
@@ -1099,6 +1099,15 @@ be able to retrieve cached domain data from Coherence. Instead, the Resilience4j
 exception and invoke a fallback method. In this case the data is returned from the main persistence store, bi-passing
 the Spring cache until the connection to the Coherence server has been restored.</p>
 </div>
+<div class="paragraph">
+<p>With security-hardened Coherence 26.10, the application permits its exact <code>Book</code> payload in
+<code>META-INF/coherence/security-config.xml</code>. The permission is checked in the application JVM when
+cached Extend response values are deserialized. The model-free server stores and returns binary
+values on this path. HTTP 200 can also come from a database fallback after a cache failure; the
+sample&#8217;s <code>BookCacheIT</code> verify actual individual and collection cache hits independently.
+See the <a href="https://github.com/coherence-community/coherence-spring/tree/main/samples/circuit-breaker-cache-demo">Sample README</a> for the permission boundary
+and focused positive and missing-permission checks. The default Coherence version remains 26.04.</p>
+</div>
 <div class="sect3">
 <h4 id="spring-boot-caching-circuit-breaker-running-example"><a class="anchor" href="#spring-boot-caching-circuit-breaker-running-example"></a>6.1.1. Running the Example</h4>
 <div class="paragraph">
@@ -1431,6 +1440,11 @@ autowiring has <a href="https://stackoverflow.com/questions/5152686/self-injecti
 <a href="https://docs.jboss.org/hibernate/orm/7.4/userguide/html_single/Hibernate_User_Guide.html#caching">Second-Level cache</a> support.</p>
 </div>
 <div class="paragraph">
+<p>For this baseline, use <code>coherence-hibernate-cache-7</code> 4.1.0 with Hibernate ORM
+7.4.5.Final. The adapter supports ORM 7.4.x; Spring Boot&#8217;s managed ORM version must be overridden when
+using it. See <a href="upgrade-5.html#upgrade-5-hibernate">Hibernate version selection and dependencies</a>.</p>
+</div>
+<div class="paragraph">
 <p>When using only Hibernate&#8217;s second-level cache without the requirement of using Coherence for non-Hibernate application
 needs, you may want to disable Coherence&#8217;s auto-configuration support for Spring
 Boot as it is not needed:</p>
@@ -1448,7 +1462,7 @@ public class HibernateApplication {
 </div>
 <div class="paragraph">
 <p>In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
-Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>com.oracle.coherence.hibernate.cache.CoherenceRegionFactory</code>.</p>
+Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory</code>.</p>
 </div>
 <div class="paragraph">
 <p>Your Spring Boot <code>application.yaml</code> file may look like the following:</p>
@@ -1461,7 +1475,7 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
     name: Your Spring Boot App
   jpa:
     properties:
-      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <i class="conum" data-value="1"></i><b>(1)</b>
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory <i class="conum" data-value="1"></i><b>(1)</b>
       hibernate.cache.use_query_cache: true
       hibernate.cache.use_second_level_cache: true
       hibernate.format_sql: true
@@ -1483,8 +1497,26 @@ Hibernate property <code>hibernate.cache.region.factory_class</code> to <code>co
 <p>For more detailed information please see the <a href="https://docs.jboss.org/hibernate/orm/7.4/userguide/html_single/Hibernate_User_Guide.html#caching">Caching chapter</a> of the Hibernate reference
 documentation.</p>
 </div>
+<div id="spring-boot-hibernate-second-level-cache-example" class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Coherence Spring uses Coherence Hibernate 4.1.0.
+The v7 adapter packages <code>META-INF/coherence/security-config.xml</code>
+with executable processor and cache payload declarations for security-hardened Coherence 26.10.
+Application-specific serialized values may require additional permissions.
+The sample&#8217;s <code>HibernateCacheIT</code> requires actual cross-member entity, query and timestamp cache hits
+with zero SQL on measured reads. Metadata presence alone does not establish runtime qualification.
+Coherence 26.04 remains the project default.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="spring-boot-hibernate-second-level-cache-example"><a class="anchor" href="#spring-boot-hibernate-second-level-cache-example"></a>7.1. Hibernate Second Level Cache Example</h3>
+<h3 id="hibernate-second-level-cache-example"><a class="anchor" href="#hibernate-second-level-cache-example"></a>7.1. Hibernate Second Level Cache Example</h3>
 <div class="paragraph">
 <p>The Coherence Spring source code repository also provides an
 <a href="https://github.com/coherence-community/coherence-spring/tree/main/samples/hibernate-cache-demo">example application</a>, illustrating the Coherence support for
@@ -1618,8 +1650,10 @@ Coherence-specific configuration properties. Before you continue, please conside
 on <a href="spring-session.html#spring-session">Coherence Spring Session</a> first.</p>
 </div>
 <div class="paragraph">
-<p>In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
-project:</p>
+<p>For a Spring Boot servlet web application, select <code>coherence-spring-session-boot-starter</code>. It supplies the general
+Coherence starter, <code>coherence-spring-session</code> and Boot&#8217;s <code>spring-boot-session</code>, including <code>spring-session-core</code>.
+Keep an explicit Coherence runtime and the application&#8217;s servlet web dependencies. The following recipes assume
+the Spring Boot parent or BOM manages Boot versions; Security and Actuator remain application choices.</p>
 </div>
 <div class="exampleblock">
 <div class="title">Example 3. Add Coherence Spring Session Support</div>
@@ -1630,18 +1664,17 @@ project:</p>
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
-        &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
-        &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
-    &lt;/dependency&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
-        &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+        &lt;artifactId&gt;coherence-spring-session-boot-starter&lt;/artifactId&gt;
         &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
         &lt;artifactId&gt;coherence&lt;/artifactId&gt;
         &lt;version&gt;26.04&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-webmvc&lt;/artifactId&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -1650,17 +1683,23 @@ project:</p>
 <div class="title">Gradle</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
-    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:5.0.0-SNAPSHOT")
-    implementation("com.oracle.coherence.spring:coherence-spring-session:5.0.0-SNAPSHOT")
+    implementation("com.oracle.coherence.spring:coherence-spring-session-boot-starter:5.0.0-SNAPSHOT")
     implementation("com.oracle.coherence.ce:coherence:26.04")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
 }</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="paragraph">
-<p>Basically, adding the <code>coherence-spring-session</code> dependency will activate the <code>CoherenceSpringSessionAutoConfiguration</code>
-class. Auto-configuration will back-off in certain situations:</p>
+<p>With these dependencies, Boot discovery activates <code>CoherenceSpringSessionAutoConfiguration</code> automatically in a
+servlet web application and creates the Coherence repository and <code>springSessionRepositoryFilter</code>. No
+<code>@EnableCoherenceHttpSession</code> annotation is required. The general starter alone does not supply Spring Session;
+the old general-starter plus session-library combination also needs Boot Session explicitly. See
+<a href="upgrade-5.html#upgrade-5-session">the 5.x dependency migration</a> for the manual combination.</p>
+</div>
+<div class="paragraph">
+<p>Auto-configuration backs off in these situations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1668,9 +1707,20 @@ class. Auto-configuration will back-off in certain situations:</p>
 <p>Set property <code>coherence.spring.session.enabled</code> to <code>false</code></p>
 </li>
 <li>
-<p>Define <code>spring.session.store-type</code>. Any value will deactivate auto-configuration.</p>
+<p>Define <code>spring.session.store-type</code>. Any value, including an empty value or <code>none</code>, deactivates Coherence&#8217;s
+auto-configuration. This property does not install or configure another store by itself.</p>
+</li>
+<li>
+<p>Supply an application-owned <code>SessionRepository</code>, including one enabled through <code>@EnableCoherenceHttpSession</code>.
+The application then owns its repository and HTTP-session configuration. A bare repository bean does not create
+an HTTP filter; configure that explicitly, for example with <code>@EnableSpringHttpSession</code> when supplying the repository.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>This integration supports servlet applications, including embedded servers and Boot WAR deployments. It does not
+provide reactive WebSession support or enable HTTP sessions in non-web applications. Required Session, Boot Session
+and servlet classes must be present; <code>coherence.spring.session.enabled=true</code> cannot supply a missing dependency.</p>
 </div>
 <div class="paragraph">
 <p>The following Coherence-specific configuration properties are available:</p>
@@ -1962,7 +2012,7 @@ to <code>false</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-12 17:30:45 UTC
+Last updated 2026-11-11 10:05:44 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>

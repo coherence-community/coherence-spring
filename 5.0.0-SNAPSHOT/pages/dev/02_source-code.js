@@ -8,7 +8,7 @@
 <a target="_blank" href="https://github.com/coherence-community/coherence-spring" class="bare">https://github.com/coherence-community/coherence-spring</a></p>
 
 <p>Alternatively, if you&#8217;re not using or want to avoid setting up <a target="_blank" href="http://git-scm.com">git</a>, you
-can download a zip containing the latest development branch from here:</p>
+can download the latest development source from the <code>main</code> branch as a zip:</p>
 
 <p><a target="_blank" href="https://github.com/coherence-community/coherence-spring/archive/main.zip" class="bare">https://github.com/coherence-community/coherence-spring/archive/main.zip</a></p>
 

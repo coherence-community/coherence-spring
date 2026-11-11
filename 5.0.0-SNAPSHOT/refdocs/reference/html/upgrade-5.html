@@ -137,7 +137,13 @@ $(globalSwitch);
 <li><a href="#upgrade-5-behavior">4. Review feature-specific changes</a>
 <ul class="sectlevel2">
 <li><a href="#upgrade-5-metrics">4.1. Metrics</a></li>
-<li><a href="#upgrade-5-session">4.2. Spring Session</a></li>
+<li><a href="#upgrade-5-session">4.2. Spring Session</a>
+<ul class="sectlevel3">
+<li><a href="#pof-registrations">4.2.1. POF registrations</a></li>
+<li><a href="#serialization-compatibility-and-cut-over">4.2.2. Serialization compatibility and cut-over</a></li>
+<li><a href="#hardened-coherence-serialization">4.2.3. Hardened Coherence serialization</a></li>
+</ul>
+</li>
 <li><a href="#upgrade-5-resilience4j">4.3. Resilience4j</a></li>
 <li><a href="#upgrade-5-hibernate">4.4. Hibernate second-level cache</a></li>
 </ul>
@@ -227,14 +233,14 @@ for the complete upstream changes.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">11.0.0</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hibernate ORM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hibernate ORM (explicit project selection)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">6.6.x</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">7.4.5.Final</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Coherence Hibernate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">3.x</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.1.0</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Resilience4j</p></td>
@@ -253,8 +259,8 @@ for the complete upstream changes.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Commercial Coherence</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">See the 4.x compatibility table</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Not currently supported</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unverified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unverified</p></td>
 </tr>
 </tbody>
 </table>
@@ -262,6 +268,12 @@ for the complete upstream changes.</p>
 <p>The Java baseline does not change: Coherence Spring tests and supports Java 17 and Java 21. Coherence Spring 5.x
 continues to use the <code>jakarta.*</code> namespace, but its Jakarta EE baseline advances from 10 to 11. Applications using
 Servlet, Persistence, Validation, or other Jakarta APIs must use EE 11-compatible providers.</p>
+</div>
+<div class="paragraph">
+<p>The Hibernate row is the project&#8217;s explicit selection, not Spring Boot&#8217;s managed default. See
+<a href="#upgrade-5-hibernate">Hibernate version selection</a> for the combinations used by the tests and samples.
+Commercial Coherence compatibility has not been established for either line. Coherence 15.1.1.0.0&#8217;s move to Jakarta
+EE 9.1 does not by itself qualify a Spring 6 or Spring 7 application; see the repository README&#8217;s compatibility note.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -374,8 +386,10 @@ module version without adding the Boot starter.</p>
 feature-specific modules. Prefer Boot starters rather than depending directly on Boot&#8217;s auto-configuration modules.
 In particular, direct Boot integrations may now require <code>spring-boot-cache</code>, <code>spring-boot-session</code>,
 <code>spring-boot-web-server</code>, or <code>spring-boot-micrometer-metrics</code> instead of relying on a larger Boot 3 module to provide
-their classes transitively. The Coherence Spring starter supplies its required session module; metrics remain an
-application-level choice.</p>
+their classes transitively. The general <code>coherence-spring-boot-starter</code> makes <code>coherence-spring-session</code> and
+<code>spring-boot-session</code> optional. Applications opt into Boot Session integration with the dedicated
+<code>coherence-spring-session-boot-starter</code> or the manual composition described in
+<a href="#upgrade-5-session">Spring Session</a>. Metrics remain an application-level choice.</p>
 </div>
 </div>
 </div>
@@ -413,9 +427,119 @@ to start, but no registry is created automatically and Coherence metrics are not
 <div class="sect2">
 <h3 id="upgrade-5-session"><a class="anchor" href="#upgrade-5-session"></a>4.2. Spring Session</h3>
 <div class="paragraph">
-<p>Boot 4 moved session auto-configuration into <code>spring-boot-session</code>. The 5.x <code>coherence-spring-boot-starter</code> includes
-that module as a normal dependency so that applications using the starter retain Coherence-backed HTTP session
-auto-configuration. The standalone <code>coherence-spring-session</code> module remains independent of Spring Boot.</p>
+<p>Boot 4 moved session auto-configuration into <code>spring-boot-session</code>. Coherence Spring 5.x makes that module and
+<code>coherence-spring-session</code> optional dependencies of the general <code>coherence-spring-boot-starter</code>. Applications using
+only the general starter no longer receive Spring Session through it. The standalone session library remains
+independent of Spring Boot.</p>
+</div>
+<div class="paragraph">
+<p>Replace the previous two-artifact Boot session recipe:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;${previous-coherence-spring.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+    &lt;version&gt;${previous-coherence-spring.version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with the dedicated starter. Retain an explicit Coherence runtime and the application&#8217;s servlet web dependencies;
+the following assumes the Boot parent or BOM manages Boot versions:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Boot servlet session dependencies for 5.x</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence-spring-session-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.oracle.coherence.ce&lt;/groupId&gt;
+        &lt;artifactId&gt;coherence&lt;/artifactId&gt;
+        &lt;version&gt;26.04&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-webmvc&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-session-boot-starter:5.0.0-SNAPSHOT")
+    implementation("com.oracle.coherence.ce:coherence:26.04")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The supported manual alternative is to declare all three integration artifacts instead of the new starter,
+alongside the same Coherence and servlet prerequisites:</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. Manual Boot session integration</div>
+<div class="content">
+<div class="listingblock primary">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.oracle.coherence.spring&lt;/groupId&gt;
+    &lt;artifactId&gt;coherence-spring-session&lt;/artifactId&gt;
+    &lt;version&gt;5.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-session&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:5.0.0-SNAPSHOT")
+    implementation("com.oracle.coherence.spring:coherence-spring-session:5.0.0-SNAPSHOT")
+    implementation("org.springframework.boot:spring-boot-session")
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The old general-starter plus session-library combination alone no longer guarantees Boot HTTP-session activation.
+It can start successfully without a Coherence session repository or HTTP filter. Setting
+<code>coherence.spring.session.enabled=true</code> does not supply missing dependencies. After migration, verify the actual
+<code>CoherenceIndexedSessionRepository</code> and <code>springSessionRepositoryFilter</code>, and exercise successive HTTP requests
+using the same cookie with state stored in Coherence. Successful startup alone is insufficient.</p>
+</div>
+<div class="paragraph">
+<p>Automatic integration supports servlet web applications, including Boot WARs; it does not provide reactive
+WebSession support or enable HTTP sessions in a non-web application. Standalone Spring applications and storage
+nodes can keep the session library without adding the new starter. See
+<a href="spring-boot.html#spring-boot-sessions">Spring Boot Session Support</a> and
+<a href="spring-session.html#spring-session-introduction">standalone configuration and storage dependencies</a>.</p>
 </div>
 <div class="paragraph">
 <p>Coherence session timeouts use Boot&#8217;s <code>SessionTimeout</code> provider, available since Boot 4.0.1. For embedded servlet
@@ -433,13 +557,94 @@ bean is not required for WAR session auto-configuration.</p>
 <p>Set <code>coherence.spring.session.enabled=false</code> to disable Coherence Spring Session auto-configuration.</p>
 </li>
 <li>
-<p>Set <code>spring.session.store-type</code> when another session store owns auto-configuration.</p>
+<p>Define <code>spring.session.store-type</code> to opt out of Coherence&#8217;s auto-configuration. Any value, including <code>none</code> or
+an empty value, disables it; this does not install or configure another store.</p>
+</li>
+<li>
+<p>Supply an application-owned <code>SessionRepository</code>. Coherence backs off; the application owns the repository
+and HTTP-session enabling. A bare repository bean does not create the HTTP filter. For a supplied repository,
+configure that explicitly, for example with <code>@EnableSpringHttpSession</code>.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>If the application excludes starter dependencies or assembles Boot modules directly, ensure that <code>spring-boot-session</code>
-is present at runtime.</p>
+<p>If the application excludes starter dependencies or assembles Boot modules directly, verify that all three
+integration artifacts and their required servlet/Session classes are present at runtime.</p>
+</div>
+<div class="sect3">
+<h4 id="pof-registrations"><a class="anchor" href="#pof-registrations"></a>4.2.1. POF registrations</h4>
+<div class="paragraph">
+<p>Existing applications using POF for sessions must extend their application-owned POF configuration for the operations
+and authentication payloads they use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Register <code>com.oracle.coherence.spring.session.SessionResetEntryProcessor</code> when calling
+<code>CoherenceIndexedSessionRepository.resetMaxInactiveIntervalForActiveSessions()</code>. The method sends this processor to
+reset active sessions' inactivity intervals and cache expiry, independently of <code>use-entry-processor</code> /
+<code>useEntryProcessor</code>. Setting that option to <code>false</code> changes ordinary session updates; it does not avoid this registration.</p>
+</li>
+<li>
+<p>Register <code>org.springframework.security.core.authority.FactorGrantedAuthority</code> with
+<code>com.oracle.coherence.spring.session.serialization.pof.FactorGrantedAuthorityPofSerializer</code> when authentication graphs
+contain Spring Security 7 factor authorities. Without this mapping, saving or transporting such a graph with POF fails;
+this can affect login and subsequent session access. The serializer preserves both the authority and its issuance time.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See <a href="spring-session.html#spring-session-pof">POF Serialization</a> for the complete configuration and operation table.
+The example IDs <code>4001</code> (reset processor) and <code>3003</code> (factor authority) are illustrative, not reserved. Select unused IDs
+and preserve all existing type-ID mappings while stored or persisted data depends on them. Deploy compatible mappings,
+registered classes and serializer implementations to every application client and Coherence server that serializes,
+deserializes or executes the affected objects. POF registration does not deploy those classes to remote endpoints.
+Applications using Java serialization do not need these POF registrations, but receiving endpoints still need compatible
+classes for their session graphs and repository operations.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="serialization-compatibility-and-cut-over"><a class="anchor" href="#serialization-compatibility-and-cut-over"></a>4.2.2. Serialization compatibility and cut-over</h4>
+<div class="paragraph">
+<p>Mixed Coherence Spring 4.x/5.x access to a session cache has not been qualified. Compatibility depends on the serializer,
+the actual session attribute and authentication graph, and the classes and registrations available at each endpoint.
+One concrete incompatibility is a 5.x authentication graph containing <code>FactorGrantedAuthority</code>: a stock 4.x application
+using Spring Security 6 lacks that class and, for POF, its mapping and serializer. It cannot read that graph.</p>
+</div>
+<div class="paragraph">
+<p>The 5.x <code>AuthenticationPofSerializer</code>, specific to <code>UsernamePasswordAuthenticationToken</code>, has regression coverage for
+reading the legacy POF token format with uniform <code>SimpleGrantedAuthority</code> values and no authentication-state field.
+Such legacy data retains its historical authenticated state because the old format did not record that state.
+This demonstrates new-reader support for that legacy format; it does not establish old-reader compatibility with new
+data, compatibility for arbitrary session graphs, or a safe mixed-version rolling upgrade or rollback.</p>
+</div>
+<div class="paragraph">
+<p>Before reusing an existing session cache, validate the application&#8217;s actual stored graphs, serializers and endpoint
+registrations, and coordinate a cut-over that stops 4.x access before 5.x writes sessions. If compatibility cannot be
+established, use an isolated session cache for 5.x (for example, set <code>coherence.spring.session.map-name</code> in Boot or the
+<code>cache</code> attribute of <code>@EnableCoherenceHttpSession</code> to a different name) and require users to authenticate again. Ensure
+requests and session cookies are routed to the intended deployment. Do not assume automatic data conversion or safe
+rollback after 5.x has written sessions. Plan and validate rollback separately, including what happens to those sessions.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hardened-coherence-serialization"><a class="anchor" href="#hardened-coherence-serialization"></a>4.2.3. Hardened Coherence serialization</h4>
+<div class="paragraph">
+<p>The project&#8217;s default Coherence dependency remains 26.04; the hardened-serialization evidence described here concerns
+Coherence 26.10 snapshots. On versions enforcing that policy, the Session JAR&#8217;s permissions do
+not cover arbitrary application-selected session attributes, principals or authentication details. Supply exact
+application-owned <code>META-INF/coherence/security-config.xml</code> metadata for the required classes on the relevant receiving
+endpoints. POF registrations and security permissions serve separate purposes; hardened POF deployments require both.</p>
+</div>
+<div class="paragraph">
+<p>Follow <a href="spring-session.html#spring-session-hardened-serialization">Hardened serialization and execution</a> for the
+supported library graph and policy limits. The <a href="spring-session.html#spring-session-sample">Spring Session samples</a>
+provide separate app and server policies in the <code>spring-session-demo-app</code> and <code>spring-session-demo-server</code> modules at
+<code>src/main/resources/META-INF/coherence/security-config.xml</code>. Each permits the chosen
+<code>org.springframework.security.core.userdetails.User</code>, its <code>User$AuthorityComparator</code> (needed for Java serialization),
+and <code>org.springframework.security.web.authentication.WebAuthenticationDetails</code>. These are examples for that concrete
+graph; applications must review their own graph and supply any additional POF serializers and registrations it requires.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -463,14 +668,25 @@ is present at runtime.</p>
 <div class="sect2">
 <h3 id="upgrade-5-hibernate"><a class="anchor" href="#upgrade-5-hibernate"></a>4.4. Hibernate second-level cache</h3>
 <div class="paragraph">
-<p>Applications using the Coherence Hibernate integration must move to its Hibernate 7 adapter:</p>
+<p>Applications using Coherence as Hibernate&#8217;s second-level cache must move to the Hibernate 7 adapter.
+Coherence Hibernate 4.1.0 is the required provider baseline.
+Its Hibernate 7 adapter supports Hibernate ORM 7.4.x and packages the processor
+and payload security declarations needed by hardened Coherence 26.10. Earlier provider versions
+are outside this project&#8217;s current qualification scope.
+Declare both the adapter and a compatible ORM version; the adapter&#8217;s Hibernate dependency is <code>provided</code> and does not
+select the application&#8217;s ORM version:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.oracle.coherence.hibernate&lt;/groupId&gt;
     &lt;artifactId&gt;coherence-hibernate-cache-7&lt;/artifactId&gt;
-    &lt;version&gt;4.0.0&lt;/version&gt;
+    &lt;version&gt;4.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+    &lt;version&gt;7.4.5.Final&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -487,8 +703,58 @@ is present at runtime.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Coherence Spring 5.x is tested with Hibernate ORM 7.4.5.Final. Applications using Hibernate-specific query hints
-or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
+<p>The Spring Boot 4.0.8 BOM manages <code>hibernate-core</code> at <code>7.2.24.Final</code>. This project combines that
+managed default with explicit Hibernate ORM 7.4.5.Final declarations as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Usage</th>
+<th class="tableblock halign-left valign-top">Hibernate ORM</th>
+<th class="tableblock halign-left valign-top">Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boot starter tests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.4.5.Final</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test dependency only; the general starter does not bring Hibernate into applications.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hibernate-cache-demo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.4.5.Final</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Explicit runtime selection with <code>coherence-hibernate-cache-7</code> 4.1.0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>coherence-spring-demo-core</code> and <code>coherence-spring-demo-classic</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.4.5.Final</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provided API dependency in core; explicit runtime dependency in the classic sample. These do not use the Hibernate cache adapter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>coherence-spring-demo-boot</code>, CacheStore, circuit-breaker and Cloud Config samples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7.2.24.Final</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boot-managed runtime selection, including <code>coherence-spring-demo-boot</code>; these do not use the Hibernate cache adapter.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The project&#8217;s <code>hibernate.version</code> property supplies explicit dependency declarations; it does not override the
+Hibernate version inside an imported Boot BOM. Boot&#8217;s managed 7.2 line is outside the Coherence Hibernate 4.1.0
+adapter&#8217;s supported 7.4 line. Applications enabling that adapter must select a compatible ORM version explicitly.</p>
+</div>
+<div class="paragraph">
+<p>The Hibernate cache sample&#8217;s packaged integration test requires cross-member entity, query and timestamp
+cache hits with zero SQL on measured reads. Qualify the selected provider and runtime on Java 17 and Java 21;
+results for earlier provider artifacts do not qualify 4.1.0. These checks do not
+establish READ_WRITE concurrency or stale-cache correctness.</p>
+</div>
+<div class="paragraph">
+<p>Applications using Hibernate-specific query hints or APIs must also follow the Hibernate 7 migration guidance. For example, replace the old
 <code>org.hibernate.annotations.QueryHints.CACHEABLE</code> constant with <code>org.hibernate.jpa.HibernateHints.HINT_CACHEABLE</code>.</p>
 </div>
 </div>
@@ -584,7 +850,7 @@ can allow startup while silently leaving an optional integration inactive.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-10-12 17:30:45 UTC
+Last updated 2026-11-11 10:05:44 UTC
 </div>
 </div>
 <script src="js/highlight/highlight.min.js"></script>
