@@ -36,10 +36,11 @@ externalize some Coherence configuration using Spring Cloud Config. The source c
 ----
 $ git clone {github-repo-clone-url}
 $ cd coherence-spring
+$ git switch main
 ----
 
 You now have checked out all the code for Coherence Spring! The relevant demo code for the Spring Cloud Config demo is
-under `coherence-spring-samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
+under `samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
 
 - *coherence-spring-cloud-config-demo-server*: Spring Cloud Config Server implementation
 - *coherence-spring-cloud-config-demo-app*: Main application
@@ -159,7 +160,7 @@ Please execute the following:
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
 $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
-$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
+$ cd samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
 $ java -jar coherence-spring-cloud-config-demo-server-{coherence-spring-version}.jar \n
     --spring.cloud.config.server.git.uri=file:///path/to/git/repo
 ----
@@ -168,7 +169,7 @@ $ java -jar coherence-spring-cloud-config-demo-server-{coherence-spring-version}
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
 $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
-$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
+$ cd samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
 $ java -jar coherence-spring-cloud-config-demo-app-{coherence-spring-version}.jar
 ----
 

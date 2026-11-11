@@ -26,7 +26,7 @@ class ConsumerHarness {
                 if (Boolean.parseBoolean(args[2])) {
                     Properties skipped = new Properties(); skipped.setProperty("result", "SKIPPED");
                     save(skipped, target.resolve("consumer-evidence/summary.properties"));
-                    System.out.println("Consumer tests explicitly skipped; this run cannot qualify package C");
+                    System.out.println("Consumer tests explicitly skipped; this run cannot qualify the packaged-consumer suite");
                 }
             }
             case "freeze" -> freeze(args[2], args[3], args[4]);

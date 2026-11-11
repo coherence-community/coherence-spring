@@ -10,8 +10,10 @@ These independent Maven projects exercise the installed JARs and flattened POMs.
 They have no Coherence Spring parent and never use reactor class directories.
 `inventory.properties` is the reviewed fixture/method inventory: ten fixtures,
 nineteen tests, no permitted skips. Changing that inventory is an explicit review
-change; it is never derived from a passing run. The accepted A/B module tests
-remain in the general starter and complement these consumers.
+change; it is never derived from a passing run. The general starter's
+`CoherenceSpringSessionAutoConfigurationTests` and
+`CoherenceSpringSessionOptionalDependenciesTests` in `coherence-spring-boot-starter`
+complement these consumers.
 
 | Fixture | Proof |
 | --- | --- |
@@ -43,9 +45,9 @@ explicitly. The WAR path uses Spring's `ServletContainerInitializer` to discover
 `SpringBootServletInitializer`; it neither imports selected auto-configurations nor
 registers that initializer manually. The WAR parent loader exposes only container
 and JDK classes. Its loaded Coherence JAR must come from `WEB-INF/lib` and match
-the outer build's hash. WAR timeout defaults preserve A/B semantics: neither a
-container timeout nor `server.servlet.session.timeout` supplies the Boot WAR
-`SessionTimeout`; absent `spring.session.timeout`, the repository retains 30 min.
+the outer build's hash. For WAR timeout defaults, neither a container timeout nor
+`server.servlet.session.timeout` supplies the Boot WAR `SessionTimeout`; absent
+`spring.session.timeout`, the repository retains 30 min.
 
 Run from the repository root, with `JAVA_HOME` and `PATH` selected explicitly:
 
@@ -76,7 +78,8 @@ $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 Repeat on JDK 21 with `-Pjdk17` and `-Pjdk21` to cover both supported targets.
 For the bounded consumer-only run, add `-DskipTests`: this skips outer unit tests
 while the independent consumers still run all ten fixtures/nineteen methods.
-Do not narrow `invoker.test` for acceptance. Run the focused path regressions with
+Do not narrow `invoker.test` for suite qualification. Run the focused path
+regressions with
 `python -m unittest discover -s .github/scripts -p 'test_consumer_paths.py'` on each selected JDK.
 Retain the evidence listed below and the native OS/JDK/Maven versions.
 
@@ -95,16 +98,15 @@ to use `/`, as required by the archive format.
 The path regressions exercise the actual shared helper and outer freeze/copy
 behavior, including native filesystem boundaries, spaces, POSIX/Windows classpath
 strings and drive letters. Cross-platform strings on a POSIX JVM are syntax
-checks; they do not establish native Windows execution. The 22 October 2026
-item4 validation ran locally on macOS; native Windows consumer qualification
-remains outstanding because no authorized Windows runtime was available.
+checks; they do not establish native Windows execution. Local consumer validation
+ran on macOS; native Windows consumer qualification remains outstanding.
 
 A bare custom `SessionRepository` bean makes Coherence back off and does not
 create `springSessionRepositoryFilter`. The custom HTTP case explicitly owns
 `@EnableSpringHttpSession` as well as its Coherence repository/cache/timeout.
 The positive ownership case checks the application bean alias and stored Coherence
 state after two requests; the negative bare-repository case uses MapSessionRepository. This records the existing
-behavior rather than changing accepted A/B production configuration. The reactive
+behavior of `CoherenceSpringSessionAutoConfiguration`. The reactive
 fixture declares the Boot WebFlux starter, starts its real server on an ephemeral
 port and starts Coherence. Boot supplies the reactive `ServerProperties`/timeout
 configuration through discovery; no servlet session repository is created.
@@ -112,18 +114,19 @@ configuration through discovery; no servlet session repository is created.
 The fixtures use explicit pinned plugins compatible with Maven 3.6.0. Invoker's
 actual 3.6.1 descriptor requires Maven 3.2.5/Java 8; no Maven-floor change is made.
 The surrounding project's pre-existing plugin requirements are separate from
-this harness; this task does not qualify the complete reactor on Maven 3.6.0.
+this harness; these consumers do not qualify the complete reactor on Maven 3.6.0.
 The four shared consumer-only helpers are copied into each cloned test source
 root. They are never packaged into the starter/application JAR or WAR. No Boot
 test starter, library test helper, test resource, mock framework or Bedrock
 substitute supplies the consumer application.
 
 `-Dconsumer.tests.skip=true` deliberately skips this consumer harness and records
-`result=SKIPPED`; such a run cannot qualify package C. Ordinary unit-test selectors
-and `skipTests` do not select/skip nested consumers. `invoker.test` can narrow an
-invocation for debugging, but the final inventory audit rejects an incomplete
-qualification. Use the full default fixture set for acceptance. Nested Failsafe
-has fatal failures and no-test behavior explicitly configured.
+`result=SKIPPED`; such a run cannot qualify the packaged-consumer suite. Ordinary
+unit-test selectors and `skipTests` do not select/skip nested consumers.
+`invoker.test` can narrow an invocation for debugging, but the final inventory
+audit rejects an incomplete qualification. Use the full default fixture set for
+qualification. Nested Failsafe has fatal failures and no-test behavior explicitly
+configured.
 
 The outer build passes product/Boot/Coherence versions and group, release,
 `java.home` and the requested security mode explicitly. The default and `-Pjdk17`
@@ -176,7 +179,7 @@ guard negative controls, and a coherent release-21 result rejected by the strict
 qualification collector. Run with `JAVA_HOME`/`PATH` on both JDKs; JDK 21 exercises
 both compiler targets, while JDK 17 verifies that release 21 cannot execute there.
 
-## Evidence contract v1 (for package E)
+## Evidence contract v1
 
 All paths below are relative to this module's `target/`. Retain these small files
 and logs, never the whole isolated repository:
@@ -202,9 +205,11 @@ and logs, never the whole isolated repository:
   product/Coherence JAR/POM hashes; WAR additionally records the actual
   `war.deployment` root and loaded archive bytes.
 
-Package E's CI collector cross-checks expected outer values and these identities;
-the summary alone is insufficient. The fixture JVMs run Coherence in-process and
-introduce no Bedrock child role. `.github/scripts/full-reactor-inventory.json`
+The CI collector in `.github/scripts/consumer_evidence.py`, called by
+`.github/scripts/full_reactor.py`, cross-checks expected outer values and these
+identities; the summary alone is insufficient. The fixture JVMs run Coherence
+in-process and introduce no Bedrock child role.
+`.github/scripts/full-reactor-inventory.json`
 owns the reviewed reactor suite/case and separately launched JVM expectations;
 this directory's `inventory.properties` remains the canonical consumer list.
 Invoker's ten JUnit wrappers are build summaries, while the nineteen real cases

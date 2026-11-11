@@ -14,7 +14,7 @@
 
 :coherence-spring: https://spring.coherence.community/
 :coherence-spring-website: {coherence-spring}{coherence-spring-version}/
-:github-tag: 5.x
+:github-tag: main
 :coherence-api: https://docs.coherence.community/coherence/docs/{coherence-docs-version}/api/
 :coherence-docs: https://docs.coherence.community/coherence/docs/{coherence-docs-version}/
 :coherence-spring-docs: {coherence-spring-website}refdocs/reference/

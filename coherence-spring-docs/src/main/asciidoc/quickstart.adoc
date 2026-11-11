@@ -25,6 +25,7 @@ GitHub repository.
 ----
 $ git clone {github-repo-clone-url}
 $ cd coherence-spring
+$ git switch main
 ----
 
 You now have checked out all the code for Coherence Spring. The relevant demo code for this Quickstart demo is under
@@ -56,8 +57,10 @@ In this chapter we will focus on the *Spring Boot* version. Since we checked out
 .Build the project
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot
+$ ./mvnw clean package -pl samples/coherence-spring-demo/coherence-spring-demo-boot -am
 ----
+
+The `-am` option also builds required modules, including `coherence-spring-demo-core`.
 
 Now we are ready to run the application:
 
