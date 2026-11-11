@@ -170,8 +170,10 @@ Review exclusions and direct dependencies that compensated for Boot 3's larger m
 feature-specific modules. Prefer Boot starters rather than depending directly on Boot's auto-configuration modules.
 In particular, direct Boot integrations may now require `spring-boot-cache`, `spring-boot-session`,
 `spring-boot-web-server`, or `spring-boot-micrometer-metrics` instead of relying on a larger Boot 3 module to provide
-their classes transitively. The Coherence Spring starter supplies its required session module; metrics remain an
-application-level choice.
+their classes transitively. The general `coherence-spring-boot-starter` makes `coherence-spring-session` and
+`spring-boot-session` optional. Applications opt into Boot Session integration with the dedicated
+`coherence-spring-session-boot-starter` or the manual composition described in
+xref:upgrade-5.adoc#upgrade-5-session[Spring Session]. Metrics remain an application-level choice.
 
 [[upgrade-5-behavior]]
 == Review feature-specific changes

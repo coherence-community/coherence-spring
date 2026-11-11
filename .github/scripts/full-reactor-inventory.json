@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "provenance": "Reviewed module POMs and test method sources, cross-checked with complete historical clean reactor and accepted A/B evidence. Expectations change only through review; CI never derives them from the run under judgment.",
+  "provenance": "Reviewed module POMs and test method sources, cross-checked with historical clean reactor results and the general starter's Spring Session auto-configuration and optional-dependency module tests. Expectations change only through review; CI never derives them from the run under judgment.",
   "modules": [
     {
       "path": ".",
