@@ -5,6 +5,7 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -203,7 +204,8 @@ class ConsumerEvidenceTests(unittest.TestCase):
         self.assertTrue(any('summary' in i for i in self.collect()['issues']))
         self.assertTrue(any('Invoker failed' in i for i in self.collect()['issues']))
 
-    def test_inventory_and_duplicate_report_hazards(self):
+    def reactor_evidence(self):
+        """Complete, passing reactor and consumer evidence with real parsers."""
         inv = {'modules': [{'path': '.', 'artifact': 'parent', 'name': 'Parent', 'suites': [
             {'report': 'surefire-reports', 'name': 'unit.Example', 'cases': ['unit.Example#works']} ]},
             {'path': self.module.name, 'artifact': self.module.name, 'name': 'Session', 'suites': []}],
@@ -217,10 +219,121 @@ class ConsumerEvidenceTests(unittest.TestCase):
         (output / 'invocation.json').write_text(json.dumps({'java_home': str(self.home)}))
         (output / 'jvms.json').write_text(json.dumps([{'pid': 1, 'properties': dict(self.jvm,
             **{'sun.java.command': 'org.codehaus.plexus.classworlds.launcher.Launcher verify', 'user.dir': str(self.source)})}]))
+        return inv, inventory, report, output
+
+    def audit_reactor(self, inventory, output):
+        with patch.object(full_reactor, 'INVENTORY', inventory), contextlib.redirect_stdout(io.StringIO()):
+            rejected = full_reactor.audit(self.source, output, 'snapshot', '26.10-SNAPSHOT',
+                                          '21', 'hardened', self.repository, 0, expected_home=self.home)
+        result = json.loads((output / 'qualification.json').read_text())
+        self.assertEqual(rejected, bool(result['issues']))
+        return result
+
+    def test_manifest_home_must_match_independently_trusted_jdk(self):
+        _, inventory, _, output = self.reactor_evidence()
+        self.assertEqual(self.audit_reactor(inventory, output)['issues'], [])
+        resolve = Path.resolve
+        for untrusted in ('../../do-not-resolve/absent-jdk', '/other/jdk', '', None):
+            with self.subTest(home=untrusted):
+                manifest = {} if untrusted is None else {'java_home': untrusted}
+                (output / 'invocation.json').write_text(json.dumps(manifest))
+
+                def guarded_resolve(path, *args, **kwargs):
+                    if untrusted:
+                        self.assertNotEqual(str(path), untrusted, 'Manifest home must remain data')
+                    return resolve(path, *args, **kwargs)
+
+                with patch.object(Path, 'resolve', autospec=True, side_effect=guarded_resolve):
+                    issues = self.audit_reactor(inventory, output)['issues']
+                self.assertEqual(issues, ['Invocation JDK home differs from the trusted expected home'])
+        (output / 'invocation.json').unlink()
+        self.assertEqual(self.audit_reactor(inventory, output)['issues'],
+                         ['Invocation JDK home differs from the trusted expected home'])
+
+    def test_consistently_forged_home_cannot_change_expected_jdk(self):
+        _, inventory, report, output = self.reactor_evidence()
+        forged = '/other/jdk'
+        (output / 'invocation.json').write_text(json.dumps({'java_home': forged}))
+        rows = json.loads((output / 'jvms.json').read_text())
+        rows[0]['properties']['java.home'] = forged
+        (output / 'jvms.json').write_text(json.dumps(rows))
+        for path in (report, self.report_path):
+            suite = ET.parse(path).getroot()
+            suite.find('properties/property[@name="java.home"]').set('value', forged)
+            path.write_bytes(ET.tostring(suite))
+        props = load_properties(self.evidence_path)
+        self.props(self.evidence_path, dict(props, **{'java.home': forged}))
+        issues = self.audit_reactor(inventory, output)['issues']
+        self.assertIn('Invocation JDK home differs from the trusted expected home', issues)
+        self.assertTrue(any('maven:1: unexpected JDK home' in issue for issue in issues), issues)
+        self.assertTrue(any('unit.Example: unexpected JDK home' in issue for issue in issues), issues)
+        self.assertTrue(any('consumer:general-starter: unexpected JDK home' in issue for issue in issues), issues)
+        self.assertTrue(any('general-starter/generalCache: incorrect JDK home' in issue for issue in issues), issues)
+
+    def test_replay_requires_explicit_absolute_trusted_home(self):
+        _, inventory, _, output = self.reactor_evidence()
+        with patch.object(full_reactor, 'INVENTORY', inventory):
+            args = (self.source, output, 'snapshot', '26.10-SNAPSHOT', '21', 'hardened', self.repository, 0)
+            with self.assertRaises(TypeError):
+                full_reactor.audit(*args)
+            with self.assertRaisesRegex(ValueError, 'absolute trusted JDK'):
+                full_reactor.audit(*args, expected_home=Path('relative/jdk'))
+            with patch.dict(os.environ, {'JAVA_HOME': '/unrelated/current/jdk'}):
+                self.assertEqual(self.audit_reactor(inventory, output)['issues'], [])
+
+    def test_report_payloads_stay_exact_contents_at_fixed_destinations(self):
+        inv, inventory, report, output = self.reactor_evidence()
+        payload = '../outside/$(echo "evidence"); \\network\\path \u2603'
+        manifest = {'java_home': str(self.home), 'hibernate_version': payload, 'qualification_scope': payload}
+        (output / 'invocation.json').write_text(json.dumps(manifest))
+        rows = json.loads((output / 'jvms.json').read_text())
+        rows[0]['properties']['evidence.note'] = payload
+        (output / 'jvms.json').write_text(json.dumps(rows))
+        inv['modules'][0]['name'] = payload
+        # The inventory flow reported by Sonar uses module['path'] as the JSON
+        # module key and case metadata. Exercise that exact flow as well.
+        module_path = 'inventory ..\\outside;$(echo evidence) with spaces'
+        inv['modules'].append({'path': module_path, 'artifact': 'payload-module', 'name': 'Payload module',
+                               'suites': inv['modules'][0]['suites']})
+        inv['modules'][0]['suites'] = []
+        nested_report = self.source / module_path / 'target/surefire-reports' / report.name
+        nested_report.parent.mkdir(parents=True)
+        report.rename(nested_report)
+        pom = ET.parse(self.source / 'pom.xml').getroot()
+        pom.find('{http://maven.apache.org/POM/4.0.0}name').text = payload
+        ET.SubElement(pom.find('{http://maven.apache.org/POM/4.0.0}modules'),
+                      '{http://maven.apache.org/POM/4.0.0}module').text = module_path
+        (self.source / 'pom.xml').write_bytes(ET.tostring(pom))
+        self.write(self.source / module_path / 'pom.xml',
+                   '<project xmlns="http://maven.apache.org/POM/4.0.0">'
+                   '<artifactId>payload-module</artifactId><name>Payload module</name></project>')
+        inventory.write_text(json.dumps(inv))
+        summary = ('[INFO] Reactor Summary\n[INFO] ' + payload + ' .... SUCCESS\n'
+                   '[INFO] Session .... SUCCESS\n[INFO] Payload module .... SUCCESS\n'
+                   '../../outside/report.txt\n' + payload + '\n')
+        (output / 'maven.log').write_text('Earlier log text\n' + summary)
+        before = {p.relative_to(self.source) for p in self.source.rglob('*')}
+        result = self.audit_reactor(inventory, output)
+        self.assertEqual(result['issues'], [])
+        self.assertEqual((output / 'reactor-summary.txt').read_text(), summary)
+        self.assertEqual(result['hibernate_version'], payload)
+        self.assertEqual(result['qualification_scope'], payload)
+        self.assertEqual(result['reactor'][0], [payload, 'SUCCESS'])
+        self.assertEqual(result['jvms'][0]['properties']['evidence.note'], payload)
+        self.assertEqual(result['modules'][module_path]['tests'], 1)
+        self.assertEqual(result['cases'][0]['module'], module_path)
+        added = {p.relative_to(self.source) for p in self.source.rglob('*')} - before
+        self.assertEqual(added, {Path('output') / name for name in
+                                ('reactor-summary.txt', 'resolved-coherence.json', 'qualification.json')})
+        self.assertEqual(json.loads((output / 'invocation.json').read_text()), manifest)
+
+    def test_inventory_and_duplicate_report_hazards(self):
+        inv, inventory, report, output = self.reactor_evidence()
 
         def audit(lane='snapshot'):
             with patch.object(full_reactor, 'INVENTORY', inventory), contextlib.redirect_stdout(io.StringIO()):
-                full_reactor.audit(self.source, output, lane, '26.10-SNAPSHOT', '21', 'hardened', self.repository, 0)
+                full_reactor.audit(self.source, output, lane, '26.10-SNAPSHOT', '21', 'hardened', self.repository, 0,
+                                   expected_home=self.home)
             return json.loads((output / 'qualification.json').read_text())
 
         result = audit()
@@ -249,6 +362,38 @@ class ConsumerEvidenceTests(unittest.TestCase):
         self.assertTrue(any('Unclassified test report' in i for i in audit()['issues']))
         report.unlink()
         self.assertTrue(any('Missing/invalid reactor report' in i for i in audit()['issues']))
+
+    def test_invalid_fixture_keeps_later_independent_fixture_results(self):
+        fixture = 'general-zz-after'
+        canonical = 'general-starter=generalCache\n' + fixture + '=generalCache\n'
+        self.write(self.module / 'src/it/inventory.properties', canonical)
+        self.write(self.module / f'src/it/{fixture}/pom.xml', '<project/>')
+        self.write(self.target / 'consumer-evidence/inventory.properties', canonical)
+        self.props(self.target / 'consumer-evidence/summary.properties',
+                   dict(result='PASS', fixtures='2', tests='2', failures='0', errors='0', skips='0'))
+        clone = self.target / 'it' / fixture
+        shutil.copytree(self.build.parent, clone)
+        self.write(self.target / f'invoker-reports/BUILD-{fixture}.xml',
+                   f'<build-job result="success" project="{fixture}/pom.xml"/>')
+        self.report(self.target / f'invoker-reports/TEST-{fixture}.xml', 'maven.invoker.it.' + fixture, fixture, {})
+        evidence = clone / 'target/consumer-evidence/generalCache.properties'
+        self.props(evidence, dict(load_properties(evidence), **{'consumer.fixture': fixture}))
+        self.evidence_path.unlink()
+        result = self.collect()
+        self.assertEqual(set(result['fixtures']), {fixture})
+        self.assertEqual(result['fixtures'][fixture][0]['result'], 'passed')
+        self.assertEqual(len(result['issues']), 2)
+        self.assertEqual(result['issues'][0], 'Consumers: general-starter: method evidence inventory differs')
+        self.assertTrue(result['issues'][1].startswith('consumer:general-starter: missing/invalid fixture evidence:'))
+
+    def test_multiple_method_identity_failures_keep_diagnostic_order(self):
+        evidence = load_properties(self.evidence_path)
+        evidence.update(result='FAIL', scenario='other', **{'consumer.fixture': 'other'})
+        self.props(self.evidence_path, evidence)
+        self.assertEqual(self.collect()['issues'], [
+            'Consumers: general-starter/generalCache: result != PASS',
+            'Consumers: general-starter/generalCache: scenario != generalCache',
+            'Consumers: general-starter/generalCache: consumer.fixture != general-starter'])
 
 
 class RuntimeEvidenceTests(unittest.TestCase):
