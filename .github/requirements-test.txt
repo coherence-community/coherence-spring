@@ -1,2 +1,5 @@
-# Coverage reporting for the qualification helpers (no runtime dependencies).
-coverage==7.17.2
+# CPython 3.14 wheels for Linux x64 CI and macOS arm64 development.
+# SHA-256: https://pypi.org/pypi/coverage/7.17.2/json
+coverage==7.17.2 \
+    --hash=sha256:34e5c7a2da36804c6e6f10b368eae01ad56f5a4ac5ecce7297300a3d46fdef2a \
+    --hash=sha256:2a6281011cf85699763bf88ab55e0774f6696f87b390f39152b14ecefadccb59
