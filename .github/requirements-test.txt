@@ -1,0 +1,2 @@
+# Coverage reporting for the qualification helpers (no runtime dependencies).
+coverage==7.17.2
