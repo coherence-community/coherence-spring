@@ -728,8 +728,33 @@
 		</profile>
 		<profile>
 			<id>coverage</id>
+			<properties>
+				<!-- Test inclusions also remove these files from the main analysis scope. -->
+				<sonar.test.inclusions>**/src/test/**,.github/scripts/test_*.py</sonar.test.inclusions>
+			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>${build-helper-maven-plugin.version}</version>
+						<!-- Only the root owns the Python helpers; retain child Java test roots. -->
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>qualification-helper-tests</id>
+								<phase>generate-test-sources</phase>
+								<goals>
+									<goal>add-test-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>${project.basedir}/.github/scripts</source>
+									</sources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
