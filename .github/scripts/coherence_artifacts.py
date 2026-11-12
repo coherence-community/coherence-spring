@@ -22,7 +22,7 @@ def dependency_record(path):
     for file in sorted(path.parent.glob('maven-metadata-*.xml')):
         root = ET.parse(file).getroot()
         metadata.append({'file': file.name, 'sha256': digest(file),
-                         'snapshot_versions': [dict((child.tag, child.text) for child in entry)
+                         'snapshot_versions': [{child.tag: child.text for child in entry}
                                                for entry in root.findall('./versioning/snapshotVersions/snapshotVersion')]})
     # Match aliases to the timestamped bytes Maven actually downloaded. Metadata
     # alone can list versions that were not used by this invocation.

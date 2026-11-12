@@ -13,6 +13,9 @@ import zipfile
 
 from coherence_artifacts import digest
 
+COHERENCE_GROUP = 'com.oracle.coherence.ce'
+SHA256_SUFFIX = '.sha256'
+
 
 def load_properties(path):
     """Read Java Properties.store output (including escaped coordinate keys)."""
@@ -85,6 +88,218 @@ def check_classes(path, issues, origin):
                 issues.append(f'{origin}: expected release-17 bytecode: {path}!{name}')
 
 
+def audit_consumer_inventory(source, inventory, module, target, require):
+    canonical = load_properties(source / inventory['inventory'])
+    fixture_dirs = {p.parent.name for p in (module / 'src/it').glob('*/pom.xml')}
+    require(set(canonical) == fixture_dirs, 'source fixture inventory differs')
+    copied = load_properties(target / 'consumer-evidence/inventory.properties')
+    require(canonical == copied, 'copied fixture inventory differs')
+    methods = {name: value.split(',') for name, value in canonical.items()}
+    require(all(len(set(v)) == len(v) and all(v) for v in methods.values()), 'duplicate/empty methods')
+    summary = load_properties(target / 'consumer-evidence/summary.properties')
+    for key, value in {'result': 'PASS', 'fixtures': str(len(methods)),
+                       'tests': str(sum(map(len, methods.values()))), 'failures': '0',
+                       'errors': '0', 'skips': '0'}.items():
+        require(summary.get(key) == value, f'summary {key} != {value}')
+    return methods
+
+
+def audit_outer_coordinate(key, outer, expected, product_group, product_version, require):
+    group, artifact, version = key.split(':')
+    require(group in (product_group, COHERENCE_GROUP), f'unexpected outer group: {key}')
+    if group == product_group:
+        require(version == product_version, f'mixed outer product version: {key}')
+    for ext in ('jar', 'pom'):
+        path = Path(outer[key + '.' + ext + '.source'])
+        require(path.is_file() and digest(path) == outer[key + '.' + ext + SHA256_SUFFIX],
+                f'outer {ext} bytes drift: {key}')
+    if group == COHERENCE_GROUP:
+        actual = expected.get(artifact)
+        require(actual is not None and actual['version'] == version
+                and actual['sha256'] == outer[key + '.jar.sha256']
+                and actual['pom_sha256'] == outer[key + '.pom.sha256'],
+                f'outer Coherence differs from this run: {key}')
+
+
+def audit_outer_artifacts(source, module, target, expected, require):
+    """Return outer hashes, reviewed coordinates and reactor product versions."""
+    outer = load_properties(target / 'consumer-evidence/outer-artifacts.properties')
+    outer_rows = dependencies(target / 'consumer-evidence/outer-dependencies.txt')
+    # Product coordinates are taken from the owning reactor POM, not fixture claims.
+    ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+    pom = ET.parse(source / 'pom.xml').getroot()
+    product_group = pom.findtext('m:groupId', namespaces=ns)
+    product_version = pom.findtext('m:version', namespaces=ns)
+    boot_version = pom.findtext('m:properties/m:spring-boot.version', namespaces=ns)
+    required_outer = {k for k, _, _ in outer_rows}
+    required_outer.add(f'{product_group}:{module.name}:{product_version}')
+    require(set(outer) == {k + '.' + ext + '.' + field for k in required_outer
+                          for ext in ('jar', 'pom') for field in ('sha256', 'source')},
+            'outer manifest coordinate/field inventory differs')
+    for key in required_outer:
+        audit_outer_coordinate(key, outer, expected, product_group, product_version, require)
+    return {'manifest': outer, 'coordinates': required_outer,
+            'product_group': product_group, 'boot_version': boot_version}
+
+
+def audit_fixture_inventory(target, methods, require):
+    for prefix in ('BUILD-', 'TEST-'):
+        require({p.name for p in (target / 'invoker-reports').glob(prefix + '*.xml')}
+                == {prefix + f + '.xml' for f in methods}, f'Invoker {prefix} inventory differs')
+    require({p.name for p in (target / 'it').iterdir() if p.is_dir()} == set(methods),
+            'cloned fixture inventory differs')
+
+
+def audit_invoker(target, clone, fixture, require):
+    require((clone / 'build.log').stat().st_size > 0, f'{fixture}: empty build log')
+    invoker = ET.parse(target / f'invoker-reports/BUILD-{fixture}.xml').getroot()
+    require(invoker.get('result') == 'success', f'{fixture}: Invoker failed')
+    require(invoker.get('project') == fixture + '/pom.xml', f'{fixture}: Invoker project identity differs')
+    wrapper, wrapper_cases = junit(target / f'invoker-reports/TEST-{fixture}.xml')
+    require(len(wrapper_cases) == 1 and wrapper_cases[0]['result'] == 'passed',
+            f'{fixture}: Invoker JUnit wrapper failed')
+    require(wrapper.get('name') == 'maven.invoker.it.' + fixture
+            and [(c['class'], c['name']) for c in wrapper_cases] == [('maven.invoker.it.' + fixture, fixture)],
+            f'{fixture}: Invoker JUnit wrapper identity differs')
+
+
+def audit_consumer_reports(build, fixture, names, inventory, home, properties, require):
+    reports = sorted((build / 'failsafe-reports').glob('TEST-*.xml'))
+    require(len(reports) == 1, f'{fixture}: expected one Failsafe suite')
+    require(not list((build / 'surefire-reports').glob('TEST-*.xml')),
+            f'{fixture}: unexpected Surefire consumer reports')
+    cases = []
+    for path in reports:
+        suite, tests = junit(path)
+        require(suite.get('name') == inventory.get('test_class', 'consumer.ConsumerIT'),
+                f'{fixture}: consumer suite identity differs')
+        props = {p.get('name'): p.get('value') for p in suite.findall('properties/property')}
+        properties(props, f'consumer:{fixture}')
+        require(props.get('maven.test.failure.ignore') == 'false', f'{fixture}: fatal failures evidence missing')
+        require(Path(props.get('java.home', '')).resolve() == home, f'{fixture}: JDK home differs')
+        cases += tests
+    require(collections.Counter((c['class'], c['name']) for c in cases)
+            == collections.Counter((inventory.get('test_class', 'consumer.ConsumerIT'), n) for n in names),
+            f'{fixture}: exact consumer cases differ')
+    require(all(c['result'] == 'passed' for c in cases), f'{fixture}: failed/skipped consumer')
+    failsafe = ET.parse(build / 'failsafe-reports/failsafe-summary.xml').getroot()
+    require(failsafe.get('timeout') == 'false', f'{fixture}: Failsafe timeout/missing outcome')
+    for key, value in {'completed': str(len(names)), 'errors': '0', 'failures': '0', 'skipped': '0'}.items():
+        require(failsafe.findtext(key) == value, f'{fixture}: Failsafe {key} differs')
+    require(failsafe.find('failureMessage') is None or not failsafe.findtext('failureMessage'),
+            f'{fixture}: Failsafe failure message')
+    return cases
+
+
+def audit_fixture_dependencies(target, build, fixture, names, artifacts, check_product, require):
+    """Check isolated dependency bytes and return the fixture's runtime evidence."""
+    records = dependencies(build / 'test-dependencies.txt')
+    graph = (build / 'runtime-dependencies.txt').read_text()
+    runtime = (build / 'runtime-classpath.txt').read_text().strip()
+    require(bool(graph.strip()) and bool(runtime), f'{fixture}: empty dependency evidence')
+    require({p.name for p in (build / 'consumer-evidence').glob('*.properties')}
+            == {n + '.properties' for n in names}, f'{fixture}: method evidence inventory differs')
+    fixture_artifacts = {key for key, _, _ in records if key.split(':')[0]
+                         in (artifacts['product_group'], COHERENCE_GROUP)}
+    require(len(fixture_artifacts) >= 2, f'{fixture}: incomplete packaged artifacts')
+    for key, _, path in records:
+        require(path.is_file(), f'{fixture}: missing dependency {path}')
+        if key in fixture_artifacts:
+            require(key in artifacts['coordinates'], f'{fixture}: unexpected product/Coherence dependency {key}')
+            require(path.is_relative_to(target / 'it-repository'), f'{fixture}: dependency outside isolated repository')
+            for ext in ('jar', 'pom'):
+                actual = path.with_suffix('.' + ext)
+                require(actual.is_file() and digest(actual) == artifacts['manifest'].get(key + '.' + ext + SHA256_SUFFIX),
+                        f'{fixture}: {ext} byte drift: {key}')
+            if key.startswith(artifacts['product_group'] + ':'):
+                check_product(path, f'consumer:{fixture}')
+        if key.startswith('org.springframework.boot:'):
+            require(key.split(':')[2] == artifacts['boot_version'], f'{fixture}: Boot dependency version differs')
+    return records, graph, runtime, fixture_artifacts
+
+
+def method_expectations(fixture, name, expected, java, mode, boot_version):
+    return {'result': 'PASS', 'scenario': name, 'consumer.fixture': fixture,
+            'consumer.release': '17', 'java.specification.version': java,
+            'consumer.coherence.group': COHERENCE_GROUP,
+            'consumer.coherence.version': expected['coherence']['version'],
+            'consumer.boot.version': boot_version,
+            'consumer.security.mode': mode or 'unset',
+            'coherence.security.mode': mode or '<absent>'}
+
+
+def audit_method_identity(evidence, fixture, name, values, home, require):
+    for key, value in values.items():
+        require(evidence.get(key) == value, f'{fixture}/{name}: {key} != {value}')
+    require(evidence.get('java.version', '').split('.')[0] == values['java.specification.version'], f'{fixture}/{name}: incorrect JDK')
+    require(Path(evidence.get('java.home', '')).resolve() == home, f'{fixture}/{name}: incorrect JDK home')
+
+
+def audit_method_artifacts(evidence, fixture, name, artifacts, fixture_artifacts, require):
+    require({k for k in evidence if k.endswith(('.jar.sha256', '.pom.sha256'))
+             and not k.startswith('war.loaded.')}
+            == {k + '.' + ext + SHA256_SUFFIX for k in fixture_artifacts for ext in ('jar', 'pom')},
+            f'{fixture}/{name}: compared artifact inventory differs')
+    for key in fixture_artifacts:
+        for ext in ('jar', 'pom'):
+            field = key + '.' + ext + SHA256_SUFFIX
+            require(evidence.get(field) == artifacts['manifest'].get(field), f'{fixture}/{name}: artifact evidence drift: {field}')
+
+
+def audit_dependency_boundaries(build, fixture, name, evidence, dependencies, fixture_artifacts, require):
+    records, graph, runtime = dependencies
+    actual_cp = evidence.get('java.class.path', '')
+    require(all(str(p) in actual_cp.split(os.pathsep) for k, _, p in records if k in fixture_artifacts),
+            f'{fixture}/{name}: packaged dependency absent from actual classpath')
+    all_dependencies = graph + runtime + actual_cp + (build / 'test-dependencies.txt').read_text()
+    for forbidden in ('coherence-spring-tests', 'mockito', 'assertj', 'bedrock', 'coherence-grpc-proxy'):
+        require(forbidden not in all_dependencies, f'{fixture}: unexpected dependency {forbidden}')
+    for forbidden in ('junit', 'spring-test', 'test-classes', 'target/classes'):
+        require(forbidden not in runtime, f'{fixture}: unexpected runtime dependency {forbidden}')
+    require(not re.search(r'coherence-spring-[^/]+/target/(test-)?classes', actual_cp),
+            f'{fixture}: reactor classpath leakage')
+    for entry in runtime.split(os.pathsep):
+        require(Path(entry).is_file() and entry.endswith('.jar'), f'{fixture}: runtime dependency is not a JAR: {entry}')
+    audit_fixture_boundaries(fixture, graph, actual_cp, all_dependencies, require)
+
+
+def audit_fixture_boundaries(fixture, graph, actual_cp, all_dependencies, require):
+    if fixture.startswith('general-'):
+        require('org.springframework.session:' not in all_dependencies
+                and '/org/springframework/session/' not in all_dependencies
+                and 'spring-boot-session' not in all_dependencies,
+                f'{fixture}: Session dependency leaked')
+    if fixture == 'general-starter':
+        require('jakarta.servlet-api' not in graph + actual_cp, f'{fixture}: servlet API leaked')
+    if fixture == 'plain-spring-session':
+        require('org.springframework.boot:' not in graph and '/org/springframework/boot/' not in actual_cp,
+                f'{fixture}: Boot dependency leaked')
+    if fixture == 'library-without-boot-session':
+        require('spring-boot-session' not in all_dependencies, f'{fixture}: Boot Session leaked')
+    if fixture == 'boot-session-without-coherence-session':
+        require(':coherence-spring-session:' not in all_dependencies
+                and '/coherence-spring-session/' not in all_dependencies,
+                f'{fixture}: Coherence Session leaked')
+    if fixture in ('session-starter', 'non-web', 'custom-repository', 'boot-war'):
+        for artifact in ('coherence-spring-session-boot-starter', 'coherence-spring-boot-starter',
+                         'coherence-spring-session', 'spring-boot-session'):
+            require(':' + artifact + ':jar:' in graph, f'{fixture}: missing integration dependency {artifact}')
+
+
+def audit_loaded_coherence(evidence, fixture, name, expected, records, require):
+    loaded = Path(evidence.get('loaded.coherence.jar', ''))
+    require(loaded.is_file() and digest(loaded) == expected['coherence']['sha256'],
+            f'{fixture}/{name}: loaded Coherence bytes drift')
+    require(loaded in {p for k, _, p in records if k == COHERENCE_GROUP + ':coherence:' + expected['coherence']['version']},
+            f'{fixture}/{name}: loaded Coherence outside dependency inventory')
+    if fixture == 'boot-war':
+        loaded = Path(evidence.get('war.loaded.coherence.jar', ''))
+        require('WEB-INF/lib/' in str(loaded) and loaded.is_file()
+                and digest(loaded) == expected['coherence']['sha256']
+                and evidence.get('war.loaded.coherence.sha256') == expected['coherence']['sha256'],
+                f'{fixture}/{name}: loaded WAR Coherence bytes drift')
+
+
 def audit_consumers(source, inventory, expected, java, home, mode, properties):
     """Return independent fixture results and all failures; never trust PASS alone."""
     issues, results = [], {}
@@ -96,180 +311,36 @@ def audit_consumers(source, inventory, expected, java, home, mode, properties):
             issues.append('Consumers: ' + message)
 
     try:
-        canonical = load_properties(source / inventory['inventory'])
-        fixture_dirs = {p.parent.name for p in (module / 'src/it').glob('*/pom.xml')}
-        require(set(canonical) == fixture_dirs, 'source fixture inventory differs')
-        copied = load_properties(target / 'consumer-evidence/inventory.properties')
-        require(canonical == copied, 'copied fixture inventory differs')
-        methods = {name: value.split(',') for name, value in canonical.items()}
-        require(all(len(set(v)) == len(v) and all(v) for v in methods.values()), 'duplicate/empty methods')
-        summary = load_properties(target / 'consumer-evidence/summary.properties')
-        for key, value in {'result': 'PASS', 'fixtures': str(len(methods)),
-                           'tests': str(sum(map(len, methods.values()))), 'failures': '0',
-                           'errors': '0', 'skips': '0'}.items():
-            require(summary.get(key) == value, f'summary {key} != {value}')
-        outer = load_properties(target / 'consumer-evidence/outer-artifacts.properties')
-        outer_rows = dependencies(target / 'consumer-evidence/outer-dependencies.txt')
-        # Product coordinates are taken from the owning reactor POM, not fixture claims.
-        ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
-        pom = ET.parse(source / 'pom.xml').getroot()
-        product_group = pom.findtext('m:groupId', namespaces=ns)
-        product_version = pom.findtext('m:version', namespaces=ns)
-        boot_version = pom.findtext('m:properties/m:spring-boot.version', namespaces=ns)
-        required_outer = {k for k, _, _ in outer_rows}
-        required_outer.add(f'{product_group}:{module.name}:{product_version}')
-        require(set(outer) == {k + '.' + ext + '.' + field for k in required_outer
-                              for ext in ('jar', 'pom') for field in ('sha256', 'source')},
-                'outer manifest coordinate/field inventory differs')
-        for key in required_outer:
-            group, artifact, version = key.split(':')
-            require(group in (product_group, 'com.oracle.coherence.ce'), f'unexpected outer group: {key}')
-            if group == product_group:
-                require(version == product_version, f'mixed outer product version: {key}')
-            for ext in ('jar', 'pom'):
-                path = Path(outer[key + '.' + ext + '.source'])
-                require(path.is_file() and digest(path) == outer[key + '.' + ext + '.sha256'],
-                        f'outer {ext} bytes drift: {key}')
-            if group == 'com.oracle.coherence.ce':
-                actual = expected.get(artifact)
-                require(actual is not None and actual['version'] == version
-                        and actual['sha256'] == outer[key + '.jar.sha256']
-                        and actual['pom_sha256'] == outer[key + '.pom.sha256'],
-                        f'outer Coherence differs from this run: {key}')
-        for prefix in ('BUILD-', 'TEST-'):
-            require({p.name for p in (target / 'invoker-reports').glob(prefix + '*.xml')}
-                    == {prefix + f + '.xml' for f in methods}, f'Invoker {prefix} inventory differs')
-        require({p.name for p in (target / 'it').iterdir() if p.is_dir()} == set(methods),
-                'cloned fixture inventory differs')
+        methods = audit_consumer_inventory(source, inventory, module, target, require)
+        artifacts = audit_outer_artifacts(source, module, target, expected, require)
+        audit_fixture_inventory(target, methods, require)
     except (OSError, ValueError, KeyError, ET.ParseError) as error:
         return {'fixtures': results, 'issues': issues + [f'Consumers: missing/invalid outer evidence: {error}']}
 
     checked_jars = set()
+
+    def check_product(path, origin):
+        if path not in checked_jars:
+            check_classes(path, issues, origin)
+            checked_jars.add(path)
+
     for fixture, names in sorted(methods.items()):
         origin = f'consumer:{fixture}'
         clone = target / 'it' / fixture
         build = clone / 'target'
         try:
-            require((clone / 'build.log').stat().st_size > 0, f'{fixture}: empty build log')
-            invoker = ET.parse(target / f'invoker-reports/BUILD-{fixture}.xml').getroot()
-            require(invoker.get('result') == 'success', f'{fixture}: Invoker failed')
-            require(invoker.get('project') == fixture + '/pom.xml', f'{fixture}: Invoker project identity differs')
-            wrapper, wrapper_cases = junit(target / f'invoker-reports/TEST-{fixture}.xml')
-            require(len(wrapper_cases) == 1 and wrapper_cases[0]['result'] == 'passed',
-                    f'{fixture}: Invoker JUnit wrapper failed')
-            require(wrapper.get('name') == 'maven.invoker.it.' + fixture
-                    and [(c['class'], c['name']) for c in wrapper_cases] == [('maven.invoker.it.' + fixture, fixture)],
-                    f'{fixture}: Invoker JUnit wrapper identity differs')
-            reports = sorted((build / 'failsafe-reports').glob('TEST-*.xml'))
-            require(len(reports) == 1, f'{fixture}: expected one Failsafe suite')
-            require(not list((build / 'surefire-reports').glob('TEST-*.xml')),
-                    f'{fixture}: unexpected Surefire consumer reports')
-            cases = []
-            for path in reports:
-                suite, tests = junit(path)
-                require(suite.get('name') == inventory.get('test_class', 'consumer.ConsumerIT'),
-                        f'{fixture}: consumer suite identity differs')
-                props = {p.get('name'): p.get('value') for p in suite.findall('properties/property')}
-                properties(props, origin)
-                require(props.get('maven.test.failure.ignore') == 'false', f'{fixture}: fatal failures evidence missing')
-                require(Path(props.get('java.home', '')).resolve() == home, f'{fixture}: JDK home differs')
-                cases += tests
-            require(collections.Counter((c['class'], c['name']) for c in cases)
-                    == collections.Counter((inventory.get('test_class', 'consumer.ConsumerIT'), n) for n in names),
-                    f'{fixture}: exact consumer cases differ')
-            require(all(c['result'] == 'passed' for c in cases), f'{fixture}: failed/skipped consumer')
-            failsafe = ET.parse(build / 'failsafe-reports/failsafe-summary.xml').getroot()
-            require(failsafe.get('timeout') == 'false', f'{fixture}: Failsafe timeout/missing outcome')
-            for key, value in {'completed': str(len(names)), 'errors': '0', 'failures': '0', 'skipped': '0'}.items():
-                require(failsafe.findtext(key) == value, f'{fixture}: Failsafe {key} differs')
-            require(failsafe.find('failureMessage') is None or not failsafe.findtext('failureMessage'),
-                    f'{fixture}: Failsafe failure message')
-            records = dependencies(build / 'test-dependencies.txt')
-            graph = (build / 'runtime-dependencies.txt').read_text()
-            runtime = (build / 'runtime-classpath.txt').read_text().strip()
-            require(bool(graph.strip()) and bool(runtime), f'{fixture}: empty dependency evidence')
-            require({p.name for p in (build / 'consumer-evidence').glob('*.properties')}
-                    == {n + '.properties' for n in names}, f'{fixture}: method evidence inventory differs')
-            fixture_artifacts = {key for key, _, _ in records if key.split(':')[0]
-                                 in (product_group, 'com.oracle.coherence.ce')}
-            require(len(fixture_artifacts) >= 2, f'{fixture}: incomplete packaged artifacts')
-            for key, _, path in records:
-                require(path.is_file(), f'{fixture}: missing dependency {path}')
-                if key in fixture_artifacts:
-                    require(key in required_outer, f'{fixture}: unexpected product/Coherence dependency {key}')
-                    require(path.is_relative_to(target / 'it-repository'), f'{fixture}: dependency outside isolated repository')
-                    for ext in ('jar', 'pom'):
-                        actual = path.with_suffix('.' + ext)
-                        require(actual.is_file() and digest(actual) == outer.get(key + '.' + ext + '.sha256'),
-                                f'{fixture}: {ext} byte drift: {key}')
-                    if key.startswith(product_group + ':') and path not in checked_jars:
-                        check_classes(path, issues, origin)
-                        checked_jars.add(path)
-                if key.startswith('org.springframework.boot:'):
-                    require(key.split(':')[2] == boot_version, f'{fixture}: Boot dependency version differs')
+            audit_invoker(target, clone, fixture, require)
+            cases = audit_consumer_reports(build, fixture, names, inventory, home, properties, require)
+            records, graph, runtime, fixture_artifacts = audit_fixture_dependencies(
+                target, build, fixture, names, artifacts, check_product, require)
             for name in names:
                 evidence = load_properties(build / f'consumer-evidence/{name}.properties')
-                for key, value in {'result': 'PASS', 'scenario': name, 'consumer.fixture': fixture,
-                                   'consumer.release': '17', 'java.specification.version': java,
-                                   'consumer.coherence.group': 'com.oracle.coherence.ce',
-                                   'consumer.coherence.version': expected['coherence']['version'],
-                                   'consumer.boot.version': boot_version,
-                                   'consumer.security.mode': mode or 'unset',
-                                   'coherence.security.mode': mode or '<absent>'}.items():
-                    require(evidence.get(key) == value, f'{fixture}/{name}: {key} != {value}')
-                require(evidence.get('java.version', '').split('.')[0] == java, f'{fixture}/{name}: incorrect JDK')
-                require(Path(evidence.get('java.home', '')).resolve() == home, f'{fixture}/{name}: incorrect JDK home')
-                require({k for k in evidence if k.endswith(('.jar.sha256', '.pom.sha256'))
-                         and not k.startswith('war.loaded.')}
-                        == {k + '.' + ext + '.sha256' for k in fixture_artifacts for ext in ('jar', 'pom')},
-                        f'{fixture}/{name}: compared artifact inventory differs')
-                for key in fixture_artifacts:
-                    for ext in ('jar', 'pom'):
-                        field = key + '.' + ext + '.sha256'
-                        require(evidence.get(field) == outer.get(field), f'{fixture}/{name}: artifact evidence drift: {field}')
-                actual_cp = evidence.get('java.class.path', '')
-                require(all(str(p) in actual_cp.split(os.pathsep) for k, _, p in records if k in fixture_artifacts),
-                        f'{fixture}/{name}: packaged dependency absent from actual classpath')
-                all_dependencies = graph + runtime + actual_cp + (build / 'test-dependencies.txt').read_text()
-                for forbidden in ('coherence-spring-tests', 'mockito', 'assertj', 'bedrock', 'coherence-grpc-proxy'):
-                    require(forbidden not in all_dependencies, f'{fixture}: unexpected dependency {forbidden}')
-                for forbidden in ('junit', 'spring-test', 'test-classes', 'target/classes'):
-                    require(forbidden not in runtime, f'{fixture}: unexpected runtime dependency {forbidden}')
-                require(not re.search(r'coherence-spring-[^/]+/target/(test-)?classes', actual_cp),
-                        f'{fixture}: reactor classpath leakage')
-                for entry in runtime.split(os.pathsep):
-                    require(Path(entry).is_file() and entry.endswith('.jar'), f'{fixture}: runtime dependency is not a JAR: {entry}')
-                if fixture.startswith('general-'):
-                    require('org.springframework.session:' not in all_dependencies
-                            and '/org/springframework/session/' not in all_dependencies
-                            and 'spring-boot-session' not in all_dependencies,
-                            f'{fixture}: Session dependency leaked')
-                if fixture == 'general-starter':
-                    require('jakarta.servlet-api' not in graph + actual_cp, f'{fixture}: servlet API leaked')
-                if fixture == 'plain-spring-session':
-                    require('org.springframework.boot:' not in graph and '/org/springframework/boot/' not in actual_cp,
-                            f'{fixture}: Boot dependency leaked')
-                if fixture == 'library-without-boot-session':
-                    require('spring-boot-session' not in all_dependencies, f'{fixture}: Boot Session leaked')
-                if fixture == 'boot-session-without-coherence-session':
-                    require(':coherence-spring-session:' not in all_dependencies
-                            and '/coherence-spring-session/' not in all_dependencies,
-                            f'{fixture}: Coherence Session leaked')
-                if fixture in ('session-starter', 'non-web', 'custom-repository', 'boot-war'):
-                    for artifact in ('coherence-spring-session-boot-starter', 'coherence-spring-boot-starter',
-                                     'coherence-spring-session', 'spring-boot-session'):
-                        require(':' + artifact + ':jar:' in graph, f'{fixture}: missing integration dependency {artifact}')
-                loaded = Path(evidence.get('loaded.coherence.jar', ''))
-                require(loaded.is_file() and digest(loaded) == expected['coherence']['sha256'],
-                        f'{fixture}/{name}: loaded Coherence bytes drift')
-                require(loaded in {p for k, _, p in records if k == 'com.oracle.coherence.ce:coherence:' + expected['coherence']['version']},
-                        f'{fixture}/{name}: loaded Coherence outside dependency inventory')
-                if fixture == 'boot-war':
-                    loaded = Path(evidence.get('war.loaded.coherence.jar', ''))
-                    require('WEB-INF/lib/' in str(loaded) and loaded.is_file()
-                            and digest(loaded) == expected['coherence']['sha256']
-                            and evidence.get('war.loaded.coherence.sha256') == expected['coherence']['sha256'],
-                            f'{fixture}/{name}: loaded WAR Coherence bytes drift')
+                values = method_expectations(fixture, name, expected, java, mode, artifacts['boot_version'])
+                audit_method_identity(evidence, fixture, name, values, home, require)
+                audit_method_artifacts(evidence, fixture, name, artifacts, fixture_artifacts, require)
+                audit_dependency_boundaries(build, fixture, name, evidence,
+                                            (records, graph, runtime), fixture_artifacts, require)
+                audit_loaded_coherence(evidence, fixture, name, expected, records, require)
             results[fixture] = cases
         except (OSError, ValueError, KeyError, ET.ParseError, zipfile.BadZipFile) as error:
             issues.append(f'{origin}: missing/invalid fixture evidence: {error}')
