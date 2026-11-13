@@ -157,7 +157,10 @@ class ConsumerHarness {
     }
 
     // Source launch on Java17 is standalone; retain drive letters in the final path field.
-    static String[] dependency(String line) { return line.trim().split(":", 6); }
+    static String[] dependency(String line) {
+        // Maven can color coordinates and the module annotation immediately after the path.
+        return line.replaceAll("\u001b\\[[0-?]*[ -/]*[@-~]", "").trim().split(":", 6);
+    }
 
     static Document xml(Path path) throws Exception {
         var factory = DocumentBuilderFactory.newInstance();

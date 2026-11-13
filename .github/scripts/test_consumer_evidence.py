@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from coherence_artifacts import cache_files, digest
-from consumer_evidence import audit_consumers, load_properties
+from consumer_evidence import audit_consumers, dependencies, load_properties
 import full_reactor
 
 
@@ -119,6 +119,29 @@ class ConsumerEvidenceTests(unittest.TestCase):
 
     def test_complete_independent_contract_passes(self):
         self.assertEqual(self.collect()['issues'], [])
+
+    def test_colored_dependency_reports_preserve_exact_artifacts(self):
+        for path in (self.target / 'consumer-evidence/outer-dependencies.txt', self.build / 'test-dependencies.txt'):
+            original = dependencies(path)
+            self.write(path, '\n'.join('\x1b[1;32m' + line + '\x1b[36m -- module example (auto)\x1b[0m'
+                                       for line in path.read_text().splitlines()))
+            self.assertEqual(dependencies(path), original)
+        self.assertEqual(self.collect()['issues'], [])
+        self.jar.unlink()
+        self.assertTrue(self.collect()['issues'])
+
+    def test_dependency_colors_preserve_drive_letters_spaces_and_classifiers(self):
+        report = self.source / 'dependencies.txt'
+        for filename in ('/workspace with spaces/library.jar', r'C:\workspace with spaces\library.jar', 'C:/repo/library.jar'):
+            for classifier in ('', 'osx-aarch_64:'):
+                coordinate = 'org.example:library:jar:' + classifier + '1:runtime:'
+                expected = [('org.example:library:1' + (':osx-aarch_64' if classifier else ''), 'runtime', Path(filename))]
+                for line in (coordinate + filename + ' -- module example (auto)',
+                             coordinate + filename + '\x1b[36m -- module example (auto)\x1b[0m',
+                             '\x1b[38:2::10:20:30m' + coordinate + filename + '\x1b[m'):
+                    with self.subTest(filename=filename, classifier=classifier, line=line):
+                        self.write(report, line)
+                        self.assertEqual(dependencies(report), expected)
 
     def test_classified_native_dependency_identities_are_distinct(self):
         path = self.build / 'test-dependencies.txt'
