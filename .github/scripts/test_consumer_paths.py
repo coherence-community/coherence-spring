@@ -44,6 +44,15 @@ class ConsumerPathTests(unittest.TestCase):
     def test_dependency_drive_letters_and_outer_freeze(self):
         self.exercise('dependencies')
 
+    def test_colored_dependency_reports_and_outer_freeze(self):
+        self.exercise('colored-dependencies')
+
+    def test_missing_outer_artifact_is_fatal(self):
+        self.exercise('missing-dependencies')
+
+    def test_missing_colored_outer_artifact_is_fatal(self):
+        self.exercise('colored-missing-dependencies')
+
 
 if __name__ == '__main__':
     unittest.main()

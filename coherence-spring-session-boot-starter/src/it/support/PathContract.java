@@ -68,8 +68,9 @@ public final class PathContract {
     }
 
     public static String[] dependency(String line) {
+        // Remove Maven ANSI controls before interpreting coordinates or absolute paths.
         // Keep the entire absolute filename (including C:) in the sixth field.
-        return line.trim().split(":", 6);
+        return line.replaceAll("\u001b\\[[0-?]*[ -/]*[@-~]", "").trim().split(":", 6);
     }
 
     public static Path dependencyJar(String[] fields) {

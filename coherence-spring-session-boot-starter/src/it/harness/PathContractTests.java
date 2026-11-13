@@ -26,7 +26,10 @@ class PathContractTests {
             case "repository" -> repository(work);
             case "war" -> war(work);
             case "classpaths" -> classpaths();
-            case "dependencies" -> dependencies(work);
+            case "dependencies" -> dependencies(work, false, false);
+            case "colored-dependencies" -> dependencies(work, true, false);
+            case "missing-dependencies" -> dependencies(work, false, true);
+            case "colored-missing-dependencies" -> dependencies(work, true, true);
             default -> throw new IllegalArgumentException(args[0]);
         }
         System.out.println("PASS " + args[0] + " on " + System.getProperty("os.name") + "; separator=" + File.separator);
@@ -115,35 +118,73 @@ class PathContractTests {
         }
     }
 
-    static void dependencies(Path work) throws Exception {
+    static void dependencySyntax(boolean colored) {
         for (String path : List.of("/workspace with spaces/repo/library.jar", "C:\\workspace with spaces\\repo\\library.jar", "C:/repo/library.jar")) {
-            String line = "  org.example:library:jar:1:runtime:" + path + " -- module library (auto)";
-            String[] fields = PathContract.dependency(line);
-            if (!Arrays.equals(fields, ConsumerHarness.dependency(line))) throw new AssertionError("outer/inner parser disagreement");
-            if (fields.length != 6 || !fields[5].startsWith(path)) throw new AssertionError("drive-letter/path loss");
-            if (!PathContract.dependencyJar(fields).toString().equals(Path.of(path).toString()))
-                throw new AssertionError("module suffix/path loss");
+            String coordinate = "org.example:library:jar:1:runtime:";
+            List<String> lines = colored ? List.of(
+                    "  " + coordinate + path + "\u001b[36m -- module library (auto)\u001b[0m",
+                    "\u001b[1;32m  org.example\u001b[0m:library:jar:1:runtime:" + path + " -- module library (auto)\u001b[m",
+                    "\u001b[38:2::10:20:30m" + coordinate + path + "\u001b[0m")
+                    : List.of("  " + coordinate + path + " -- module library (auto)", coordinate + path);
+            for (String line : lines) {
+                String[] fields = PathContract.dependency(line);
+                if (!Arrays.equals(fields, ConsumerHarness.dependency(line))) throw new AssertionError("outer/inner parser disagreement");
+                if (fields.length != 6 || !Arrays.equals(Arrays.copyOf(fields, 5),
+                        new String[] {"org.example", "library", "jar", "1", "runtime"}))
+                    throw new AssertionError("dependency coordinate loss");
+                if (!PathContract.dependencyJar(fields).toString().equals(Path.of(path).toString()))
+                    throw new AssertionError("module suffix/drive-letter/path loss");
+            }
         }
+    }
+
+    static void dependencies(Path work, boolean colored, boolean missing) throws Exception {
         // Exercise outer freeze's actual native path parser and exact copy/hash behavior.
         ConsumerHarness.module = work; ConsumerHarness.target = work.resolve("target");
         StringBuilder lines = new StringBuilder();
+        Map<String, List<Path>> sources = new LinkedHashMap<>();
         for (int i = 0; i < 5; i++) {
             Path jar = write(work.resolve("outer repo with spaces/artifact" + i + "/artifact" + i + "-1.jar"));
-            write(jar.resolveSibling("artifact" + i + "-1.pom"));
-            lines.append("org.example:artifact").append(i).append(":jar:1:compile:").append(jar.toAbsolutePath()).append(" -- module example\n");
+            Path pom = write(jar.resolveSibling("artifact" + i + "-1.pom"));
+            Files.writeString(jar, "packaged JAR " + i); Files.writeString(pom, "<project>" + i + "</project>");
+            sources.put("org.example:artifact" + i + ":1", List.of(jar, pom));
+            lines.append("org.example:artifact").append(i).append(":jar:1:compile:").append(jar.toAbsolutePath())
+                    .append(colored ? "\u001b[36m -- module example (auto)\u001b[0m\n" : " -- module example (auto)\n");
         }
         Path list = ConsumerHarness.target.resolve("consumer-evidence/outer-dependencies.txt");
         Files.createDirectories(list.getParent()); Files.writeString(list, lines);
-        write(ConsumerHarness.target.resolve("coherence-spring-session-boot-starter-1.jar"));
-        write(work.resolve(".flattened-pom.xml"));
+        sources.put("com.oracle.coherence.spring:coherence-spring-session-boot-starter:1", List.of(
+                write(ConsumerHarness.target.resolve("coherence-spring-session-boot-starter-1.jar")),
+                write(work.resolve(".flattened-pom.xml"))));
+        if (missing) {
+            Path jar = sources.get("org.example:artifact0:1").get(0);
+            Files.delete(jar);
+            reject("Missing outer packaged input " + jar,
+                    () -> ConsumerHarness.freeze("com.oracle.coherence.spring", "1", "17"));
+            if (Files.exists(list.resolveSibling("outer-artifacts.properties")))
+                throw new AssertionError("Accepted incomplete outer artifact manifest");
+            return;
+        }
         ConsumerHarness.freeze("com.oracle.coherence.spring", "1", "17");
         Properties manifest = ConsumerHarness.load(list.resolveSibling("outer-artifacts.properties"));
         if (manifest.size() != 24) throw new AssertionError("outer parsed inventory");
-        for (int i = 0; i < 5; i++) {
-            Path jar = ConsumerHarness.target.resolve("it-repository/org/example/artifact" + i + "/1/artifact" + i + "-1.jar");
-            PathContract.artifact(ConsumerHarness.target.resolve("it-repository"), jar, "org.example", "artifact" + i, "1");
-            if (!ConsumerHarness.hash(jar).equals(manifest.getProperty("org.example:artifact" + i + ":1.jar.sha256")))
-                throw new AssertionError("outer/inner packaged bytes differ");
+        Path repo = ConsumerHarness.target.resolve("it-repository");
+        for (var entry : sources.entrySet()) {
+            String[] coordinate = entry.getKey().split(":");
+            Path directory = repo.resolve(coordinate[0].replace('.', '/') + "/" + coordinate[1] + "/" + coordinate[2]);
+            PathContract.artifact(repo, directory.resolve(coordinate[1] + "-1.jar"), coordinate[0], coordinate[1], coordinate[2]);
+            for (int i = 0; i < 2; i++) {
+                String extension = i == 0 ? "jar" : "pom";
+                Path source = entry.getValue().get(i);
+                Path installed = directory.resolve(coordinate[1] + "-1." + extension);
+                String key = entry.getKey() + "." + extension;
+                if (!source.toString().equals(manifest.getProperty(key + ".source"))
+                        || Files.mismatch(source, installed) != -1
+                        || !ConsumerHarness.hash(source).equals(manifest.getProperty(key + ".sha256"))
+                        || !ConsumerHarness.hash(installed).equals(manifest.getProperty(key + ".sha256")))
+                    throw new AssertionError("outer/inner packaged path/bytes/hash differ: " + key);
+            }
         }
+        dependencySyntax(colored);
     }
 }

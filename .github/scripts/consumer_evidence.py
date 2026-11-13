@@ -68,6 +68,8 @@ def junit(path):
 def dependencies(path):
     rows = []
     for line in path.read_text().splitlines():
+        # Maven ANSI controls can surround coordinates or precede the module annotation.
+        line = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', line)
         match = re.fullmatch(r'\s*([^:\s]+):([^:]+):jar:(?:([^:]+):)?([^:]+):'
                              r'(compile|test|runtime|provided|system):(.+?)(?: --.*)?\s*', line)
         if match:
