@@ -10,7 +10,7 @@ import time
 
 def collect(jcmd, arguments, destination):
     """Keep partial output and attach errors without failing the Maven build."""
-    with destination.open('w', encoding='utf-8') as output:
+    with destination.open('x', encoding='utf-8') as output:
         try:
             result = subprocess.run(
                 [str(jcmd), *arguments], stdout=output, stderr=subprocess.STDOUT,
@@ -32,9 +32,22 @@ def capture(output, jcmd):
             collect(jcmd, [pid, 'Thread.print', '-l'], output / f'{stamp}-{pid}-threads.txt')
 
 
+def diagnostics_directory():
+    """Use only the fixed directory beneath the trusted runner temporary root."""
+    runner_temp = Path(os.environ['RUNNER_TEMP'])
+    if not runner_temp.is_absolute() or not runner_temp.is_dir():
+        raise ValueError('RUNNER_TEMP must be an existing absolute directory')
+    output = runner_temp.resolve(strict=True) / 'startup-diagnostics'
+    if output.is_symlink():
+        raise ValueError('The diagnostics directory must not be a symlink')
+    output.mkdir(exist_ok=True)
+    return output
+
+
 def main():
-    output = Path(sys.argv[1])
-    output.mkdir(parents=True, exist_ok=True)
+    if len(sys.argv) != 1:
+        raise SystemExit('capture_test_threads.py accepts no arguments; use trusted RUNNER_TEMP')
+    output = diagnostics_directory()
     jcmd = Path(os.environ['JAVA_HOME']) / 'bin' / 'jcmd'
     stop = output / 'stop'
     while not stop.exists():

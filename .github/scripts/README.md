@@ -55,7 +55,16 @@ fixtures and mocked Maven launches. It does not run the full Maven reactor.
 ## PR startup diagnostics
 
 `ci-pr.yml` runs `capture_test_threads.py` alongside Maven with the selected
-`JAVA_HOME`. About every 30 seconds, it records `jcmd -l` and `Thread.print -l`
+`JAVA_HOME`. The collector accepts no command-line arguments and always uses
+`startup-diagnostics` beneath the canonical `RUNNER_TEMP` directory. Set
+`RUNNER_TEMP` to an existing absolute directory from trusted runner/operator
+configuration, never from untrusted CLI/agent input. Symlinked temporary-root
+parents (such as `/tmp` on macOS) are supported; the diagnostics directory
+itself must not be a symlink. The workflow creates it fresh before starting
+the collector or writing the Maven log. Diagnostic report files are created
+exclusively, so existing files and symlinks are never overwritten.
+
+About every 30 seconds, it records `jcmd -l` and `Thread.print -l`
 for each Surefire test JVM (including forks launched through a Surefire booter
 JAR). Each command is limited to 15 seconds; partial output and attach failures
 are retained when a fork exits or cannot respond. The caller writes a `stop`

@@ -37,8 +37,8 @@ jobs:
           git config --global user.name "GitHub Action"
 
           diagnostics="$RUNNER_TEMP/startup-diagnostics"
-          mkdir -p "$diagnostics"
-          python3 -B .github/scripts/capture_test_threads.py "$diagnostics" &
+          mkdir "$diagnostics"
+          python3 -B .github/scripts/capture_test_threads.py &
           collector_pid=$!
           trap 'kill "$collector_pid" 2>/dev/null || true' EXIT
 
