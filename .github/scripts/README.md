@@ -51,3 +51,22 @@ python3 -B -m unittest discover -s .github/scripts -p 'test_*.py' -v
 
 The suite includes actual Java helper checks as well as controlled evidence
 fixtures and mocked Maven launches. It does not run the full Maven reactor.
+
+## PR startup diagnostics
+
+`ci-pr.yml` runs `capture_test_threads.py` alongside Maven with the selected
+`JAVA_HOME`. About every 30 seconds, it records `jcmd -l` and `Thread.print -l`
+for each Surefire test JVM (including forks launched through a Surefire booter
+JAR). Each command is limited to 15 seconds; partial output and attach failures
+are retained when a fork exits or cannot respond. The caller writes a `stop`
+file in the output directory after Maven finishes. Use a fresh directory under
+a trusted parent, without other writers; this is a local/CI diagnostic tool.
+
+The PR workflow keeps both JDK jobs running when one fails and always attempts
+to upload the Maven log, UTC-stamped JVM inventories/thread dumps and Surefire
+reports as `startup-jdk<version>-attempt<attempt>` artifacts, retained for seven
+days. Compare several dumps from the same PID before the five-minute startup
+timeout, especially `main`, `Coherence:default` and cluster/service threads.
+The property-resolution fixture keeps its distinctive `foobar` marker while
+preserving timestamps, thread/member identities and actual message text, at
+log level 5 without character-limit discarding.

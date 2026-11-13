@@ -187,20 +187,22 @@ public class CoherenceAutoConfigurationTests {
 					final SystemPropertyResolver systemPropertyResolver = SystemPropertyResolver.getInstance();
 					assertThat(systemPropertyResolver).isNotNull();
 
-					assertThat(systemPropertyResolver.getProperty("coherence.log.limit")).isEqualTo("444");
-					assertThat(systemPropertyResolver.getProperty("coherence.log.level")).isEqualTo("1");
+					assertThat(systemPropertyResolver.getProperty("coherence.log.limit")).isEqualTo("0");
+					assertThat(systemPropertyResolver.getProperty("coherence.log.level")).isEqualTo("5");
 					assertThat(systemPropertyResolver.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
 					assertThat(systemPropertyResolver.getProperty("coherence.log")).isEqualTo("jdk");
-					assertThat(systemPropertyResolver.getProperty("coherence.log.format")).isEqualTo("foobar");
+					assertThat(systemPropertyResolver.getProperty("coherence.log.format"))
+							.isEqualTo("foobar {date}/{uptime} <{level}> (thread={thread}, member={member}): {text}");
 
 					final SystemPropertyResolver systemPropertyResolverFromSpringContext = context.getBean(SystemPropertyResolver.class);
 					assertThat(systemPropertyResolverFromSpringContext).isNotNull();
 
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.limit")).isEqualTo("444");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.level")).isEqualTo("1");
+					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.limit")).isEqualTo("0");
+					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.level")).isEqualTo("5");
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
 					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log")).isEqualTo("jdk");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.format")).isEqualTo("foobar");
+					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.format"))
+							.isEqualTo("foobar {date}/{uptime} <{level}> (thread={thread}, member={member}): {text}");
 				});
 	}
 
