@@ -12,10 +12,10 @@ coherence:
       - config: "test-coherence-config.xml"
         scope-name: myscope
   properties:
-    coherence.log.limit: 444
-    coherence.log.level: 1
+    coherence.log.limit: 0
+    coherence.log.level: 5
     coherence.log.logger: CoherenceSpring
     coherence.log: jdk
-    coherence.log.format: foobar
+    coherence.log.format: "foobar {date}/{uptime} <{level}> (thread={thread}, member={member}): {text}"
   property-prefix: "coherence.properties."
 
