@@ -36,10 +36,11 @@ externalize some Coherence configuration using Spring Cloud Config. The source c
 ----
 $ git clone {github-repo-clone-url}
 $ cd coherence-spring
+$ git switch main
 ----
 
 You now have checked out all the code for Coherence Spring! The relevant demo code for the Spring Cloud Config demo is
-under `coherence-spring-samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
+under `samples/coherence-spring-cloud-config-demo/`. The demo consists of 2 Maven modules:
 
 - *coherence-spring-cloud-config-demo-server*: Spring Cloud Config Server implementation
 - *coherence-spring-cloud-config-demo-app*: Main application
@@ -70,12 +71,12 @@ The demo client on the other hand will use the following dependencies:
 <dependency>
     <groupId>com.oracle.coherence.spring</groupId>
     <artifactId>coherence-spring-boot-starter</artifactId> <1>
-    <version>{coherence-spring.version}</version>
+    <version>{coherence-spring-version}</version>
 </dependency>
 <dependency>
     <groupId>com.oracle.coherence.ce</groupId>
     <artifactId>coherence</artifactId>                     <2>
-    <version>{coherence.version}</version>
+    <version>{coherence-version}</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -86,8 +87,8 @@ The demo client on the other hand will use the following dependencies:
 <2> The Oracle Coherence dependency
 <3> The dependency to integrate with the Spring Cloud Config server
 
-NOTE: We made the decision to not automatically bring in the Coherence dependencies. The main reason is that users can
-specify the version they need, either the Oracle Coherence CE (OSS) or the commercial version.
+NOTE: Coherence Spring does not bring in Coherence automatically. Coherence Spring 5.x applications must declare the
+supported Coherence CE dependency explicitly.
 
 [[spring-cloud-config-demo-setup]]
 === Configure the Demo Application
@@ -133,9 +134,22 @@ reports are located at `coherence-{coherence-version}.jar/reports`
 
 For more options please see the following three chapters in the official Oracle Coherence reference guide:
 
-- {oracle-coherence-docs}/develop-applications/operational-configuration-elements.html[Operational Configuration Elements]
-- {oracle-coherence-docs}/develop-applications/system-property-overrides.html[System Property Overrides]
-- {oracle-coherence-docs}/manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
+- {oracle-coherence-docs}develop-applications/operational-configuration-elements.html[Operational Configuration Elements]
+- {oracle-coherence-docs}develop-applications/system-property-overrides.html[System Property Overrides]
+- {oracle-coherence-docs}manage/using-oracle-coherence-reporting.html[Using Oracle Coherence Reporting]
+
+The sample's `EventService` uses Spring's `events` cache; `PersonService` reads the
+database. Its default configuration does not enable Hibernate second-level/query
+caching or select the shipped Hibernate-oriented XML. The app packages exact,
+non-executable payload metadata for `Event`, the two Hibernate persistent-set
+classes observed in the cached creation result, and the JDBC `java.sql.Timestamp`
+that can populate its date field after a database reload. See the sample README for the
+packaged `CloudConfigCacheIT`, its isolated Config Server fixture and per-permission
+negative controls. The shared compiler retains production parameter names for
+the named cache key `#id` and implicit controller argument names. The integration
+check requires annotated service and HTTP cache hits with zero SQL after a
+controlled database change, plus eviction and database reload through both paths.
+It does not qualify arbitrary populated association graphs.
 
 [[spring-cloud-config-demo-how-to-run]]
 === Run the Demo Application
@@ -146,7 +160,7 @@ Please execute the following:
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
 $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-server
-$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
+$ cd samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-server/target
 $ java -jar coherence-spring-cloud-config-demo-server-{coherence-spring-version}.jar \n
     --spring.cloud.config.server.git.uri=file:///path/to/git/repo
 ----
@@ -155,7 +169,7 @@ $ java -jar coherence-spring-cloud-config-demo-server-{coherence-spring-version}
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
 $ ./mvnw clean package -pl :coherence-spring-cloud-config-demo-app
-$ cd coherence-spring-samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
+$ cd samples/coherence-spring-cloud-config-demo/coherence-spring-cloud-config-demo-app/target
 $ java -jar coherence-spring-cloud-config-demo-app-{coherence-spring-version}.jar
 ----
 

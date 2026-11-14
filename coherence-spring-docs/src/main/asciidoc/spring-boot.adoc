@@ -34,8 +34,8 @@ as the desired version of Coherence.
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====
@@ -57,8 +57,8 @@ client mode (Coherence*Extend or gRPC), please see the chapter on <<spring-boot-
 up Spring Boot as a Coherence Client>>.
 
 When using Coherence Spring Boot, you may want to verify that only the auto-configuration that you actually need
-is enabled. For example, Coherence is shipped with `Gson`, and the mere presence of the Gson class may trigger
-`GsonAutoConfiguration`.
+is enabled. Spring Boot 4 places feature-specific auto-configuration in dedicated modules. For example, if an application
+includes the `spring-boot-gson` module and Gson is present, Boot may activate `GsonAutoConfiguration`.
 
 To find out which auto-configuration is applied for your application, start your Spring Boot application with the `--debug`
 argument. The auto-configuration report will be logged to the console.
@@ -69,6 +69,8 @@ that you do not want to be applied.
 
 [source,java]
 ----
+import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
+
 @SpringBootApplication(exclude = GsonAutoConfiguration.class)
 public class MyCoherenceApplication {
 	public static void main(String[] args) {
@@ -85,8 +87,91 @@ in your `application.properties` or `application.yaml` file.
 ----
 spring:
     autoconfigure:
-        exclude: org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
+        exclude: org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration
 ----
+
+[[spring-boot-testing-without-coherence]]
+=== Testing without starting Coherence
+
+For mock-based `@SpringBootTest` tests that do not need a running Coherence instance, exclude Coherence's core,
+Spring Session, and Spring Data auto-configurations in the test configuration. Session and Data auto-configuration
+are registered independently of `CoherenceAutoConfiguration` and can remain active when their conditions match,
+even if only the core auto-configuration is excluded. Session configuration requires Coherence-backed sessions,
+and Data configuration can create Coherence repositories; these are usually unwanted when testing with mock caches.
+
+Use `@TestPropertySource` to keep the exclusions scoped to the test. Place the following test in your application's
+test sources, where `@SpringBootTest` can discover your `@SpringBootApplication` class:
+
+[source,java]
+----
+import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+@SpringBootTest
+@TestPropertySource(properties = {
+    "spring.autoconfigure.exclude="
+        + "com.oracle.coherence.spring.boot.autoconfigure.CoherenceAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.session."
+        + "CoherenceSpringSessionAutoConfiguration,"
+        + "com.oracle.coherence.spring.boot.autoconfigure.data."
+        + "CoherenceRepositoriesAutoConfiguration"
+})
+class MockCacheTests {
+
+    @Test
+    void testWithMockCaches() {
+        // Add assertions for application behavior using your test's mock caches.
+    }
+}
+----
+
+The exclusions do not supply mock beans. Configure the mocks needed by your application, including any cache,
+session, or repository dependencies, separately in the test context.
+
+NOTE: These exclusions apply to Spring Boot auto-configuration. They do not disable explicit `@EnableCoherence`
+imports or other manually configured Coherence startup. Omit or replace that configuration in mock-based tests as well.
+
+If your production `@SpringBootApplication` class declares `@EnableCoherence`, select a dedicated test bootstrap
+with `@SpringBootTest(classes = ...)`. For example, the following application service reads an order's status from
+the `orders` cache through `@CoherenceMap`:
+
+[source,java]
+----
+include::{include-source-code}boot/mockcache/OrderService.java[tags=example]
+----
+
+Place this test in your test sources and adapt the packages and imported application components as needed.
+Spring Framework's `@MockitoBean` supplies the cache mock to both the test and the service:
+
+[source,java]
+----
+include::{include-source-code}boot/mockcache/tests/IsolatedMockCacheTests.java[tags=example]
+----
+
+The explicit mock bean name matters: `@CoherenceMap` is meta-annotated with `@Value` resolving `#\{getCacheProxy}`,
+and `NamedCacheConfiguration.COHERENCE_CACHE_BEAN_NAME` supplies that bean name. The `orders` annotation value
+is the logical cache name used by production cache resolution. A mock registered only by type or named `orders`
+does not satisfy this expression. With Coherence configuration excluded, `@MockitoBean` creates the named bean;
+leave `enforceOverride` at its default of `false`, since there is no production cache bean to replace.
+
+This example uses one cache mock. Every `@CoherenceMap` injection point resolving `getCacheProxy` receives that
+same singleton mock, even if it specifies a different cache or session name. This does not reproduce production's
+cache- and session-aware resolution. Separate tests work when each test isolates a component that uses one cache.
+Splitting tests cannot supply distinct cache mocks to one component whose injection points all resolve `getCacheProxy`.
+For such a component, introduce application-level collaborators, each wrapping a cache operation, and mock those
+collaborators independently.
+
+The explicitly selected, plain `@Configuration` supplies the test's primary configuration, so Boot does not search
+for the production `@SpringBootApplication` class or load its explicit Coherence enablement. This bootstrap uses
+targeted imports without component scanning. `@EnableAutoConfiguration` enables Boot's auto-configuration support,
+so the same three exclusions remain necessary. A `@TestConfiguration` alone supplements the primary configuration
+and does not prevent Boot from discovering it, even when supplied through `classes`.
+
+Do not import or scan the production application configuration from this bootstrap. Check that imported components
+do not transitively import or scan configuration that enables or starts Coherence. Their dependencies still need
+appropriate test beans or mocks; selecting a different bootstrap does not provide them.
 
 [[spring-boot-configuration-properties]]
 == Configuration Properties
@@ -400,8 +485,9 @@ https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4[cust
 import these config locations as property sources. As such, Coherence Spring allows you to use a Coherence cluster as a source of
 configuration data for your Spring Boot based applications.
 
-NOTE: Please also consult the Spring Boot reference guide on {spring-docs-boot}features.html#boot-features-external-config[Externalized Configuration],
-especially the chapter on {spring-docs-boot}features.html#boot-features-external-config-files-importing[Importing Additional Data].
+NOTE: Please also consult the Spring Boot reference guide on
+{spring-docs-boot}features/external-config.html[Externalized Configuration], especially the chapter on
+{spring-docs-boot}features/external-config.html#features.external-config.files.importing[Importing Additional Data].
 
 NOTE: Please also see the chapter on xref:spring-cloud-config.adoc#spring-cloud-config[Coherence Spring Cloud Config].
 
@@ -440,7 +526,7 @@ Spring's {spring-api}org/springframework/cache/CacheManager.html[CacheManager]) 
 `CacheManager` is only added if no `CacheManager` was configured explicitly beforehand.
 
 Once that is in place, you can take advantage of
-https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-caching[Spring's Cache abstraction]
+{spring-docs-boot}io/caching.html[Spring's Cache abstraction]
 backed by Coherence and use Spring's annotations such as `@Cacheable`, `@CacheEvict`, `@CachePut` etc.
 
 [NOTE]
@@ -450,8 +536,8 @@ following resources:
 
 - <<quickstart.adoc#quickstart, Coherence Spring Quickstart chapter>>
 - <<spring-cache.adoc#spring-cache,Coherence Core Spring Cache Support>>
-- {spring-docs-boot}features.html#boot-features-caching[Spring Boot's reference documentation's support regarding caching]
-- {spring-docs}html/integration.html#cache[The Cache Abstraction] chapter in the core Spring Framework reference guide
+- {spring-docs-boot}io/caching.html[Spring Boot's reference documentation's support regarding caching]
+- {spring-docs-caching}[The Cache Abstraction] chapter in the core Spring Framework reference guide
 ====
 
 [[spring-boot-caching-circuit-breaker]]
@@ -481,6 +567,14 @@ Coherence*Extend. The use-case of the application is that when you shut down the
 be able to retrieve cached domain data from Coherence. Instead, the Resilience4j circuit breaker will catch the connection
 exception and invoke a fallback method. In this case the data is returned from the main persistence store, bi-passing
 the Spring cache until the connection to the Coherence server has been restored.
+
+With security-hardened Coherence 26.10, the application permits its exact `Book` payload in
+`META-INF/coherence/security-config.xml`. The permission is checked in the application JVM when
+cached Extend response values are deserialized. The model-free server stores and returns binary
+values on this path. HTTP 200 can also come from a database fallback after a cache failure; the
+sample's `BookCacheIT` verify actual individual and collection cache hits independently.
+See the link:{git-sources-samples}circuit-breaker-cache-demo[Sample README] for the permission boundary
+and focused positive and missing-permission checks. The default Coherence version remains 26.04.
 
 [[spring-boot-caching-circuit-breaker-running-example]]
 ==== Running the Example
@@ -690,7 +784,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 ----
 <dependency>
     <groupId>io.github.resilience4j</groupId>
-    <artifactId>resilience4j-spring-boot3</artifactId>
+    <artifactId>resilience4j-spring-boot4</artifactId>
     <version>{resilience4j-version}</version>
 </dependency>
 ----
@@ -698,7 +792,7 @@ In order to use Resilience4j in your Coherence Spring project with Spring Boot, 
 .Gradle
 [source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
 ----
-implementation("io.github.resilience4j:resilience4j-spring-boot3:{resilience4j-version}")
+implementation("io.github.resilience4j:resilience4j-spring-boot4:{resilience4j-version}")
 ----
 ====
 
@@ -736,6 +830,10 @@ autowiring has https://stackoverflow.com/questions/5152686/self-injection-with-s
 Spring's cache abstraction is not your only option with regard to caching. Another option is to use Hibernate's
 {hibernate-docs}#caching[Second-Level cache] support.
 
+For this baseline, use `coherence-hibernate-cache-7` {coherence-hibernate-version} with Hibernate ORM
+{hibernate-version}. The adapter supports ORM 7.4.x; Spring Boot's managed ORM version must be overridden when
+using it. See xref:upgrade-5.adoc#upgrade-5-hibernate[Hibernate version selection and dependencies].
+
 When using only Hibernate's second-level cache without the requirement of using Coherence for non-Hibernate application
 needs, you may want to disable Coherence's auto-configuration support for Spring
 Boot as it is not needed:
@@ -752,7 +850,7 @@ public class HibernateApplication {
 ----
 
 In order to configure Hibernate Second-Level Caching for Coherence using Spring Boot, you simply have to set the
-Hibernate property `hibernate.cache.region.factory_class` to `com.oracle.coherence.hibernate.cache.CoherenceRegionFactory`.
+Hibernate property `hibernate.cache.region.factory_class` to `com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory`.
 
 Your Spring Boot `application.yaml` file may look like the following:
 
@@ -764,7 +862,7 @@ spring:
     name: Your Spring Boot App
   jpa:
     properties:
-      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.CoherenceRegionFactory <1>
+      hibernate.cache.region.factory_class: com.oracle.coherence.hibernate.cache.v7.CoherenceRegionFactory <1>
       hibernate.cache.use_query_cache: true
       hibernate.cache.use_second_level_cache: true
       hibernate.format_sql: true
@@ -779,10 +877,18 @@ For more detailed information please see the {hibernate-docs}#caching[Caching ch
 documentation.
 
 [[spring-boot-hibernate-second-level-cache-example]]
+NOTE: Coherence Spring uses Coherence Hibernate {coherence-hibernate-version}.
+The v7 adapter packages `META-INF/coherence/security-config.xml`
+with executable processor and cache payload declarations for security-hardened Coherence 26.10.
+Application-specific serialized values may require additional permissions.
+The sample's `HibernateCacheIT` requires actual cross-member entity, query and timestamp cache hits
+with zero SQL on measured reads. Metadata presence alone does not establish runtime qualification.
+Coherence 26.04 remains the project default.
+
 === Hibernate Second Level Cache Example
 
 The Coherence Spring source code repository also provides an
-{coherence-spring-code}tree/main/samples/hibernate-cache-demo[example application], illustrating the Coherence support for
+{git-sources-samples}hibernate-cache-demo[example application], illustrating the Coherence support for
 Hibernate's Second Level caching using https://spring.io/projects/spring-boot[Spring Boot].
 
 The example application has 1 REST endpoint that can persist, retrieve and delete a `Plant` object with taxonomic properties
@@ -878,7 +984,7 @@ class has a custom query using such a hint for illustration purposes:
 .Using Query Hints
 [source,java,indent=,subs="verbatim,quotes,attributes"]
 ----
-  @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
+  @QueryHints(@QueryHint(name = org.hibernate.jpa.HibernateHints.HINT_CACHEABLE, value = "true"))
   @Query("select p from Plant p")
   List<Plant> getAllPlantsCacheable();
 ----
@@ -901,8 +1007,10 @@ Coherence Spring also provides support for Spring Session. This includes auto-co
 Coherence-specific configuration properties. Before you continue, please consider reading the chapter
 on <<spring-session.adoc#spring-session, Coherence Spring Session>> first.
 
-In order to activate Spring Session support for Spring Boot, you must have the following dependencies added to your
-project:
+For a Spring Boot servlet web application, select `coherence-spring-session-boot-starter`. It supplies the general
+Coherence starter, `coherence-spring-session` and Boot's `spring-boot-session`, including `spring-session-core`.
+Keep an explicit Coherence runtime and the application's servlet web dependencies. The following recipes assume
+the Spring Boot parent or BOM manages Boot versions; Security and Actuator remain application choices.
 
 .Add Coherence Spring Session Support
 ====
@@ -912,18 +1020,17 @@ project:
 <dependencies>
     <dependency>
         <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-boot-starter</artifactId>
-        <version>{coherence-spring-version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.oracle.coherence.spring</groupId>
-        <artifactId>coherence-spring-session</artifactId>
+        <artifactId>coherence-spring-session-boot-starter</artifactId>
         <version>{coherence-spring-version}</version>
     </dependency>
     <dependency>
         <groupId>com.oracle.coherence.ce</groupId>
         <artifactId>coherence</artifactId>
         <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
 </dependencies>
 ----
@@ -932,18 +1039,31 @@ project:
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
 }
 ----
 ====
 
-Basically, adding the `coherence-spring-session` dependency will activate the `CoherenceSpringSessionAutoConfiguration`
-class. Auto-configuration will back-off in certain situations:
+With these dependencies, Boot discovery activates `CoherenceSpringSessionAutoConfiguration` automatically in a
+servlet web application and creates the Coherence repository and `springSessionRepositoryFilter`. No
+`@EnableCoherenceHttpSession` annotation is required. The general starter alone does not supply Spring Session;
+the old general-starter plus session-library combination also needs Boot Session explicitly. See
+xref:upgrade-5.adoc#upgrade-5-session[the 5.x dependency migration] for the manual combination.
+
+Auto-configuration backs off in these situations:
 
 - Set property `coherence.spring.session.enabled` to `false`
-- Define `spring.session.store-type`. Any value will deactivate auto-configuration.
+- Define `spring.session.store-type`. Any value, including an empty value or `none`, deactivates Coherence's
+  auto-configuration. This property does not install or configure another store by itself.
+- Supply an application-owned `SessionRepository`, including one enabled through `@EnableCoherenceHttpSession`.
+  The application then owns its repository and HTTP-session configuration. A bare repository bean does not create
+  an HTTP filter; configure that explicitly, for example with `@EnableSpringHttpSession` when supplying the repository.
+
+This integration supports servlet applications, including embedded servers and Boot WAR deployments. It does not
+provide reactive WebSession support or enable HTTP sessions in non-web applications. Required Session, Boot Session
+and servlet classes must be present; `coherence.spring.session.enabled=true` cannot supply a missing dependency.
 
 The following Coherence-specific configuration properties are available:
 
@@ -952,8 +1072,8 @@ The following Coherence-specific configuration properties are available:
 |Key |Default Value |Description
 
 | coherence.spring.session.enabled
-| `false`
-| Set to `true` to enable Spring Session support
+| `true`
+| Set to `false` to disable Spring Session support
 
 | coherence.spring.session.map-name
 | `spring:session:sessions`
@@ -985,9 +1105,137 @@ as described at xref:core.adoc#coherence-spring-messaging-with-coherence-topics[
 [[spring-boot-metrics]]
 == Coherence Metrics
 
-By adding the `coherence-spring-boot-starter` and `com.oracle.coherence.ce:coherence-micrometer` dependencies auto-configuration will register `CoherenceMicrometerMetrics` and publish link:{coherence-docs}/manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics] under the `coherence.` name.
+Metrics are an application-level choice. The general `coherence-spring-boot-starter` does not add
+Boot's metrics module or Micrometer core to an application's runtime classpath. To publish
+link:{coherence-docs}manage/using-coherence-metrics.html#GUID-98DD26E5-48C1-461A-9599-5FA607636DE7[Coherence Metrics],
+add `coherence-micrometer` and make a Micrometer `MeterRegistry` available using one of the
+following configurations.
 
-To disable the auto-configured Coherence metrics even when `coherence-micrometer` module is on the classpath, set the following property:
+=== Use Spring Boot Actuator
+
+Applications that use Actuator should add its starter. Actuator already includes Boot's metrics starter,
+so the two Boot starters are alternatives and should not both be declared. These examples assume that the
+Spring Boot parent or BOM manages the Boot dependency version.
+
+.Coherence Metrics with Spring Boot Actuator
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence-micrometer</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.ce:coherence-micrometer:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+}
+----
+====
+
+=== Use Boot metrics without Actuator
+
+Applications that want Boot to configure metrics without the full Actuator starter can add the dedicated
+metrics starter instead.
+
+.Coherence Metrics without Spring Boot Actuator
+====
+.Maven
+[source,xml,indent=0,subs="verbatim,quotes,attributes",role="primary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.oracle.coherence.spring</groupId>
+        <artifactId>coherence-spring-boot-starter</artifactId>
+        <version>{coherence-spring-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.oracle.coherence.ce</groupId>
+        <artifactId>coherence-micrometer</artifactId>
+        <version>{coherence-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-micrometer-metrics</artifactId>
+    </dependency>
+</dependencies>
+----
+
+.Gradle
+[source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+----
+dependencies {
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.ce:coherence-micrometer:{coherence-version}")
+    implementation("org.springframework.boot:spring-boot-starter-micrometer-metrics")
+}
+----
+====
+
+=== Supply an application-owned registry
+
+An application can provide its own registry without adding Boot's metrics module. For example, the
+`coherence-micrometer` dependency supplies Micrometer core, allowing the application to define a simple registry:
+
+[source,java]
+----
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration(proxyBeanMethods = false)
+class MetricsConfiguration {
+
+    @Bean
+    MeterRegistry meterRegistry() {
+        return new SimpleMeterRegistry();
+    }
+}
+----
+
+Coherence binds its singleton Micrometer adapter to the selected registry when both the adapter and a
+`MeterRegistry` bean are available. The integration does not necessarily register the adapter itself as a
+Spring bean. Creating a registry, binding Coherence meters, exposing an HTTP endpoint, and exporting meters
+to a monitoring backend are separate steps. In particular, a `SimpleMeterRegistry` does not export metrics
+to a monitoring service.
+
+IMPORTANT: Spring Boot 4 moved registry auto-configuration from `spring-boot-actuator-autoconfigure` to
+`spring-boot-micrometer-metrics`. Under Spring Boot 4, the Coherence starter and `coherence-micrometer` alone
+still allow the application to start, but no registry is created automatically and Coherence metrics are not
+bound. Applications already using Actuator satisfy the new prerequisite.
+
+When Boot manages the registry, the following property filters meters whose names begin with `coherence`:
 
 .application.yaml
 [source,yaml]
@@ -997,6 +1245,9 @@ management:
     enable:
       coherence: false
 ----
+
+This property does not remove metrics dependencies or disable other Boot metrics. An application that uses
+only its own registry is also responsible for configuring any desired Micrometer meter filters.
 
 [[spring-boot-data]]
 == Spring Data Support
@@ -1032,9 +1283,9 @@ is activated as soon as the Coherence Spring Data dependency is added to your Sp
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
-    compile("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-data:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====

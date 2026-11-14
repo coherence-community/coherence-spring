@@ -1,0 +1,39 @@
+= Hibernate Cache Demo
+
+This sample uses Hibernate ORM 7.4, Coherence Hibernate's v7 region factory,
+READ_WRITE entity caching and the cacheable `PlantRepository` query. Its
+`coherence_hibernate` session loads `hibernate-second-level-cache-config.xml`
+from the provider's core JAR. `Plant` is disassembled into Hibernate
+cache state; its entity class name alone does not identify the serialized graph.
+
+Run the packaged cache regression from the repository root:
+
+[source,shell]
+----
+./mvnw -Pjdk17 -pl samples/hibernate-cache-demo -am verify
+----
+
+`HibernateCacheIT` extracts the production Boot archive and launches a separate
+storage JVM and an application JVM. It changes only the provider XML's
+`local-storage` setting in a disposable client copy. Both use the production
+serializer and dependencies. Fresh repository transactions must yield a
+second-level hit with zero SQL; the test then clears query/timestamp near-cache
+front maps and requires a query hit, timestamp hit and zero SQL. Logs, exact
+commands, runtime identities and Java serialization descriptors are retained in
+`target/hibernate-cache-paths/`. The test does not establish READ_WRITE
+concurrency or stale-cache correctness.
+
+Coherence Hibernate 4.1.0 is the required provider baseline. The v7 adapter packages
+`META-INF/coherence/security-config.xml` with executable processor and cache
+payload declarations for hardened Coherence 26.10. Application-specific values
+may need additional permissions. Earlier provider versions are outside the
+current compatibility and qualification scope. Metadata inspection alone does
+not establish runtime qualification; run the packaged regression for the selected
+artifacts.
+
+The default remains Coherence 26.04 and Java 17. To test hardened Coherence 26.10,
+use Java 21 and add `-U -Dcoherence.version=26.10-SNAPSHOT
+-Dcoherence.security.mode=hardened` to the command above. `-Pjdk17` retains the
+Java 17 bytecode target. Snapshot resolution requires the configured snapshot
+repository for Coherence; local results do not establish
+remote artifact availability.

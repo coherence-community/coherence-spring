@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<!-- Independent consumer: deliberately no Coherence Spring parent or reactor classes. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>consumer</groupId><artifactId>custom-repository</artifactId><version>1</version>
+  <packaging>jar</packaging>
+  <properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>@consumer.release@</maven.compiler.release>
+  </properties>
+  <dependencyManagement><dependencies>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-dependencies</artifactId><version>@boot.version@</version><type>pom</type><scope>import</scope></dependency>
+  </dependencies></dependencyManagement>
+  <dependencies>
+    <dependency><groupId>@coherence.group@</groupId><artifactId>coherence</artifactId><version>@coherence.version@</version></dependency>
+    <dependency><groupId>@product.group@</groupId><artifactId>coherence-spring-session-boot-starter</artifactId><version>@product.version@</version></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><version>@junit.version@</version><scope>test</scope></dependency>
+  </dependencies>
+  <build><finalName>consumer</finalName><plugins>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.3.2</version></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.11.0</version>
+        <configuration><release>${maven.compiler.release}</release></configuration>
+      </plugin>
+      <!-- Copy only our consumer helpers into the cloned fixture's test source root. -->
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.3.1</version>
+        <executions><execution><id>consumer-contract</id><phase>generate-test-sources</phase><goals><goal>copy-resources</goal></goals>
+          <configuration><outputDirectory>${project.basedir}/src/test/java/consumer</outputDirectory>
+            <resources><resource><directory>@consumer.support@</directory><filtering>false</filtering>
+              <includes><include>Contract.java</include><include>ReleaseContract.java</include><include>PathContract.java</include><include>HttpChecks.java</include></includes>
+            </resource></resources>
+          </configuration>
+        </execution></executions>
+      </plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>3.2.5</version></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-failsafe-plugin</artifactId><version>3.2.5</version>
+        <configuration>
+          <failIfNoTests>true</failIfNoTests><testFailureIgnore>false</testFailureIgnore>
+          <skipTests>false</skipTests><skipITs>false</skipITs>
+          <forkCount>1</forkCount><reuseForks>true</reuseForks>
+          <useManifestOnlyJar>false</useManifestOnlyJar>
+          <forkedProcessTimeoutInSeconds>240</forkedProcessTimeoutInSeconds>
+          <argLine>-XX:ActiveProcessorCount=3 -Xmx768m @consumer.security.arg@</argLine>
+          <systemPropertyVariables>
+            <consumer.fixture>custom-repository</consumer.fixture>
+            <consumer.outer.manifest>@consumer.outer.manifest@</consumer.outer.manifest>
+            <consumer.java.home>@consumer.java.home@</consumer.java.home>
+            <consumer.release>@consumer.release@</consumer.release>
+            <consumer.compiler.release>${maven.compiler.release}</consumer.compiler.release>
+            <consumer.security.mode>@consumer.security.mode@</consumer.security.mode>
+            <consumer.coherence.group>@coherence.group@</consumer.coherence.group>
+            <consumer.coherence.version>@coherence.version@</consumer.coherence.version>
+            <consumer.boot.version>@boot.version@</consumer.boot.version>
+            <coherence.localhost>127.0.0.1</coherence.localhost><coherence.wka>127.0.0.1</coherence.wka>
+            <coherence.ttl>0</coherence.ttl><coherence.log.level>2</coherence.log.level>
+            <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+          </systemPropertyVariables>
+        </configuration>
+        <executions><execution><goals><goal>integration-test</goal><goal>verify</goal></goals></execution></executions>
+      </plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId><version>3.6.1</version>
+        <executions>
+          <execution><id>consumer-test-artifacts</id><phase>prepare-package</phase><goals><goal>list</goal></goals>
+            <configuration><outputAbsoluteArtifactFilename>true</outputAbsoluteArtifactFilename><outputFile>${project.build.directory}/test-dependencies.txt</outputFile></configuration>
+          </execution>
+          <execution><id>consumer-runtime-graph</id><phase>prepare-package</phase><goals><goal>tree</goal></goals>
+            <configuration><scope>runtime</scope><outputFile>${project.build.directory}/runtime-dependencies.txt</outputFile></configuration>
+          </execution>
+          <execution><id>consumer-runtime-classpath</id><phase>prepare-package</phase><goals><goal>build-classpath</goal></goals>
+            <configuration><includeScope>runtime</includeScope><outputFile>${project.build.directory}/runtime-classpath.txt</outputFile></configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.3.0</version></plugin>
+  </plugins></build>
+</project>

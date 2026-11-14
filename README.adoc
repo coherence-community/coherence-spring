@@ -1,7 +1,6 @@
 :main-release-version: 4.3.1
-:main-snapshot-version: 4.3.2-SNAPSHOT
+:main-snapshot-version: 5.0.0-SNAPSHOT
 :website: https://spring.coherence.community/
-:new-website: https://docs.coherence.community/coherence-spring/docs/
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
 
@@ -30,37 +29,50 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 
 [width="75%"]
 |=======
-|*{main-release-version}*  | {new-website}v{main-release-version}[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML]  |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]  | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]  | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{main-release-version}* (release) | {website}{main-release-version}/[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
+|*{main-snapshot-version}* (development snapshot) | {website}{main-snapshot-version}/[Website] |{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
 |=======
 
-NOTE: The http://maven.apache.org[Apache Maven]-based snapshots and releases for this project are published to
-http://repo1.maven.org/maven2/com/oracle/coherence/spring/[Maven Central].
+Coherence Spring 5.x is in development. Published snapshot documentation may lag the checked-out source; build the
+documentation locally for the current branch. Release documentation will be linked when the release is published.
+
+NOTE: Releases are available from https://repo.maven.apache.org/maven2/com/oracle/coherence/spring/[Maven Central].
+Development snapshots use the https://central.sonatype.com/repository/maven-snapshots/com/oracle/coherence/spring/[Sonatype snapshot repository].
 
 == Supported Versions
 
 [width="75%", cols="1,1,1,1,1,1,^1,1"]
 |===
-|Coherence Spring | Java            | Coherence CE | Commercial Edition^*^   | Spring| Boot    | Jakarta | Git Branch/Tag
+|Coherence Spring | Java            | Coherence CE | Commercial Edition^*^   | Spring| Boot    | Jakarta | Git Branch
 
-|*4.x*            | `17`, `21`      | `25.03`     | N/A                     | `6.x` | `3.3.x` | ✔       | `main`
-|*3.x*            | `11`, `17`, `21`| `22.06`     | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
+|*5.x* (development) | `17`, `21`   | `26.04`     | Unverified              | `7.x` | `4.x`   | ✔       | `main`
+|*4.x* (maintenance) | `17`, `21`   | `25.03`     | Unverified              | `6.x` | `3.5.x` | ✔       | `4.x`
+|*3.x* (maintenance) | `11`, `17`, `21`| `22.06`  | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
 |===
 
-NOTE: Currently, there is no commercial edition of Coherence that is compatible with Coherence Spring `4.x`,
-as the commercial edition still depends on the `javax` namespace, while Coherence Spring 4.x and Spring 6.x
-only support the `jakarta` namespace. Once a commercial edition that supports jakarta namespace is published,
-it will be supported by the Coherence Spring project. Commercial editions compatible with Coherence Spring `3.x` are
-Coherence `14.1.1.2206` and `14.1.2`.
+NOTE: Commercial Coherence compatibility with Coherence Spring `4.x` and `5.x` remains unverified.
+https://docs.oracle.com/en/middleware/standalone/coherence/15.1.1/install/upgrading-coherence-previous-releases.html[Coherence 15.1.1.0.0 uses Jakarta EE 9.1],
+but namespace alignment alone does not establish a supported Coherence Spring combination.
+The commercial editions listed for `3.x` retain that line's existing compatibility guidance.
+
+Development for Coherence Spring 5.x takes place on `main`. The `4.x` and `3.x` branches maintain the older release lines.
+Release source is identified by version tags, such as `v{main-release-version}` for release `{main-release-version}`.
+
+Applications moving from Coherence Spring 4.x should follow the
+link:coherence-spring-docs/src/main/asciidoc/upgrade-5.adoc[Coherence Spring 5.x upgrade guide]. It covers the Spring 7
+and Boot 4 baselines, Boot's modular dependencies, optional integrations, source-level changes, and validation steps.
 
 == Quick Start
 
 In order to get started quickly, please read the reference guide as it provides a detailed
 https://spring.coherence.community/{main-release-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter] (v{main-release-version}).
+For the 5.x development baseline, use the
+link:coherence-spring-docs/src/main/asciidoc/quickstart.adoc[5.x Quick Start] and the upgrade guide linked above.
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this
 repository, and you can find those in the
-https://github.com/coherence-community/coherence-spring/tree/main/samples[samples] module.
+https://github.com/coherence-community/coherence-spring/tree/main/samples[samples] module on the `main` branch.
 
 == Building from Source
 
@@ -73,12 +85,13 @@ In order to build Coherence Spring, you need to have installed:
 
 === Check out sources
 
-Check out the project using https://git-scm.com/[Git]:
+Check out the development source from the `main` branch using https://git-scm.com/[Git]:
 
 [source,bash,indent=0]
 ----
 git clone https://github.com/coherence-community/coherence-spring.git
 cd coherence-spring
+git switch main
 ----
 
 Coherence Spring uses https://maven.apache.org/[Apache Maven] as build tool. You do not need to have Maven installed to
@@ -146,4 +159,3 @@ link:CONTRIBUTING.md[contributor guidelines] for details.
 == License
 
 Coherence Spring is Open Source software released under link:LICENSE.txt[The Universal Permissive License] (UPL), Version 1.0.
-

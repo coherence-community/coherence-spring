@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+<security-config xmlns="http://xmlns.oracle.com/coherence/coherence-security-config" version="1.0">
+	<allowed-classes>
+		<class name="data.Person" source="manual"/>
+		<class name="data.PhoneNumber" source="manual"/>
+		<class name="com.oracle.coherence.spring.CoherenceInjectorTests$BeanOne" source="manual"/>
+		<class name="com.oracle.coherence.spring.event.EventHandlerTests$Uppercase" source="manual" executable="true"/>
+		<class name="com.oracle.coherence.spring.event.MapEventHandlerTests$Uppercase" source="manual" executable="true"/>
+		<class name="com.oracle.coherence.spring.event.InterceptorsTests$Uppercase" source="manual" executable="true"/>
+		<class name="com.oracle.coherence.spring.event.mapevent.UppercaseEntryProcessor" source="manual" executable="true"/>
+	</allowed-classes>
+</security-config>

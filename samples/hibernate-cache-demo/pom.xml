@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2021, 2023, Oracle and/or its affiliates.
+  Copyright (c) 2021, 2026, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -12,11 +12,11 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>samples</artifactId>
-		<version>4.3.2-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>hibernate-cache-demo</artifactId>
-	<version>4.3.2-SNAPSHOT</version>
+	<version>5.0.0-SNAPSHOT</version>
 
 	<name>Hibernate Cache Demo - App</name>
 	<description>Demo project for using Spring Boot with Hibernate Second Level Cache and Coherence</description>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${coherence.groupId}</groupId>
@@ -65,7 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.coherence.hibernate</groupId>
-			<artifactId>coherence-hibernate-cache-6</artifactId>
+			<artifactId>coherence-hibernate-cache-7</artifactId>
 			<version>${coherence-hibernate.version}</version>
 		</dependency>
 		<dependency>
@@ -86,6 +86,26 @@
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+					<failIfNoTests>true</failIfNoTests>
+					<systemPropertyVariables>
+						<sample.app.archive>${project.build.directory}/${project.build.finalName}.jar</sample.app.archive>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -109,6 +129,14 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Import patched Jackson BOMs before Spring Boot dependency management. -->
+			<dependency>
+				<groupId>tools.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>

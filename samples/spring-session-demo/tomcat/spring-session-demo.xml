@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2026, Oracle and/or its affiliates.
+  Licensed under the Universal Permissive License v 1.0 as shown at
+  https://oss.oracle.com/licenses/upl.
+-->
+
+<!-- Copy to $CATALINA_BASE/conf/Catalina/localhost/spring-session-demo.xml.
+     The matching WAR belongs at $CATALINA_BASE/webapps/spring-session-demo.war.
+     Let Spring Session's wrapped response close after the JSP forward so it can
+     send the initial session cookie. See ../README.adoc for the deployment recipe. -->
+<!-- tag::context[] -->
+<Context suspendWrappedResponseAfterForward="false" />
+<!-- end::context[] -->

@@ -30,9 +30,9 @@ implementation("com.oracle.coherence.spring:coherence-spring-core:{coherence-spr
 ----
 ====
 
-Next you also need to add the version of Coherence that your application will be using. Coherence Spring is compatible
-with both the open source Coherence CE and the commercial version of Oracle Coherence. Therefore, we don't bring in
-Oracle Coherence as transitive dependency. For example, to use Coherence CE specify:
+Next you also need to add the version of Coherence that your application will use. Coherence Spring does not bring in
+Oracle Coherence as a transitive dependency. Coherence Spring 5.x supports Coherence CE 26.04; there is currently no
+compatible commercial edition. Add Coherence CE explicitly:
 
 .Oracle Coherence CE Dependency
 ====
@@ -53,32 +53,8 @@ implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 ----
 ====
 
-In order to use the commercial version of Coherence:
-
-.Commercial Oracle Coherence Dependency
-====
-.Maven
-[source,xml,role="primary",subs="verbatim,quotes,attributes"]
-----
-<dependency>
-    <groupId>com.oracle.coherence</groupId>
-    <artifactId>coherence</artifactId>
-    <version>{commercial-coherence-version}</version>
-</dependency>
-----
-
-.Gradle
-[source,groovy,role="secondary",subs="verbatim,quotes,attributes"]
-----
-implementation("com.oracle.coherence.ce:coherence:{commercial-coherence-version}")
-----
-====
-
-NOTE: Coherence CE versions are available from Maven Central. The commercial versions of Coherence needs to be uploaded
-into your own Maven repository.
-
-IMPORTANT: Coherence Spring requires as a minimum version *Coherence CE* `22.06`. However, currently there is no
-supported commercial Jakarta EE version of Coherence available, yet.
+NOTE: Coherence CE is available from Maven Central. See xref:upgrade-5.adoc#upgrade-5[Upgrading from 4.x to 5.x] before moving an
+existing application to Coherence Spring 5.x, especially if it currently uses a commercial Coherence dependency.
 
 [[coherence-spring-botstrap]]
 == Bootstrapping Coherence
@@ -215,7 +191,7 @@ limitations, for instance, not being usable for constructor injection.
 <1> If not specified, the name of the field will be used to determine the cache name
 <2> Alternatively, you can specify the name of the cache using the `@Name` annotation
 
-TIP: For more information, please see {spring-docs}html/core.html#beans-autowired-annotation-qualifiers[Fine-tuning
+TIP: For more information, please see {spring-docs}core/beans/annotation-config/autowired-qualifiers.html[Fine-tuning
 Annotation-based Autowiring with Qualifiers] in the Spring Framework reference guide.
 
 In order to provide a better user-experience around the dependency injection of maps and caches, Coherence Spring introduces its
@@ -574,7 +550,7 @@ An alternative way to write message driven applications instead of directly inje
 
 ==== Injecting NamedTopic
 
-The simplest way to inject a `NamedTopic` is to just annotate the injection point with `@javax.inject.Inject`.
+The simplest way to inject a `NamedTopic` is to just annotate the injection point with `@jakarta.inject.Inject`.
 
 .Inject NamedTopic
 [source,java]
@@ -893,7 +869,7 @@ actual events received can be controlled further by annotating the method or the
 
 NOTE: Spring `4.2` introduced
 https://spring.io/blog/2015/02/11/better-application-events-in-spring-framework-4-2[Annotation-driven event listeners] as
-part of its {spring-docs}html/core.html#context-functionality-events[event support].
+part of its {spring-docs}core/beans/context-introduction.html#context-functionality-events[event support].
 
 Coherence Spring does *NOT* directly use Spring's `ApplicationEvent` class and the corresponding `ApplicationListener`
 interface. However, Coherence Spring follows that pattern conceptually in order to provide a similar user experience.
@@ -1221,8 +1197,8 @@ concerning the transfer of a partition for a storage enabled member.
 changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the
 partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers
 of the backing map causing changes.
-* If using commercial versions of Coherence with Coherence Spring, there are also events associated to
-the federation of data between different clusters.
+* Coherence editions that provide federation also emit events associated with data federation between clusters. There
+is currently no commercial Coherence edition compatible with Coherence Spring 5.x.
 
 Most of the events above only apply to storage enabled cluster members. For example, an `EntryEvent` will only be
 emitted for mutations of an entry on the storage enabled cluster member that owns that entry. Lifecycle events on the
@@ -2283,7 +2259,7 @@ public class ProductListener {
 == Cache Store
 
 Coherence Spring provides dedicated support for database-backed caches using JPA. Spring Data's
-{spring-docs-data-jpa}#jpa.repositories[JPA Repositories] make basic CRUD database access very simple. An application
+{spring-docs-data-jpa}jpa.html[JPA Repositories] make basic CRUD database access very simple. An application
 developer can just provide an interface that extends `JpaRepository` with the required generic parameters and
 Spring will do the rest.
 
@@ -2533,4 +2509,3 @@ In the remote Coherence CacheStore demo, HSQL will be instantiated via the serve
 the server to access the HSQL database instance. That way we can also inspect
 the data in the data more easily as we can inspect the database data via SQL tools
 such as the open-source https://dbeaver.io/[DBeaver].
-

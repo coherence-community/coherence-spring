@@ -3,7 +3,7 @@
 include::attributes.adoc[]
 
 This section dives into the Coherence Spring Cache module. It explains how to use
-Coherence's support for the Spring Framework's https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache[Cache Abstraction].
+Coherence's support for the Spring Framework's {spring-docs-caching}[Cache Abstraction].
 
 [[spring-cache-introduction]]
 == Introduction
@@ -24,7 +24,7 @@ which is provided by the https://github.com/coherence-community/coherence-hibern
 As a start, please familiarize yourself with Spring's Cache Abstraction by reading the following resources:
 
 - The {spring-docs-caching}[Cache Abstraction chapter] in the core Spring Framework reference guide
-- Spring Boot's reference documentation's {spring-docs-boot}features.html#boot-features-caching[support regarding caching]
+- Spring Boot's reference documentation's {spring-docs-boot}io/caching.html[support regarding caching]
 
 Spring's cache abstraction for Coherence will be automatically enabled as soon as you specify `@EnableCaching` in your
 applications configuration classes. In that case a `CoherenceCacheManager` bean implementation is registered as
@@ -134,8 +134,8 @@ Please consult the <<quickstart.adoc#quickstart, Quickstart chapter>> to see an 
 Spring Boot. Coherence Spring also provides an example of using Spring Framework (without Spring Boot). The source code
 for the samples is part of the Coherence Spring projects:
 
-- {coherence-spring-code}tree/main/samples/coherence-spring-demo/coherence-spring-demo-classic[coherence-spring-demo-classic]
-- {coherence-spring-code}tree/main/samples/coherence-spring-demo/coherence-spring-demo-boot[coherence-spring-demo-boot]
+- {git-sources-samples}coherence-spring-demo/coherence-spring-demo-classic[coherence-spring-demo-classic]
+- {git-sources-samples}coherence-spring-demo/coherence-spring-demo-boot[coherence-spring-demo-boot]
 
 If you're using Spring Boot, please continue reading the <<spring-boot.adoc#spring-boot-caching, Spring Boot specific chapter>>
 on caching.

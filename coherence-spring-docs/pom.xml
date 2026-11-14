@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2024, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2026, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>com.oracle.coherence.spring</groupId>
 		<artifactId>coherence-spring-parent</artifactId>
-		<version>4.3.2-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>coherence-spring-docs</artifactId>
@@ -30,25 +30,25 @@
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-core</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-data</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-boot-starter</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.oracle.coherence.spring</groupId>
 			<artifactId>coherence-spring-session</artifactId>
-			<version>4.3.2-SNAPSHOT</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -94,6 +94,21 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-cache</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Aggregate Javadoc includes the starter's optional SessionTimeout signature. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-session</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
 			<version>${spring-boot.version}</version>
 			<scope>test</scope>
@@ -102,6 +117,18 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -182,7 +209,7 @@
 								<link>https://docs.spring.io/spring-framework/docs/${org.springframework.version}/javadoc-api/</link>
 							</links>
 							<bottom>
-								Copyright © 2013, 2025, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
+								Copyright © 2013, 2026, Oracle and/or its affiliates. Licensed under the Universal Permissive License v 1.0.
 							</bottom>
 						</configuration>
 					</execution>
@@ -244,9 +271,20 @@
 						</resource>
 					</resources>
 					<attributes>
+						<coherence-docs-version>${coherence.docs.version}</coherence-docs-version>
+						<coherence-hibernate-version>${coherence-hibernate.version}</coherence-hibernate-version>
 						<coherence-spring-version>${project.version}</coherence-spring-version>
-						<resilience4j-version>${resilience4j.version}</resilience4j-version>
 						<coherence-version>${coherence.version}</coherence-version>
+						<hibernate-version>${hibernate.version}</hibernate-version>
+						<jakartaee-version>${jakartaee-api.version}</jakartaee-version>
+						<junit-version>${junit.version}</junit-version>
+						<resilience4j-version>${resilience4j.version}</resilience4j-version>
+						<spring-boot-version>${spring-boot.version}</spring-boot-version>
+						<spring-cloud-version>${spring-cloud.version}</spring-cloud-version>
+						<spring-data-bom-version>${spring-data-bom.version}</spring-data-bom-version>
+						<spring-framework-version>${org.springframework.version}</spring-framework-version>
+						<spring-security-version>${spring-security.version}</spring-security-version>
+						<spring-session-version>${spring-session.version}</spring-session-version>
 						<sources-root>${project.basedir}/src</sources-root>
 						<sources-root-samples>${coherence.spring.root}/samples/</sources-root-samples>
 						<tomcat-version>${tomcat.version}</tomcat-version>
@@ -425,7 +463,7 @@
 									<lowercase />
 								</stringutil>
 								<var name="github-tag" value="v${project.version}" />
-								<propertyregex property="github-tag" override="true" input="${github-tag}" regexp=".*SNAPSHOT" replace="master" />
+								<propertyregex property="github-tag" override="true" input="${github-tag}" regexp=".*SNAPSHOT" replace="${source.branch}" />
 							</target>
 						</configuration>
 					</execution>

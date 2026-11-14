@@ -9,6 +9,7 @@ include::attributes.adoc[]
 
 include::legal.adoc[leveloffset=+1]
 include::overview.adoc[leveloffset=+1]
+include::upgrade-5.adoc[leveloffset=+1]
 include::quickstart.adoc[leveloffset=+1]
 include::core.adoc[leveloffset=+1]
 include::spring-cache.adoc[leveloffset=+1]

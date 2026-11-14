@@ -23,9 +23,9 @@ Spring reference documentation, where to start, how to obtain further helper and
 == About the Documentation
 The Coherence Spring reference guide is available as:
 
-* {coherence-spring-docs}/html[Multi-page HTML]
-* {coherence-spring-docs}/htmlsingle[Single page HTML]
-* {coherence-spring-docs}/pdf/coherence-spring-reference.pdf[PDF]
+* {coherence-spring-docs}html[Multi-page HTML]
+* {coherence-spring-docs}htmlsingle[Single page HTML]
+* {coherence-spring-docs}pdf/coherence-spring-reference.pdf[PDF]
 
 [[getting-help]]
 == Getting Help

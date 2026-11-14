@@ -1,0 +1,50 @@
+= Coherence Spring Cloud Config Demo
+
+Spring Cloud Config Server supplies the application properties.
+`DefaultEventService` stores `Event` objects in the Coherence `events` cache through Spring cache annotations.
+`PersonService` reads the database directly.
+
+To run the Config Server with Git, set `CONFIG_SERVER_GIT_URI` to the URI of your configuration repository.
+
+== Run the tests
+
+The defaults are Java 17 and Coherence 26.04.
+From the repository root, run:
+
+[source,shell]
+----
+./mvnw -Pjdk17 -pl :coherence-spring-cloud-config-demo-parent-app -am verify
+----
+
+For hardened snapshot tests, use Java 21 and a separate Maven repository without inherited Coherence snapshots.
+Keep `-Pjdk17` for Java 17 bytecode.
+Add `-U -Dcoherence.version=26.10-SNAPSHOT -Dcoherence.security.mode=hardened` to the command.
+
+== Cache permissions
+
+The `events` cache uses `PartitionedCache` and Java serialization.
+The default configuration does not enable Hibernate second-level or query caching.
+
+The application's `META-INF/coherence/security-config.xml` permits these data classes:
+
+* `com.oracle.coherence.spring.demo.model.Event`
+* `org.hibernate.collection.spi.PersistentSet`
+* `org.hibernate.collection.spi.AbstractPersistentCollection`
+* `java.sql.Timestamp`
+
+The Hibernate collection classes support the participants set.
+Database reads can return `java.sql.Timestamp` values for the event date.
+These permissions apply only where the sample artifact is loaded.
+They do not permit class execution, `Person`, or general Hibernate cache-provider operations.
+
+== Test coverage
+
+`CloudConfigCacheIT` starts the packaged Config Server with local test data.
+It checks service and HTTP cache hits, eviction, and database reloads.
+Cache hits must run no SQL.
+In hardened mode, it also checks rejection when each permission is removed.
+Find the test logs and commands in `target/cloud-config-cache-paths/`.
+
+The test uses events with no participants.
+It does not cover populated association graphs.
+The `addPersonToEvent` service remains a stub.

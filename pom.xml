@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2013, 2025, Oracle and/or its affiliates.
+  Copyright (c) 2013, 2026, Oracle and/or its affiliates.
   Licensed under the Universal Permissive License v 1.0 as shown at
   https://oss.oracle.com/licenses/upl.
 -->
@@ -12,7 +12,7 @@
 
 	<groupId>com.oracle.coherence.spring</groupId>
 	<artifactId>coherence-spring-parent</artifactId>
-	<version>4.3.2-SNAPSHOT</version>
+	<version>5.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Coherence Spring Project</name>
@@ -74,7 +74,7 @@
 		<connection>scm:git:https://github.com/coherence-community/coherence-spring.git</connection>
 		<developerConnection>scm:git:https://github.com/coherence-community/coherence-spring.git</developerConnection>
 		<url>https://github.com/coherence-community/coherence-spring</url>
-		<tag>v4.3.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
@@ -82,6 +82,7 @@
 		<module>coherence-spring-data</module>
 		<module>coherence-spring-session</module>
 		<module>coherence-spring-boot-starter</module>
+		<module>coherence-spring-session-boot-starter</module>
 		<module>coherence-spring-tests</module>
 		<module>coherence-spring-docs</module>
 		<module>coherence-spring-site</module>
@@ -100,10 +101,7 @@
 		<skip-sign-artifacts>true</skip-sign-artifacts>
 
 		<sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-		<sonar.coverage.jacoco.xmlReportPaths>
-			${coherence.spring.root}/coherence-spring-docs/target/site/
-			jacoco-aggregate/jacoco.xml
-		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.jacoco.xmlReportPaths>${coherence.spring.root}/coherence-spring-docs/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
 		<!-- source code repository information -->
 		<source.owner>coherence-community</source.owner>
@@ -126,6 +124,7 @@
 		<maven-enforcer-plugin.version>3.6.1</maven-enforcer-plugin.version>
 		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+		<maven-invoker-plugin.version>3.6.1</maven-invoker-plugin.version>
 		<maven-jacoco-plugin.version>0.8.13</maven-jacoco-plugin.version>
 		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
@@ -145,38 +144,43 @@
 		<spring-doc-resources.version>0.2.5</spring-doc-resources.version>
 
 		<!-- dependency versions (alphabetically) -->
-		<assertj.version>3.27.5</assertj.version>
+		<assertj.version>3.27.7</assertj.version>
 		<awaitility.version>4.3.0</awaitility.version>
 		<bcprov.version>1.79</bcprov.version>
 		<bedrock.version>7.0.2</bedrock.version>
+		<coherence.docs.version>26.04</coherence.docs.version>
 		<coherence.groupId>com.oracle.coherence.ce</coherence.groupId>
-		<coherence.version>25.03.2</coherence.version>
-		<coherence-hibernate.version>3.0.3</coherence-hibernate.version>
+		<coherence-hibernate.version>4.1.0</coherence-hibernate.version>
+		<coherence.version>26.04</coherence.version>
 		<classgraph.version>4.8.181</classgraph.version>
-		<gson.version>2.13.1</gson.version>
+		<gson.version>2.13.2</gson.version>
 		<hamcrest.version>3.0</hamcrest.version>
-		<hibernate.version>6.6.29.Final</hibernate.version>
-		<hsqldb.version>2.7.4</hsqldb.version>
-		<jakartaee-api.version>10.0.0</jakartaee-api.version>
-		<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
-		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
-		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
-		<jakarta.inject.version>2.0.1.MR</jakarta.inject.version>
+		<hibernate.version>7.4.5.Final</hibernate.version>
+		<hsqldb.version>2.7.3</hsqldb.version>
+		<httpclient5.version>5.6.4</httpclient5.version>
+		<httpcore5.version>5.4.3</httpcore5.version>
+		<jakartaee-api.version>11.0.0</jakartaee-api.version>
+		<jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
+		<jakarta.persistence-api.version>3.2.0</jakarta.persistence-api.version>
+		<jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
+		<jakarta.inject.version>2.0.1</jakarta.inject.version>
+		<jackson2-bom.version>2.21.7</jackson2-bom.version>
+		<jackson-bom.version>3.1.7</jackson-bom.version>
 		<javassist.version>3.30.2-GA</javassist.version>
-		<junit.version>5.13.4</junit.version>
-		<log4j.version>2.25.1</log4j.version>
+		<junit.version>6.0.3</junit.version>
+		<log4j.version>2.25.5</log4j.version>
 		<mockito.version>5.20.0</mockito.version>
 		<modelmapper.version>3.2.4</modelmapper.version>
-		<org.springframework.version>6.2.11</org.springframework.version>
-		<reactor.version>3.7.9</reactor.version>
-		<resilience4j.version>2.3.0</resilience4j.version>
+		<org.springframework.version>7.0.9</org.springframework.version>
+		<reactor.version>3.8.7</reactor.version>
+		<resilience4j.version>2.4.0</resilience4j.version>
 		<slf4j-api.version>2.0.17</slf4j-api.version>
-		<spring-boot.version>3.5.5</spring-boot.version>
-		<spring-cloud.version>2025.0.0</spring-cloud.version>
-		<spring-data-bom.version>2025.0.4</spring-data-bom.version>
-		<spring-session.version>3.5.2</spring-session.version>
-		<spring-security.version>6.5.9</spring-security.version>
-		<tomcat.version>11.0.11</tomcat.version>
+		<spring-boot.version>4.0.8</spring-boot.version>
+		<spring-cloud.version>2025.1.3</spring-cloud.version>
+		<spring-data-bom.version>2025.1.7</spring-data-bom.version>
+		<spring-session.version>4.0.5</spring-session.version>
+		<spring-security.version>7.0.7</spring-security.version>
+		<tomcat.version>11.0.26</tomcat.version>
 	</properties>
 
 	<distributionManagement>
@@ -215,6 +219,36 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Security maintenance baselines shared by library tests and all samples. -->
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson2-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.client5</groupId>
+				<artifactId>httpclient5</artifactId>
+				<version>${httpclient5.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.core5</groupId>
+				<artifactId>httpcore5</artifactId>
+				<version>${httpcore5.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.core5</groupId>
+				<artifactId>httpcore5-h2</artifactId>
+				<version>${httpcore5.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
@@ -282,6 +316,11 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>${maven-invoker-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${maven-resources-plugin.version}</version>
 				</plugin>
@@ -297,7 +336,7 @@
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
-                        <testCompilerArgument>-parameters</testCompilerArgument>
+						<parameters>true</parameters>
 						<showDeprecation>true</showDeprecation>
 					</configuration>
 				</plugin>
@@ -689,8 +728,33 @@
 		</profile>
 		<profile>
 			<id>coverage</id>
+			<properties>
+				<!-- Test inclusions also remove these files from the main analysis scope. -->
+				<sonar.test.inclusions>**/src/test/**,.github/scripts/test_*.py</sonar.test.inclusions>
+			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>${build-helper-maven-plugin.version}</version>
+						<!-- Only the root owns the Python helpers; retain child Java test roots. -->
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>qualification-helper-tests</id>
+								<phase>generate-test-sources</phase>
+								<goals>
+									<goal>add-test-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>${project.basedir}/.github/scripts</source>
+									</sources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>

@@ -11,7 +11,13 @@ Coherence's support for {spring-docs-session}[Spring Session].
 In this chapter you will learn how to configure {oracle-coherence}[Coherence] as an HTTP session store using
 {spring-docs-session}[Spring Session].
 
-First you need to add the coherence-spring-session dependency:
+For a Spring Boot servlet application, use `coherence-spring-session-boot-starter` with an explicit Coherence runtime
+and your servlet web dependencies, as shown in xref:spring-boot.adoc#spring-boot-sessions[Spring Boot Session Support].
+The starter supplies the general Coherence starter, this session library and Boot Session, and enables HTTP-session
+integration automatically when its conditions match. Non-web and reactive applications do not activate that integration.
+
+For standalone Spring Framework applications, add the Boot-independent `coherence-spring-session` library and
+configure Spring Session explicitly. Keep your servlet API/container and Spring web dependencies available:
 
 .Adding the Coherence Spring Session Dependency
 ====
@@ -36,18 +42,18 @@ First you need to add the coherence-spring-session dependency:
 [source,groovy,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
 ----
 dependencies {
-    compile("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
-    compile("com.oracle.coherence.ce:coherence:{coherence-version}")
+    implementation("com.oracle.coherence.spring:coherence-spring-session:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
 }
 ----
 ====
 
-NOTE: Coherence Spring support for Spring Session can be used for either the free Coherence Community Edition (CE)
-or the commercial version. Coherence Spring does not bring in the Coherence dependency automatically but users
-must specify the Coherence dependency explicitly.
+NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 26.04. Coherence Spring does
+not bring in the Coherence dependency automatically; users must specify the supported Coherence CE dependency explicitly.
 
-In order to enable Spring Session support for Coherence, make sure Coherence is enabled and then enable Spring
-Session using the `@EnableCoherenceHttpSession` annotation.
+For standalone configuration, make sure Coherence is enabled and then enable Spring Session using the
+`@EnableCoherenceHttpSession` annotation. Also register the HTTP filter, for example through
+`AbstractHttpSessionApplicationInitializer`, as shown in the plain Spring WAR sample below.
 
 .Enabling Coherence Spring Sessions
 [source,java,indent=0]
@@ -71,36 +77,272 @@ static class CoherenceSessionConfig {
 <5> The session timeout. Optional. Defaults to `1800` seconds (`30` minutes)
 <6> When doing HTTP session updates, shall we use a Coherence entry processor? The default is {@code true}.
 
-Are you running Coherence as a dedicated server instance? Then you need to make sure that your Coherence
-server may need one or more additional dependencies on its classpath for serialization. Depending on your requirements,
-you may need `Coherence Spring Session`, `Spring Security Core`, `Spring Security Web`. Please also ensure that dependency
-version between Coherence server and application clients matches exactly.
+Dedicated storage servers need the session processors, serializers and payload classes they receive. Use the
+standalone `coherence-spring-session` library there, with `spring-security-core` and `spring-security-web` when the
+stored authentication graph requires them. A Boot storage server can combine the general Coherence starter with
+this library; it does not need `coherence-spring-session-boot-starter` or `spring-boot-session` for storage. Keep
+client/server dependency versions aligned. The sample server retains `spring.session.store-type=none` to opt out
+of Coherence's HTTP-session auto-configuration even if integration dependencies are added later.
 
 An alternative is to set `useEntryProcessor` to `false`. This is less efficient as the entire session has to be sent over
-the wire when updating session properties. The positive side effect is that your Coherence server instance will not need
-to be aware of the additional dependencies on its classpath.
+the wire when updating session properties. The server still needs any classes and serializers required to deserialize
+session data or run repository operations such as principal lookup and resetting active sessions.
 
 [[spring-session-pof]]
 == POF Serialization
 
-In case that you configured the cache using
+When the Session cache uses
 {oracle-coherence-docs}develop-applications/using-portable-object-format.html#GUID-F331E5AB-0B3B-4313-A2E3-AA95A40AD913[POF serialization],
-additional POF configuration for the class `MapSession` is necessary:
+the application must register the Session types and any session payload types
+with its POF context. Coherence Spring Session supplies the serializers and
+`PortableObject` implementations listed below, but does not ship a POF
+registration XML file, assign type IDs through annotations, or register these
+types programmatically. Implementing `PortableObject` defines how a type is
+serialized; it does not automatically register or discover that type.
+Applications using Java serialization do not need these POF registrations.
 
-.POF Configuration
-[source,xml,indent=1,subs="verbatim,quotes,attributes"]
+=== Supported types and operations
+
+All custom serializers in the table belong to Coherence Spring's
+`coherence-spring-session` module, in the package
+`com.oracle.coherence.spring.session.serialization.pof`. Their fully qualified
+class names appear in the complete configuration below. For a registered
+`PortableObject` without an explicit serializer, `ConfigurablePofContext` uses
+Coherence's `com.tangosol.io.pof.PortableObjectSerializer`.
+
+[cols="3,2,2,1,3",options="header"]
+|===
+|Type (fully qualified class name) |Owning project / module |POF mechanism |Example ID |When needed
+
+|`org.springframework.session.MapSession`
+|Spring Session / `spring-session-core`
+|`MapSessionPofSerializer`
+|2001
+|Session storage using POF.
+
+|`com.oracle.coherence.spring.session.SessionUpdateEntryProcessor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4000
+|Updates to existing sessions with `useEntryProcessor=true` (the default).
+
+|`com.oracle.coherence.spring.session.SessionResetEntryProcessor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4001
+|Calls to `resetMaxInactiveIntervalForActiveSessions()`, independently of `useEntryProcessor`.
+
+|`com.oracle.coherence.spring.session.support.PrincipalNameExtractor`
+|Coherence Spring / `coherence-spring-session`
+|Implements `PortableObject`
+|4010
+|Principal lookup through `findByPrincipalName()` or `findByIndexNameAndIndexValue()` for the principal-name index.
+
+|`org.springframework.security.authentication.UsernamePasswordAuthenticationToken`
+|Spring Security / `spring-security-core`
+|`AuthenticationPofSerializer`
+|3000
+|Sessions containing this authentication token, including inside a security context.
+
+|`org.springframework.security.core.context.SecurityContextImpl`
+|Spring Security / `spring-security-core`
+|`SecurityContextPofSerializer`
+|3001
+|Sessions containing this Spring Security context implementation.
+
+|`org.springframework.security.core.authority.SimpleGrantedAuthority`
+|Spring Security / `spring-security-core`
+|`GrantedAuthorityPofSerializer`
+|3002
+|Authentication tokens containing this authority type.
+
+|`org.springframework.security.core.authority.FactorGrantedAuthority`
+|Spring Security / `spring-security-core`
+|`FactorGrantedAuthorityPofSerializer`
+|3003
+|Authentication tokens containing Spring Security 7 factor authorities; preserves the authority and issuance time.
+|===
+
+`PrincipalNameExtractor` is sent as part of a principal lookup query; repository
+initialization does not install it. Setting `useEntryProcessor=false` avoids the
+update processor, but does not disable the reset operation or principal lookup.
+`SessionResetEntryProcessor` carries only the interval in milliseconds: Java
+serialization uses serial version `1`; POF uses a long at index `0`.
+
+=== Application POF configuration
+
+Save the following complete configuration as `session-pof-config.xml` on the
+application and server classpaths. It includes Coherence's built-in types, the
+Session storage and operation types, and the supported Spring Security payload
+types. Applications that do not store Spring Security payloads can omit the
+four registrations in the Spring Security group. Operation registrations are
+needed when the corresponding operations in the table are used.
+
+IMPORTANT: Every ID below is an illustrative application mapping. These numbers
+are not reserved IDs or reserved ranges for Coherence Spring, Spring Session,
+or Spring Security. Check for collisions with all included registries and your
+application types, and choose unused IDs consistently on clients and servers.
+Preserve existing mappings for as long as stored or persisted POF data needs
+them; changing or reusing an ID can make that data unreadable or resolve it to
+the wrong type. Coordinate a data migration before changing an existing mapping.
+
+.session-pof-config.xml
+[source,xml]
 ----
-<user-type>
-    <type-id>2001</type-id>
-    <class-name>org.springframework.session.MapSession</class-name>
-    <serializer>
-        <class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
-    </serializer>
-</user-type>
+<?xml version="1.0" encoding="UTF-8"?>
+<pof-config xmlns="http://xmlns.oracle.com/coherence/coherence-pof-config"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-pof-config coherence-pof-config.xsd">
+    <user-type-list>
+        <include>coherence-pof-config.xml</include>
+
+        <!-- Session storage and operations -->
+        <user-type>
+            <type-id>2001</type-id>
+            <class-name>org.springframework.session.MapSession</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.MapSessionPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>4000</type-id>
+            <class-name>com.oracle.coherence.spring.session.SessionUpdateEntryProcessor</class-name>
+        </user-type>
+        <user-type>
+            <type-id>4001</type-id>
+            <class-name>com.oracle.coherence.spring.session.SessionResetEntryProcessor</class-name>
+        </user-type>
+        <user-type>
+            <type-id>4010</type-id>
+            <class-name>com.oracle.coherence.spring.session.support.PrincipalNameExtractor</class-name>
+        </user-type>
+
+        <!-- Spring Security payloads: include when these types are stored -->
+        <user-type>
+            <type-id>3000</type-id>
+            <class-name>org.springframework.security.authentication.UsernamePasswordAuthenticationToken</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.AuthenticationPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3001</type-id>
+            <class-name>org.springframework.security.core.context.SecurityContextImpl</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.SecurityContextPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3002</type-id>
+            <class-name>org.springframework.security.core.authority.SimpleGrantedAuthority</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.GrantedAuthorityPofSerializer</class-name>
+            </serializer>
+        </user-type>
+        <user-type>
+            <type-id>3003</type-id>
+            <class-name>org.springframework.security.core.authority.FactorGrantedAuthority</class-name>
+            <serializer>
+                <class-name>com.oracle.coherence.spring.session.serialization.pof.FactorGrantedAuthorityPofSerializer</class-name>
+            </serializer>
+        </user-type>
+    </user-type-list>
+</pof-config>
 ----
 
-IMPORTANT: Depending on your serialization requirements and your session data, additional POF configuration
-may be necessary.
+Deploy matching type-ID, class and serializer mappings to every client and
+server that serializes or deserializes these objects. Each receiving process
+needs the registered classes and serializer implementations on its classpath:
+`coherence-spring-session` and its required dependencies, `spring-session-core`,
+and `spring-security-core` when using the security registrations. Keep client
+and server dependency versions aligned. POF registration does not supply the
+classes to a remote server.
+
+Select POF and load this configuration before starting Coherence. With cache
+and client configurations that use the `coherence.serializer` property, set
+these JVM properties on both application clients and servers:
+
+[source,shell]
+----
+java -Dcoherence.serializer=pof \
+     -Dcoherence.pof.config=session-pof-config.xml \
+     -jar application.jar
+----
+
+The named `pof` serializer uses `ConfigurablePofContext`, which loads the file
+selected by `coherence.pof.config`. If your cache, Extend or gRPC client
+configuration explicitly selects a serializer, select `pof` there as well;
+setting the default property does not override an explicit serializer choice.
+For example, the cache configuration can select POF in its `<defaults>` element:
+
+[source,xml]
+----
+<defaults>
+    <serializer>pof</serializer>
+</defaults>
+----
+
+The configuration covers the listed library-supported types. Add registrations
+and suitable serializers for any additional application session attributes,
+principal or authentication details types that POF does not already support,
+including other types reachable from those objects. `MapSessionPofSerializer`
+writes attribute values as objects, and `AuthenticationPofSerializer` writes
+principal and details as objects. A Spring Security `User` principal or
+`WebAuthenticationDetails` is an application choice and has no serializer in
+the list above; the application must provide the corresponding POF support.
+Other authentication token, context or authority implementations also need
+their own serializers and registrations.
+
+[[spring-session-hardened-serialization]]
+=== Hardened serialization and execution
+
+POF registration and `META-INF/coherence/security-config.xml` permissions have
+different purposes. POF configuration maps wire type IDs to classes and
+serializers. The production Session JAR's security metadata grants exact
+serialization permissions and classifies permitted executables on Coherence
+versions that enforce that policy; it does not register POF types or select a
+serializer. Configure both for a hardened POF deployment, including the
+application-owned types required by your session data.
+
+The Session JAR supplies exact security metadata for `MapSession`, its two named
+processors, `PrincipalNameExtractor`, `UsernamePasswordAuthenticationToken`,
+its serializable `AbstractAuthenticationToken` superclass, `SecurityContextImpl`,
+`SimpleGrantedAuthority`, and `FactorGrantedAuthority`. Only the processors and extractor are classified
+as executable. Deploy the Session JAR to every receiving server and client.
+
+Application session attributes and principal/details classes need their own
+exact security metadata. `MapSessionPofSerializer` writes attribute values as
+objects; `AuthenticationPofSerializer` writes principal and details as objects.
+POF applications must also register these application types and their serializers.
+The supplied token serializer handles `UsernamePasswordAuthenticationToken`
+with string or erased/null credentials; it does not define a general authentication serializer.
+It preserves mixed registered authority types and authentication state. Legacy
+POF token data without the new authentication-state field keeps its historical
+authenticated state when read.
+A built-in Spring Security principal such as `User` is also an application choice
+and is not implicitly permitted by the Session policy.
+Applications choosing `User` and `WebAuthenticationDetails` must supply their
+own exact security metadata, including metadata for other serialized classes
+in that graph, such as `User`'s authority comparator for Java serialization.
+
+An explicit POF registration also trusts its configured serializer. In the tested
+Coherence 26.10 snapshot, a registered `PortableObjectSerializer` can construct
+and read a type absent from the XML allowlist. Review application POF
+registrations and serializers independently; the Session XML does not prevent
+callbacks from arbitrary explicitly registered serializers. Review the complete
+application object graph for additional POF registrations before deployment.
+
+Serialization permission, executable classification, and gRPC serializer approval
+are separate checks. Select matching serializers explicitly on clients and
+servers. POF requires matching registrations. A Java-format gRPC client requires
+server approval for the exact `java` format on Coherence versions that enforce
+serializer policy. Such approval is a server deployment decision; Session does
+not change the global policy. Configure the approved format on the gRPC
+server and select that same format on its clients.
+
+The named reset operation does not require generated-lambda permission. This
+does not establish support for all application lambdas under dynamic-code deny.
+Security metadata does not configure endpoint authentication or TLS.
 
 [[spring-session-sample]]
 == Spring Session Samples
@@ -117,6 +359,12 @@ The example application show-cases 2 use-cases:
 
 - Use Spring Session with embedded Coherence instances and Java serialization
 - Use Spring Session with remote Coherence instances (Coherence*Extends) and Java serialization
+
+`spring-session-demo-app` uses `coherence-spring-session-boot-starter`, an explicit Coherence runtime and its existing
+web, Security and Actuator dependencies. The separate `spring-session-demo-server` uses the general starter plus
+the standalone session library to store and process sessions, with HTTP-session auto-configuration disabled.
+The `spring-session-demo-war` application below uses explicit Spring configuration and the standalone library;
+it contains no Spring Boot runtime and is not a Boot WAR.
 
 Even though this demo is targeting Spring Session, we use Spring Security as well, since the authentication details are
 stored in the session as well. In regard to authentication, users have 2 choices:
@@ -140,10 +388,10 @@ require an authenticated user using the session cookie or the `username` and `pa
 [[spring-session-sample-start-embedded-coherence]]
 ==== Start Spring Session with Embedded Coherence Instances
 
-.Build the Coherence Server instance
+.Build the web application and its prerequisites
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-app -am clean install
 ----
 
 Now we are ready to run the application. Let's launch 2 instances, one listening on the pre-configured port
@@ -165,13 +413,13 @@ Coherence instance as a Coherence*Extend client.
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-server -am clean install
 ----
 
 .Build the Application instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-app
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-app -am clean install
 ----
 
 Now we are ready to run the application. We will activate the `coherence-client` Spring Boot profile as well:
@@ -187,14 +435,10 @@ By default, Coherence Spring Session uses a Coherence Entry Processor to perform
 will prevent the entire session to be sent over the wire. A drawback of that approach is that the Coherence instance needs
 to be aware of Coherence Spring classes for serialization purposes.
 
-Alternatively, you can also set the Coherence Spring Session property `coherence.spring.session.use-entry-processor` and
-set it to `false` (It is `true` by default) in the client application `spring-session-demo-app`. With that in place, you
-can now remove the relevant Maven dependencies:
-
-- spring-security-web
-- coherence-spring-session
-
-from the server application module `spring-session-demo-server` and the application will still work.
+Alternatively, set `coherence.spring.session.use-entry-processor=false` (the default is `true`) in
+`spring-session-demo-app` to send the entire session for ordinary updates. Keep the server's session library and
+payload dependencies: stored authentication graphs, deserialization, principal lookup and reset operations still
+require their classes and serializers. Disabling the update processor does not remove those requirements.
 
 [[spring-session-sample-rest-endpoints]]
 ==== Accessing the REST Endpoints
@@ -266,7 +510,7 @@ Coherence Spring source code repository:
 .Build the Coherence Server instance
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-server
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-server -am clean install
 ----
 
 Next, we will build the client application:
@@ -274,7 +518,7 @@ Next, we will build the client application:
 .Build the Client Application
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ ./mvnw clean package -pl samples/spring-session-demo/spring-session-demo-war
+$ ./mvnw -Pjdk17 -pl :spring-session-demo-war -am clean install
 ----
 
 The Coherence-specific configuration of the client is fairly straight-forward and mostly
@@ -316,6 +560,10 @@ for the cache `spring:session:sessions` to the `remote-cache-scheme` that uses t
 Now we are ready to run the application. First, we will start the server. The server application uses Spring Boot and by
 activating a custom Spring Boot profile, Coherence will be started with POF serialization enabled:
 
+Keep the sample's application-owned `pof-config.xml` on both client and server classpaths. This WAR stores a simple
+counter; the Boot application's Java-serialized authentication graph is a separate sample path. Applications using
+POF for authentication must add the payload registrations described in <<spring-session-pof>>.
+
 .coherence-cache-config-pof.xml
 [source,xml,indent=1,subs="verbatim,quotes,attributes"]
 ----
@@ -334,16 +582,42 @@ activating a custom Spring Boot profile, Coherence will be started with POF seri
 $ java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-{coherence-spring-version}.jar --spring.profiles.active=pof
 ----
 
-For the client application, deploy the generated WAR file `spring-session-demo.war` in
-`samples/spring-session-demo/spring-session-demo-war/target` to a Servlet container, for example Tomcat {tomcat-version}.
+For the client application, deploy the generated `spring-session-demo.war` together with the sample's external
+Tomcat Context file. This sample forwards to a JSP after updating the session. On Tomcat 11.0.26, the default
+`suspendWrappedResponseAfterForward=true` finishes the response before Spring Session can send its initial cookie;
+successive requests then each show `Counter: 1`. The supplied Context sets this attribute to `false`, allowing
+the wrapped response to close and send the cookie after the forward. See Tomcat's
+https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Common_Attributes[Context attributes] and
+https://tomcat.apache.org/tomcat-11.0-doc/config/context.html#Naming[context naming rules].
+
+.samples/spring-session-demo/tomcat/spring-session-demo.xml
+[source,xml]
+----
+include::{sources-root-samples}/spring-session-demo/tomcat/spring-session-demo.xml[tag=context]
+----
+
+Use an initialized Tomcat 11 installation with the standard `Catalina` engine, `localhost` host and `webapps`
+appBase. Stop that instance before copying these files. Run from the repository root with Java 17 or 21 selected:
 
 .Deploy WAR file to Tomcat {tomcat-version}
 [source,shell,indent=1,subs="verbatim,quotes,attributes"]
 ----
-$ cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war /path/to/apache-tomcat-{tomcat-version}/webapps
+export CATALINA_HOME=/path/to/apache-tomcat-{tomcat-version}
+export CATALINA_BASE="$CATALINA_HOME"
+mkdir -p "$CATALINA_BASE/conf/Catalina/localhost" "$CATALINA_BASE/webapps"
+cp samples/spring-session-demo/tomcat/spring-session-demo.xml \
+  "$CATALINA_BASE/conf/Catalina/localhost/spring-session-demo.xml"
+cp samples/spring-session-demo/spring-session-demo-war/target/spring-session-demo.war \
+  "$CATALINA_BASE/webapps/spring-session-demo.war"
+"$CATALINA_HOME/bin/catalina.sh" run
 ----
 
-The application should start up and connect to the Coherence server instance. You can then access the application at
+If using a separate initialized Tomcat instance directory, set `CATALINA_BASE` to that directory instead.
+The matching `spring-session-demo.xml` and `spring-session-demo.war` base names select `/spring-session-demo`.
+The Context deliberately omits `path` and `docBase`: Tomcat derives them from the filenames and standard appBase.
+This setting applies only to this application. Keep it in the external Context file when redeploying the WAR.
+
+The application starts and connects to the Coherence server. Access it at
 
 `http://localhost:8080/spring-session-demo/hello`.
 
@@ -352,6 +626,23 @@ image::spring-session-demo-war.png[Spring Session Demo,width=50%, pdfwidth=50%]
 
 The invoked `HelloController` will display a simple counter that is incremented with each request and whose value is
 stored in the HTTP Session.
+
+Use a fresh cookie jar in another terminal to check normal cookie delivery and counter progression:
+
+[source,shell]
+----
+curl -i -c war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+curl -i -b war-cookie.txt http://localhost:8080/spring-session-demo/hello
+----
+
+The first response must return `Set-Cookie: SESSION=...` with `Path=/spring-session-demo`; the three pages show
+`Counter: 1`, `Counter: 2` and `Counter: 3` under the same session. Use Ctrl-C in the Tomcat terminal to stop it.
+
+NOTE: This configured deployment is validated on Java 17/21 with Tomcat 11.0.26, Spring Session 4.0.5 and Coherence
+26.04, using the real JSP WAR and a separate POF storage server. The default Tomcat deployment remains affected.
+The setting is specific to Tomcat's servlet-forward handling; it does not establish behavior on other servlet
+containers. The Boot application's Java-serialization login/session path above is validated separately.
 
 [[spring-session-expiration-strategies]]
 == Session Expiration Strategies
