@@ -1028,13 +1028,11 @@
           "report": "surefire-reports",
           "name": "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests",
           "cases": [
-            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherencePropertyPrecedenceForSpringEnvironment",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherenceServerDefaultStartupTimeoutIsSet",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testCoherenceServerStartupTimeoutIsSet",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testDefaultCacheManagerExists",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testExistenceOfCoherenceGenericConverter",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testExistenceOfSingleSpringSystemPropertyResolver",
-            "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testSpringSystemPropertyResolverForSpringBoot",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testThatNoCacheManagerExists",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testThatYamlConfiguredSessionConfigurationBeanExists",
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testUserProvidedCacheManagerExists",
@@ -1042,6 +1040,22 @@
             "com.oracle.coherence.spring.boot.tests.CoherenceAutoConfigurationTests#testUserProvidedSessionConfigurationBeanExists"
           ],
           "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherenceAutoConfigurationTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherencePropertyPrecedenceTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertyPrecedenceTests#testCoherencePropertyPrecedenceForSpringEnvironment"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherencePropertyPrecedenceTests.java"
+        },
+        {
+          "report": "surefire-reports",
+          "name": "com.oracle.coherence.spring.boot.tests.CoherencePropertyPrefixTests",
+          "cases": [
+            "com.oracle.coherence.spring.boot.tests.CoherencePropertyPrefixTests#testSpringSystemPropertyResolverForSpringBoot"
+          ],
+          "source": "coherence-spring-boot-starter/src/test/java/com/oracle/coherence/spring/boot/tests/CoherencePropertyPrefixTests.java"
         },
         {
           "report": "surefire-reports",
