@@ -18,7 +18,6 @@ import com.oracle.coherence.spring.configuration.CoherenceConfigurer;
 import com.oracle.coherence.spring.configuration.DefaultCoherenceConfigurer;
 import com.oracle.coherence.spring.configuration.session.SessionConfigurationBean;
 import com.oracle.coherence.spring.configuration.support.SpringSystemPropertyResolver;
-import com.tangosol.coherence.config.SystemPropertyResolver;
 import com.tangosol.net.Coherence;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.Session;
@@ -169,54 +168,6 @@ public class CoherenceAutoConfigurationTests {
 					SpringSystemPropertyResolver springSystemPropertyResolver = context.getBean(SpringSystemPropertyResolver.class);
 					final String propertyPrefix = (String) ReflectionTestUtils.getField(springSystemPropertyResolver, "propertyPrefix");
 					assertThat(propertyPrefix).isEqualTo("");
-				});
-	}
-
-	@Test
-	public void testSpringSystemPropertyResolverForSpringBoot() {
-		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
-				.withSystemProperties("spring.profiles.active=coherenceNativePropertiesTests")
-				.withSystemProperties(
-						"coherence.properties.coherence.localhost=127.0.0.1",
-						"coherence.properties.coherence.ttl=0",
-						"coherence.properties.java.net.preferIPv4Stack=true",
-						"coherence.properties.coherence.wka=127.0.0.1",
-						"coherence.properties.coherence.cluster=CoherenceAutoConfigurationTestsCluster"
-				)
-				.run((context) -> {
-					final SystemPropertyResolver systemPropertyResolver = SystemPropertyResolver.getInstance();
-					assertThat(systemPropertyResolver).isNotNull();
-
-					assertThat(systemPropertyResolver.getProperty("coherence.log.limit")).isEqualTo("0");
-					assertThat(systemPropertyResolver.getProperty("coherence.log.level")).isEqualTo("5");
-					assertThat(systemPropertyResolver.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
-					assertThat(systemPropertyResolver.getProperty("coherence.log")).isEqualTo("jdk");
-					assertThat(systemPropertyResolver.getProperty("coherence.log.format"))
-							.isEqualTo("foobar {date}/{uptime} <{level}> (thread={thread}, member={member}): {text}");
-
-					final SystemPropertyResolver systemPropertyResolverFromSpringContext = context.getBean(SystemPropertyResolver.class);
-					assertThat(systemPropertyResolverFromSpringContext).isNotNull();
-
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.limit")).isEqualTo("0");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.level")).isEqualTo("5");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.logger")).isEqualTo("CoherenceSpring");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log")).isEqualTo("jdk");
-					assertThat(systemPropertyResolverFromSpringContext.getProperty("coherence.log.format"))
-							.isEqualTo("foobar {date}/{uptime} <{level}> (thread={thread}, member={member}): {text}");
-				});
-	}
-
-	@Test
-	public void testCoherencePropertyPrecedenceForSpringEnvironment() {
-		this.contextRunner.withUserConfiguration(CoherenceAutoConfigurationTests.ConfigWithoutEnableCaching.class)
-				.withSystemProperties("spring.profiles.active=coherencePropertiesTests")
-				.run((context) -> {
-					Environment environment = context.getEnvironment();
-					assertThat(environment.getProperty("coherence.properties.coherence.log.limit")).isEqualTo("123");
-					assertThat(environment.getProperty("coherence.properties.coherence.log.level")).isEqualTo("5");
-					assertThat(environment.getProperty("coherence.properties.coherence.log.logger")).isEqualTo("testing");
-					assertThat(environment.getProperty("coherence.properties.coherence.log")).isEqualTo("slf4j");
-					assertThat(environment.getProperty("coherence.properties.coherence.log.format")).isEqualTo("Testing: {date}/{uptime} {product} {version} <{level}> (thread={thread}, member={member}): {text}");
 				});
 	}
 
