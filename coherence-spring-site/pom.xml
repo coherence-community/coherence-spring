@@ -24,7 +24,8 @@
 
 	<properties>
 		<coherence.spring.root>${basedir}/..</coherence.spring.root>
-		<helidon.sitegen.version>4.0.22</helidon.sitegen.version>
+		<!-- Sitegen 4.x uses root paths that break sites published under version directories. -->
+		<helidon.sitegen.version>3.0.10</helidon.sitegen.version>
 		<asciidoctor.diagram.version>3.0.1</asciidoctor.diagram.version>
 		<doxia.version>2.0.0</doxia.version>
 
@@ -75,12 +76,38 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>filter-sitegen-config</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/sitegen</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>sitegen.yaml</include>
+									</includes>
+								</resource>
+								</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>io.helidon.build-tools</groupId>
 				<artifactId>sitegen-maven-plugin</artifactId>
 				<version>${helidon.sitegen.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<siteConfigFile>${basedir}/sitegen.yaml</siteConfigFile>
+					<siteConfigFile>${project.build.directory}/sitegen/sitegen.yaml</siteConfigFile>
 					<siteSourceDirectory>${basedir}/docs</siteSourceDirectory>
 				</configuration>
 				<dependencies>

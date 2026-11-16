@@ -13,6 +13,11 @@
 The `coherence-spring-site` module builds the Coherence Spring project website and packages the reference documentation
 produced by the `coherence-spring-docs` module. Both modules are part of the root Maven reactor.
 
+The website uses Helidon Sitegen 3.x because it is published under a version directory, such as `5.0.0-SNAPSHOT/`.
+Sitegen 3.x generates relative resource links and hash-based navigation. Sitegen 4.x generates root-relative resource
+links and uses history routing with a root base path, which breaks this layout. Keep the 3.x version pin and Dependabot
+major-version exclusion until a replacement has been verified under a version directory.
+
 == Build the Website and Reference Documentation
 
 Run the following command from the repository root:
@@ -38,8 +43,9 @@ Then open http://localhost:8080/ in a browser.
 == Version Attributes
 
 Website AsciiDoc attributes are configured in `coherence-spring-site/sitegen.yaml`. Maven filters expressions such as
-`${project.version}` and `${coherence.docs.version}` before Sitegen renders the pages. The current configuration exposes,
-among others:
+`${project.version}` and `${coherence.docs.version}` into `target/sitegen/sitegen.yaml` during `generate-resources`,
+before Sitegen renders the pages. This explicit filtering also resolves nested AsciiDoc attributes with Sitegen 3.x.
+The current configuration exposes, among others:
 
 [source,yaml]
 ----

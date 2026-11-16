@@ -8,6 +8,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # Keep relative paths and hash routing for versioned GitHub Pages sites.
+      - dependency-name: "io.helidon.build-tools:sitegen-maven-plugin"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

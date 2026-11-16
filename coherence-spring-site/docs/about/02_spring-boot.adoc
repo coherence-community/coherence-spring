@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-    Copyright (c) 2013, 2023, Oracle and/or its affiliates.
+    Copyright (c) 2013, 2026, Oracle and/or its affiliates.
 
     Licensed under the Universal Permissive License v 1.0 as shown at
     https://oss.oracle.com/licenses/upl.
@@ -38,7 +38,7 @@ Add the Coherence Spring Boot Starter to your generated app's `pom.xml`:
 NOTE: Coherence Spring 5.x supports Coherence CE 26.04. There is currently no compatible commercial Coherence edition.
 
 If you are moving an existing application from Coherence Spring 4.x, follow the
-link:../refdocs/reference/html/upgrade-5.html[Coherence Spring 5.x upgrade guide] before changing dependencies.
+link:refdocs/reference/html/upgrade-5.html[Coherence Spring 5.x upgrade guide] before changing dependencies.
 
 This will be enough to start up a default instance of Coherence with default settings. E.g., inject Coherence beans into
 your Spring Controllers, Services and other components:

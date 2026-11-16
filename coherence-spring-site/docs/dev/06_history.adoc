@@ -23,7 +23,7 @@ reverse chronological order.
   Spring Session 4, Spring Security 7, and Jakarta EE 11.
 * Updated the library modules, samples, reference documentation, compatibility data, and
   third-party notices for the 5.x line.
-* See the link:../refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
+* See the link:refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
   for application migration requirements and behavioral changes.
 
 === Version 4.3.1 (June 2025)
