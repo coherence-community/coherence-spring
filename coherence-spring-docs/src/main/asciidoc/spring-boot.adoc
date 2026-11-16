@@ -1011,6 +1011,7 @@ For a Spring Boot servlet web application, select `coherence-spring-session-boot
 Coherence starter, `coherence-spring-session` and Boot's `spring-boot-session`, including `spring-session-core`.
 Keep an explicit Coherence runtime and the application's servlet web dependencies. The following recipes assume
 the Spring Boot parent or BOM manages Boot versions; Security and Actuator remain application choices.
+For Gradle platform setup, see xref:upgrade-5.adoc#upgrade-5-dependencies[Update dependency management].
 
 .Add Coherence Spring Session Support
 ====
@@ -1064,6 +1065,8 @@ Auto-configuration backs off in these situations:
 This integration supports servlet applications, including embedded servers and Boot WAR deployments. It does not
 provide reactive WebSession support or enable HTTP sessions in non-web applications. Required Session, Boot Session
 and servlet classes must be present; `coherence.spring.session.enabled=true` cannot supply a missing dependency.
+After migration, verify the Coherence repository, `springSessionRepositoryFilter`, and stored state across HTTP
+requests with the same cookie. Application startup alone does not establish that HTTP-session integration is active.
 
 The following Coherence-specific configuration properties are available:
 
@@ -1116,6 +1119,7 @@ following configurations.
 Applications that use Actuator should add its starter. Actuator already includes Boot's metrics starter,
 so the two Boot starters are alternatives and should not both be declared. These examples assume that the
 Spring Boot parent or BOM manages the Boot dependency version.
+For Gradle platform setup, see xref:upgrade-5.adoc#upgrade-5-dependencies[Update dependency management].
 
 .Coherence Metrics with Spring Boot Actuator
 ====
@@ -1225,7 +1229,8 @@ class MetricsConfiguration {
 ----
 
 Coherence binds its singleton Micrometer adapter to the selected registry when both the adapter and a
-`MeterRegistry` bean are available. The integration does not necessarily register the adapter itself as a
+`MeterRegistry` bean are available. If the application defines a `CoherenceMicrometerMetrics` bean, auto-configuration
+backs off and the application owns the binding. The integration does not necessarily register the adapter itself as a
 Spring bean. Creating a registry, binding Coherence meters, exposing an HTTP endpoint, and exporting meters
 to a monitoring backend are separate steps. In particular, a `SimpleMeterRegistry` does not export metrics
 to a monitoring service.

@@ -2,10 +2,10 @@
 = Upgrading from Coherence Spring 4.x to 5.x
 include::attributes.adoc[]
 
-Coherence Spring 5.x moves the project to Spring Framework 7 and Spring Boot 4. It is a major-version upgrade because
-the surrounding Spring, Jakarta EE, persistence, JSON, security, and test ecosystems also move to new major versions.
-The Coherence Spring artifact names and configuration-property prefixes remain unchanged, but applications may need
-dependency and source changes according to the features they use.
+Coherence Spring {coherence-spring-version} uses Spring Framework 7 and Spring Boot 4. The Jakarta EE, persistence,
+JSON, security, and test dependencies also move to new major versions. Existing Coherence Spring artifact names and
+configuration-property prefixes remain unchanged. Boot HTTP-session applications can use the new dedicated
+`coherence-spring-session-boot-starter`. Update dependencies and source code for the features your application uses.
 
 This guide covers Coherence Spring-specific work. Also review the
 https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide[Spring Boot 4 migration guide]
@@ -14,6 +14,9 @@ for the complete upstream changes.
 
 [[upgrade-5-baseline]]
 == Baseline changes
+
+The table shows the dependency lines used by Coherence Spring 4.x and the selections for
+Coherence Spring {coherence-spring-version}. It is not a matrix of all supported dependency combinations.
 
 [cols="2,2,2",options="header"]
 |===
@@ -72,7 +75,7 @@ for the complete upstream changes.
 |{junit-version}
 
 |Coherence CE
-|25.03
+|25.03.x
 |{coherence-version}
 
 |Commercial Coherence
@@ -80,9 +83,12 @@ for the complete upstream changes.
 |Unverified
 |===
 
-The Java baseline does not change: Coherence Spring tests and supports Java 17 and Java 21. Coherence Spring 5.x
-continues to use the `jakarta.*` namespace, but its Jakarta EE baseline advances from 10 to 11. Applications using
-Servlet, Persistence, Validation, or other Jakarta APIs must use EE 11-compatible providers.
+Coherence Spring supports Java 17 and Java 21 and targets Java 17 bytecode. Select a Coherence runtime,
+servlet container and other providers that also support the application's JDK.
+
+Coherence Spring 5.x continues to use the `jakarta.*` namespace. Its Jakarta EE baseline advances from 10 to 11.
+Servlet web deployments require Servlet 6.1. Applications that use JPA or Bean Validation need Persistence 3.2 or
+Validation 3.1 providers, respectively. Check the container and provider versions, even if the imports do not change.
 
 The Hibernate row is the project's explicit selection, not Spring Boot's managed default. See
 xref:upgrade-5.adoc#upgrade-5-hibernate[Hibernate version selection] for the combinations used by the tests and samples.
@@ -95,24 +101,32 @@ in Boot 3 before moving to Boot 4, as recommended by the Spring Boot migration g
 [[upgrade-5-sequence]]
 == Recommended migration sequence
 
-. On Coherence Spring 4.x, first move to its current Spring Boot 3.5 and Spring Framework 6.2 baseline and resolve all
-  deprecation warnings that affect application code.
+. On Coherence Spring 4.x, first move to Spring Framework 6.2 and, for Boot applications, Spring Boot 3.5.
+  Resolve deprecation warnings that affect application code.
 . Update the Spring Boot parent or BOM, Coherence Spring artifacts, and the explicitly declared Coherence CE dependency
   together. Do not mix Coherence Spring 4.x and 5.x modules in one application.
-. Replace feature-specific integrations: Boot metrics and session modules, the Resilience4j Boot adapter, and the
+. Update the feature dependencies: Boot metrics and Session modules, the Resilience4j Boot adapter, and the
   Coherence Hibernate adapter where applicable.
 . Compile application and test source, then address the package and SPI changes listed below.
-. Start the packaged application and exercise each enabled integration on the supported Java versions. Compilation alone
-  does not prove that Boot 4 optional auto-configuration is active.
+. Start the packaged application and exercise each enabled integration on the supported Java versions.
+  Startup alone does not show that optional Session or metrics integration is active.
 
 [[upgrade-5-dependencies]]
 == Update dependency management
 
 Use one source of Spring dependency management. Spring Boot applications should normally use the Boot 4 parent or BOM
 and should not independently override the versions of Spring Framework, Spring Data, Spring Session, or Spring Security.
+Update the Boot Maven or Gradle plugin to the same Boot version if the application uses it for packaging.
+
+The examples use Coherence Spring {coherence-spring-version}, Spring Boot {spring-boot-version}, and
+Coherence CE {coherence-version}. These are separate product versions. Declare the Coherence runtime explicitly;
+Coherence Spring marks it as `provided` and does not supply it transitively to consumers. Keep related Coherence
+runtime artifacts at the same version. Add the web and feature dependencies required by the application.
 
 .Spring Boot parent and Coherence Spring dependencies
-[source,xml,subs="verbatim,quotes,attributes"]
+====
+.Maven
+[source,xml,subs="verbatim,quotes,attributes",role="primary"]
 ----
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -134,11 +148,34 @@ and should not independently override the versions of Spring Framework, Spring D
 </dependencies>
 ----
 
+.Gradle
+[source,groovy,subs="verbatim,quotes,attributes",role="secondary"]
+----
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '{spring-boot-version}'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:{spring-boot-version}"))
+    implementation("com.oracle.coherence.spring:coherence-spring-boot-starter:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
+----
+====
+
 Plain Spring Framework applications should align Spring dependencies with its BOM and update the Coherence Spring
-module version without adding the Boot starter.
+module version without adding the Boot starter. The Framework BOM manages Framework modules only. Align any Spring
+Data, Session, Security and other dependencies separately when using those integrations.
 
 .Plain Spring Framework dependency management
-[source,xml,subs="verbatim,quotes,attributes"]
+====
+.Maven
+[source,xml,subs="verbatim,quotes,attributes",role="primary"]
 ----
 <dependencyManagement>
     <dependencies>
@@ -166,6 +203,25 @@ module version without adding the Boot starter.
 </dependencies>
 ----
 
+.Gradle
+[source,groovy,subs="verbatim,quotes,attributes",role="secondary"]
+----
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(platform("org.springframework:spring-framework-bom:{spring-framework-version}"))
+    implementation("com.oracle.coherence.spring:coherence-spring-core:{coherence-spring-version}")
+    implementation("com.oracle.coherence.ce:coherence:{coherence-version}")
+}
+----
+====
+
 Review exclusions and direct dependencies that compensated for Boot 3's larger modules. Boot 4 uses smaller,
 feature-specific modules. Prefer Boot starters rather than depending directly on Boot's auto-configuration modules.
 In particular, direct Boot integrations may now require `spring-boot-cache`, `spring-boot-session`,
@@ -183,14 +239,21 @@ xref:upgrade-5.adoc#upgrade-5-session[Spring Session]. Metrics remain an applica
 
 Boot 4 moved registry auto-configuration out of `spring-boot-actuator-autoconfigure` and into
 `spring-boot-micrometer-metrics`. Under Coherence Spring 4.x, adding `coherence-micrometer` could be sufficient to
-activate a Boot-created registry. Under 5.x, the Coherence starter and `coherence-micrometer` still allow the application
-to start, but no registry is created automatically and Coherence metrics are not bound.
+activate a Boot-created registry. Under 5.x, those two dependencies alone do not create a registry or bind Coherence
+metrics. The application can still start successfully.
 
-Choose one of the following:
+Keep the explicit Coherence runtime, add `com.oracle.coherence.ce:coherence-micrometer` at the same Coherence version,
+and choose one registry source:
 
 * Add `spring-boot-starter-actuator` if the application uses Actuator.
 * Add `spring-boot-starter-micrometer-metrics` for Boot-managed metrics without Actuator.
 * Supply an application-owned `MeterRegistry` bean.
+
+Coherence's metrics auto-configuration requires the adapter and Micrometer classes on the runtime classpath and a
+`MeterRegistry` bean. It backs off if the application defines a `CoherenceMicrometerMetrics` bean. In that case,
+the application owns the binding. An application that supplies only its own registry also owns its meter filters.
+Registry creation, Coherence meter binding, HTTP endpoint exposure and export to a monitoring service are separate
+steps. Verify actual Coherence meters; startup or an Actuator health response alone does not show that they are bound.
 
 See xref:spring-boot.adoc#spring-boot-metrics[Coherence Metrics] for complete Maven and Gradle examples and meter-filter behavior.
 
@@ -218,8 +281,9 @@ Replace the previous two-artifact Boot session recipe:
 </dependency>
 ----
 
-with the dedicated starter. Retain an explicit Coherence runtime and the application's servlet web dependencies;
-the following assumes the Boot parent or BOM manages Boot versions:
+with the dedicated starter. Retain an explicit Coherence runtime and the application's Servlet 6.1 web dependencies.
+The following examples assume the Boot parent or BOM manages Boot versions. For Gradle, retain the platform declaration
+shown in xref:upgrade-5.adoc#upgrade-5-dependencies[Update dependency management].
 
 .Boot servlet session dependencies for 5.x
 ====
@@ -364,8 +428,9 @@ rollback after 5.x has written sessions. Plan and validate rollback separately, 
 
 ==== Hardened Coherence serialization
 
-The project's default Coherence dependency remains 26.04; the hardened-serialization evidence described here concerns
-Coherence 26.10 snapshots. On versions enforcing that policy, the Session JAR's permissions do
+The project's default Coherence dependency remains {coherence-version}. The current hardened CI lane selects released
+Coherence 26.10 on Java 21. The earlier hardened-serialization evidence described here used Coherence 26.10 snapshots;
+it does not qualify the released runtime. On versions enforcing that policy, the Session JAR's permissions do
 not cover arbitrary application-selected session attributes, principals or authentication details. Supply exact
 application-owned `META-INF/coherence/security-config.xml` metadata for the required classes on the relevant receiving
 endpoints. POF registrations and security permissions serve separate purposes; hardened POF deployments require both.
@@ -455,8 +520,11 @@ managed default with explicit Hibernate ORM {hibernate-version} declarations as 
 |===
 
 The project's `hibernate.version` property supplies explicit dependency declarations; it does not override the
-Hibernate version inside an imported Boot BOM. Boot's managed 7.2 line is outside the Coherence Hibernate 4.1.0
-adapter's supported 7.4 line. Applications enabling that adapter must select a compatible ORM version explicitly.
+Hibernate version inside an imported Boot BOM. Boot's managed 7.2 line is outside the Coherence Hibernate
+{coherence-hibernate-version} adapter's supported 7.4 line. Applications enabling that adapter must select a compatible
+ORM version explicitly. With Boot's Maven parent, its `hibernate.version` property can align the managed Hibernate
+artifacts. With an imported BOM or Gradle platform, use that build's dependency-management controls. Check the resolved
+graph for all `org.hibernate.orm` artifacts, not only `hibernate-core`.
 
 The Hibernate cache sample's packaged integration test requires cross-member entity, query and timestamp
 cache hits with zero SQL on measured reads. Qualify the selected provider and runtime on Java 17 and Java 21;
@@ -469,24 +537,73 @@ Applications using Hibernate-specific query hints or APIs must also follow the H
 [[upgrade-5-source]]
 == Review application source and tests
 
-Most Coherence Spring application code does not need source changes. Check the following when the corresponding
-technology is used directly:
+Check application code that uses these APIs directly.
 
-* **Jackson 3:** Boot 4's preferred JSON library uses `tools.jackson.*` coordinates and packages. Update imports such as
-  `com.fasterxml.jackson.databind.ObjectMapper` to `tools.jackson.databind.ObjectMapper` when using Boot's managed mapper.
-  Jackson annotations remain in `com.fasterxml.jackson.annotation`.
+[[upgrade-5-jackson]]
+=== Jackson 3
+
+Boot 4 uses Jackson 3 for JSON by default. Update direct dependencies and imports for code that uses Boot's mapper.
+Use Boot dependency management for these artifacts unless the application deliberately selects another Jackson BOM.
+
+[cols="2,3,3",options="header"]
+|===
+|Artifact |Jackson 2 coordinate |Jackson 3 coordinate
+
+|BOM
+|`com.fasterxml.jackson:jackson-bom`
+|`tools.jackson:jackson-bom`
+
+|Databind
+|`com.fasterxml.jackson.core:jackson-databind`
+|`tools.jackson.core:jackson-databind`
+
+|Shared annotations
+|`com.fasterxml.jackson.core:jackson-annotations`
+|`com.fasterxml.jackson.core:jackson-annotations` (unchanged)
+|===
+
+For example, update `com.fasterxml.jackson.databind.ObjectMapper` to `tools.jackson.databind.ObjectMapper`.
+Keep annotations such as `com.fasterxml.jackson.annotation.JsonIgnore` in their existing package. Databind-specific
+annotations move to `tools.jackson.databind.annotation`; the shared annotation exception does not apply to them.
+
+Jackson 3 uses builders to configure mappers. Boot configures `tools.jackson.databind.json.JsonMapper` for JSON.
+If the application replaces Boot's JSON mapper, supply a `JsonMapper` bean. A base `ObjectMapper` bean alone no longer
+replaces that mapper. Review custom serializers, modules and JSON output, including dates and property names.
+See the https://github.com/FasterXML/jackson/wiki/Jackson-Release-3.0[Jackson 3 changes] for API and behavior details.
+
+Jackson 2 and Jackson 3 can coexist. Some sample shared code still needs Jackson 2. Do not remove a Jackson 2 dependency
+that another library uses or pass its mapper to a Jackson 3 API. Check each consumer before removing the old artifacts.
+
+=== Spring extensions and tests
+
 * **Spring Security 7:** use the lambda security DSL and `PathPatternRequestMatcher` where code previously used removed
-  chained DSL methods or `AntPathRequestMatcher`.
-* **Spring MVC parameter names:** compile with `-parameters` or give controller parameters explicit names. This is
-  required when request binding or expressions such as `#id` depend on Java parameter names.
-* **Spring Data extensions:** code extending Spring Data internals may need `org.springframework.data.core.TypeInformation`
-  and the `ValueExpressionDelegate`-based repository-factory SPI. Ordinary Coherence repositories are adapted by 5.x.
-* **Boot test modules:** Boot 4 modularized its test support. MVC tests may need `spring-boot-starter-webmvc-test`, and
-  `@AutoConfigureMockMvc` is in `org.springframework.boot.webmvc.test.autoconfigure`.
+  chained DSL methods, `AntPathRequestMatcher` or `MvcRequestMatcher`. The matcher import is
+  `org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher`. Check login, logout and custom
+  filter matching. See the https://docs.spring.io/spring-security/reference/7.0/whats-new.html[Security 7 changes].
+* **Parameter names:** compile with `-parameters` when expressions such as cache keys use `#id`. For MVC binding,
+  either retain parameter names or give annotations explicit names, such as `@RequestParam("id")`.
+* **Spring Data extensions:** replace `org.springframework.data.util.TypeInformation` with
+  `org.springframework.data.core.TypeInformation`. Custom repository factories must use the
+  `getQueryLookupStrategy(Key, ValueExpressionDelegate)` SPI from Spring Data 4. Ordinary Coherence repositories are
+  adapted by 5.x. Keep `coherence-spring-data` at the same version as the other Coherence Spring modules.
+* **Jakarta annotations:** replace any remaining `javax.annotation` and `javax.inject` imports with
+  `jakarta.annotation` and `jakarta.inject`. Framework 7 no longer processes the old annotations. Update the corresponding
+  API dependencies and providers; changing imports alone does not select a compatible runtime.
+* **Boot test modules:** add the test starter for each feature under test. For MVC, use
+  `spring-boot-starter-webmvc-test` in Maven test scope or Gradle `testImplementation`.
+  `@AutoConfigureMockMvc` is now in `org.springframework.boot.webmvc.test.autoconfigure`.
+  Boot security tests that use annotations such as `@WithMockUser` need `spring-boot-starter-security-test`.
+  Feature test starters include `spring-boot-starter-test` transitively.
+* **Test bean overrides:** replace Boot's removed `@MockBean` and `@SpyBean` with Framework's `@MockitoBean` and
+  `@MockitoSpyBean` from `org.springframework.test.context.bean.override.mockito`. Review their behavior when migrating
+  shared test configuration. See xref:spring-boot.adoc#spring-boot-testing-without-coherence[testing without Coherence]
+  for a cache-mocking example and the auto-configurations to exclude when no Coherence runtime should start.
 * **Boot extension APIs:** custom Boot integrations may need `BootstrapRegistry` and `ConfigurableBootstrapContext` from
   `org.springframework.boot.bootstrap`, and must update imports for feature-specific auto-configuration packages.
-* **JUnit:** the 5.x project baseline uses JUnit 6. Review custom extensions and test-engine dependencies even when
-  ordinary Jupiter tests continue to compile unchanged.
+* **JUnit:** the project uses JUnit {junit-version}. Jupiter tests keep their `org.junit.jupiter.api` imports.
+  Align the API, engine and Platform dependencies through Boot or the JUnit BOM. Review custom extensions and removed
+  APIs. Maven Surefire and Failsafe must be at least 3.0.0. For Gradle, enable `useJUnitPlatform()` and supply the Platform
+  launcher at test runtime. See the https://docs.junit.org/{junit-version}/running-tests/build-support.html[JUnit build guidance].
 
 Coherence Spring 5.x does not intentionally rename its `coherence.*` or `coherence.spring.*` configuration properties.
 Cache names, session properties, repository enablement, ConfigData locations, and resource-injection annotations retain
@@ -499,14 +616,15 @@ Perform the migration on one supported JDK at a time and then verify both Java 1
 both. At minimum:
 
 . Generate and compare the resolved runtime dependency tree before and after the upgrade.
-. Start the application with Boot's condition report enabled and confirm that the expected Coherence, cache, data,
-  session, and metrics auto-configurations match.
+. For Boot applications, start with the condition report enabled (`--debug`) and check the expected Coherence, cache,
+  data, Session and metrics auto-configurations. For plain Spring, check the explicit configuration and beans.
 . Exercise real cache access and any Coherence client or cluster topology used in production.
 . Verify session creation, timeout, and back-off behavior when Spring Session is used.
-. Verify meter registration and Actuator endpoints when metrics are used.
+. Verify actual Coherence meters in the selected registry and any configured metrics endpoint or exporter.
 . Exercise HTTP parameter binding, Spring Security login/logout flows, serialization, persistence, and Hibernate
   second-level caching when those features are present.
 . Run the complete application test and packaging lifecycle on every supported Java version.
 
-Do not treat a successful compilation alone as migration acceptance. Boot's modular classpath and several relocated APIs
-can allow startup while silently leaving an optional integration inactive.
+Compilation and startup alone do not establish migration acceptance. Confirm Session persistence and Coherence meter
+binding when those features are required. These application checks do not establish compatibility for untested dependency
+combinations or replace final release qualification of the Coherence Spring artifacts.
