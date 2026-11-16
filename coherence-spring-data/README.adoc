@@ -75,7 +75,7 @@ Add the Maven dependency:
 <dependency>
   <groupId>com.oracle.coherence.spring</groupId>
   <artifactId>coherence-spring-data</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>5.0.0</version>
 </dependency>
 <dependency>
   <groupId>com.oracle.coherence.ce</groupId>

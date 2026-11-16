@@ -32,8 +32,8 @@ For the Boot application's remote Java-serialization path, start the storage ser
 
 [source,shell]
 ----
-java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0-SNAPSHOT.jar
-java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-5.0.0-SNAPSHOT.jar --spring.profiles.active=coherence-client
+java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0.jar
+java -jar samples/spring-session-demo/spring-session-demo-app/target/spring-session-demo-app-5.0.0.jar --spring.profiles.active=coherence-client
 ----
 
 The server's HTTP port is 8081; the app listens on 8090. Without the `coherence-client` profile, the Boot app starts
@@ -53,7 +53,7 @@ For the non-Boot WAR, use a separate run of the server with POF enabled. Start i
 
 [source,shell]
 ----
-java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0-SNAPSHOT.jar --spring.profiles.active=pof
+java -jar samples/spring-session-demo/spring-session-demo-server/target/spring-session-demo-server-5.0.0.jar --spring.profiles.active=pof
 ----
 
 Keep the matching `pof-config.xml` on the WAR and server classpaths. The WAR's counter POF path

@@ -13,7 +13,7 @@
 The `coherence-spring-site` module builds the Coherence Spring project website and packages the reference documentation
 produced by the `coherence-spring-docs` module. Both modules are part of the root Maven reactor.
 
-The website uses Helidon Sitegen 3.x because it is published under a version directory, such as `5.0.0-SNAPSHOT/`.
+The website uses Helidon Sitegen 3.x because it is published under a version directory, such as `5.0.0/`.
 Sitegen 3.x generates relative resource links and hash-based navigation. Sitegen 4.x generates root-relative resource
 links and uses history routing with a root base path, which breaks this layout. Keep the 3.x version pin and Dependabot
 major-version exclusion until a replacement has been verified under a version directory.
