@@ -17,14 +17,56 @@
 The following sections outline Coherence Spring project changes in
 reverse chronological order.
 
-=== Version 5.0.0 (in development)
+=== Version 5.0.0
 
-* Upgraded the project baseline to Spring Framework 7, Spring Boot 4, Spring Data 2025.1,
-  Spring Session 4, Spring Security 7, and Jakarta EE 11.
-* Updated the library modules, samples, reference documentation, compatibility data, and
-  third-party notices for the 5.x line.
-* See the link:refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
-  for application migration requirements and behavioral changes.
+Changes since https://github.com/coherence-community/coherence-spring/releases/tag/v4.3.1[Version 4.3.1]:
+
+*Baseline and integration changes*
+
+* Moves to Spring Framework 7, Spring Boot 4, Spring Data 2025.1, Spring Cloud 2025.1,
+  Spring Session 4, Spring Security 7, and Jakarta EE 11. Samples use Jackson 3.
+  Java 17 remains the minimum. The default Coherence CE dependency is 26.04.
+* Adds `coherence-spring-session-boot-starter` for Boot servlet applications, including WAR deployments.
+  The general `coherence-spring-boot-starter` now makes `coherence-spring-session` and `spring-boot-session`
+  optional. Use the dedicated starter or declare all three integration artifacts explicitly.
+  Applications must also supply a Coherence runtime and servlet web dependencies.
+* Updates metrics integration for Boot 4. Add `coherence-micrometer` and provide a `MeterRegistry` bean.
+  Use `spring-boot-starter-actuator` or `spring-boot-starter-micrometer-metrics` to create a Boot-managed
+  registry, or supply your own. The general Coherence starter plus `coherence-micrometer` alone does
+  not create a registry or bind Coherence metrics.
+* Updates samples to `resilience4j-spring-boot4` and the Hibernate 7 adapter, `coherence-hibernate-cache-7`,
+  from Coherence Hibernate 4.1.0. Applications using that adapter must select a compatible Hibernate ORM
+  7.4.x version explicitly. Boot's managed ORM version does not meet that requirement.
+
+*Fixes and behavior changes*
+
+* Fixes Boot Session timeout configuration for external WAR deployments. Set `spring.session.timeout`
+  for these deployments; `server.servlet.session.timeout` is not a fallback. Without a configured timeout,
+  the repository retains its 30-minute default. Embedded applications retain the server-property fallback.
+* Fixes POF serialization of `UsernamePasswordAuthenticationToken` with erased credentials or mixed
+  authority types. Preserves authentication state and adds a serializer for Spring Security 7 factor
+  authorities that preserves their issuance time.
+* Replaces the session-reset lambda with `SessionResetEntryProcessor`. Adds explicit serialization and
+  execution permissions for Session library operations on hardened Coherence runtimes.
+* Enables Java parameter-name metadata for Spring named-argument resolution.
+* Fixes Cloud Config sample JSON responses by copying lazy entity collections before response serialization.
+  Replaces the sample's machine-specific Config Server Git path with `CONFIG_SERVER_GIT_URI`.
+* Fixes website resources and upgrade-guide links for sites served under version directories.
+
+*Known limitations and migration requirements*
+
+* POF session deployments need new registrations when they reset active sessions (`SessionResetEntryProcessor`)
+  or store Spring Security 7 factor authorities (`FactorGrantedAuthorityPofSerializer`).
+  Deploy the required classes and mappings to each relevant application and server endpoint.
+  Hardened runtimes also need application-owned permissions for session attributes, principals, and authentication details.
+* Mixed Coherence Spring 4.x/5.x access to a session cache and rollback after 5.x writes remain unqualified.
+  Automatic Session integration supports servlet applications; it does not provide reactive WebSession support.
+* The hardening CI lane selects released Coherence 26.10 on Java 21. This configuration does not establish
+  completed runtime qualification. Earlier snapshot results do not qualify the release artifacts.
+  Commercial Coherence compatibility remains unverified.
+
+See the link:refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
+for dependency examples, POF configuration, session cut-over guidance, and application validation steps.
 
 === Version 4.3.1 (June 2025)
 
