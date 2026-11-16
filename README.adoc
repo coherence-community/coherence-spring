@@ -1,5 +1,5 @@
-:main-release-version: 4.3.1
-:main-snapshot-version: 5.0.0-SNAPSHOT
+:main-release-version: 5.0.0
+:4x-release-version: 4.3.1
 :website: https://spring.coherence.community/
 :3x-release-version: 3.4.0
 :3x-snapshot-version: 3.4.1-SNAPSHOT
@@ -30,12 +30,9 @@ Detailed project documentation is available on the Coherence Spring website. Thi
 [width="75%"]
 |=======
 |*{main-release-version}* (release) | {website}{main-release-version}/[Website] |{website}{main-release-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-release-version}/refdocs/api/index.html[API Doc.]
-|*{main-snapshot-version}* (development snapshot) | {website}{main-snapshot-version}/[Website] |{website}{main-snapshot-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{main-snapshot-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{main-snapshot-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{main-snapshot-version}/refdocs/api/index.html[API Doc.]
+|*{4x-release-version}*    | {website}{4x-release-version}/[Website] |{website}{4x-release-version}/refdocs/reference/html/index.html[Multi-page HTML] |{website}{4x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML] | {website}{4x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF] | {website}{4x-release-version}/refdocs/api/index.html[API Doc.]
 |*{3x-release-version}*    | {website}{3x-release-version}[Website]   |{website}{3x-release-version}/refdocs/reference/html/index.html[Multi-page HTML]    |{website}{3x-release-version}/refdocs/reference/htmlsingle/index.html[Single-page HTML]    | {website}{3x-release-version}/refdocs/reference/pdf/coherence-spring-reference.pdf[PDF]    | {website}{3x-release-version}/refdocs/api/index.html[API Doc.]
 |=======
-
-Coherence Spring 5.x is in development. Published snapshot documentation may lag the checked-out source; build the
-documentation locally for the current branch. Release documentation will be linked when the release is published.
 
 NOTE: Releases are available from https://repo.maven.apache.org/maven2/com/oracle/coherence/spring/[Maven Central].
 Development snapshots use the https://central.sonatype.com/repository/maven-snapshots/com/oracle/coherence/spring/[Sonatype snapshot repository].
@@ -44,10 +41,10 @@ Development snapshots use the https://central.sonatype.com/repository/maven-snap
 
 [width="75%", cols="1,1,1,1,1,1,^1,1"]
 |===
-|Coherence Spring | Java            | Coherence CE | Commercial Edition^*^   | Spring| Boot    | Jakarta | Git Branch
+|Coherence Spring | Java            | Coherence CE | Commercial Edition^*^  | Spring| Boot    | Jakarta | Git Branch
 
-|*5.x* (development) | `17`, `21`   | `26.04`     | Unverified              | `7.x` | `4.x`   | ✔       | `main`
-|*4.x* (maintenance) | `17`, `21`   | `25.03`     | Unverified              | `6.x` | `3.5.x` | ✔       | `4.x`
+|*5.x* (development) | `17`, `21`   | `26.10`,    | `26.1.0.0`, `15.1.1.0`  | `7.x` | `4.x`   | ✔       | `main`
+|*4.x* (maintenance) | `17`, `21`   | `25.03`     | `15.1.1.0`              | `6.x` | `3.5.x` | ✔       | `4.x`
 |*3.x* (maintenance) | `11`, `17`, `21`| `22.06`  | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
 |===
 
