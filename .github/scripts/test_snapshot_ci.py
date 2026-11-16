@@ -1,4 +1,4 @@
-"""Regression checks for latest-snapshot resolution and per-run evidence."""
+"""Regression checks for released hardening, requested snapshots and per-run evidence."""
 
 import contextlib
 import io
@@ -15,7 +15,7 @@ import coherence_artifacts as artifacts
 import full_reactor
 
 
-class SnapshotCiTests(unittest.TestCase):
+class QualificationCiTests(unittest.TestCase):
     def test_manifest_forks_require_observed_main_class_and_reviewed_module_path(self):
         with tempfile.TemporaryDirectory(prefix='manifest-fork-') as temporary:
             source = Path(temporary).resolve() / 'source with spaces'
@@ -95,13 +95,14 @@ class SnapshotCiTests(unittest.TestCase):
         full_reactor.audit_runtime([maven], inventory, Path('/source'), lambda *args: None, issues)
         self.assertTrue(any('every inventoried child JVM' in issue for issue in issues))
 
-    def test_snapshot_refreshes_and_propagates_hardening(self):
-        call = self.invoke('snapshot', '21')
+    def test_hardened_uses_release_and_propagates_mode(self):
+        call = self.invoke('hardened', '21')
         command, env = call.args[0], call.kwargs['env']
-        self.assertIn('-U', command)
+        self.assertNotIn('-U', command)
         self.assertNotIn('-nsu', command)
         self.assertIn('-Pjdk17', command)
-        self.assertIn('-Dcoherence.version=26.10-SNAPSHOT', command)
+        self.assertIn('-Dcoherence.version=26.10', command)
+        self.assertIn('-Dcoherence.security.mode=hardened', command)
         self.assertIn('-Dmaven.test.failure.ignore=false', command)
         self.assertEqual(env['JAVA_TOOL_OPTIONS'], '-Dcoherence.security.mode=hardened')
         self.assertEqual(command[-2:], ['clean', 'verify'])
@@ -114,7 +115,7 @@ class SnapshotCiTests(unittest.TestCase):
         self.assertNotIn('-U', call.args[0])
         self.assertNotIn('JAVA_TOOL_OPTIONS', call.kwargs['env'])
 
-    def test_requested_snapshot_also_refreshes(self):
+    def test_requested_snapshot_refreshes(self):
         call = self.invoke('requested', '21', ('--version', '26.11-SNAPSHOT'))
         self.assertIn('-U', call.args[0])
         self.assertIn('-Dcoherence.version=26.11-SNAPSHOT', call.args[0])
@@ -130,9 +131,11 @@ class SnapshotCiTests(unittest.TestCase):
         self.assertNotIn('JAVA_TOOL_OPTIONS', env)
         self.assertEqual(command[-2:], ['clean', 'verify'])
 
-    def test_default_baselines_reject_wrong_jdk_and_version_override(self):
+    def test_fixed_lanes_reject_wrong_jdk_and_version_override(self):
         for lane, java, extra in [('baseline', '21', ()), ('baseline21', '17', ()),
-                                  ('baseline21', '21', ('--version', '26.10-SNAPSHOT'))]:
+                                  ('baseline21', '21', ('--version', '26.10')),
+                                  ('hardened', '17', ()),
+                                  ('hardened', '21', ('--version', '26.11-SNAPSHOT'))]:
             with self.subTest(lane=lane, java=java, extra=extra), \
                     contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as failure:
                 self.invoke(lane, java, extra)
@@ -140,11 +143,11 @@ class SnapshotCiTests(unittest.TestCase):
 
     def test_snapshot_cannot_claim_latest_offline(self):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as failure:
-            self.invoke('snapshot', '21', ('--offline',))
+            self.invoke('requested', '21', ('--version', '26.11-SNAPSHOT', '--offline'))
         self.assertEqual(failure.exception.code, 2)
 
     def test_frozen_local_snapshot_is_explicit_offline_and_propagates_provider(self):
-        call = self.invoke('snapshot', '21', ('--local-frozen', '--offline',
+        call = self.invoke('requested', '21', ('--version', '26.11-SNAPSHOT', '--local-frozen', '--offline',
                            '--repository', '/task/repository', '--hibernate-version', '4.1.0'))
         command, env = call.args[0], call.kwargs['env']
         self.assertIn('-o', command)
@@ -163,7 +166,17 @@ class SnapshotCiTests(unittest.TestCase):
                       ('--local-frozen', '--offline', '--repository', '/task/repo',
                        '--hibernate-version', '../other')]:
             with self.subTest(extra=extra), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
-                self.invoke('snapshot', '21', extra)
+                self.invoke('hardened', '21', extra)
+
+    def test_hardened_rejects_even_permitted_security_api_skips(self):
+        inventory = {'permitted_baseline_skips': [
+            {'module': 'session', 'case': 'SecurityTest#rejectsUnknownClass',
+             'message_contains': 'security API unavailable'}]}
+        cases = [{'module': 'session', 'class': 'SecurityTest', 'name': 'rejectsUnknownClass',
+                  'result': 'skipped', 'message': 'security API unavailable'}]
+        issues = []
+        full_reactor.audit_skips(cases, inventory, 'hardened', issues)
+        self.assertEqual(issues, ['Unexpected security API skips'])
 
     def test_offline_baseline_propagates_to_independent_maven_launchers(self):
         call = self.invoke('baseline', '17', ('--offline',))
@@ -203,7 +216,7 @@ class SnapshotCiTests(unittest.TestCase):
                 'java.version': '21', 'coherence.security.mode': 'hardened', 'java.class.path': str(jar)}}]))
             # Other whole-reactor requirements are deliberately absent in this unit fixture.
             with contextlib.redirect_stdout(io.StringIO()):
-                self.assertTrue(full_reactor.audit(source, output, 'snapshot', '26.10-SNAPSHOT',
+                self.assertTrue(full_reactor.audit(source, output, 'hardened', '26.10',
                                                    '21', 'hardened', repository, 0,
                                                    expected_home=Path('/test/jdk')))
             issues = json.loads((output / 'qualification.json').read_text())['issues']
@@ -216,7 +229,7 @@ class SnapshotCiTests(unittest.TestCase):
             output.mkdir()
             (output / 'maven.log').write_text('')
             repository = source / 'repository'
-            jar = repository / 'com/oracle/coherence/ce/coherence/26.10-SNAPSHOT/coherence-26.10-SNAPSHOT.jar'
+            jar = repository / 'com/oracle/coherence/ce/coherence/26.10/coherence-26.10.jar'
             jar.parent.mkdir(parents=True)
             jar.write_bytes(b'new published artifact')
             jar.with_suffix('.pom').write_text('<project/>')
@@ -224,9 +237,9 @@ class SnapshotCiTests(unittest.TestCase):
             package.parent.mkdir(parents=True)
             for payload, should_reject in [(jar.read_bytes(), False), (b'different older artifact', True)]:
                 with zipfile.ZipFile(package, 'w') as archive:
-                    archive.writestr('BOOT-INF/lib/coherence-26.10-SNAPSHOT.jar', payload)
+                    archive.writestr('BOOT-INF/lib/coherence-26.10.jar', payload)
                 with contextlib.redirect_stdout(io.StringIO()):
-                    full_reactor.audit(source, output, 'snapshot', '26.10-SNAPSHOT',
+                    full_reactor.audit(source, output, 'hardened', '26.10',
                                        '21', 'hardened', repository, 0, expected_home=Path('/test/jdk'))
                 issues = json.loads((output / 'qualification.json').read_text())['issues']
                 self.assertEqual(any('Packaged Coherence differs' in issue for issue in issues), should_reject)

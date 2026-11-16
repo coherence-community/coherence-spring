@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       coherence-version:
-        description: 'Optional additional version on JDK 21; baseline and latest 26.10-SNAPSHOT always run'
+        description: 'Optional additional version on JDK 21; baseline 26.04 and hardened 26.10 always run'
         required: false
         default: '26.04'
 permissions:
@@ -21,9 +21,9 @@ jobs:
             coherence-version: '26.04'
             compiler-release: 17
             security-mode: unset
-          - lane: snapshot
+          - lane: hardened
             java-version: 21
-            coherence-version: '26.10-SNAPSHOT'
+            coherence-version: '26.10'
             compiler-release: 17
             security-mode: hardened
     name: ${{ matrix.lane }} / JDK ${{ matrix.java-version }} / release ${{ matrix.compiler-release }} / ${{ matrix.security-mode }}
@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/qualification"
           git rev-parse HEAD > "$RUNNER_TEMP/qualification/source-sha.txt"
-      - name: Validate snapshot runner
+      - name: Validate qualification runner
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v5.0.0
@@ -48,12 +48,6 @@ jobs:
           key: ${{ runner.os }}-qualification-${{ matrix.lane }}-${{ hashFiles('**/pom.xml', '.github/scripts/*.py', '.github/scripts/full-reactor-inventory.json') }}
           restore-keys: |
             ${{ runner.os }}-qualification-${{ matrix.lane }}-
-      - name: Discard cached Coherence snapshots before resolving latest
-        if: matrix.lane == 'snapshot'
-        run: |
-          if [ -d "$HOME/.m2/repository/com/oracle/coherence/ce" ]; then
-            find "$HOME/.m2/repository/com/oracle/coherence/ce" -type d -name '*-SNAPSHOT' -prune -exec rm -rf '{}' +
-          fi
       - name: Full clean verify and runtime/dependency/bytecode audit
         env:
           QUALIFICATION_LANE: ${{ matrix.lane }}
@@ -86,7 +80,7 @@ jobs:
           fi
   requested-version:
     # Preserve manual testing of additional versions.
-    if: github.repository_owner == 'coherence-community' && inputs.coherence-version != '' && inputs.coherence-version != '26.04' && inputs.coherence-version != '26.10-SNAPSHOT'
+    if: github.repository_owner == 'coherence-community' && inputs.coherence-version != '' && inputs.coherence-version != '26.04' && inputs.coherence-version != '26.10'
     name: Optional requested version / JDK 21 / release 17
     runs-on: ubuntu-latest
     steps:
@@ -95,7 +89,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/qualification"
           git rev-parse HEAD > "$RUNNER_TEMP/qualification/source-sha.txt"
-      - name: Validate snapshot runner
+      - name: Validate qualification runner
         run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
       - uses: actions/setup-java@v5.0.0
         with:
@@ -111,7 +105,7 @@ jobs:
           if [ -d "$HOME/.m2/repository/com/oracle/coherence/ce" ]; then
             find "$HOME/.m2/repository/com/oracle/coherence/ce" -type d -name '*-SNAPSHOT' -prune -exec rm -rf '{}' +
           fi
-      - name: Full clean verify (refresh snapshots)
+      - name: Full clean verify (refresh requested snapshots)
         env:
           COHERENCE_VERSION: ${{ inputs.coherence-version }}
         run: python3 .github/scripts/full_reactor.py --lane requested --version "$COHERENCE_VERSION" --output "$RUNNER_TEMP/qualification"

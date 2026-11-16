@@ -41,14 +41,14 @@ class ConsumerEvidenceTests(unittest.TestCase):
         self.write(self.target / 'consumer-evidence/inventory.properties', canonical)
         self.props(self.target / 'consumer-evidence/summary.properties',
                    dict(result='PASS', fixtures='1', tests='1', failures='0', errors='0', skips='0'))
-        self.jar = self.repository / 'com/oracle/coherence/ce/coherence/26.10-SNAPSHOT/coherence-26.10-SNAPSHOT.jar'
+        self.jar = self.repository / 'com/oracle/coherence/ce/coherence/26.10/coherence-26.10.jar'
         self.archive(self.jar)
         self.write(self.jar.with_suffix('.pom'), '<project/>')
         product = self.source / 'product.jar'
         self.archive(product)
         self.write(product.with_suffix('.pom'), '<project/>')
         outer = {}
-        self.keys = ['com.oracle.coherence.ce:coherence:26.10-SNAPSHOT',
+        self.keys = ['com.oracle.coherence.ce:coherence:26.10',
                      'com.oracle.coherence.spring:coherence-spring-boot-starter:5-SNAPSHOT']
         all_keys = self.keys + ['com.oracle.coherence.spring:coherence-spring-session-boot-starter:5-SNAPSHOT']
         installed = []
@@ -88,7 +88,7 @@ class ConsumerEvidenceTests(unittest.TestCase):
         evidence = dict(self.jvm, result='PASS', scenario='generalCache')
         evidence.update({'consumer.fixture': 'general-starter', 'consumer.release': '17',
                          'consumer.coherence.group': 'com.oracle.coherence.ce',
-                         'consumer.coherence.version': '26.10-SNAPSHOT', 'consumer.boot.version': '4.0.8',
+                         'consumer.coherence.version': '26.10', 'consumer.boot.version': '4.0.8',
                          'consumer.security.mode': 'hardened', 'loaded.coherence.jar': str(installed[0])})
         evidence.update({k: v for k, v in outer.items() if k.endswith('sha256') and any(k.startswith(key + '.') for key in self.keys)})
         self.props(self.evidence_path, evidence)
@@ -114,7 +114,7 @@ class ConsumerEvidenceTests(unittest.TestCase):
         self.write(path, ET.tostring(suite))
 
     def collect(self):
-        expected = {r['artifact']: r for r in cache_files(self.repository, '26.10-SNAPSHOT')}
+        expected = {r['artifact']: r for r in cache_files(self.repository, '26.10')}
         return audit_consumers(self.source, self.inventory, expected, '21', self.home, 'hardened', lambda *_: None)
 
     def test_complete_independent_contract_passes(self):
@@ -200,7 +200,7 @@ class ConsumerEvidenceTests(unittest.TestCase):
             self.assertTrue(self.collect()['issues'])
         path.write_text(original)
 
-    def test_snapshot_jar_pom_loaded_and_outer_drift_are_fatal(self):
+    def test_jar_pom_loaded_and_outer_drift_are_fatal(self):
         for path in [self.installed[0], self.installed[0].with_suffix('.pom'), self.jar, self.jar.with_suffix('.pom')]:
             with self.subTest(path=path):
                 original = path.read_bytes(); path.write_bytes(b'drift')
@@ -246,7 +246,7 @@ class ConsumerEvidenceTests(unittest.TestCase):
 
     def audit_reactor(self, inventory, output):
         with patch.object(full_reactor, 'INVENTORY', inventory), contextlib.redirect_stdout(io.StringIO()):
-            rejected = full_reactor.audit(self.source, output, 'snapshot', '26.10-SNAPSHOT',
+            rejected = full_reactor.audit(self.source, output, 'hardened', '26.10',
                                           '21', 'hardened', self.repository, 0, expected_home=self.home)
         result = json.loads((output / 'qualification.json').read_text())
         self.assertEqual(rejected, bool(result['issues']))
@@ -296,7 +296,7 @@ class ConsumerEvidenceTests(unittest.TestCase):
     def test_replay_requires_explicit_absolute_trusted_home(self):
         _, inventory, _, output = self.reactor_evidence()
         with patch.object(full_reactor, 'INVENTORY', inventory):
-            args = (self.source, output, 'snapshot', '26.10-SNAPSHOT', '21', 'hardened', self.repository, 0)
+            args = (self.source, output, 'hardened', '26.10', '21', 'hardened', self.repository, 0)
             with self.assertRaises(TypeError):
                 full_reactor.audit(*args)
             with self.assertRaisesRegex(ValueError, 'absolute trusted JDK'):
@@ -353,9 +353,9 @@ class ConsumerEvidenceTests(unittest.TestCase):
     def test_inventory_and_duplicate_report_hazards(self):
         inv, inventory, report, output = self.reactor_evidence()
 
-        def audit(lane='snapshot'):
+        def audit(lane='hardened'):
             with patch.object(full_reactor, 'INVENTORY', inventory), contextlib.redirect_stdout(io.StringIO()):
-                full_reactor.audit(self.source, output, lane, '26.10-SNAPSHOT', '21', 'hardened', self.repository, 0,
+                full_reactor.audit(self.source, output, lane, '26.10', '21', 'hardened', self.repository, 0,
                                    expected_home=self.home)
             return json.loads((output / 'qualification.json').read_text())
 

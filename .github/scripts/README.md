@@ -43,6 +43,18 @@ it from `invocation.json` or observed evidence. The current environment is not
 an implicit fallback. Existing runtime/consumer JDK, release-17, security-mode,
 inventory and artifact checks still apply.
 
+## Qualification lanes
+
+The manual `maven-simple.yml` workflow always runs `baseline` with Coherence 26.04
+on Java 17 and `hardened` with released Coherence 26.10 on Java 21. Both compile
+for Java 17. The hardened lane sets `coherence.security.mode=hardened` for Maven
+and child JVMs, and rejects every skipped test. The runner's `--lane` selects the
+Coherence version; the workflow matrix shows the same version in job metadata.
+
+The optional `requested` lane tests an additional version on Java 21 in hardened
+mode. Explicitly requested snapshots still discard cached Coherence snapshots
+and use Maven `-U`. The fixed 26.10 lane uses release artifacts.
+
 Run regressions with `JAVA_HOME` and `PATH` selecting each supported JDK:
 
 ```bash

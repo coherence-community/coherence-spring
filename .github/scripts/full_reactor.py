@@ -319,7 +319,7 @@ def audit_skips(cases, inventory, lane, issues):
     actual_skips = {(c['module'], c['class'] + '#' + c['name']) for c in skipped}
     if lane in ('baseline', 'baseline21'):
         valid_skips = actual_skips == set(permitted)
-    elif lane == 'snapshot':
+    elif lane == 'hardened':
         valid_skips = not skipped
     else:
         valid_skips = actual_skips <= set(permitted)
@@ -429,8 +429,8 @@ def audit(source, output, lane, version, java, mode, repository, status, *, expe
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--lane', choices=['baseline', 'baseline21', 'snapshot', 'requested'], required=True,
-                        help='baseline/baseline21: default 26.04 on JDK 17/21, with identical strict skip policy')
+    parser.add_argument('--lane', choices=['baseline', 'baseline21', 'hardened', 'requested'], required=True,
+                        help='baseline/baseline21: 26.04 on JDK 17/21; hardened: 26.10 on JDK 21 with no skips')
     parser.add_argument('--version', help='Only for the optional requested lane')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--maven', default='./mvnw',
@@ -442,7 +442,7 @@ def parse_arguments():
     parser.add_argument('--hibernate-version', help='Explicit provider selection for a local frozen exercise')
     parser.add_argument('--jvm-tmpdir', type=Path, help='Task-owned JVM temporary directory for a local exercise')
     args = parser.parse_args()
-    version = {'baseline': '26.04', 'baseline21': '26.04', 'snapshot': '26.10-SNAPSHOT'}.get(args.lane, args.version)
+    version = {'baseline': '26.04', 'baseline21': '26.04', 'hardened': '26.10'}.get(args.lane, args.version)
     if not version or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', version) or (args.version and args.lane != 'requested'):
         parser.error('A safe explicit version is required only for the requested lane')
     if args.local_frozen and (not args.offline or not args.repository):
