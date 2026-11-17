@@ -1,9 +1,9 @@
-# This workflow will build a Java project with Maven and deploy snapshot
-# artifacts to Maven Central
+# This workflow will build a Java project with Maven and deploy SNAPSHOT artifacts
+# to Maven Central.
 #
-# This job is triggered by a completed run of the "CI Coherence Spring" action.
-# The "build" job only runs if the "CI Coherence Spring" action completed successfully.
-# The deployed artifacts will be built from the same commit that the "CI Coherence Spring" action used.
+# Only successful "CI Coherence Spring" push runs in the canonical repository
+# on main, 4.x, or 3.x are eligible.
+# The deployed artifacts are built from the exact commit that passed CI.
 #
 name: Deploy to Maven Central
 
@@ -12,17 +12,22 @@ on:
     workflows: [CI Coherence Spring]
     branches:
       - main
-      - '[1-9]+.x'
+      - 4.x
+      - 3.x
     types:
     - completed
-  workflow_dispatch:  
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: >-
+      ${{ github.repository == 'coherence-community/coherence-spring' &&
+          github.event.workflow_run.head_repository.full_name == github.repository &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
       with:
+        ref: ${{ github.event.workflow_run.head_sha }}
         fetch-depth: 0
     - name: Set up JDK 17
       uses: actions/setup-java@v5.0.0
@@ -36,32 +41,27 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-m2-
-    - name: Build and Deploy
-      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    - name: Check, Build and Deploy SNAPSHOTs
       env:
-        GIT_COMMIT: ${{github.event.workflow_run.head_commit.id}}
-        HEAD_BRANCH: ${{github.event.workflow_run.head_branch}}
         MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
         MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
         MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
       run: |
-        echo "Checking out branch ${HEAD_BRANCH} commit ${GIT_COMMIT}"
-        git checkout "${GIT_COMMIT}"
+        version=$(./mvnw help:evaluate --no-transfer-progress -B --settings .mvn/settings.xml -N -q -Dexpression=project.version -DforceStdout)
+        if [[ -z "$version" || "$version" == *[[:space:]]* || "$version" == *"\${"* ]]; then
+          echo "::error::Unable to read a valid root project version."
+          exit 1
+        fi
+        if [[ "$version" != *-SNAPSHOT ]]; then
+          echo "Publication skipped: project version $version is not a SNAPSHOT."
+          exit 0
+        fi
+        # Check every reactor module before any deploy-phase publication.
+        ./mvnw enforcer:enforce --no-transfer-progress -B --settings .mvn/settings.xml -Denforcer.rules=requireSnapshotVersion -Denforcer.ignoreCache=true -Denforcer.skip=false -Denforcer.fail=true
         git config --global user.email "github-action@users.noreply.github.com"
         git config --global user.name "GitHub Action"
         ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
         ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml
-    - name: Build and Deploy
-      if: ${{ github.event_name == 'workflow_dispatch' }}
-      env:
-        MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
-        MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
-        MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
-      run: |
-        git config --global user.email "github-action@users.noreply.github.com"
-        git config --global user.name "GitHub Action"
-        ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
-        ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
     - name: Clean Maven cache
       run: |
         find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
