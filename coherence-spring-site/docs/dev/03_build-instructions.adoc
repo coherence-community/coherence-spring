@@ -14,8 +14,12 @@
 
 To build the Coherence Spring project you need to have the following software installed:
 
-- http://www.oracle.com/technetwork/java/javase/downloads/index.html[Java SE Development Kit 17].
+- https://www.oracle.com/java/technologies/downloads/[Java SE Development Kit 17 or 21].
 - http://maven.apache.org/[Apache Maven]
+
+The default build uses Coherence CE {version-coherence-maven} and targets Java 17 bytecode on either JDK.
+The separate Coherence CE 26.10 test lane requires Java 21. See the
+link:refdocs/reference/html/overview.html#compatibility[compatibility section] for runtime and test limits.
 
 Once you have these installed building the entire source tree is as simple as executing the following shell command
 (from the root of the source directory):

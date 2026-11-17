@@ -31,8 +31,10 @@ implementation("com.oracle.coherence.spring:coherence-spring-core:{coherence-spr
 ====
 
 Next you also need to add the version of Coherence that your application will use. Coherence Spring does not bring in
-Oracle Coherence as a transitive dependency. Coherence Spring 5.x supports Coherence CE 26.04; there is currently no
-compatible commercial edition. Add Coherence CE explicitly:
+Oracle Coherence as a transitive dependency. The supported default for Coherence Spring {coherence-spring-version} is
+Coherence CE {coherence-version} on Java 17 or Java 21. See xref:overview.adoc#compatibility[Compatibility] for supported
+commercial versions, additional CI runtimes and qualification limits.
+Add Coherence CE explicitly:
 
 .Oracle Coherence CE Dependency
 ====
@@ -1197,8 +1199,8 @@ concerning the transfer of a partition for a storage enabled member.
 changes pertaining to all observed mutations performed against caches that were not directly caused (solicited) by the
 partitioned service. These events may be due to changes made internally by the backing map, such as eviction, or referrers
 of the backing map causing changes.
-* Coherence editions that provide federation also emit events associated with data federation between clusters. There
-is currently no commercial Coherence edition compatible with Coherence Spring 5.x.
+* Coherence editions that provide federation also emit events associated with data federation between clusters.
+See xref:overview.adoc#compatibility[Compatibility] for supported commercial versions and qualification limits.
 
 Most of the events above only apply to storage enabled cluster members. For example, an `EntryEvent` will only be
 emitted for mutations of an entry on the storage enabled cluster member that owns that entry. Lifecycle events on the

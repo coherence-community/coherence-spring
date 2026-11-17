@@ -42,17 +42,14 @@ Run the focused tests from the repository root (requires loopback socket access)
   -Dtest=BookControllerTests,CircuitBreakerHealthTests -Dit.test=BookCacheIT \
   -Dsurefire.failIfNoSpecifiedTests=false verify
 
-# Latest published snapshot: use Java 21, a fresh Maven repository and explicit hardening.
-# JAVA_TOOL_OPTIONS also sets the mode before initialization in every test/child JVM.
-JAVA_TOOL_OPTIONS=-Dcoherence.security.mode=hardened ./mvnw -U -Pjdk17 \
-  -Dmaven.repo.local="$CIRCUIT_MAVEN_REPOSITORY" -Dcoherence.version=26.10-SNAPSHOT \
+# Released Coherence 26.10: use Java 21; hardened mode is the default.
+./mvnw -Pjdk17 -Dcoherence.version=26.10 \
   -pl samples/circuit-breaker-cache-demo/circuit-breaker-cache-demo-app -am \
   -Dtest=BookControllerTests,CircuitBreakerHealthTests -Dit.test=BookCacheIT \
   -Dsurefire.failIfNoSpecifiedTests=false verify
 ----
 
-Set `CIRCUIT_MAVEN_REPOSITORY` to a new disposable directory before the snapshot
-command. Test logs and exact child commands are retained in the app module's
+No mode property is required for Coherence 26.10. Test logs and exact child commands are retained in the app module's
 `target/book-cache-tests/`; copied class directories are deleted after each run.
 The two scenarios use separate server lifetimes, an isolated cluster identity,
 an allocated loopback port and bounded waits. Fallback behavior remains enabled.

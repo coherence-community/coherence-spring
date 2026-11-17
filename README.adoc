@@ -43,18 +43,33 @@ Development snapshots use the https://central.sonatype.com/repository/maven-snap
 |===
 |Coherence Spring | Java            | Coherence CE | Commercial Edition^*^  | Spring| Boot    | Jakarta | Git Branch
 
-|*5.x* (development) | `17`, `21`   | `26.10`,    | `26.1.0.0`, `15.1.1.0`  | `7.x` | `4.x`   | ✔       | `main`
-|*4.x* (maintenance) | `17`, `21`   | `25.03`     | `15.1.1.0`              | `6.x` | `3.5.x` | ✔       | `4.x`
+|*5.x* ({main-release-version} baseline) | `17`, `21` | `26.04` | `15.1.1.0`, `26.1.0.0` | `7.x` | `4.x` | ✔ | `main`
+|*4.x* (maintenance) | `17`, `21`   | `25.03`     | `15.1.1.0`; `26.1.0.0` with `compatibility` | `6.x` | `3.5.x` | ✔ | `4.x`
 |*3.x* (maintenance) | `11`, `17`, `21`| `22.06`  | `14.1.2`, `14.1.1.2206` | `5.x` | `2.x`   |         | `3.x`
 |===
 
-NOTE: Commercial Coherence compatibility with Coherence Spring `4.x` and `5.x` remains unverified.
-https://docs.oracle.com/en/middleware/standalone/coherence/15.1.1/install/upgrading-coherence-previous-releases.html[Coherence 15.1.1.0.0 uses Jakarta EE 9.1],
-but namespace alignment alone does not establish a supported Coherence Spring combination.
+Coherence CE `26.04` is the default runtime dependency for Coherence Spring `{main-release-version}` on Java 17 and
+Java 21. Coherence Spring targets Java 17 bytecode. Earlier full-reactor and packaged-consumer checks passed with
+CE `26.04` on both JDKs. Final release-artifact qualification remains a separate step.
+
+The additional hardened CI lane selects released CE `26.10` on Java 21. CE `26.10` requires Java 21 or later.
+It enables hardened mode by default; applications do not need an explicit mode property. See the reference guide's
+link:coherence-spring-docs/src/main/asciidoc/overview.adoc#compatibility[compatibility section] for the test scope.
+
+NOTE: Coherence Spring `5.x` supports commercial Oracle Coherence `15.1.1.0` on Java 17/21 and `26.1.0.0` on Java 21.
+See the reference guide's compatibility section linked above for the exact Grid Edition base builds, expected skips
+and local qualification limits. Local qualification does not establish Oracle product certification.
 The commercial editions listed for `3.x` retain that line's existing compatibility guidance.
 
+Coherence Spring `4.x` supports commercial `15.1.1.0` on Java 17/21 without an additional security-mode setting.
+Commercial `26.1.0.0` is supported on Java 21 with explicit `-Dcoherence.security.mode=compatibility` in every
+application, client and server JVM before Coherence initializes. Its hardened default does not work unchanged with
+the `4.x` integration graph. See the reference guide's
+link:coherence-spring-docs/src/main/asciidoc/overview.adoc#compatibility-4[4.x commercial compatibility section]
+for the tested source revision, builds and scope.
+
 Development for Coherence Spring 5.x takes place on `main`. The `4.x` and `3.x` branches maintain the older release lines.
-Release source is identified by version tags, such as `v{main-release-version}` for release `{main-release-version}`.
+The planned tag for Coherence Spring `{main-release-version}` is `v{main-release-version}`.
 
 Applications moving from Coherence Spring 4.x should follow the
 link:coherence-spring-docs/src/main/asciidoc/upgrade-5.adoc[Coherence Spring 5.x upgrade guide]. It covers the Spring 7
@@ -64,7 +79,7 @@ and Boot 4 baselines, Boot's modular dependencies, optional integrations, source
 
 In order to get started quickly, please read the reference guide as it provides a detailed
 https://spring.coherence.community/{main-release-version}/refdocs/reference/htmlsingle/index.html#quickstart[Quickstart chapter] (v{main-release-version}).
-For the 5.x development baseline, use the
+For the `{main-release-version}` baseline, use the
 link:coherence-spring-docs/src/main/asciidoc/quickstart.adoc[5.x Quick Start] and the upgrade guide linked above.
 
 Through the reference documentation we will also refer to various demo and sample applications. Those are part of this

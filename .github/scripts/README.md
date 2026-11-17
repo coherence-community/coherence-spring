@@ -47,9 +47,19 @@ inventory and artifact checks still apply.
 
 The manual `maven-simple.yml` workflow always runs `baseline` with Coherence 26.04
 on Java 17 and `hardened` with released Coherence 26.10 on Java 21. Both compile
-for Java 17. The hardened lane sets `coherence.security.mode=hardened` for Maven
-and child JVMs, and rejects every skipped test. The runner's `--lane` selects the
+for Java 17. Coherence 26.10 enables hardening by default; applications do not need
+an explicit mode property. The hardened lane deliberately sets
+`coherence.security.mode=hardened` for Maven and child JVMs to pin the mode checked
+by the audit, and rejects every skipped test. The runner's `--lane` selects the
 Coherence version; the workflow matrix shows the same version in job metadata.
+
+After that lane passes, a separate fresh JVM runs `CheckDefaultSecurityMode.java`
+against the same released 26.10 core JAR. The workflow clears inherited JVM options
+and mode environment overrides. The check rejects an explicit mode property,
+requires effective hardening, and verifies that an unpermitted payload is rejected
+before its deserialization callback. Its version, JDK, JAR origin and result are
+retained in `qualification/default-security-mode.log`. It needs Java 21 and runs
+separately from the full reactor's explicit-mode JVM audit.
 
 The optional `requested` lane tests an additional version on Java 21 in hardened
 mode. Explicitly requested snapshots still discard cached Coherence snapshots

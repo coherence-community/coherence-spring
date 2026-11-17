@@ -74,17 +74,19 @@ Coherence Spring {coherence-spring-version}. It is not a matrix of all supported
 |5.x
 |{junit-version}
 
-|Coherence CE
+|Coherence CE (default)
 |25.03.x
 |{coherence-version}
 
 |Commercial Coherence
-|Unverified
-|Unverified
+|15.1.1.0; 26.1.0.0 with explicit compatibility mode
+|15.1.1.0, 26.1.0.0
 |===
 
-Coherence Spring supports Java 17 and Java 21 and targets Java 17 bytecode. Select a Coherence runtime,
-servlet container and other providers that also support the application's JDK.
+Coherence Spring supports Java 17 and Java 21 with default Coherence CE {coherence-version} and targets Java 17 bytecode.
+Coherence CE 26.10 requires Java 21 or later; Java 17 bytecode does not remove that dependency requirement.
+See xref:overview.adoc#compatibility[Compatibility] for the default runtime, additional CI selections and
+qualification limits. Select a servlet container and other providers that also support the application's JDK.
 
 Coherence Spring 5.x continues to use the `jakarta.*` namespace. Its Jakarta EE baseline advances from 10 to 11.
 Servlet web deployments require Servlet 6.1. Applications that use JPA or Bean Validation need Persistence 3.2 or
@@ -92,8 +94,13 @@ Validation 3.1 providers, respectively. Check the container and provider version
 
 The Hibernate row is the project's explicit selection, not Spring Boot's managed default. See
 xref:upgrade-5.adoc#upgrade-5-hibernate[Hibernate version selection] for the combinations used by the tests and samples.
-Commercial Coherence compatibility has not been established for either line. Coherence 15.1.1.0.0's move to Jakarta
-EE 9.1 does not by itself qualify a Spring 6 or Spring 7 application; see the repository README's compatibility note.
+Commercial Oracle Coherence 15.1.1.0.0 on Java 17/21 and 26.1.0.0.0 on Java 21 passed local qualification for
+Coherence Spring 5.x. See xref:overview.adoc#compatibility[Compatibility] for exact builds, expected skips and test limits.
+Coherence Spring 5.x supports commercial 15.1.1.0 on Java 17/21 and 26.1.0.0 on Java 21.
+The 4.x maintenance line supports 15.1.1.0 on Java 17/21 without an additional security-mode setting, and 26.1.0.0 on
+Java 21 with explicit `-Dcoherence.security.mode=compatibility` in every application, client and server JVM before
+Coherence initializes. See xref:overview.adoc#compatibility-4[4.x commercial runtimes] for the tested maintenance
+revision and scope. The unchanged 4.x integration graph does not work with the 26.1 hardened default.
 
 IMPORTANT: Upgrade a Spring Boot application to the latest 3.5.x maintenance release and remove use of APIs deprecated
 in Boot 3 before moving to Boot 4, as recommended by the Spring Boot migration guide.
@@ -428,9 +435,13 @@ rollback after 5.x has written sessions. Plan and validate rollback separately, 
 
 ==== Hardened Coherence serialization
 
-The project's default Coherence dependency remains {coherence-version}. The current hardened CI lane selects released
-Coherence 26.10 on Java 21. The earlier hardened-serialization evidence described here used Coherence 26.10 snapshots;
-it does not qualify the released runtime. On versions enforcing that policy, the Session JAR's permissions do
+Applications using commercial Coherence 26.1.0.0 with 4.x require explicit `coherence.security.mode=compatibility`.
+That setting remains effective after upgrading to 5.x. Validate the application and Session security metadata before
+changing the deployment's security profile; removing the property on 26.1 selects hardened mode.
+
+The project's default Coherence dependency remains {coherence-version}. Coherence 26.10 enables hardened mode by
+default and requires Java 21 or later. Applications do not need an explicit mode property. The CI qualification lane
+sets it explicitly to pin the audited mode. The Session JAR's permissions do
 not cover arbitrary application-selected session attributes, principals or authentication details. Supply exact
 application-owned `META-INF/coherence/security-config.xml` metadata for the required classes on the relevant receiving
 endpoints. POF registrations and security permissions serve separate purposes; hardened POF deployments require both.

@@ -574,7 +574,9 @@ cached Extend response values are deserialized. The model-free server stores and
 values on this path. HTTP 200 can also come from a database fallback after a cache failure; the
 sample's `BookCacheIT` verify actual individual and collection cache hits independently.
 See the link:{git-sources-samples}circuit-breaker-cache-demo[Sample README] for the permission boundary
-and focused positive and missing-permission checks. The default Coherence version remains 26.04.
+and focused positive and missing-permission checks. The default Coherence version remains {coherence-version}.
+Use released Coherence 26.10 on Java 21 for hardened checks; see xref:overview.adoc#compatibility[Compatibility] for
+runtime requirements and qualification limits.
 
 [[spring-boot-caching-circuit-breaker-running-example]]
 ==== Running the Example
@@ -883,7 +885,8 @@ with executable processor and cache payload declarations for security-hardened C
 Application-specific serialized values may require additional permissions.
 The sample's `HibernateCacheIT` requires actual cross-member entity, query and timestamp cache hits
 with zero SQL on measured reads. Metadata presence alone does not establish runtime qualification.
-Coherence 26.04 remains the project default.
+Coherence {coherence-version} remains the project default. Use released Coherence 26.10 on Java 21 for hardened checks;
+see xref:overview.adoc#compatibility[Compatibility] for runtime requirements and qualification limits.
 
 === Hibernate Second Level Cache Example
 

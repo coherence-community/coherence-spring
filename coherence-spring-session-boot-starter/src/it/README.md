@@ -146,14 +146,14 @@ dependency graphs and JAR/POM bytes. An unset security mode remains absent; an e
 `-Dcoherence.security.mode=hardened` becomes a test JVM argument. Nothing changes
 production security or serialization permissions.
 
-For a snapshot run, resolve fresh outer artifacts using Maven `-U` with
-`-Pjdk17 -Dcoherence.version=26.10-SNAPSHOT -Dcoherence.security.mode=hardened` on
-JDK 21. Invoker installs the run's exact resolved bytes; the freeze step records
+For a hardened Coherence 26.10 run, use
+`-Pjdk17 -Dcoherence.version=26.10` on JDK 21. Hardened mode is the runtime default.
+The CI qualification runner sets the mode property explicitly to pin its audited value;
+ordinary consumer runs do not require it. Invoker installs the run's exact resolved bytes; the freeze step records
 and copies their JAR/POM identities. Nested settings mirror every remote repository
-to release Central, which cannot supply a replacement snapshot; installed snapshot
-bytes remain the only available inputs. Each consumer compares its dependency
+to release Central. Each consumer compares its dependency
 JAR/POM hashes and the actually loaded Coherence JAR to that run's manifest.
-These are per-run identities, never historical snapshot pins. Other release
+These are per-run artifact identities. Other release
 plugins/BOMs/dependencies may be retrieved from Central on the first run.
 
 For an explicitly authorized frozen local exercise, the full runner accepts

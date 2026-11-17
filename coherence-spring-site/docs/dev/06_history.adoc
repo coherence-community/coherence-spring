@@ -63,7 +63,13 @@ Changes since https://github.com/coherence-community/coherence-spring/releases/t
   Automatic Session integration supports servlet applications; it does not provide reactive WebSession support.
 * The hardening CI lane selects released Coherence 26.10 on Java 21. This configuration does not establish
   completed runtime qualification. Earlier snapshot results do not qualify the release artifacts.
-  Commercial Coherence compatibility remains unverified.
+* Commercial Oracle Coherence 15.1.1.0.0 on Java 17/21 and 26.1.0.0.0 on Java 21 passed local qualification.
+  Coherence Spring 5.x supports commercial versions 15.1.1.0 and 26.1.0.0 on those JDKs; see the
+  link:refdocs/reference/html/overview.html#compatibility[compatibility section] for exact builds, expected skips and test limits.
+* Documents commercial support for the 4.x maintenance line: 15.1.1.0 on Java 17/21 and 26.1.0.0 on Java 21.
+  The 4.x/26.1.0.0 combination requires explicit `-Dcoherence.security.mode=compatibility` in every application,
+  client and server JVM before Coherence initializes; the unchanged 4.x integration graph fails with the hardened default.
+  See link:refdocs/reference/html/overview.html#compatibility-4[4.x commercial runtimes] for the tested revision and scope.
 
 See the link:refdocs/reference/html/upgrade-5.html[Coherence Spring 4.x to 5.x upgrade guide]
 for dependency examples, POF configuration, session cut-over guidance, and application validation steps.

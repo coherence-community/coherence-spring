@@ -186,18 +186,18 @@ class QualificationCiTests(unittest.TestCase):
     def test_records_new_snapshot_bytes_without_historical_pin(self):
         with tempfile.TemporaryDirectory(prefix='snapshot-ci-test-') as temporary:
             repository = Path(temporary)
-            folder = repository / 'com/oracle/coherence/ce/coherence/26.10-SNAPSHOT'
+            folder = repository / 'com/oracle/coherence/ce/coherence/0.0.0-fixture-SNAPSHOT'
             folder.mkdir(parents=True)
-            jar = folder / 'coherence-26.10-SNAPSHOT.jar'
+            jar = folder / 'coherence-0.0.0-fixture-SNAPSHOT.jar'
             jar.write_bytes(b'newly published snapshot')
             jar.with_suffix('.pom').write_text('<project/>')
-            timestamped = folder / 'coherence-26.10-20261016.170000-8.jar'
+            timestamped = folder / 'coherence-0.0.0-fixture-20990101.000001-1.jar'
             timestamped.write_bytes(jar.read_bytes())
-            row, = artifacts.cache_files(repository, '26.10-SNAPSHOT')
+            row, = artifacts.cache_files(repository, '0.0.0-fixture-SNAPSHOT')
             self.assertEqual(row['sha256'], artifacts.digest(jar))
             self.assertEqual(row['matching_timestamped_files'], [timestamped.name])
             jar.write_bytes(b'next published snapshot')
-            newer, = artifacts.cache_files(repository, '26.10-SNAPSHOT')
+            newer, = artifacts.cache_files(repository, '0.0.0-fixture-SNAPSHOT')
             self.assertNotEqual(newer['sha256'], row['sha256'])
             self.assertEqual(newer['matching_timestamped_files'], [])
 

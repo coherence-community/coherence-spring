@@ -52,6 +52,17 @@ jobs:
         env:
           QUALIFICATION_LANE: ${{ matrix.lane }}
         run: python3 .github/scripts/full_reactor.py --lane "$QUALIFICATION_LANE" --output "$RUNNER_TEMP/qualification"
+      - name: Check default hardening without a mode override
+        if: matrix.lane == 'hardened'
+        shell: bash
+        run: |
+          set -euo pipefail
+          env -u JAVA_TOOL_OPTIONS -u JDK_JAVA_OPTIONS -u _JAVA_OPTIONS \
+            -u COHERENCE_SECURITY_MODE -u TANGOSOL_COHERENCE_SECURITY_MODE \
+            "$JAVA_HOME/bin/java" --source 17 \
+            --class-path "$HOME/.m2/repository/com/oracle/coherence/ce/coherence/26.10/coherence-26.10.jar" \
+            .github/scripts/CheckDefaultSecurityMode.java \
+            2>&1 | tee "$RUNNER_TEMP/qualification/default-security-mode.log"
       - name: Preserve reports and diagnostics
         if: always()
         uses: actions/upload-artifact@v4

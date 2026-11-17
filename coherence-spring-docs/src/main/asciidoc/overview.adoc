@@ -27,6 +27,91 @@ The Coherence Spring reference guide is available as:
 * {coherence-spring-docs}htmlsingle[Single page HTML]
 * {coherence-spring-docs}pdf/coherence-spring-reference.pdf[PDF]
 
+[[compatibility]]
+== Compatibility
+
+Coherence Spring {coherence-spring-version} uses Spring Framework {spring-framework-version} and Spring Boot
+{spring-boot-version}. These are separate product versions. Coherence Spring supports Java 17 and Java 21 and targets
+Java 17 bytecode. The default Coherence runtime dependency is CE {coherence-version}.
+The following runtime table applies to Coherence Spring 5.x.
+
+[cols="2,1,4",options="header"]
+|===
+|Coherence runtime |Java |Role and evidence
+
+|CE {coherence-version}
+|17, 21
+|Supported default. Earlier full-reactor and packaged-consumer checks passed on both JDKs.
+
+|https://github.com/oracle/coherence/releases/tag/26.10[CE 26.10]
+|21
+|Additional hardened CI runtime. Requires Java 21 or later. Use the released artifacts for runtime checks.
+
+|Commercial 15.1.1.0.0 (build 118662; Maven `15.1.1-0-0`)
+|17, 21
+|Local reactor qualification passed with nine expected skips per JDK because newer security APIs are absent. All 19 packaged-consumer cases passed.
+
+|Commercial 26.1.0.0.0 (build 123470; Maven `26.1.0-0-0`)
+|21
+|Local hardened reactor qualification and all 19 packaged-consumer cases passed without skips.
+|===
+
+The commercial results cover the exact Grid Edition base releases above on macOS ARM64, retaining Java 17 product
+bytecode. Their Maven group ID is `com.oracle.coherence`. Coherence Spring 5.x supports commercial 15.1.1.0 on Java 17/21
+and 26.1.0.0 on Java 21. These checks do not establish Oracle product certification or qualification of other patch levels,
+platforms or features specific to commercial editions.
+
+Coherence CE 26.10 enables hardened mode by default. Normal applications do not need to set
+`coherence.security.mode=hardened`. Required serialization permissions and security metadata still apply.
+
+The CE {coherence-version} reactor checks skip tests that require newer Coherence security APIs.
+The hardened CI lane selects released CE 26.10 and explicitly sets `coherence.security.mode=hardened` for Maven and
+child JVMs to pin the mode recorded by its audit. It rejects skipped tests. A separate fresh-JVM check clears mode
+overrides and verifies default hardening and rejection of an unpermitted payload before its deserialization callback.
+CI configuration alone does not establish a passing result. Earlier test results do not constitute final qualification
+of the Coherence Spring {coherence-spring-version} release artifacts.
+
+Java 17 bytecode does not remove a dependency's Java requirement. Use Java 21 when selecting CE 26.10.
+Select servlet containers and other providers that support the application's JDK. Spring Framework 7, Spring Boot 4,
+and `jakarta.*` namespaces alone do not establish commercial Coherence compatibility.
+
+[[compatibility-4]]
+=== Coherence Spring 4.x commercial runtimes
+
+The 4.x maintenance line supports the following commercial Oracle Coherence combinations:
+
+[cols="2,1,3",options="header"]
+|===
+|Commercial runtime |Java |Required security-mode configuration
+
+|15.1.1.0.0 (build 118662; Maven `15.1.1-0-0`)
+|17, 21
+|No additional security-mode setting.
+
+|26.1.0.0.0 (build 123470; Maven `26.1.0-0-0`)
+|21
+|Explicit `coherence.security.mode=compatibility` in every application, client and server JVM before Coherence initializes.
+|===
+
+For the supported 4.x/26.1 combination, supply this JVM argument on each endpoint:
+
+[source,text]
+----
+-Dcoherence.security.mode=compatibility
+----
+
+Coherence 26.1 enables hardened mode when this property is unset. Its hardened default rejects types needed by the
+unchanged 4.x Session integration and application payloads. The supported 4.x/26.1 combination requires compatibility
+mode; hardened 4.x operation with a complete application/library security policy has not been qualified.
+
+Local verification used 4.3.2-SNAPSHOT maintenance source at commit `49bd07310542` and the exact Grid Edition base
+builds above on macOS ARM64, retaining Java 17 product bytecode. Each tested combination passed 650 reactor cases and
+four additional CacheStore integration cases without skips. Packaged-consumer checks also passed for Boot/cache,
+Spring Data and Spring Session. The 26.1 compatibility-mode checks used no application/library security metadata
+overlays or production source changes. Java 17 bytecode does not remove the Java 21 runtime requirement of Coherence 26.1.
+These checks do not establish Oracle product certification or qualification of other patch levels, platforms or
+features specific to commercial editions.
+
 [[getting-help]]
 == Getting Help
 If you run into issues with Spring Coherence, we are here to help.

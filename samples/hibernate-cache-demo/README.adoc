@@ -31,9 +31,8 @@ current compatibility and qualification scope. Metadata inspection alone does
 not establish runtime qualification; run the packaged regression for the selected
 artifacts.
 
-The default remains Coherence 26.04 and Java 17. To test hardened Coherence 26.10,
-use Java 21 and add `-U -Dcoherence.version=26.10-SNAPSHOT
--Dcoherence.security.mode=hardened` to the command above. `-Pjdk17` retains the
-Java 17 bytecode target. Snapshot resolution requires the configured snapshot
-repository for Coherence; local results do not establish
-remote artifact availability.
+The supported default is Coherence 26.04 on Java 17 or Java 21. To test hardened Coherence 26.10,
+use Java 21 and add `-Dcoherence.version=26.10` to the command above. Hardened mode is the runtime default;
+no mode property is required. `-Pjdk17` retains the Java 17 bytecode target. See the
+link:../../coherence-spring-docs/src/main/asciidoc/overview.adoc#compatibility[compatibility section] for test scope and
+released-runtime qualification limits.

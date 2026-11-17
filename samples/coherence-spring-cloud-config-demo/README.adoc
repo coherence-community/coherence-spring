@@ -16,9 +16,9 @@ From the repository root, run:
 ./mvnw -Pjdk17 -pl :coherence-spring-cloud-config-demo-parent-app -am verify
 ----
 
-For hardened snapshot tests, use Java 21 and a separate Maven repository without inherited Coherence snapshots.
-Keep `-Pjdk17` for Java 17 bytecode.
-Add `-U -Dcoherence.version=26.10-SNAPSHOT -Dcoherence.security.mode=hardened` to the command.
+For hardened tests with released Coherence 26.10, use Java 21.
+Keep `-Pjdk17` for Java 17 bytecode and add `-Dcoherence.version=26.10` to the command.
+Hardened mode is the runtime default; no mode property is required.
 
 == Cache permissions
 

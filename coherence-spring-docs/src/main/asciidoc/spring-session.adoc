@@ -48,8 +48,9 @@ dependencies {
 ----
 ====
 
-NOTE: Coherence Spring 5.x support for Spring Session uses Coherence Community Edition (CE) 26.04. Coherence Spring does
-not bring in the Coherence dependency automatically; users must specify the supported Coherence CE dependency explicitly.
+NOTE: The supported default for Spring Session is Coherence CE {coherence-version} on Java 17 or Java 21. Declare the
+Coherence dependency explicitly; Coherence Spring does not supply it transitively. See
+xref:overview.adoc#compatibility[Compatibility] for additional test versions and qualification limits.
 
 For standalone configuration, make sure Coherence is enabled and then enable Spring Session using the
 `@EnableCoherenceHttpSession` annotation. Also register the HTTP filter, for example through
@@ -325,9 +326,7 @@ Applications choosing `User` and `WebAuthenticationDetails` must supply their
 own exact security metadata, including metadata for other serialized classes
 in that graph, such as `User`'s authority comparator for Java serialization.
 
-An explicit POF registration also trusts its configured serializer. In the tested
-Coherence 26.10 snapshot, a registered `PortableObjectSerializer` can construct
-and read a type absent from the XML allowlist. Review application POF
+An explicit POF registration also trusts its configured serializer. Review application POF
 registrations and serializers independently; the Session XML does not prevent
 callbacks from arbitrary explicitly registered serializers. Review the complete
 application object graph for additional POF registrations before deployment.

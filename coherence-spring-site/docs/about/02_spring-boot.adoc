@@ -30,12 +30,20 @@ Add the Coherence Spring Boot Starter to your generated app's `pom.xml`:
     <dependency>
         <groupId>com.oracle.coherence.ce</groupId>
         <artifactId>coherence</artifactId>
-        <version>{version-coherence}</version>
+        <version>{version-coherence-maven}</version>
     </dependency>
 </dependencies>
 ----
 
-NOTE: Coherence Spring 5.x supports Coherence CE 26.04. There is currently no compatible commercial Coherence edition.
+Coherence Spring {version-coherence-spring} uses Spring Framework 7 and Spring Boot 4. Its supported default is
+Coherence CE {version-coherence-maven} on Java 17 or Java 21. Coherence Spring targets Java 17 bytecode.
+Coherence Spring 5.x supports commercial Oracle Coherence 15.1.1.0 on Java 17/21 and 26.1.0.0 on Java 21. See the
+link:refdocs/reference/html/overview.html#compatibility[compatibility section] for exact builds, expected skips,
+test limits and CE 26.10/Java 21 runtime requirements.
+
+The 4.x maintenance line supports commercial 15.1.1.0 on Java 17/21 and 26.1.0.0 on Java 21. For 4.x with 26.1.0.0,
+set `-Dcoherence.security.mode=compatibility` in every application, client and server JVM before Coherence initializes.
+See link:refdocs/reference/html/overview.html#compatibility-4[4.x commercial runtimes] for the tested revision and limits.
 
 If you are moving an existing application from Coherence Spring 4.x, follow the
 link:refdocs/reference/html/upgrade-5.html[Coherence Spring 5.x upgrade guide] before changing dependencies.
