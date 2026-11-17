@@ -26,28 +26,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
+      if: ${{ github.event.workflow_run.head_branch != '3.x' }}
       with:
         ref: ${{ github.event.workflow_run.head_sha }}
         fetch-depth: 0
-    - name: Set up JDK 17
+    - uses: actions/checkout@v5.0.0
+      if: ${{ github.event.workflow_run.head_branch == '3.x' }}
+      with:
+        ref: ${{ github.event.workflow_run.head_sha }}
+        fetch-depth: 0
+    - name: Set up JDK ${{ github.event.workflow_run.head_branch == '3.x' && '11' || '17' }}
       uses: actions/setup-java@v5.0.0
       with:
         distribution: 'adopt'
-        java-version: '17'
+        java-version: ${{ github.event.workflow_run.head_branch == '3.x' && '11' || '17' }}
     - name: Cache Maven packages
       uses: actions/cache@v4
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        key: ${{ runner.os }}-${{ github.event.workflow_run.head_branch == '3.x' && 'maven2' || 'm2' }}-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-m2-
+          ${{ runner.os }}-${{ github.event.workflow_run.head_branch == '3.x' && 'maven2' || 'm2' }}-
     - name: Check, Build and Deploy SNAPSHOTs
       env:
+        HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
         MAVEN_GITHUB_TOKEN: "${{secrets.GITHUB_TOKEN}}"
         MAVEN_SONATYPE_USERNAME: "${{secrets.MAVEN_SONATYPE_USERNAME}}"
         MAVEN_SONATYPE_TOKEN: "${{secrets.MAVEN_SONATYPE_TOKEN}}"
+        NVD_API_KEY: "${{ github.event.workflow_run.head_branch == '3.x' && secrets.NVD_API_KEY || '' }}"
       run: |
-        version=$(./mvnw help:evaluate --no-transfer-progress -B --settings .mvn/settings.xml -N -q -Dexpression=project.version -DforceStdout)
+        maven_profiles=()
+        if [[ "$HEAD_BRANCH" == '3.x' ]]; then
+          maven_profiles=(-Pspring)
+        fi
+        version=$(./mvnw help:evaluate --no-transfer-progress -B "${maven_profiles[@]}" --settings .mvn/settings.xml -N -q -Dexpression=project.version -DforceStdout)
         if [[ -z "$version" || "$version" == *[[:space:]]* || "$version" == *"\${"* ]]; then
           echo "::error::Unable to read a valid root project version."
           exit 1
@@ -57,11 +69,15 @@ jobs:
           exit 0
         fi
         # Check every reactor module before any deploy-phase publication.
-        ./mvnw enforcer:enforce --no-transfer-progress -B --settings .mvn/settings.xml -Denforcer.rules=requireSnapshotVersion -Denforcer.ignoreCache=true -Denforcer.skip=false -Denforcer.fail=true
+        ./mvnw enforcer:enforce --no-transfer-progress -B "${maven_profiles[@]}" --settings .mvn/settings.xml -Denforcer.rules=requireSnapshotVersion -Denforcer.ignoreCache=true -Denforcer.skip=false -Denforcer.fail=true
         git config --global user.email "github-action@users.noreply.github.com"
         git config --global user.name "GitHub Action"
-        ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
-        ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml
+        if [[ "$HEAD_BRANCH" == '3.x' ]]; then
+          ./mvnw deploy -B -Pspring --settings .mvn/settings.xml
+        else
+          ./mvnw clean install --no-transfer-progress -B --settings .mvn/settings.xml -DskipTests=true
+          ./mvnw deploy --no-transfer-progress -B --settings .mvn/settings.xml
+        fi
     - name: Clean Maven cache
       run: |
         find ~/.m2/repository -type d -name '*SNAPSHOT' | xargs rm -fr
