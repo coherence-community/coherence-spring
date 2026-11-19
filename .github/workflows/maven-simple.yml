@@ -29,7 +29,7 @@ jobs:
     name: ${{ matrix.lane }} / JDK ${{ matrix.java-version }} / release ${{ matrix.compiler-release }} / ${{ matrix.security-mode }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Initialize qualification evidence
         run: |
           mkdir -p "$RUNNER_TEMP/qualification"
@@ -95,7 +95,7 @@ jobs:
     name: Optional requested version / JDK 21 / release 17
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Initialize qualification evidence
         run: |
           mkdir -p "$RUNNER_TEMP/qualification"
