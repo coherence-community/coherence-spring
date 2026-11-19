@@ -36,7 +36,7 @@ jobs:
         ref: ${{ github.event.workflow_run.head_sha }}
         fetch-depth: 0
     - name: Set up JDK ${{ github.event.workflow_run.head_branch == '3.x' && '11' || '17' }}
-      uses: actions/setup-java@v5.0.0
+      uses: actions/setup-java@v6.3.0
       with:
         distribution: 'adopt'
         java-version: ${{ github.event.workflow_run.head_branch == '3.x' && '11' || '17' }}
