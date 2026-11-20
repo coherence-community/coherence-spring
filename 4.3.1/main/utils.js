@@ -68,7 +68,7 @@ function loadPage(id, targetPath, compDef, customJsPath) {
             }
 
             // download the template
-            const page = "/pages/" + targetPath + ".js";
+            const page = "pages/" + targetPath + ".js";
             superagent.get(page).end(function (error, response) {
 
                 // error loading page
